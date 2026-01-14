@@ -1,0 +1,71 @@
+:root {
+  --main-color: rgb(255,0,188);
+  --main-color-rgb: 255,0,188;
+  --color-two: rgb(14,15,17);
+  --color-two-rgb: 14,15,17;
+  --color-three: rgb(242,243,245);
+  --color-three-rgb: 242,243,245;
+  --color-four: rgb(24,25,29);
+  --color-four-rgb: 24,25,29;
+  --color-five: rgb(0,188,246);
+  --color-five-rgb: 0,188,246;
+  --color-six: rgb(210,210,210);
+  --color-six-rgb: 210,210,210;
+  --color-seven: rgb(59,60,60);
+  --color-seven-rgb: 59,60,60;
+  --color-eight: rgb(51,51,51);
+  --color-eight-rgb: 51,51,51;
+  --color-nine: rgb(33,35,36);
+  --color-nine-rgb: 33,35,36;
+  --color-ten: rgb(22,22,24);
+  --color-ten-rgb: 22,22,24;
+  --white-color: rgb(255,255,255);
+  --white-color-rgb: 255,255,255;
+  --black-color: rgb(0,0,0);
+  --black-color-rgb: 0,0,0;
+  --nami-accent: rgb(255,0,188);
+  --nami-accent-alt: rgb(0,188,246);
+  --nami-hero-gradient: linear-gradient(135deg, rgba(255,0,188,0.18), rgba(0,188,246,0.18));
+}
+
+body {
+  font-family: 'Instrument Sans', Arial, sans-serif;
+  background-color: var(--color-two);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.sec-title_heading,
+.sec-title_title,
+.slider-one_heading,
+.slider-two_heading,
+.banner-one_title,
+.banner-one_heading {
+  font-family: 'Instrument Sans', Arial, sans-serif;
+  letter-spacing: 0.2px;
+}
+
+a {
+  color: var(--main-color);
+}
+
+a:hover {
+  color: var(--color-five);
+}
+
+.nami-gradient-text {
+  background-image: var(--nami-hero-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+img.nami-placeholder {
+  background-color: var(--color-four);
+  border: 1px dashed rgba(var(--main-color-rgb), 0.55);
+  padding: 6px;
+}
