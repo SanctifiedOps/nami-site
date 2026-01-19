@@ -9,8 +9,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: path.resolve(__dirname, 'index.html'),
-        index2: path.resolve(__dirname, 'index-2.html'),
-        index3: path.resolve(__dirname, 'index-3.html'),
         about: path.resolve(__dirname, 'about.html'),
         services: path.resolve(__dirname, 'services.html'),
         serviceDetail: path.resolve(__dirname, 'service-detail.html'),

@@ -1,71 +1,1615 @@
+/* ==========================================================================
+   Nami Creative - Premium Theme Overrides
+   ========================================================================== */
+
+/* ==========================================================================
+   1. REFINED COLOR SYSTEM
+   ========================================================================== */
+
 :root {
-  --main-color: rgb(255,0,188);
-  --main-color-rgb: 255,0,188;
-  --color-two: rgb(14,15,17);
-  --color-two-rgb: 14,15,17;
-  --color-three: rgb(242,243,245);
-  --color-three-rgb: 242,243,245;
-  --color-four: rgb(24,25,29);
-  --color-four-rgb: 24,25,29;
-  --color-five: rgb(0,188,246);
-  --color-five-rgb: 0,188,246;
-  --color-six: rgb(210,210,210);
-  --color-six-rgb: 210,210,210;
-  --color-seven: rgb(59,60,60);
-  --color-seven-rgb: 59,60,60;
-  --color-eight: rgb(51,51,51);
-  --color-eight-rgb: 51,51,51;
-  --color-nine: rgb(33,35,36);
-  --color-nine-rgb: 33,35,36;
-  --color-ten: rgb(22,22,24);
-  --color-ten-rgb: 22,22,24;
-  --white-color: rgb(255,255,255);
-  --white-color-rgb: 255,255,255;
-  --black-color: rgb(0,0,0);
-  --black-color-rgb: 0,0,0;
-  --nami-accent: rgb(255,0,188);
-  --nami-accent-alt: rgb(0,188,246);
-  --nami-hero-gradient: linear-gradient(135deg, rgba(255,0,188,0.18), rgba(0,188,246,0.18));
+  /* Primary Brand Colors - Refined for premium feel */
+  --main-color: rgb(230, 50, 175);
+  --main-color-rgb: 230, 50, 175;
+  --nami-primary: rgb(230, 50, 175);
+  --nami-primary-soft: rgb(255, 100, 200);
+  --nami-primary-glow: rgba(230, 50, 175, 0.4);
+
+  /* Secondary Accent - Softer cyan */
+  --color-five: rgb(100, 200, 255);
+  --color-five-rgb: 100, 200, 255;
+  --nami-secondary: rgb(100, 200, 255);
+  --nami-accent-alt: rgb(100, 200, 255);
+
+  /* Surface Colors - Refined dark palette */
+  --color-two: rgb(12, 13, 15);
+  --color-two-rgb: 12, 13, 15;
+  --color-four: rgb(18, 19, 22);
+  --color-four-rgb: 18, 19, 22;
+  --color-seven: rgb(22, 24, 28);
+  --color-seven-rgb: 22, 24, 28;
+  --color-nine: rgb(26, 28, 32);
+  --color-nine-rgb: 26, 28, 32;
+  --color-ten: rgb(16, 17, 20);
+  --color-ten-rgb: 16, 17, 20;
+
+  /* Text Colors - Better contrast */
+  --color-three: rgb(180, 182, 190);
+  --color-three-rgb: 180, 182, 190;
+  --color-six: rgb(140, 142, 150);
+  --color-six-rgb: 140, 142, 150;
+  --white-color: rgb(250, 250, 252);
+  --white-color-rgb: 250, 250, 252;
+  --black-color: rgb(0, 0, 0);
+  --black-color-rgb: 0, 0, 0;
+
+  /* Premium Gradients */
+  --nami-hero-gradient: linear-gradient(135deg, rgba(230, 50, 175, 0.15), rgba(100, 200, 255, 0.1));
+  --nami-card-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+  --nami-glow-gradient: radial-gradient(ellipse at center, rgba(230, 50, 175, 0.15) 0%, transparent 70%);
+
+  /* Spacing Scale */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 32px;
+  --space-lg: 64px;
+  --space-xl: 96px;
+  --space-section: 120px;
+
+  /* Animation Timing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 8px 32px rgba(230, 50, 175, 0.25);
+  --shadow-glow-lg: 0 16px 48px rgba(230, 50, 175, 0.3);
 }
+
+/* ==========================================================================
+   2. TYPOGRAPHY - Premium Scale
+   ========================================================================== */
 
 body {
-  font-family: 'Instrument Sans', Arial, sans-serif;
+  font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 400;
   background-color: var(--color-two);
+  color: var(--color-three);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+h1, h2, h3, h4, h5, h6,
 .sec-title_heading,
 .sec-title_title,
 .slider-one_heading,
 .slider-two_heading,
 .banner-one_title,
 .banner-one_heading {
-  font-family: 'Instrument Sans', Arial, sans-serif;
-  letter-spacing: 0.2px;
+  font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--white-color);
+}
+
+h1 {
+  font-size: clamp(42px, 5vw, 72px);
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.15;
+}
+
+h3 {
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.2;
+}
+
+h4 {
+  font-size: clamp(20px, 2.5vw, 28px);
+  line-height: 1.3;
+}
+
+h5 {
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.4;
+}
+
+h6 {
+  font-size: clamp(16px, 1.5vw, 20px);
+  line-height: 1.5;
+}
+
+p, .text {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--color-three);
 }
 
 a {
   color: var(--main-color);
+  text-decoration: none;
+  transition: color 0.25s var(--ease-out-quart);
 }
 
 a:hover {
-  color: var(--color-five);
+  color: var(--nami-primary-soft);
 }
 
+/* ==========================================================================
+   3. PLACEHOLDER & SKELETON STYLES
+   ========================================================================== */
+
+/* Remove harsh placeholder styling */
+img.nami-placeholder {
+  background: linear-gradient(135deg, var(--color-four) 0%, var(--color-seven) 100%);
+  border: none;
+  padding: 0;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Elegant skeleton loader animation */
+img.nami-placeholder::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 2s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ==========================================================================
+   4. BUTTON STYLES - Premium & Simplified
+   ========================================================================== */
+
+.template-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  border-radius: 8px;
+  padding: 16px 32px;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-out-expo);
+  cursor: pointer;
+}
+
+/* Primary Button - Simplified */
+.btn-style-one {
+  background: var(--main-color);
+  color: var(--white-color);
+  border: none;
+  box-shadow: 0 4px 16px rgba(230, 50, 175, 0.2);
+}
+
+.btn-style-one::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-style-one:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+  background: var(--nami-primary-soft);
+}
+
+.btn-style-one:hover::before {
+  opacity: 1;
+}
+
+.btn-style-one:active {
+  transform: translateY(0);
+}
+
+.btn-style-one .btn-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  overflow: hidden;
+}
+
+.btn-style-one .btn-wrap .text-one {
+  color: var(--white-color);
+  transition: transform 0.35s var(--ease-out-expo);
+}
+
+.btn-style-one .btn-wrap .text-two {
+  position: absolute;
+  top: 100%;
+  color: var(--white-color);
+  transition: transform 0.35s var(--ease-out-expo);
+}
+
+.btn-style-one:hover .btn-wrap .text-one {
+  transform: translateY(-120%);
+}
+
+.btn-style-one:hover .btn-wrap .text-two {
+  transform: translateY(-100%);
+}
+
+/* Secondary Button (Outline) */
+.btn-style-two {
+  background: transparent;
+  color: var(--white-color);
+  border: 1px solid rgba(230, 50, 175, 0.5);
+}
+
+.btn-style-two:hover {
+  background: rgba(230, 50, 175, 0.1);
+  border-color: var(--main-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-style-two .btn-wrap .text-one,
+.btn-style-two .btn-wrap .text-two {
+  color: var(--white-color);
+}
+
+/* Tertiary Button (White) */
+.btn-style-three {
+  background: var(--white-color);
+  color: var(--color-two);
+}
+
+.btn-style-three:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-style-three .btn-wrap .text-one {
+  color: var(--color-two);
+}
+
+.btn-style-three:hover .btn-wrap .text-two {
+  color: var(--color-two);
+}
+
+/* ==========================================================================
+   5. CARD MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* Service Cards */
+.service-block_one-inner {
+  transition: transform 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo),
+              border-color 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.service-block_one-inner:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(230, 50, 175, 0.2);
+}
+
+.service-block_one-icon {
+  transition: transform 0.4s var(--ease-out-expo),
+              color 0.3s ease;
+}
+
+.service-block_one-inner:hover .service-block_one-icon {
+  transform: scale(1.1);
+  color: var(--main-color);
+}
+
+.service-block_one-join {
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.service-block_one-inner:hover .service-block_one-join {
+  color: var(--main-color);
+  transform: translateX(4px);
+}
+
+/* Service Block Two - Special Card */
+.service-block_two-inner {
+  transition: transform 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo);
+  border: 1px solid rgba(230, 50, 175, 0.3);
+}
+
+.service-block_two-inner:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-glow-lg);
+  border-color: var(--main-color);
+}
+
+/* Testimonial Cards */
+.testimonial-block_one-inner {
+  transition: transform 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo);
+}
+
+.testimonial-block_one-inner:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Price Cards */
+.price-block_one-inner {
+  transition: transform 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo),
+              border-color 0.3s ease;
+}
+
+.price-block_one-inner:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(230, 50, 175, 0.3);
+}
+
+.price-block_one.active .price-block_one-inner {
+  box-shadow: var(--shadow-glow-lg);
+}
+
+/* News/Blog Cards */
+.news-block_one-inner {
+  transition: transform 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.news-block_one-inner:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(230, 50, 175, 0.2);
+}
+
+.news-block_one-image img {
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.news-block_one-inner:hover .news-block_one-image img {
+  transform: scale(1.05);
+}
+
+/* Step Cards */
+.step-block_one-inner {
+  transition: transform 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo);
+}
+
+.step-block_one-inner:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ==========================================================================
+   6. FORM INTERACTIONS
+   ========================================================================== */
+
+input, textarea, select {
+  transition: border-color 0.25s ease,
+              box-shadow 0.25s ease,
+              background-color 0.25s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--main-color) !important;
+  box-shadow: 0 0 0 3px rgba(230, 50, 175, 0.15);
+}
+
+/* Newsletter Form */
+.newsletter-box input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.newsletter-box input:focus {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--main-color);
+}
+
+.newsletter-box .template-btn {
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.newsletter-box .template-btn:hover {
+  transform: scale(1.02);
+}
+
+/* Contact Form Fields */
+.form-group input,
+.form-group textarea {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  padding: 16px 20px;
+  color: var(--white-color);
+  font-size: 16px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ==========================================================================
+   7. NAVIGATION IMPROVEMENTS
+   ========================================================================== */
+
+.main-header {
+  transition: background-color 0.4s ease,
+              box-shadow 0.4s ease,
+              padding 0.4s ease;
+}
+
+.main-header.fixed-header {
+  background: rgba(12, 13, 15, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Nav Links */
+.main-menu .navigation > li > a {
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.main-menu .navigation > li > a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--main-color);
+  transition: width 0.3s var(--ease-out-expo);
+}
+
+.main-menu .navigation > li:hover > a::after,
+.main-menu .navigation > li.current > a::after {
+  width: 100%;
+}
+
+/* Dropdown Menus */
+.main-menu .navigation li ul {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s var(--ease-out-expo);
+  background: rgba(22, 24, 28, 0.98);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-lg);
+}
+
+.main-menu .navigation li:hover > ul {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.main-menu .navigation li ul li a {
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.main-menu .navigation li ul li a:hover {
+  color: var(--main-color);
+  padding-left: 5px;
+}
+
+/* ==========================================================================
+   8. PRELOADER - Minimal Brand Animation
+   ========================================================================== */
+
+.loader-wrap {
+  background: var(--color-two);
+}
+
+.handle-preloader {
+  background: var(--color-two);
+}
+
+.handle-preloader .animation-preloader .txt-loading .letters-loading {
+  font-size: 48px;
+  letter-spacing: 8px;
+  font-weight: 600;
+  -webkit-text-stroke-color: rgba(230, 50, 175, 0.3);
+}
+
+.handle-preloader .animation-preloader .txt-loading .letters-loading:before {
+  color: var(--main-color);
+}
+
+/* Faster fade out */
+.loader-wrap {
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* ==========================================================================
+   9. MOBILE MENU ENHANCEMENTS
+   ========================================================================== */
+
+.mobile-menu {
+  background: rgba(12, 13, 15, 0.98);
+  backdrop-filter: blur(30px);
+}
+
+.mobile-menu .navigation li {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+body.mobile-menu-visible .mobile-menu .navigation li {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.4s ease, transform 0.4s var(--ease-out-expo);
+}
+
+body.mobile-menu-visible .mobile-menu .navigation li:nth-child(1) { transition-delay: 0.05s; }
+body.mobile-menu-visible .mobile-menu .navigation li:nth-child(2) { transition-delay: 0.1s; }
+body.mobile-menu-visible .mobile-menu .navigation li:nth-child(3) { transition-delay: 0.15s; }
+body.mobile-menu-visible .mobile-menu .navigation li:nth-child(4) { transition-delay: 0.2s; }
+body.mobile-menu-visible .mobile-menu .navigation li:nth-child(5) { transition-delay: 0.25s; }
+body.mobile-menu-visible .mobile-menu .navigation li:nth-child(6) { transition-delay: 0.3s; }
+body.mobile-menu-visible .mobile-menu .navigation li:nth-child(7) { transition-delay: 0.35s; }
+
+.mobile-menu .close-btn {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.mobile-menu .close-btn:hover {
+  transform: rotate(90deg);
+  color: var(--main-color);
+}
+
+/* ==========================================================================
+   10. SECTION SPACING & RHYTHM
+   ========================================================================== */
+
+section {
+  position: relative;
+}
+
+/* Consistent section padding */
+.services-one,
+.about-one,
+.choose-one,
+.answer-one,
+.testimonial-one,
+.steps-one,
+.price-one,
+.faq-one,
+.social-one,
+.news-one,
+.cta-one {
+  padding-top: var(--space-section);
+  padding-bottom: var(--space-section);
+}
+
+/* Section Title Spacing */
+.sec-title {
+  margin-bottom: var(--space-lg);
+}
+
+.sec-title_title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--main-color);
+  margin-bottom: var(--space-sm);
+}
+
+.sec-title_heading {
+  margin-top: var(--space-sm);
+  line-height: 1.2;
+}
+
+.sec-title_text {
+  margin-top: var(--space-md);
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--color-six);
+  max-width: 540px;
+}
+
+.sec-title.centered .sec-title_text {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   11. ACCORDION IMPROVEMENTS
+   ========================================================================== */
+
+.accordion-box_two .block {
+  transition: border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.accordion-box_two .block:hover {
+  border-color: rgba(230, 50, 175, 0.2);
+}
+
+.accordion-box_two .block.active-block {
+  border-color: var(--main-color);
+  box-shadow: var(--shadow-glow);
+}
+
+.accordion-box_two .block .acc-btn {
+  transition: color 0.25s ease;
+}
+
+.accordion-box_two .block .acc-btn:hover {
+  color: var(--main-color);
+}
+
+.accordion-box_two .block .icon-outer .icon {
+  transition: transform 0.4s var(--ease-out-expo),
+              background-color 0.3s ease;
+}
+
+.accordion-box_two .block .acc-btn.active .icon-outer .icon {
+  transform: rotate(45deg);
+  background-color: var(--nami-primary-soft);
+}
+
+/* ==========================================================================
+   12. SCROLL PROGRESS INDICATOR
+   ========================================================================== */
+
+.progress-wrap {
+  box-shadow: 0 0 0 2px rgba(230, 50, 175, 0.2);
+  transition: all 0.3s ease;
+}
+
+.progress-wrap:hover {
+  box-shadow: 0 0 0 2px var(--main-color);
+  transform: translateY(-3px);
+}
+
+.progress-wrap::after {
+  color: var(--main-color);
+}
+
+.progress-wrap svg.progress-circle path {
+  stroke: var(--main-color);
+}
+
+/* ==========================================================================
+   13. CUSTOM CURSOR REFINEMENT
+   ========================================================================== */
+
+.cursor {
+  background-color: var(--main-color);
+  mix-blend-mode: difference;
+}
+
+.cursor-follower {
+  border-color: var(--main-color);
+  mix-blend-mode: difference;
+}
+
+/* ==========================================================================
+   14. LINK UNDERLINE ANIMATION
+   ========================================================================== */
+
+.animated-link {
+  position: relative;
+  display: inline-block;
+}
+
+.animated-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--main-color);
+  transition: width 0.3s var(--ease-out-expo);
+}
+
+.animated-link:hover::after {
+  width: 100%;
+}
+
+/* ==========================================================================
+   15. FOOTER ENHANCEMENTS
+   ========================================================================== */
+
+.main-footer {
+  background: linear-gradient(180deg, var(--color-two) 0%, var(--color-four) 100%);
+}
+
+.footer-pages_list li a {
+  transition: color 0.25s ease, transform 0.25s ease;
+  display: inline-block;
+}
+
+.footer-pages_list li a:hover {
+  color: var(--main-color);
+  transform: translateX(4px);
+}
+
+.footer-social_box a {
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.footer-social_box a:hover {
+  color: var(--main-color);
+  transform: translateY(-3px);
+}
+
+/* ==========================================================================
+   16. RESPONSIVE REFINEMENTS
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  :root {
+    --space-section: 100px;
+  }
+}
+
+@media (max-width: 991px) {
+  :root {
+    --space-section: 80px;
+    --space-lg: 48px;
+  }
+
+  .testimonial-one .inner-container,
+  .price-one .inner-container {
+    padding: 60px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --space-section: 64px;
+    --space-lg: 40px;
+    --space-md: 24px;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  .testimonial-one .inner-container,
+  .price-one .inner-container {
+    padding: 48px 24px;
+  }
+
+  /* Disable heavy animations on mobile */
+  .service-block_one-inner:hover,
+  .testimonial-block_one-inner:hover,
+  .price-block_one-inner:hover,
+  .news-block_one-inner:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --space-section: 48px;
+  }
+
+  .sec-title_heading {
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  .template-btn {
+    padding: 14px 24px;
+    font-size: 14px;
+  }
+}
+
+/* ==========================================================================
+   17. SMOOTH SCROLL STYLES
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ScrollSmoother wrapper styles */
+#smooth-wrapper {
+  overflow: hidden;
+}
+
+#smooth-content {
+  overflow: visible;
+  width: 100%;
+}
+
+/* ==========================================================================
+   18. GRADIENT TEXT UTILITY
+   ========================================================================== */
+
 .nami-gradient-text {
-  background-image: var(--nami-hero-gradient);
+  background: linear-gradient(135deg, var(--main-color) 0%, var(--nami-secondary) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-img.nami-placeholder {
-  background-color: var(--color-four);
-  border: 1px dashed rgba(var(--main-color-rgb), 0.55);
-  padding: 6px;
+/* ==========================================================================
+   19. GLOW EFFECTS
+   ========================================================================== */
+
+.nami-glow {
+  position: relative;
+}
+
+.nami-glow::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: var(--nami-glow-gradient);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.nami-glow:hover::before {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   20. SELECTION STYLING
+   ========================================================================== */
+
+::selection {
+  background: rgba(230, 50, 175, 0.3);
+  color: var(--white-color);
+}
+
+::-moz-selection {
+  background: rgba(230, 50, 175, 0.3);
+  color: var(--white-color);
+}
+
+/* ==========================================================================
+   21. STATIC HERO SECTION
+   ========================================================================== */
+
+.hero-one {
+  position: relative;
+  padding: 180px 0 120px;
+  background-color: var(--color-two);
+  overflow: hidden;
+}
+
+.hero-one_icon,
+.hero-one_icon-two,
+.hero-one_pattern,
+.hero-one_pattern-two,
+.hero-one_pattern-three,
+.hero-one_pattern-four {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+}
+
+.hero-one_icon {
+  right: 15%;
+  top: 10%;
+  width: 80px;
+  height: 80px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero-one_icon-two {
+  left: 5%;
+  bottom: 20%;
+  width: 60px;
+  height: 60px;
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+.hero-one_pattern {
+  left: 0;
+  top: 0;
+  width: 400px;
+  height: 400px;
+  opacity: 0.5;
+}
+
+.hero-one_pattern-two {
+  right: 0;
+  bottom: 0;
+  width: 500px;
+  height: 500px;
+  opacity: 0.3;
+}
+
+.hero-one_pattern-three {
+  position: absolute;
+  right: -50px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 300px;
+  opacity: 0.4;
+}
+
+.hero-one_pattern-four {
+  left: 50%;
+  top: 0;
+  width: 200px;
+  height: 200px;
+  opacity: 0.2;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.hero-one_content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-one_content-inner {
+  max-width: 650px;
+}
+
+.hero-one_title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--main-color);
+  margin-bottom: var(--space-md);
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.2s;
+}
+
+.hero-one_heading {
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--white-color);
+  margin-bottom: var(--space-md);
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.4s;
+}
+
+.hero-one_heading span {
+  color: var(--main-color);
+}
+
+.hero-one_text {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--color-three);
+  margin-bottom: var(--space-lg);
+  max-width: 500px;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.6s;
+}
+
+.hero-one_button {
+  gap: 16px;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.8s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Image Column */
+.hero-one_image-column {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-one_image-outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+}
+
+.hero-one_image {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.hero-one_image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Hero Stats Cards */
+.hero-one_stats {
+  position: absolute;
+  left: -30px;
+  top: 20%;
+  background: var(--color-seven);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  z-index: 3;
+  opacity: 0;
+  animation: slideInLeft 0.8s ease forwards;
+  animation-delay: 1s;
+}
+
+.hero-one_stats-number {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--white-color);
+  line-height: 1;
+}
+
+.hero-one_stats-number span {
+  color: var(--main-color);
+}
+
+.hero-one_stats-text {
+  font-size: 14px;
+  color: var(--color-six);
+  margin-top: 8px;
+}
+
+.hero-one_percentage {
+  position: absolute;
+  right: -20px;
+  bottom: 25%;
+  background: var(--color-seven);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  z-index: 3;
+  opacity: 0;
+  animation: slideInRight 0.8s ease forwards;
+  animation-delay: 1.2s;
+}
+
+.hero-one_percentage > i {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 50%;
+  background: rgba(76, 217, 100, 0.15);
+  color: #4cd964;
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.hero-one_percent {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white-color);
+  line-height: 1;
+}
+
+.hero-one_percent sub {
+  font-size: 18px;
+  color: var(--main-color);
+}
+
+.hero-one_percentage-text {
+  font-size: 14px;
+  color: var(--color-six);
+  margin-top: 8px;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Hero Responsive */
+@media (max-width: 991px) {
+  .hero-one {
+    padding: 140px 0 80px;
+  }
+
+  .hero-one_content-inner {
+    text-align: center;
+    max-width: 100%;
+    margin-bottom: 60px;
+  }
+
+  .hero-one_text {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-one_button {
+    justify-content: center;
+  }
+
+  .hero-one_image-outer {
+    min-height: 400px;
+  }
+
+  .hero-one_stats {
+    left: 10%;
+  }
+
+  .hero-one_percentage {
+    right: 10%;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-one {
+    padding: 120px 0 60px;
+  }
+
+  .hero-one_button {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-one_button .template-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-one_stats,
+  .hero-one_percentage {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    display: inline-block;
+    margin: 10px;
+    animation: none;
+    opacity: 1;
+  }
+
+  .hero-one_image-outer {
+    flex-wrap: wrap;
+    min-height: auto;
+    padding-top: 20px;
+  }
+}
+
+/* ==========================================================================
+   22. HEADER OVERHAUL - Premium Floating Navigation
+   ========================================================================== */
+
+/* Reset the template header styles */
+.main-header {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.main-header .header-lower {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.main-header .header-lower .inner-container {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 24px 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+.main-header .auto-container {
+  max-width: 1400px;
+  padding: 0 40px;
+}
+
+/* Logo */
+.main-header .logo-box {
+  margin: 0;
+  padding: 0;
+}
+
+.main-header .logo img {
+  max-height: 40px;
+  width: auto;
+}
+
+/* Navigation Links */
+.main-header .main-menu .navigation > li {
+  margin: 0 4px;
+}
+
+.main-header .main-menu .navigation > li > a {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  background: transparent;
+}
+
+.main-header .main-menu .navigation > li > a::after {
+  display: none;
+}
+
+.main-header .main-menu .navigation > li > a:hover,
+.main-header .main-menu .navigation > li.current > a {
+  color: var(--white-color);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Dropdown Arrow */
+.main-header .main-menu .navigation > li.dropdown > a::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  margin-left: 6px;
+  vertical-align: middle;
+  transition: transform 0.25s ease;
+}
+
+.main-header .main-menu .navigation > li.dropdown:hover > a::before {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menus */
+.main-header .main-menu .navigation > li > ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: rgba(18, 19, 22, 0.98) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 8px;
+  margin-top: 8px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.main-header .main-menu .navigation > li:hover > ul {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.main-header .main-menu .navigation > li > ul > li {
+  display: block;
+  margin: 0;
+}
+
+.main-header .main-menu .navigation > li > ul > li > a {
+  display: block;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.main-header .main-menu .navigation > li > ul > li > a:hover {
+  color: var(--white-color);
+  background: rgba(230, 50, 175, 0.12);
+  padding-left: 20px;
+}
+
+/* Header CTA Button */
+.main-header .main-header_buttons .template-btn {
+  padding: 12px 24px;
+  font-size: 14px;
+}
+
+/* Fixed/Scrolled Header State */
+.main-header.fixed-header {
+  position: fixed !important;
+  background: rgba(12, 13, 15, 0.92) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.main-header.fixed-header .header-lower .inner-container {
+  padding: 16px 0 !important;
+}
+
+/* All Header Variants */
+.main-header.header-style-one,
+.main-header.header-style-two,
+.main-header.alternate {
+  position: absolute !important;
+  background: transparent !important;
+}
+
+.main-header.header-style-one.fixed-header,
+.main-header.header-style-two.fixed-header,
+.main-header.alternate.fixed-header {
+  position: fixed !important;
+  background: rgba(12, 13, 15, 0.92) !important;
+}
+
+/* Mobile Menu Toggler */
+.mobile-nav-toggler {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mobile-nav-toggler:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.mobile-nav-toggler svg {
+  color: var(--white-color);
+}
+
+/* ==========================================================================
+   23. PAGE TITLE/BANNER OVERHAUL - Clean & Premium
+   ========================================================================== */
+
+/* Reset template page title styles */
+.page-title {
+  position: relative;
+  padding: 180px 0 100px !important;
+  background: var(--color-two) !important;
+  overflow: hidden;
+}
+
+/* Remove old background elements */
+.page-title-icon,
+.page-title-icon-two,
+.page-title-shadow,
+.page-title-shadow_two {
+  display: none !important;
+}
+
+.page-title::before {
+  display: none !important;
+}
+
+/* Add subtle gradient background */
+.page-title::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at 30% 0%, rgba(230, 50, 175, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 100%, rgba(100, 200, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Decorative line */
+.page-title .auto-container {
+  position: relative;
+  z-index: 2;
+}
+
+.page-title .auto-container::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60px;
+  background: linear-gradient(180deg, var(--main-color), var(--nami-secondary));
+  border-radius: 2px;
+}
+
+/* Page Title Text */
+.page-title h2 {
+  font-size: clamp(36px, 5vw, 56px) !important;
+  font-weight: 700 !important;
+  color: var(--white-color) !important;
+  margin: 0 0 16px 0 !important;
+  padding-left: 24px;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em;
+}
+
+/* Breadcrumb */
+.page-title .bread-crumb {
+  padding-left: 24px;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-title .bread-crumb li {
+  font-size: 14px !important;
+  font-weight: 500;
+  color: var(--color-six) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-title .bread-crumb li::before {
+  display: none !important;
+}
+
+.page-title .bread-crumb li:not(:last-child)::after {
+  content: '/';
+  color: rgba(255, 255, 255, 0.3);
+  margin-left: 0;
+}
+
+.page-title .bread-crumb li a {
+  color: var(--color-six) !important;
+  transition: color 0.25s ease;
+}
+
+.page-title .bread-crumb li a:hover {
+  color: var(--main-color) !important;
+}
+
+.page-title .bread-crumb li:last-child {
+  color: var(--main-color) !important;
+}
+
+/* Page Title Responsive */
+@media (max-width: 991px) {
+  .page-title {
+    padding: 150px 0 80px !important;
+  }
+
+  .page-title .auto-container::before {
+    height: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    padding: 130px 0 60px !important;
+  }
+
+  .page-title h2 {
+    padding-left: 20px;
+  }
+
+  .page-title .bread-crumb {
+    padding-left: 20px;
+  }
+
+  .page-title .auto-container::before {
+    width: 2px;
+    height: 40px;
+  }
+}
+
+/* Header Responsive */
+@media (max-width: 1200px) {
+  .main-header .auto-container {
+    padding: 0 24px;
+  }
+
+  .main-header .main-menu .navigation > li {
+    margin: 0 2px;
+  }
+
+  .main-header .main-menu .navigation > li > a {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 991px) {
+  .main-header .header-lower .inner-container {
+    padding: 16px 0 !important;
+  }
+
+  .main-header .nav-outer {
+    display: none;
+  }
+
+  .main-header .main-header_buttons .template-btn {
+    display: none;
+  }
+
+  .mobile-nav-toggler {
+    display: flex !important;
+  }
 }

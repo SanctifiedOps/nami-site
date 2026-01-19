@@ -3,16 +3,16 @@
 	"use strict";
 	
 	
-	//Hide Loading Box (Preloader)
+	//Hide Loading Box (Preloader) - Faster for premium feel
 	function handlePreloader() {
 		if ($('.loader-wrap').length) {
-			$('.loader-wrap').delay(300).fadeOut(300);
+			$('.loader-wrap').delay(200).fadeOut(400);
 		}
 	}
 
 	if ($('.preloader-close').length) {
 		$('.preloader-close').on('click', function () {
-			$('.loader-wrap').delay(300).fadeOut(300);
+			$('.loader-wrap').delay(0).fadeOut(300);
 		})
 	}
 	
@@ -906,12 +906,60 @@
 		  {
 			boxClass:     'wow',      // animated element css class (default is wow)
 			animateClass: 'animated', // animation css class (default is animated)
-			offset:       0,          // distance to the element when triggering the animation (default is 0)
-			mobile:       true,       // trigger animations on mobile devices (default is true)
-			live:         true       // act on asynchronously loaded content (default is true)
+			offset:       50,         // distance to the element when triggering the animation
+			mobile:       false,      // disable on mobile for performance
+			live:         true        // act on asynchronously loaded content (default is true)
 		  }
 		);
 		wow.init();
+	}
+
+	// ScrollSmoother for Premium Scroll Experience
+	if (typeof ScrollSmoother !== 'undefined' && window.innerWidth > 991) {
+		gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+		// Only initialize if not on touch device
+		if (!('ontouchstart' in window)) {
+			ScrollSmoother.create({
+				smooth: 1.2,
+				effects: true,
+				smoothTouch: false,
+				normalizeScroll: false
+			});
+		}
+	}
+
+	// Enhanced parallax effects for sections
+	if (typeof gsap !== 'undefined' && window.innerWidth > 768) {
+		// Parallax for background patterns
+		gsap.utils.toArray('.slider-one_pattern, .slider-one_icon').forEach(function(el) {
+			gsap.to(el, {
+				y: -80,
+				ease: 'none',
+				scrollTrigger: {
+					trigger: '.slider-one',
+					start: 'top top',
+					end: 'bottom top',
+					scrub: 1
+				}
+			});
+		});
+
+		// Fade in sections on scroll
+		gsap.utils.toArray('section').forEach(function(section) {
+			gsap.fromTo(section,
+				{ opacity: 0.8 },
+				{
+					opacity: 1,
+					duration: 0.5,
+					scrollTrigger: {
+						trigger: section,
+						start: 'top 80%',
+						toggleActions: 'play none none reverse'
+					}
+				}
+			);
+		});
 	}
 	
 
