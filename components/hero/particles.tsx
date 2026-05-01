@@ -50,7 +50,7 @@ export function HeroParticles() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
       {particles.map((p) => {
         const colour = p.isCyan ? "rgb(100 200 255)" : "rgb(230 50 175)";

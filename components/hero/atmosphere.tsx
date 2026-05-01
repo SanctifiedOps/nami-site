@@ -3,35 +3,34 @@
 import { motion, useReducedMotion } from "motion/react";
 
 /**
- * Hero atmospheric backdrop — three large blurred gradient orbs that drift
- * on infinite loops, layered with a vignette and SVG noise grain. Builds
- * the "ethereal and premium" feel of the hero. No-ops drift on reduced motion.
+ * Hero atmospheric backdrop — large drifting gradient orbs + grain.
+ * No vignette (was darkening orbs at corners), explicit z-0 so it sits
+ * above the surface bg but below content (z-10).
  */
 export function HeroAtmosphere() {
   const reduced = useReducedMotion();
 
-  const drift = (
-    keyframes: { x: number[]; y: number[]; scale: number[] },
-  ) => (reduced ? undefined : keyframes);
+  const drift = (kf: { x: number[]; y: number[]; scale: number[] }) =>
+    reduced ? undefined : kf;
 
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
-      {/* Magenta — top-left, large */}
+      {/* Magenta — top-left */}
       <motion.div
-        className="absolute rounded-full"
+        className="absolute"
         style={{
-          left: "-15%",
+          left: "-10%",
           top: "-10%",
-          width: "70vw",
-          height: "70vw",
-          maxWidth: "1200px",
-          maxHeight: "1200px",
-          filter: "blur(110px)",
+          width: "75vw",
+          height: "75vw",
+          maxWidth: "1400px",
+          maxHeight: "1400px",
+          filter: "blur(90px)",
           background:
-            "radial-gradient(circle, rgb(230 50 175 / 0.42), rgb(230 50 175 / 0.12) 40%, transparent 65%)",
+            "radial-gradient(circle, rgb(230 50 175 / 0.7) 0%, rgb(230 50 175 / 0.3) 25%, transparent 60%)",
         }}
         animate={drift({
           x: [0, 80, -40, 0],
@@ -41,19 +40,19 @@ export function HeroAtmosphere() {
         transition={{ duration: 28, ease: "easeInOut", repeat: Infinity }}
       />
 
-      {/* Cyan — right side, mid */}
+      {/* Cyan — right */}
       <motion.div
-        className="absolute rounded-full"
+        className="absolute"
         style={{
-          right: "-10%",
-          top: "30%",
-          width: "60vw",
-          height: "60vw",
-          maxWidth: "1000px",
-          maxHeight: "1000px",
-          filter: "blur(110px)",
+          right: "-15%",
+          top: "10%",
+          width: "70vw",
+          height: "70vw",
+          maxWidth: "1300px",
+          maxHeight: "1300px",
+          filter: "blur(90px)",
           background:
-            "radial-gradient(circle, rgb(100 200 255 / 0.32), rgb(100 200 255 / 0.08) 40%, transparent 65%)",
+            "radial-gradient(circle, rgb(100 200 255 / 0.55) 0%, rgb(100 200 255 / 0.22) 28%, transparent 60%)",
         }}
         animate={drift({
           x: [0, -70, 50, 0],
@@ -68,19 +67,19 @@ export function HeroAtmosphere() {
         }}
       />
 
-      {/* Magenta — bottom, smaller */}
+      {/* Magenta + cyan blend — bottom centre */}
       <motion.div
-        className="absolute rounded-full"
+        className="absolute"
         style={{
-          left: "30%",
+          left: "20%",
           bottom: "-20%",
-          width: "55vw",
-          height: "55vw",
-          maxWidth: "900px",
-          maxHeight: "900px",
-          filter: "blur(120px)",
+          width: "60vw",
+          height: "60vw",
+          maxWidth: "1100px",
+          maxHeight: "1100px",
+          filter: "blur(100px)",
           background:
-            "radial-gradient(circle, rgb(230 50 175 / 0.28), rgb(100 200 255 / 0.1) 40%, transparent 65%)",
+            "radial-gradient(circle, rgb(230 50 175 / 0.5) 0%, rgb(100 200 255 / 0.22) 35%, transparent 65%)",
         }}
         animate={drift({
           x: [0, -50, 70, 0],
@@ -95,18 +94,9 @@ export function HeroAtmosphere() {
         }}
       />
 
-      {/* Vignette — darker at edges to focus content centre */}
+      {/* Grain — fine SVG noise */}
       <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 40%, rgb(12 13 15 / 0.4) 70%, rgb(12 13 15 / 0.85) 100%)",
-        }}
-      />
-
-      {/* Grain — fine SVG noise at low opacity for surface texture */}
-      <div
-        className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
+        className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>\")",
