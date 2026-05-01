@@ -1,50 +1,155 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   NAMI Creative — Design Tokens (Tailwind v4 @theme)
+   Token names are chosen so Tailwind v4 auto-generates clean utility names:
+     --color-fg          -> text-fg, bg-fg, border-fg, ring-fg, ...
+     --color-surface-0   -> bg-surface-0, text-surface-0, ...
+     --color-accent      -> bg-accent, text-accent, ...
+     --font-sans         -> font-sans
+   ========================================================================== */
 @theme {
   /* surface scale — dark-first */
-  --color-bg-0: rgb(12 13 15);
-  --color-bg-1: rgb(18 19 22);
-  --color-bg-2: rgb(22 24 28);
-  --color-bg-3: rgb(26 28 32);
-  --color-bg-4: rgb(16 17 20);
+  --color-surface-0: rgb(12 13 15);
+  --color-surface-1: rgb(18 19 22);
+  --color-surface-2: rgb(22 24 28);
+  --color-surface-3: rgb(26 28 32);
+  --color-surface-4: rgb(16 17 20);
 
   /* foreground */
   --color-fg: rgb(250 250 252);
   --color-fg-muted: rgb(180 182 190);
-  --color-fg-subtle: rgb(120 124 134);
+  --color-fg-subtle: rgb(140 142 150);
 
   /* brand accents */
   --color-accent: #e632af;
+  --color-accent-soft: #ff64c8;
   --color-accent-2: #64c8ff;
 
-  /* hairlines */
+  /* hairlines + glass */
   --color-line: rgb(255 255 255 / 0.08);
   --color-line-strong: rgb(255 255 255 / 0.16);
-
-  /* glass surfaces */
   --color-glass: rgb(255 255 255 / 0.03);
+  --color-glass-strong: rgb(255 255 255 / 0.05);
+
+  /* font families — bound to next/font CSS variables exposed on <html> */
+  --font-sans: var(--font-instrument-sans), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-serif: var(--font-lora), Georgia, serif;
+
+  /* spacing scale */
+  --spacing-section: 7.5rem; /* 120px */
+  --spacing-section-tight: 5rem; /* 80px */
 
   /* easings */
-  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* shadows */
+  --shadow-sm: 0 2px 8px rgb(0 0 0 / 0.15);
+  --shadow-md: 0 8px 24px rgb(0 0 0 / 0.2);
+  --shadow-lg: 0 16px 48px rgb(0 0 0 / 0.25);
+  --shadow-glow: 0 8px 32px rgb(230 50 175 / 0.25);
+  --shadow-glow-lg: 0 16px 48px rgb(230 50 175 / 0.3);
+
+  /* container */
+  --container-max: 88rem; /* 1408px — premium width */
 }
 
+/* ==========================================================================
+   Base
+   ========================================================================== */
 @layer base {
   html {
-    background-color: var(--color-bg-0);
+    background-color: var(--color-surface-0);
     color: var(--color-fg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv11";
   }
 
   body {
     min-height: 100dvh;
+    font-family: var(--font-sans);
+    line-height: 1.7;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-fg);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    line-height: 1.1;
   }
 
   ::selection {
     background-color: var(--color-accent);
-    color: var(--color-bg-0);
+    color: var(--color-surface-0);
+  }
+
+  /* hide native cursor when custom cursor is active (desktop only, set by JS) */
+  html[data-cursor="custom"] {
+    cursor: none;
+  }
+
+  /* respect reduced motion globally */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   Composable utility primitives
+   ========================================================================== */
+@layer components {
+  .container-shell {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .hairline {
+    border-block-end: 1px solid var(--color-line);
+  }
+
+  .glass {
+    background-color: var(--color-glass);
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .text-gradient {
+    background: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      var(--color-accent-2) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-fg-subtle);
   }
 }
