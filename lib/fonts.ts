@@ -1,4 +1,4 @@
-import { Instrument_Sans, Lora } from "next/font/google";
+import { Instrument_Sans, Instrument_Serif } from "next/font/google";
 
 export const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -7,10 +7,10 @@ export const instrumentSans = Instrument_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
-export const lora = Lora({
+export const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-lora",
+  variable: "--font-instrument-serif",
   display: "swap",
-  style: ["italic"],
-  weight: ["400", "500"],
+  weight: "400",
+  style: ["normal", "italic"],
 });

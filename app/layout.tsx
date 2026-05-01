@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { instrumentSans, lora } from "@/lib/fonts";
+import { instrumentSans, instrumentSerif } from "@/lib/fonts";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(instrumentSans.variable, lora.variable)}
+      className={cn(instrumentSans.variable, instrumentSerif.variable)}
       suppressHydrationWarning
     >
       <body className="bg-surface-0 text-fg antialiased">
