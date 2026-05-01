@@ -1,24 +1,60 @@
-# Logs
+# dependencies
+node_modules
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+coverage
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# production
+build
+dist
+dist-ssr
+
+# logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# misc
+.DS_Store
 *.local
+*.pem
 
-# Editor directories and files
+# debug
+.npm
+.eslintcache
+
+# local env
+.env
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# editor
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# tooling
+.netlify
+.vercel
