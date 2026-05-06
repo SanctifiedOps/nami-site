@@ -62,10 +62,13 @@ export default function PrivacyPage() {
                 signup, confirmed via double opt-in.
               </li>
               <li>
-                <strong className="text-fg">Site analytics.</strong> Aggregated,
-                anonymous usage data (page views, country, device class). No
-                personal identifiers, no cross-site tracking, no advertising
-                cookies.
+                <strong className="text-fg">Site analytics.</strong> We use
+                Google Analytics 4 to understand how the site is used (page
+                views, traffic sources, device class, country). Google
+                truncates and anonymises IP addresses on collection. We don&rsquo;t
+                run Google Signals, ad personalisation, or any advertising
+                cookies. Lawful basis: legitimate interest in improving the
+                site.
               </li>
               <li>
                 <strong className="text-fg">Server logs.</strong> Standard
@@ -112,6 +115,10 @@ export default function PrivacyPage() {
                 <strong className="text-fg">Calendly</strong> (Calendly LLC,
                 USA — UK-EU SCCs) — discovery call scheduling, only if you
                 choose to book one.
+              </li>
+              <li>
+                <strong className="text-fg">Google Analytics</strong> (Google
+                LLC, USA — UK-EU SCCs) — aggregated site usage analytics.
               </li>
               <li>
                 <strong className="text-fg">Hosting provider</strong> — serves
@@ -175,10 +182,32 @@ export default function PrivacyPage() {
 
           <Block title="Cookies">
             <p>
-              We use only strictly-necessary cookies for the site to function
-              (e.g. preserving form state). No advertising or cross-site
-              tracking cookies are set by us. Any analytics we use is
-              cookieless and anonymous.
+              We use a small number of cookies:
+            </p>
+            <ul className="list-disc space-y-2 pl-5">
+              <li>
+                <strong className="text-fg">Strictly necessary</strong> —
+                preserving form state and basic session functionality.
+              </li>
+              <li>
+                <strong className="text-fg">Analytics</strong> — Google
+                Analytics sets `_ga` and `_ga_*` cookies to recognise return
+                visitors and aggregate session data. No advertising cookies
+                are set by us.
+              </li>
+            </ul>
+            <p>
+              You can clear analytics cookies in your browser settings or
+              install a browser-level opt-out (e.g. Google&rsquo;s{" "}
+              <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-fg hover:text-accent transition-colors"
+              >
+                GA opt-out add-on
+              </a>
+              ) at any time.
             </p>
           </Block>
 
