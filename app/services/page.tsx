@@ -17,9 +17,8 @@ export default function ServicesPage() {
         eyebrow="Services"
         title={
           <>
-            Five pillars,
-            <br className="hidden sm:inline" />
-            <span className="text-gradient">one structure.</span>
+            Five pillars,{" "}
+            <span className="text-gradient sm:block">one structure.</span>
           </>
         }
         lead="Brand, content, websites, visual direction, and growth systems, built integrated, not as separate engagements. The work compounds because the parts are designed to fit together."
@@ -36,9 +35,8 @@ export default function ServicesPage() {
               eyebrow="The model"
               title={
                 <>
-                  Integrated,
-                  <br className="hidden sm:inline" />
-                  <span className="text-gradient">
+                  Integrated,{" "}
+                  <span className="text-gradient sm:block">
                     not bundled.
                   </span>
                 </>

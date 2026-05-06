@@ -62,9 +62,10 @@ export default function ContactPage() {
         eyebrow="Contact"
         title={
           <>
-            Let's talk about
-            <br className="hidden sm:inline" />
-            <span className="text-gradient">what you're building.</span>
+            Let's talk about{" "}
+            <span className="text-gradient sm:block">
+              what you're building.
+            </span>
           </>
         }
         lead="Tell us about your business, what's working, and what's stuck. We respond personally, usually within a working day."

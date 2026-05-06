@@ -16,9 +16,8 @@ export default function AboutPage() {
         eyebrow="About · NAMI Creative"
         title={
           <>
-            Brand as
-            <br className="hidden sm:inline" />
-            <span className="text-gradient">infrastructure.</span>
+            Brand as{" "}
+            <span className="text-gradient sm:block">infrastructure.</span>
           </>
         }
         lead="A creative marketing studio building brand identity, content systems, and growth infrastructure for founders who want the work to compound."

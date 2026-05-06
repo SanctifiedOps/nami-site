@@ -52,14 +52,12 @@ export default function Home() {
             NAMI Creative
           </motion.p>
 
-          <h1 className="max-w-[22ch] text-[clamp(2.5rem,6vw,5.75rem)] font-medium leading-[1.05] tracking-[-0.015em] pr-2">
+          <h1 className="max-w-[20ch] text-5xl font-semibold leading-[1.1] tracking-tight md:text-7xl pr-2">
             <LetterReveal stagger={0.018} duration={0.8}>
-              <span className="block">Creative systems</span>
-              <span className="block">
-                built for{" "}
-                <span className="text-gradient">real-world</span>
+              Creative systems built for{" "}
+              <span className="text-gradient sm:block">
+                real-world momentum.
               </span>
-              <span className="block text-gradient">momentum.</span>
             </LetterReveal>
           </h1>
 
@@ -125,9 +123,8 @@ export default function Home() {
             eyebrow="What we build"
             title={
               <>
-                Five pillars that hold
-                <br className="hidden sm:inline" />
-                <span className="text-gradient">
+                Five pillars that hold{" "}
+                <span className="text-gradient sm:block">
                   the brand, end to end.
                 </span>
               </>
@@ -148,9 +145,8 @@ export default function Home() {
             eyebrow="How we work"
             title={
               <>
-                A process that
-                <br className="hidden sm:inline" />
-                <span className="text-gradient">
+                A process that{" "}
+                <span className="text-gradient sm:block">
                   gets you to launch.
                 </span>
               </>
@@ -171,9 +167,8 @@ export default function Home() {
             eyebrow="Selected work"
             title={
               <>
-                Brands and systems
-                <br className="hidden sm:inline" />
-                <span className="text-gradient">
+                Brands and systems{" "}
+                <span className="text-gradient sm:block">
                   built to compound.
                 </span>
               </>
@@ -210,9 +205,8 @@ export default function Home() {
             eyebrow="Common questions"
             title={
               <>
-                Before we get on
-                <br className="hidden sm:inline" />
-                <span className="text-gradient">
+                Before we get on{" "}
+                <span className="text-gradient sm:block">
                   a call together.
                 </span>
               </>

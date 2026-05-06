@@ -17,9 +17,10 @@ export default function WorkPage() {
         eyebrow="Selected work"
         title={
           <>
-            Brands and systems
-            <br className="hidden sm:inline" />
-            <span className="text-gradient">built to compound.</span>
+            Brands and systems{" "}
+            <span className="text-gradient sm:block">
+              built to compound.
+            </span>
           </>
         }
         lead="Four engagements where brand, product, and infrastructure shipped together. Community at scale, on-chain intelligence, members-only experiences, and high-conversion funnels."

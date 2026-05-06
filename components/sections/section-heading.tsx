@@ -38,7 +38,7 @@ export function SectionHeading({
         </motion.p>
       )}
       <motion.h2
-        className="text-[clamp(1.5rem,4.5vw,3.75rem)] font-medium leading-[1.1] tracking-[-0.015em] pr-2"
+        className="text-4xl font-semibold leading-[1.1] tracking-tight md:text-6xl pr-2"
         variants={fadeUp}
       >
         <LetterReveal stagger={0.014} duration={0.65}>

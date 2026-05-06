@@ -24,9 +24,8 @@ export default async function InsightsPage() {
         eyebrow="The Wake"
         title={
           <>
-            Studio notes,
-            <br className="hidden sm:inline" />
-            <span className="text-gradient">from NAMI.</span>
+            Studio notes,{" "}
+            <span className="text-gradient sm:block">from NAMI.</span>
           </>
         }
         lead="Brand systems, content engines, automation infrastructure. Occasional, considered, no fluff."

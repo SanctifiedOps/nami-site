@@ -28,6 +28,10 @@ type Props = {
  * client (no hydration drift). Preserves nested JSX (e.g. text-gradient
  * spans) and respects prefers-reduced-motion.
  *
+ * Words are wrapped in .lr-word containers (display:inline-block,
+ * white-space:nowrap) so titles never break mid-word. Whitespace passes
+ * through as bare text so browser line-wrapping happens at word boundaries.
+ *
  * Animation is CSS-driven via the `lr-char` class defined in globals.css.
  */
 export function LetterReveal({
@@ -102,26 +106,43 @@ function walk(
 ): ReactNode {
   if (typeof node === "string" || typeof node === "number") {
     const text = String(node);
-    const spans: ReactNode[] = [];
-    for (let k = 0; k < text.length; k++) {
-      const ch = text[k];
-      const idx = cursor.i++;
-      spans.push(
-        <span
-          key={`lr-${idx}`}
-          className="lr-char"
-          style={
-            {
-              "--lr-delay": `${delays[idx] ?? 0}s`,
-              "--lr-duration": `${duration}s`,
-            } as CSSProperties
-          }
-        >
-          {ch === " " ? " " : ch}
+    // Tokenise into words + whitespace. Words wrap in .lr-word (atomic,
+    // no mid-word breaking). Whitespace passes through as bare text so
+    // the browser can line-break at word boundaries.
+    const tokens = text.split(/(\s+)/);
+    const out: ReactNode[] = [];
+    tokens.forEach((token, tokenIdx) => {
+      if (!token) return;
+      if (/^\s+$/.test(token)) {
+        out.push(token);
+        return;
+      }
+      const charSpans: ReactNode[] = [];
+      for (let k = 0; k < token.length; k++) {
+        const ch = token[k];
+        const idx = cursor.i++;
+        charSpans.push(
+          <span
+            key={`lr-${idx}`}
+            className="lr-char"
+            style={
+              {
+                "--lr-delay": `${delays[idx] ?? 0}s`,
+                "--lr-duration": `${duration}s`,
+              } as CSSProperties
+            }
+          >
+            {ch}
+          </span>,
+        );
+      }
+      out.push(
+        <span key={`lr-word-${tokenIdx}`} className="lr-word">
+          {charSpans}
         </span>,
       );
-    }
-    return spans;
+    });
+    return out;
   }
 
   if (Array.isArray(node)) {

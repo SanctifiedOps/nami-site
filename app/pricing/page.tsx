@@ -15,9 +15,8 @@ export default function PricingPage() {
         eyebrow="Investment"
         title={
           <>
-            Three ways to
-            <br className="hidden sm:inline" />
-            <span className="text-gradient">work together.</span>
+            Three ways to{" "}
+            <span className="text-gradient sm:block">work together.</span>
           </>
         }
         lead="Engagements are scoped, not packaged. Pricing depends on surface area and depth. Here's how we structure the work."

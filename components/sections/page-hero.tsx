@@ -35,7 +35,7 @@ export function PageHero({ eyebrow, title, lead, className, children }: Props) {
         <motion.p className="eyebrow mb-6" variants={fadeUp}>
           {eyebrow}
         </motion.p>
-        <h1 className="max-w-[18ch] text-[clamp(1.75rem,5.5vw,5rem)] font-medium leading-[1.1] tracking-[-0.015em] pr-2">
+        <h1 className="max-w-[20ch] text-4xl font-semibold leading-[1.1] tracking-tight md:text-6xl pr-2">
           <LetterReveal>{title}</LetterReveal>
         </h1>
         {lead && (
