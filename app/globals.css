@@ -151,4 +151,152 @@
     text-transform: uppercase;
     color: var(--color-fg-subtle);
   }
+
+  /* ========================================================================
+     Insights article body — long-form prose styling
+     Applied via .prose-insights wrapper around <MDXRemote>
+     ======================================================================== */
+  .prose-insights {
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.75;
+    color: var(--color-fg-muted);
+  }
+
+  @media (min-width: 768px) {
+    .prose-insights {
+      font-size: 1.125rem; /* 18px */
+    }
+  }
+
+  .prose-insights > * + * {
+    margin-top: 1.5em;
+  }
+
+  .prose-insights p {
+    color: var(--color-fg-muted);
+  }
+
+  .prose-insights strong {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
+
+  .prose-insights em {
+    color: var(--color-fg);
+    font-style: italic;
+  }
+
+  .prose-insights a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: color 0.2s var(--ease-out-expo);
+  }
+
+  .prose-insights a:hover {
+    color: var(--color-accent-soft);
+  }
+
+  .prose-insights h2 {
+    margin-top: 2.5em;
+    margin-bottom: 0.6em;
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-fg);
+  }
+
+  .prose-insights h3 {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: var(--color-fg);
+  }
+
+  .prose-insights ul,
+  .prose-insights ol {
+    padding-left: 1.5em;
+  }
+
+  .prose-insights ul {
+    list-style: none;
+  }
+
+  .prose-insights ul > li {
+    position: relative;
+    padding-left: 0.25em;
+    margin-top: 0.5em;
+  }
+
+  .prose-insights ul > li::before {
+    content: "";
+    position: absolute;
+    left: -1em;
+    top: 0.7em;
+    width: 0.4em;
+    height: 1px;
+    background: var(--color-accent);
+  }
+
+  .prose-insights ol {
+    list-style: decimal;
+  }
+
+  .prose-insights ol > li {
+    margin-top: 0.5em;
+    padding-left: 0.5em;
+  }
+
+  .prose-insights ol > li::marker {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .prose-insights blockquote {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1.5em;
+    border-left: 2px solid var(--color-accent);
+    color: var(--color-fg);
+    font-style: italic;
+    font-size: 1.125em;
+    line-height: 1.6;
+  }
+
+  .prose-insights code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+      monospace;
+    font-size: 0.9em;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-line);
+    padding: 0.15em 0.4em;
+    border-radius: 0.3em;
+    color: var(--color-fg);
+  }
+
+  .prose-insights pre {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75em;
+    padding: 1.25em 1.5em;
+    overflow-x: auto;
+    font-size: 0.875em;
+  }
+
+  .prose-insights pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .prose-insights hr {
+    border: 0;
+    border-top: 1px solid var(--color-line);
+    margin: 3em 0;
+  }
 }

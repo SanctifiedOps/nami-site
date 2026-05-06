@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/lib/content/services";
 import { work } from "@/lib/content/work";
+import { getAllPosts } from "@/lib/content/insights";
 
 const SITE = "https://namicreative.co.uk";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const posts = await getAllPosts();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
@@ -34,5 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...workRoutes];
+  const insightRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
+    url: `${SITE}/insights/${p.slug}`,
+    lastModified: new Date(p.date),
+    changeFrequency: "yearly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...workRoutes, ...insightRoutes];
 }
