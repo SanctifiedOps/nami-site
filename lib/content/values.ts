@@ -6,7 +6,7 @@ export type Value = {
 export const values: Value[] = [
   {
     title: "Branding is infrastructure",
-    body: "Identity systems aren't decoration — they're the load-bearing structure for content, marketing, and growth. Build the foundation properly and everything on top moves faster.",
+    body: "Identity systems aren't decoration. They're the load-bearing structure for content, marketing, and growth. Build the foundation properly and everything on top moves faster.",
   },
   {
     title: "Clarity over volume",
@@ -14,6 +14,6 @@ export const values: Value[] = [
   },
   {
     title: "Systems compound, posts decay",
-    body: "Anyone can ship a post. Few build engines. We design for the second order — formats, frameworks, and pipelines so today's work makes tomorrow's easier.",
+    body: "Anyone can ship a post. Few build engines. We design for the second order: formats, frameworks, and pipelines so today's work makes tomorrow's easier.",
   },
 ];

@@ -16,7 +16,7 @@ export const engagements: EngagementModel[] = [
     name: "Project",
     best: "For brands ready to rebuild the foundation in a sprint.",
     description:
-      "Single defined engagement — typically a brand + website rebuild or a positioning + content system reset. Fixed scope, fixed timeline, deliverable handoff.",
+      "Single defined engagement: typically a brand + website rebuild or a positioning + content system reset. Fixed scope, fixed timeline, deliverable handoff.",
     scope: [
       "Brand strategy + identity",
       "Conversion-led website",
@@ -32,7 +32,7 @@ export const engagements: EngagementModel[] = [
     name: "Partnership",
     best: "For teams scaling the brand across content, ops, and growth.",
     description:
-      "Ongoing creative partnership — we sit close, ship regularly, and evolve the brand as the business grows. Usually starts after a foundational project; sometimes ports from another team's work.",
+      "Ongoing creative partnership. We sit close, ship regularly, and evolve the brand as the business grows. Usually starts after a foundational project; sometimes ports from another team's work.",
     scope: [
       "Monthly creative direction",
       "Content pipeline + production",
@@ -50,7 +50,7 @@ export const engagements: EngagementModel[] = [
     name: "Systems + product",
     best: "For founders ready to productise their brand or content engine.",
     description:
-      "Standalone systems work — Notion stacks, automated content pipelines, lead-capture infrastructure, brand templates. Built to be operated by your team, not us.",
+      "Standalone systems work: Notion stacks, automated content pipelines, lead-capture infrastructure, brand templates. Built to be operated by your team, not us.",
     scope: [
       "Notion + Make automation builds",
       "CRM + lifecycle pipelines",

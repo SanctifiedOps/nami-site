@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 type MagneticProps = {
   children: ReactNode;
-  /** how strongly the wrapped element follows the cursor (0 — 1) */
+  /** how strongly the wrapped element follows the cursor (0 to 1) */
   strength?: number;
   /** how far outside the element the magnetic field reaches, in px */
   field?: number;
@@ -19,7 +19,7 @@ type MagneticProps = {
 };
 
 /**
- * Wraps a CTA in a magnetic field — element subtly leans toward the cursor
+ * Wraps a CTA in a magnetic field. Element subtly leans toward the cursor
  * when the pointer enters its bounding box (extended by `field` px).
  * No-ops on touch and reduced-motion.
  */

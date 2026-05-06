@@ -25,7 +25,7 @@ export const processSteps: ProcessStep[] = [
     title: "Design + build",
     duration: "Weeks 3–6",
     summary:
-      "Translate strategy into an applied system — visual identity, content, and the website that carries them.",
+      "Translate strategy into an applied system: visual identity, content, and the website that carries them.",
     detail: [
       "Visual identity + design tokens",
       "Content format + platform plan",
@@ -38,7 +38,7 @@ export const processSteps: ProcessStep[] = [
     title: "Launch + integrate",
     duration: "Week 7",
     summary:
-      "Ship the brand into the wild — wired into the systems that keep it running.",
+      "Ship the brand into the wild, wired into the systems that keep it running.",
     detail: [
       "Live site + analytics in place",
       "Lead-capture + nurture flows",
@@ -51,7 +51,7 @@ export const processSteps: ProcessStep[] = [
     title: "Scale + evolve",
     duration: "Ongoing partnership",
     summary:
-      "Stay close — refine what's working, kill what isn't, and grow the system as the business grows.",
+      "Stay close. Refine what's working, kill what isn't, and grow the system as the business grows.",
     detail: [
       "Monthly creative direction",
       "Content pipeline support",

@@ -42,7 +42,7 @@ export default function NotFound() {
           </p>
           <h1 className="mt-6 text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.05] tracking-[-0.02em]">
             That page{" "}
-            <span className="font-serif italic text-gradient">
+            <span className="text-gradient">
               isn't here.
             </span>
           </h1>

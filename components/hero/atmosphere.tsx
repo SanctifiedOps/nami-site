@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 
 /**
- * Hero atmospheric backdrop — large drifting gradient orbs + grain.
+ * Hero atmospheric backdrop: large drifting gradient orbs + grain.
  * No vignette (was darkening orbs at corners), explicit z-0 so it sits
  * above the surface bg but below content (z-10).
  */
@@ -18,7 +18,7 @@ export function HeroAtmosphere() {
       aria-hidden
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
-      {/* Magenta — top-left */}
+      {/* Magenta: top-left */}
       <motion.div
         className="absolute"
         style={{
@@ -40,7 +40,7 @@ export function HeroAtmosphere() {
         transition={{ duration: 28, ease: "easeInOut", repeat: Infinity }}
       />
 
-      {/* Cyan — right */}
+      {/* Cyan: right */}
       <motion.div
         className="absolute"
         style={{
@@ -67,7 +67,7 @@ export function HeroAtmosphere() {
         }}
       />
 
-      {/* Magenta + cyan blend — bottom centre */}
+      {/* Magenta + cyan blend: bottom centre */}
       <motion.div
         className="absolute"
         style={{
@@ -94,7 +94,7 @@ export function HeroAtmosphere() {
         }}
       />
 
-      {/* Grain — fine SVG noise */}
+      {/* Grain: fine SVG noise */}
       <div
         className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
         style={{

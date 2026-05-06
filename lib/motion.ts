@@ -28,7 +28,7 @@ export const fadeUp: Variants = {
   },
 };
 
-/** Headline/line mask reveal — wrap in overflow-hidden */
+/** Headline/line mask reveal: wrap in overflow-hidden */
 export const lineMask: Variants = {
   hidden: { y: "108%" },
   show: {

@@ -11,7 +11,7 @@ type Props = {
   className?: string;
 };
 
-/** Inner-page hero — smaller than home, but still atmospheric */
+/** Inner-page hero: smaller than home, but still atmospheric */
 export function PageHero({ eyebrow, title, lead, className }: Props) {
   return (
     <section
@@ -20,7 +20,7 @@ export function PageHero({ eyebrow, title, lead, className }: Props) {
         className,
       )}
     >
-      {/* atmospheric backdrop — single drifting magenta orb, lighter than home */}
+      {/* atmospheric backdrop: single drifting magenta orb, lighter than home */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
@@ -63,8 +63,8 @@ export function PageHero({ eyebrow, title, lead, className }: Props) {
         <motion.p className="eyebrow mb-6" variants={fadeUp}>
           {eyebrow}
         </motion.p>
-        <h1 className="max-w-[18ch] text-[clamp(2.25rem,5.5vw,5rem)] font-medium leading-[1.05] tracking-[-0.025em]">
-          <span className="block overflow-hidden">
+        <h1 className="max-w-[18ch] text-[clamp(2.25rem,5.5vw,5rem)] font-medium leading-[1.1] tracking-[-0.015em] pr-2">
+          <span className="block overflow-y-hidden pb-1">
             <motion.span className="block" variants={lineMask}>
               {title}
             </motion.span>

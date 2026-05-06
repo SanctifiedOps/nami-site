@@ -13,8 +13,13 @@ export default function PricingPage() {
     <>
       <PageHero
         eyebrow="Investment"
-        title="Three ways to work together."
-        lead="Engagements are scoped, not packaged. Pricing depends on surface area and depth — but here's how we structure the work."
+        title={
+          <>
+            Three ways to work{" "}
+            <span className="text-gradient">together.</span>
+          </>
+        }
+        lead="Engagements are scoped, not packaged. Pricing depends on surface area and depth. Here's how we structure the work."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -114,7 +119,7 @@ export default function PricingPage() {
             <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
               <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
                 What we{" "}
-                <span className="font-serif italic text-gradient">
+                <span className="text-gradient">
                   don't do.
                 </span>
               </p>
@@ -125,7 +130,7 @@ export default function PricingPage() {
                 <li>· White-label work for other agencies</li>
               </ul>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                Not a judgement on the work — just not the shape we're built
+                Not a judgement on the work, just not the shape we're built
                 for. If that's what you need, we can recommend studios who
                 specialise.
               </p>

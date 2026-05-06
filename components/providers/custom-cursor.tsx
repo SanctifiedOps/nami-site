@@ -12,8 +12,8 @@ export function CustomCursor() {
 
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const sx = useSpring(x, { damping: 28, stiffness: 380, mass: 0.4 });
-  const sy = useSpring(y, { damping: 28, stiffness: 380, mass: 0.4 });
+  const sx = useSpring(x, { damping: 32, stiffness: 700, mass: 0.25 });
+  const sy = useSpring(y, { damping: 32, stiffness: 700, mass: 0.25 });
 
   useEffect(() => {
     if (typeof window === "undefined") return;

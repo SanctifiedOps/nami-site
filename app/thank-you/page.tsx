@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
+import { NewsletterSubscribe } from "@/components/sections/newsletter-subscribe";
 
 export default function ThankYouPage() {
   return (
@@ -40,13 +41,13 @@ export default function ThankYouPage() {
           </div>
           <p className="eyebrow mt-8">Got it</p>
           <h1 className="mt-4 text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.05] tracking-[-0.02em]">
-            Thanks — we'll be{" "}
-            <span className="font-serif italic text-gradient">
+            Thanks. We'll be{" "}
+            <span className="text-gradient">
               in touch shortly.
             </span>
           </h1>
           <p className="mt-6 text-lg text-fg-muted md:text-xl leading-relaxed">
-            Your brief has landed. We respond personally — usually within one
+            Your brief has landed. We respond personally, usually within one
             working day. If it's a fit, we'll suggest a discovery call. If it
             isn't, we'll be honest about it.
           </p>
@@ -70,6 +71,19 @@ export default function ThankYouPage() {
             </Link>
           </div>
         </div>
+      </div>
+      <div className="container-shell relative z-10 pb-24 md:pb-32">
+        <NewsletterSubscribe
+          variant="card"
+          eyebrow="While you wait"
+          title={
+            <>
+              Get the studio notes,{" "}
+              <span className="text-gradient">delivered.</span>
+            </>
+          }
+          lead="Occasional writing on brand systems, content engines, and the work behind the work. We'll send the next piece your way."
+        />
       </div>
     </section>
   );

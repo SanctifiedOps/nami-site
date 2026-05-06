@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
+import { NewsletterSubscribe } from "@/components/sections/newsletter-subscribe";
 import { stageFast, cardIn } from "@/lib/motion";
 
 const PLACEHOLDER_POSTS = [
@@ -11,7 +12,7 @@ const PLACEHOLDER_POSTS = [
     slug: "rebuilding-brand-momentum-from-the-inside-out",
     title: "Rebuilding brand momentum from the inside out",
     summary:
-      "Why most rebrands stall in the second quarter — and the structural choices that keep momentum compounding.",
+      "Why most rebrands stall in the second quarter, and the structural choices that keep momentum compounding.",
     pillar: "Brand strategy",
     minutes: 7,
     date: "Coming soon",
@@ -29,7 +30,7 @@ const PLACEHOLDER_POSTS = [
     slug: "design-systems-that-keep-brands-aligned",
     title: "Design systems that keep brands aligned",
     summary:
-      "Tokens, formats, and templates — the operational layer of a brand that holds while teams scale.",
+      "Tokens, formats, and templates: the operational layer of a brand that holds while teams scale.",
     pillar: "Systems",
     minutes: 6,
     date: "Coming soon",
@@ -41,7 +42,12 @@ export default function InsightsPage() {
     <>
       <PageHero
         eyebrow="Insights"
-        title="How we think about the work."
+        title={
+          <>
+            How we think about{" "}
+            <span className="text-gradient">the work.</span>
+          </>
+        }
         lead="Notes, frameworks, and breakdowns from inside the studio. Three cornerstone pieces shipping with the next site update."
       />
 
@@ -84,6 +90,8 @@ export default function InsightsPage() {
           ))}
         </motion.ul>
       </section>
+
+      <NewsletterSubscribe />
     </>
   );
 }

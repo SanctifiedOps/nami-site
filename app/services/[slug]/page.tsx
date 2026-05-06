@@ -43,7 +43,7 @@ export default async function ServiceDetailPage({
   return (
     <>
       <PageHero
-        eyebrow={`${service.index} — ${service.pillar}`}
+        eyebrow={`${service.index} · ${service.pillar}`}
         title={service.title}
         lead={service.tagline}
       />
@@ -61,8 +61,8 @@ export default async function ServiceDetailPage({
               {service.description}
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              <span className="font-serif italic text-gradient">
-                Outcome —{" "}
+              <span className="text-gradient">
+                Outcome ·{" "}
               </span>
               {service.outcome}
             </p>
@@ -78,7 +78,7 @@ export default async function ServiceDetailPage({
               <p className="eyebrow mb-4">What's included</p>
               <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
                 Deliverables that{" "}
-                <span className="font-serif italic text-gradient">
+                <span className="text-gradient">
                   hold up daily.
                 </span>
               </h2>
@@ -108,10 +108,10 @@ export default async function ServiceDetailPage({
           <p className="eyebrow">Where it fits</p>
           <div className="space-y-6 max-w-2xl">
             <p className="text-xl font-medium leading-snug tracking-tight md:text-2xl">
-              This is one of five pillars. The others sit alongside —
-              when they ship together, the brand stops feeling assembled
+              This is one of five pillars. The others sit alongside.
+              When they ship together, the brand stops feeling assembled
               and starts feeling{" "}
-              <span className="font-serif italic text-gradient">
+              <span className="text-gradient">
                 considered.
               </span>
             </p>
@@ -136,7 +136,7 @@ export default async function ServiceDetailPage({
           <p className="eyebrow mb-4">Common questions</p>
           <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
             Before we{" "}
-            <span className="font-serif italic text-gradient">
+            <span className="text-gradient">
               get started.
             </span>
           </h2>

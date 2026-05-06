@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/sections/section-heading";
 export const metadata: Metadata = {
   title: "Process",
   description:
-    "Discovery, design, launch, and ongoing partnership — the four phases of a NAMI engagement.",
+    "Discovery, design, launch, and ongoing partnership. The four phases of a NAMI engagement.",
 };
 
 export default function ProcessPage() {
@@ -14,8 +14,13 @@ export default function ProcessPage() {
     <>
       <PageHero
         eyebrow="Process"
-        title="From discovery to ongoing momentum."
-        lead="Four phases — strategic, applied, shipped, sustained. Tight enough to launch in eight weeks, deep enough to keep working two years on."
+        title={
+          <>
+            From discovery to ongoing{" "}
+            <span className="text-gradient">momentum.</span>
+          </>
+        }
+        lead="Four phases: strategic, applied, shipped, sustained. Tight enough to launch in eight weeks, deep enough to keep working two years on."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -29,12 +34,12 @@ export default function ProcessPage() {
             title={
               <>
                 We launch fast,{" "}
-                <span className="font-serif italic text-gradient">
+                <span className="text-gradient">
                   then stay close.
                 </span>
               </>
             }
-            lead="Most agencies treat launch as the finish line. We treat it as the start. The brand only proves itself in the months after — when content has to ship, funnels have to convert, and the system has to keep working without us in the room every day."
+            lead="Most agencies treat launch as the finish line. We treat it as the start. The brand only proves itself in the months after: when content has to ship, funnels have to convert, and the system has to keep working without us in the room every day."
             className="max-w-3xl"
           />
         </div>

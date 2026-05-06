@@ -19,7 +19,7 @@ type Particle = {
 const COUNT = 36;
 
 /**
- * Floating particle field for the hero — small magenta and cyan motes
+ * Floating particle field for the hero: small magenta and cyan motes
  * with bloom shadows, drifting on long infinite loops. Generated client-side
  * to avoid SSR/hydration mismatch. Disabled under reduced motion.
  */

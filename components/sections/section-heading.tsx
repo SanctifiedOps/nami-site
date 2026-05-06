@@ -37,7 +37,7 @@ export function SectionHeading({
         </motion.p>
       )}
       <motion.h2
-        className="text-[clamp(2rem,4.5vw,3.75rem)] font-medium leading-[1.05] tracking-[-0.025em]"
+        className="text-[clamp(2rem,4.5vw,3.75rem)] font-medium leading-[1.1] tracking-[-0.015em] pr-2"
         variants={fadeUp}
       >
         {title}

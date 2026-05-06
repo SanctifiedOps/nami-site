@@ -18,9 +18,9 @@ export const services: Service[] = [
     slug: "brand-strategy",
     index: "01",
     title: "Brand strategy + identity systems",
-    tagline: "Positioning that gets used daily — not documented and forgotten.",
+    tagline: "Positioning that gets used daily, not documented and forgotten.",
     description:
-      "Foundational work — positioning, messaging architecture, tone of voice, visual direction — assembled into a brand framework you can run a business off, not a deck you reference once.",
+      "Foundational work: positioning, messaging architecture, tone of voice, visual direction. Assembled into a brand framework you can run a business off, not a deck you reference once.",
     icon: Compass,
     pillar: "Brand",
     deliverables: [
@@ -31,7 +31,7 @@ export const services: Service[] = [
       "Decision-ready brand book",
     ],
     outcome:
-      "A brand that compounds — every piece of content, marketing, and product feels deliberate and connected.",
+      "A brand that compounds. Every piece of content, marketing, and product feels deliberate and connected.",
   },
   {
     slug: "content-systems",
@@ -39,7 +39,7 @@ export const services: Service[] = [
     title: "Content systems + creation",
     tagline: "Build a content engine, not a stream of disconnected posts.",
     description:
-      "Repeatable content formats, platform-specific strategy, and narrative architecture — designed so every output earns its place and supports the next.",
+      "Repeatable content formats, platform-specific strategy, and narrative architecture. Designed so every output earns its place and supports the next.",
     icon: Layers,
     pillar: "Content",
     deliverables: [
@@ -50,16 +50,16 @@ export const services: Service[] = [
       "Performance review system",
     ],
     outcome:
-      "Content that stops feeling random — formats compound, narrative deepens, and growth becomes explainable.",
+      "Content that stops feeling random. Formats compound, narrative deepens, and growth becomes explainable.",
   },
   {
     slug: "website-funnel",
     index: "03",
     title: "Website + funnel design",
     tagline:
-      "Websites are conversion environments — not online brochures.",
+      "Websites are conversion environments, not online brochures.",
     description:
-      "User flow, messaging hierarchy, and conversion structure designed around action — built premium, performant, and ready to scale traffic into pipeline.",
+      "User flow, messaging hierarchy, and conversion structure designed around action. Built premium, performant, and ready to scale traffic into pipeline.",
     icon: Globe,
     pillar: "Brand",
     deliverables: [
@@ -70,7 +70,7 @@ export const services: Service[] = [
       "Analytics + experimentation setup",
     ],
     outcome:
-      "Traffic turns into action — qualified leads, booked calls, and a brand experience that earns trust on the first visit.",
+      "Traffic turns into action: qualified leads, booked calls, and a brand experience that earns trust on the first visit.",
   },
   {
     slug: "visual-direction",
@@ -78,7 +78,7 @@ export const services: Service[] = [
     title: "Visual storytelling + creative direction",
     tagline: "Make the brand instantly recognisable across every surface.",
     description:
-      "Cohesive visual language across content, product, and campaign — directed so the brand reads consistently whether someone meets it on Instagram, in an inbox, or on a billboard.",
+      "Cohesive visual language across content, product, and campaign, directed so the brand reads consistently whether someone meets it on Instagram, in an inbox, or on a billboard.",
     icon: Eye,
     pillar: "Brand",
     deliverables: [
@@ -89,7 +89,7 @@ export const services: Service[] = [
       "Cross-platform style guides",
     ],
     outcome:
-      "Recognition before recall — the brand is identifiable from a frame, a colour, a single line of copy.",
+      "Recognition before recall. The brand is identifiable from a frame, a colour, a single line of copy.",
   },
   {
     slug: "automation-growth",
@@ -98,7 +98,7 @@ export const services: Service[] = [
     tagline:
       "The infrastructure that lets the brand keep up with the business.",
     description:
-      "Notion, Make, lifecycle email, lead-capture pipelines, content automations — the connective tissue between brand and operations so consistency scales without burning your team.",
+      "Notion, Make, lifecycle email, lead-capture pipelines, content automations. The connective tissue between brand and operations so consistency scales without burning your team.",
     icon: Zap,
     pillar: "Systems",
     deliverables: [
@@ -109,7 +109,7 @@ export const services: Service[] = [
       "Reporting + dashboard systems",
     ],
     outcome:
-      "Less manual work, more leverage — the brand stays consistent at 10× volume because the systems are doing the carrying.",
+      "Less manual work, more leverage. The brand stays consistent at 10× volume because the systems are doing the carrying.",
   },
 ];
 

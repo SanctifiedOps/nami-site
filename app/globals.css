@@ -32,10 +32,9 @@
   --color-glass: rgb(255 255 255 / 0.03);
   --color-glass-strong: rgb(255 255 255 / 0.05);
 
-  /* font families — bound to next/font CSS variables exposed on <html> */
+  /* font family bound to next/font CSS variable exposed on <html> */
   --font-sans: var(--font-instrument-sans), -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  --font-serif: var(--font-instrument-serif), Georgia, serif;
 
   /* spacing scale */
   --spacing-section: 7.5rem; /* 120px */

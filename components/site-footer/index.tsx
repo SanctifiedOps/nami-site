@@ -1,6 +1,19 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import {
+  LinkedinIcon,
+  InstagramIcon,
+  YoutubeIcon,
+  FacebookIcon,
+} from "@/components/icons/socials";
 import { footerNav, ctaNav } from "@/lib/nav";
+
+const socials = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/98101073", icon: LinkedinIcon },
+  { label: "Instagram", href: "https://www.instagram.com/namicreativeuk/", icon: InstagramIcon },
+  { label: "YouTube", href: "https://www.youtube.com/@namiupcreative", icon: YoutubeIcon },
+  { label: "Facebook", href: "https://facebook.com/namicreativeuk", icon: FacebookIcon },
+];
 
 export function SiteFooter() {
   return (
@@ -15,8 +28,8 @@ export function SiteFooter() {
               <span className="text-gradient">that lasts?</span>
             </h2>
             <p className="max-w-xl text-fg-muted">
-              Brand, content, and systems — wired into one cohesive structure
-              that holds while you scale.
+              Waves of creative impact. Brand, content, and systems, built to
+              move together and hold while you scale.
             </p>
           </div>
           <div className="flex md:justify-end">
@@ -39,9 +52,30 @@ export function SiteFooter() {
               NAMI<span className="text-accent">.</span> Creative
             </span>
             <p className="max-w-xs text-sm text-fg-muted leading-relaxed">
-              A creative marketing studio building brand identity, content
+              A future-focused studio building brand identity, content
               systems, and growth infrastructure.
             </p>
+            <p className="max-w-xs text-xs uppercase tracking-[0.32em] text-fg-subtle pt-1">
+              Waves of creative impact.
+            </p>
+            <ul className="flex items-center gap-3 pt-4">
+              {socials.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <li key={s.href}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`NAMI Creative on ${s.label}`}
+                      className="inline-grid size-9 place-items-center rounded-full border border-line text-fg-muted transition-colors hover:border-accent hover:text-accent"
+                    >
+                      <Icon size={16} aria-hidden />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
 
           {footerNav.map((column) => (

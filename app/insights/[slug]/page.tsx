@@ -16,7 +16,7 @@ export default async function InsightPostPage({
   return (
     <>
       <PageHero
-        eyebrow="Insights — coming soon"
+        eyebrow="Insights · Coming soon"
         title={title}
         lead="The cornerstone insights archive ships in the next phase of the build (Phase 4 of the launch plan). For now this is a placeholder so the route exists."
       />

@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/sections/section-heading";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Brand strategy, content systems, website + funnel design, visual direction, and growth automation — five pillars built into one cohesive structure.",
+    "Brand strategy, content systems, website + funnel design, visual direction, and growth automation. Five pillars built into one cohesive structure.",
 };
 
 export default function ServicesPage() {
@@ -15,8 +15,12 @@ export default function ServicesPage() {
     <>
       <PageHero
         eyebrow="Services"
-        title="Five pillars, one structure."
-        lead="Brand, content, websites, visual direction, and growth systems — built integrated, not as separate engagements. The work compounds because the parts are designed to fit together."
+        title={
+          <>
+            Five pillars, <span className="text-gradient">one structure.</span>
+          </>
+        }
+        lead="Brand, content, websites, visual direction, and growth systems, built integrated, not as separate engagements. The work compounds because the parts are designed to fit together."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -31,12 +35,12 @@ export default function ServicesPage() {
               title={
                 <>
                   Integrated, not{" "}
-                  <span className="font-serif italic text-gradient">
+                  <span className="text-gradient">
                     bundled.
                   </span>
                 </>
               }
-              lead="Most agencies sell each pillar separately and stitch them together at handoff. We design across all five from day one — same team, same brief, same brain."
+              lead="Most agencies sell each pillar separately and stitch them together at handoff. We design across all five from day one. Same team, same brief, same brain."
             />
           </div>
           <FAQAccordion />
