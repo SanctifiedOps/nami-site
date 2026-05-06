@@ -1,29 +1,48 @@
 import type { Metadata } from "next";
-import { instrumentSans, instrumentSerif } from "@/lib/fonts";
+import { instrumentSans } from "@/lib/fonts";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { CustomCursor } from "@/components/providers/custom-cursor";
-import { cn } from "@/lib/utils";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "NAMI Creative — Brand + Content + Systems",
-    template: "%s — NAMI Creative",
+    default: "NAMI Creative · Brand, Content, Systems",
+    template: "%s · NAMI Creative",
   },
   description:
-    "NAMI Creative is a creative marketing studio that builds brand identity, content systems, and growth infrastructure designed to make businesses feel intentional, cohesive, and scalable.",
-  metadataBase: new URL("https://namicreative.studio"),
+    "NAMI Creative is a future-focused studio building brands with structure, identity, and impact. Waves of creative impact, from identity to execution and launch to scale.",
+  metadataBase: new URL("https://namicreative.co.uk"),
   openGraph: {
     type: "website",
     locale: "en_GB",
-    title: "NAMI Creative — Brand + Content + Systems",
+    title: "NAMI Creative · Brand, Content, Systems",
     description:
-      "A creative marketing studio aligning brand, content, and systems into one cohesive structure for growth.",
+      "A future-focused studio aligning brand, content, and systems into one cohesive structure. Waves of creative impact.",
+    images: [
+      {
+        url: "/assets/images/Nami-OG.png",
+        width: 1600,
+        height: 1000,
+        alt: "NAMI Creative · Waves of creative impact",
+      },
+    ],
   },
-  twitter: { card: "summary_large_image" },
-  icons: { icon: "/favicon.ico" },
+  twitter: {
+    card: "summary_large_image",
+    title: "NAMI Creative · Brand, Content, Systems",
+    description:
+      "A future-focused studio aligning brand, content, and systems into one cohesive structure. Waves of creative impact.",
+    images: ["/assets/images/Nami-OG.png"],
+  },
+  icons: {
+    icon: [
+      { url: "/assets/images/nami-fav.png", type: "image/png" },
+    ],
+    shortcut: "/assets/images/nami-fav.png",
+    apple: "/assets/images/nami-fav.png",
+  },
 };
 
 export default function RootLayout({
@@ -32,7 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(instrumentSans.variable, instrumentSerif.variable)}
+      className={instrumentSans.variable}
       suppressHydrationWarning
     >
       <body className="bg-surface-0 text-fg antialiased">

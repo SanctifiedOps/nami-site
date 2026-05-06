@@ -1,32 +1,72 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { ArrowUpRight, Mail, Calendar } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { stage, fadeUp } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-export default function ContactPage() {
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+type Status = "idle" | "submitting" | "error";
 
-  // Phase 3 will wire this to /api/submit + Mailchimp/Resend/Notion.
-  // For now: optimistic UI only.
+export default function ContactPage() {
+  const router = useRouter();
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setSubmitting(false);
-    setSubmitted(true);
+    if (status === "submitting") return;
+
+    setStatus("submitting");
+    setErrorMsg(null);
+
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      firstName: String(fd.get("firstName") ?? ""),
+      lastName: String(fd.get("lastName") ?? ""),
+      email: String(fd.get("email") ?? ""),
+      company: String(fd.get("company") ?? ""),
+      projectType: String(fd.get("projectType") ?? ""),
+      budget: String(fd.get("budget") ?? ""),
+      message: String(fd.get("message") ?? ""),
+      website: String(fd.get("website") ?? ""), // honeypot
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error ?? "We couldn't send your message.");
+      }
+      router.push("/thank-you");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(
+        err instanceof Error ? err.message : "Something went wrong.",
+      );
+    }
   };
 
   return (
     <>
       <PageHero
         eyebrow="Contact"
-        title="Let's talk about what you're building."
-        lead="Tell us about your business, what's working, and what's stuck. We respond personally — usually within a working day."
+        title={
+          <>
+            Let's talk about what{" "}
+            <span className="text-gradient">you're building.</span>
+          </>
+        }
+        lead="Tell us about your business, what's working, and what's stuck. We respond personally, usually within a working day."
       />
 
       <section className="container-shell py-20 md:py-28">
@@ -39,7 +79,32 @@ export default function ContactPage() {
             viewport={{ once: true, amount: 0.2 }}
             variants={stage}
             className="space-y-6"
+            noValidate
           >
+            {/* Honeypot — kept off-screen rather than display:none so bots
+                that skip hidden inputs still fill it. */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                left: "-9999px",
+                top: "-9999px",
+                width: 0,
+                height: 0,
+                overflow: "hidden",
+              }}
+            >
+              <label>
+                Website
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </label>
+            </div>
+
             <motion.div variants={fadeUp} className="grid gap-6 md:grid-cols-2">
               <Field
                 label="First name"
@@ -83,8 +148,8 @@ export default function ContactPage() {
               <Select label="Budget range" name="budget">
                 <option value="">Choose one</option>
                 <option value="under-5k">Under £5k</option>
-                <option value="5-15k">£5k — £15k</option>
-                <option value="15-40k">£15k — £40k</option>
+                <option value="5-15k">£5k to £15k</option>
+                <option value="15-40k">£15k to £40k</option>
                 <option value="40k+">£40k+</option>
                 <option value="not-sure">Not sure yet</option>
               </Select>
@@ -98,33 +163,47 @@ export default function ContactPage() {
                 required
               />
             </motion.div>
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="space-y-3">
               <button
                 type="submit"
-                disabled={submitting || submitted}
+                disabled={status === "submitting"}
                 className={cn(
                   "group relative inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(230_50_175/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(230_50_175/0.5)] disabled:opacity-60",
                 )}
               >
-                {submitted
-                  ? "Thanks — we'll be in touch"
-                  : submitting
-                    ? "Sending..."
-                    : "Send the brief"}
-                {!submitted && (
-                  <ArrowUpRight
-                    size={16}
-                    aria-hidden
-                    className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                )}
+                {status === "submitting" ? "Sending..." : "Send the brief"}
+                <ArrowUpRight
+                  size={16}
+                  aria-hidden
+                  className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
               </button>
-              {submitted && (
-                <p className="mt-4 text-sm text-fg-muted">
-                  Form is in optimistic mode — Mailchimp + Resend wiring lands
-                  in Phase 3 of the build plan.
+              {status === "error" && errorMsg && (
+                <p
+                  role="alert"
+                  className="text-sm text-accent leading-relaxed"
+                >
+                  {errorMsg} If it persists, email{" "}
+                  <a
+                    href="mailto:hello@namicreative.co.uk"
+                    className="underline underline-offset-4 hover:text-fg transition-colors"
+                  >
+                    hello@namicreative.co.uk
+                  </a>
+                  .
                 </p>
               )}
+              <p className="text-xs text-fg-subtle leading-relaxed">
+                By sending the brief you consent to us holding the details to
+                respond. See our{" "}
+                <a
+                  href="/privacy"
+                  className="underline underline-offset-4 hover:text-fg-muted transition-colors"
+                >
+                  privacy notice
+                </a>
+                .
+              </p>
             </motion.div>
           </motion.form>
 
@@ -145,13 +224,13 @@ export default function ContactPage() {
                 Prefer email
               </h3>
               <p className="mt-2 text-sm text-fg-muted leading-relaxed">
-                Direct route — same response time, less form filling.
+                Direct route. Same response time, less form filling.
               </p>
               <a
-                href="mailto:hello@namicreative.studio"
+                href="mailto:hello@namicreative.co.uk"
                 className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent transition-colors"
               >
-                hello@namicreative.studio
+                hello@namicreative.co.uk
                 <ArrowUpRight
                   size={12}
                   aria-hidden
@@ -173,7 +252,9 @@ export default function ContactPage() {
                 can help. No pitch deck.
               </p>
               <a
-                href="https://cal.com/namicreative/discovery"
+                href="https://calendly.com/hello-nami"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent transition-colors"
               >
                 Open calendar
@@ -190,8 +271,8 @@ export default function ContactPage() {
               className="text-xs leading-relaxed text-fg-subtle"
             >
               We typically respond within one working day. If a project doesn't
-              feel like the right fit on either side, we'll say so honestly —
-              and where useful, we'll point you to studios that might fit
+              feel like the right fit on either side, we'll say so honestly.
+              Where useful, we'll point you to studios that might fit
               better.
             </motion.p>
           </motion.aside>
