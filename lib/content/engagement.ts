@@ -14,23 +14,23 @@ export const engagements: EngagementModel[] = [
   {
     index: "01",
     name: "Project",
-    best: "For brands ready to rebuild the foundation in a sprint.",
+    best: "For a defined brand or website build with a clear scope.",
     description:
-      "Single defined engagement: typically a brand + website rebuild or a positioning + content system reset. Fixed scope, fixed timeline, deliverable handoff.",
+      "Single engagement: typically a brand build, a website, or a positioning + content reset. Fixed scope, fixed timeline, deliverable handoff. We talk first, scope honestly, then build.",
     scope: [
       "Brand strategy + identity",
       "Conversion-led website",
       "Content + visual system",
       "Launch handoff",
     ],
-    timeline: "6–8 weeks",
-    starting: "Mid five figures",
+    timeline: "4–8 weeks",
+    starting: "Scoped to the work",
     cta: { label: "Scope a project", href: "/contact" },
   },
   {
     index: "02",
     name: "Partnership",
-    best: "For teams scaling the brand across content, ops, and growth.",
+    best: "For teams scaling brand, content, and systems together.",
     description:
       "Ongoing creative partnership. We sit close, ship regularly, and evolve the brand as the business grows. Usually starts after a foundational project; sometimes ports from another team's work.",
     scope: [
@@ -40,7 +40,7 @@ export const engagements: EngagementModel[] = [
       "Automation + lifecycle marketing",
       "New surface design as needed",
     ],
-    timeline: "6–12 month minimum",
+    timeline: "Monthly cadence",
     starting: "Monthly retainer",
     cta: { label: "Discuss a partnership", href: "/contact" },
     highlight: true,
@@ -48,7 +48,7 @@ export const engagements: EngagementModel[] = [
   {
     index: "03",
     name: "Systems + product",
-    best: "For founders ready to productise their brand or content engine.",
+    best: "For founders productising their brand or content engine.",
     description:
       "Standalone systems work: Notion stacks, automated content pipelines, lead-capture infrastructure, brand templates. Built to be operated by your team, not us.",
     scope: [
@@ -57,8 +57,8 @@ export const engagements: EngagementModel[] = [
       "Brand template systems",
       "Internal team training",
     ],
-    timeline: "3–5 weeks",
-    starting: "Low five figures",
+    timeline: "2–5 weeks",
+    starting: "Scoped to the work",
     cta: { label: "Talk systems", href: "/contact" },
   },
 ];

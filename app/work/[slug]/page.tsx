@@ -49,7 +49,7 @@ export default async function CaseStudyPage({
 
       {/* Meta strip + visit live */}
       <section className="container-shell py-12 md:py-16">
-        <div className="grid gap-8 rounded-3xl border border-line bg-surface-1/60 p-8 backdrop-blur-md md:grid-cols-[auto_1fr_auto] md:items-center md:gap-12 md:p-10">
+        <div className="grid gap-6 rounded-3xl border border-line bg-surface-1/60 p-6 backdrop-blur-md md:grid-cols-[auto_1fr_auto] md:items-center md:gap-12 md:p-10">
           <div className="inline-grid size-14 place-items-center rounded-2xl border border-line bg-surface-2/60">
             <Icon size={24} className="text-accent" aria-hidden />
           </div>
@@ -130,8 +130,8 @@ export default async function CaseStudyPage({
             aria-hidden
             className="absolute inset-0 bg-linear-to-t from-surface-0/85 via-surface-0/25 to-transparent"
           />
-          <div className="absolute inset-0 flex items-end justify-between p-10 md:p-16">
-            <p className="text-3xl font-medium tracking-tight text-fg md:text-5xl">
+          <div className="absolute inset-0 flex items-end justify-between p-6 md:p-12 lg:p-16">
+            <p className="text-xl font-medium tracking-tight text-fg md:text-3xl lg:text-5xl">
               {study.tagline}
             </p>
             <span className="hidden text-xs uppercase tracking-widest text-fg-subtle md:inline">

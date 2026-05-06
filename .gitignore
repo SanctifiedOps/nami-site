@@ -58,3 +58,6 @@ pnpm-debug.log*
 # tooling
 .netlify
 .vercel
+
+# source video files — too large for git, compressed outputs live in /public/assets/videos
+public/assets/images/Video/

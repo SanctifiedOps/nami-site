@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, ArrowLeft, Clock, Calendar } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { PageHero } from "@/components/sections/page-hero";
-import { NewsletterSubscribe } from "@/components/sections/newsletter-subscribe";
+import { InsightsSidebar } from "@/components/insights/sidebar";
 import {
   getAllPosts,
   getPostBySlug,
@@ -27,7 +27,7 @@ export async function generateMetadata({
   const post = await getPostBySlug(slug);
   if (!post) return { title: "Not found" };
   return {
-    title: post.title,
+    title: `${post.title} — The Wake`,
     description: post.summary,
     openGraph: {
       title: post.title,
@@ -48,6 +48,7 @@ export default async function InsightPostPage({
   if (!post) notFound();
 
   const allPosts = await getAllPosts();
+  const pillars = Array.from(new Set(allPosts.map((p) => p.pillar)));
   const idx = allPosts.findIndex((p) => p.slug === slug);
   const next = allPosts[(idx + 1) % allPosts.length];
   const hasNext = allPosts.length > 1 && next.slug !== slug;
@@ -55,14 +56,25 @@ export default async function InsightPostPage({
   return (
     <>
       <PageHero
-        eyebrow={`Insights · ${post.pillar}`}
+        eyebrow={`The Wake · ${post.pillar}`}
         title={post.title}
         lead={post.subtitle ?? post.summary}
       />
 
       {/* Meta strip */}
-      <section className="container-shell py-8 md:py-12 border-b border-line">
+      <section className="container-shell py-6 md:py-8 border-b border-line">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-fg-subtle">
+          <Link
+            href="/insights"
+            className="group inline-flex items-center gap-2 text-fg-muted transition-colors hover:text-accent"
+          >
+            <ArrowLeft
+              size={14}
+              aria-hidden
+              className="transition-transform duration-500 group-hover:-translate-x-1"
+            />
+            All posts
+          </Link>
           <span className="inline-flex items-center gap-2">
             <Calendar size={14} aria-hidden />
             {formatPostDate(post.date)}
@@ -74,51 +86,46 @@ export default async function InsightPostPage({
         </div>
       </section>
 
-      {/* Article body */}
-      <section className="container-shell py-16 md:py-24">
-        <article className="prose-insights mx-auto max-w-2xl">
-          <MDXRemote source={post.body} />
-        </article>
-      </section>
+      {/* Article body + sidebar */}
+      <section className="container-shell py-16 md:py-20">
+        <div className="grid gap-12 lg:grid-cols-[1fr_320px] lg:gap-16">
+          <article className="prose-insights">
+            <MDXRemote source={post.body} />
+          </article>
 
-      {/* Next + back */}
-      <section className="container-shell py-16 md:py-20 border-t border-line">
-        <div className="grid gap-8 md:grid-cols-[auto_1fr] md:items-center md:gap-12">
-          <Link
-            href="/insights"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-fg-muted transition-colors hover:text-accent"
-          >
-            <ArrowLeft
-              size={14}
-              aria-hidden
-              className="transition-transform duration-500 group-hover:-translate-x-1"
-            />
-            All insights
-          </Link>
-
-          {hasNext && (
-            <Link
-              href={`/insights/${next.slug}`}
-              className="group block rounded-2xl border border-line bg-surface-1/60 p-8 backdrop-blur-md transition-colors hover:border-accent/40 md:p-10"
-            >
-              <p className="eyebrow mb-3">Next · {next.pillar}</p>
-              <p className="text-xl font-medium leading-snug tracking-tight md:text-2xl">
-                {next.title}
-              </p>
-              <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-fg/80 transition-colors group-hover:text-accent">
-                Read next
-                <ArrowUpRight
-                  size={14}
-                  aria-hidden
-                  className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </span>
-            </Link>
-          )}
+          <InsightsSidebar
+            posts={allPosts}
+            pillars={pillars}
+            excludeSlug={slug}
+            className="lg:sticky lg:top-28 lg:self-start"
+          />
         </div>
       </section>
 
-      <NewsletterSubscribe />
+      {/* Next post */}
+      {hasNext && (
+        <section className="container-shell py-16 md:py-20 border-t border-line">
+          <Link
+            href={`/insights/${next.slug}`}
+            className="group block rounded-3xl border border-line bg-surface-1/60 p-10 backdrop-blur-md transition-colors hover:border-accent/40 md:p-16"
+          >
+            <p className="eyebrow mb-4">
+              Read next · {next.pillar}
+            </p>
+            <p className="text-3xl font-medium leading-tight tracking-tight md:text-5xl">
+              {next.title}
+            </p>
+            <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent">
+              Continue
+              <ArrowUpRight
+                size={14}
+                aria-hidden
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </span>
+          </Link>
+        </section>
+      )}
     </>
   );
 }

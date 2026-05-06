@@ -16,8 +16,9 @@ export default function ProcessPage() {
         eyebrow="Process"
         title={
           <>
-            From discovery to ongoing{" "}
-            <span className="text-gradient">momentum.</span>
+            From discovery to
+            <br />
+            <span className="text-gradient">ongoing momentum.</span>
           </>
         }
         lead="Four phases: strategic, applied, shipped, sustained. Tight enough to launch in eight weeks, deep enough to keep working two years on."
@@ -33,7 +34,8 @@ export default function ProcessPage() {
             eyebrow="The principle"
             title={
               <>
-                We launch fast,{" "}
+                We launch fast,
+                <br className="hidden sm:inline" />
                 <span className="text-gradient">
                   then stay close.
                 </span>

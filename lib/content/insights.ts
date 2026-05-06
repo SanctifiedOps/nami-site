@@ -1,21 +1,11 @@
+import "server-only";
 import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
+import type { InsightFrontmatter, InsightPost } from "./insights-utils";
 
-export type InsightFrontmatter = {
-  title: string;
-  subtitle?: string;
-  summary: string;
-  pillar: string;
-  date: string;
-  minutes: number;
-  featured?: boolean;
-};
-
-export type InsightPost = InsightFrontmatter & {
-  slug: string;
-  body: string;
-};
+export type { InsightFrontmatter, InsightPost } from "./insights-utils";
+export { formatPostDate } from "./insights-utils";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "insights");
 
@@ -52,13 +42,4 @@ export async function getPostBySlug(
   } catch {
     return null;
   }
-}
-
-export function formatPostDate(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
 }

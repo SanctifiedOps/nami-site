@@ -15,8 +15,9 @@ export default function PricingPage() {
         eyebrow="Investment"
         title={
           <>
-            Three ways to work{" "}
-            <span className="text-gradient">together.</span>
+            Three ways to
+            <br className="hidden sm:inline" />
+            <span className="text-gradient">work together.</span>
           </>
         }
         lead="Engagements are scoped, not packaged. Pricing depends on surface area and depth. Here's how we structure the work."
@@ -28,14 +29,14 @@ export default function PricingPage() {
           whileInView="show"
           viewport={{ once: true, amount: 0.15 }}
           variants={stageFast}
-          className="grid gap-6 md:grid-cols-3 md:gap-8"
+          className="grid gap-6 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8"
         >
           {engagements.map((e) => (
             <motion.article
               key={e.name}
               variants={cardIn}
               className={cn(
-                "relative flex flex-col rounded-2xl border bg-surface-1/60 p-8 backdrop-blur-md md:p-10",
+                "relative flex flex-col rounded-2xl border bg-surface-1/60 p-6 backdrop-blur-md md:p-8 lg:p-10",
                 e.highlight
                   ? "border-accent/40 shadow-[0_0_60px_rgb(230_50_175/0.15)]"
                   : "border-line",
@@ -103,7 +104,7 @@ export default function PricingPage() {
         </motion.div>
       </section>
 
-      {/* What's not included */}
+      {/* How we scope */}
       <section className="border-t border-line bg-surface-1/40 py-24 md:py-32">
         <div className="container-shell">
           <motion.div
@@ -118,21 +119,21 @@ export default function PricingPage() {
             </motion.p>
             <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
               <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
-                What we{" "}
-                <span className="text-gradient">
-                  don't do.
-                </span>
+                How we{" "}
+                <span className="text-gradient">scope work.</span>
               </p>
-              <ul className="space-y-3 text-fg-muted md:text-lg leading-relaxed">
-                <li>· Logo-only requests or one-off graphic work</li>
-                <li>· Performance media buying or paid ad management</li>
-                <li>· SEO-focused content farms</li>
-                <li>· White-label work for other agencies</li>
-              </ul>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                Not a judgement on the work, just not the shape we're built
-                for. If that's what you need, we can recommend studios who
-                specialise.
+                We talk to every potential client first. Real conversation, not
+                a quote-bot. We'll understand what you're trying to build,
+                what's working, what's stuck, and what good would look like in
+                six months. Then we scope honestly to that.
+              </p>
+              <p className="text-fg-muted md:text-lg leading-relaxed">
+                Some engagements need the whole system. Some need a brand
+                refresh and a website. Some are smaller still. We don't
+                push more work than is needed, and we don't take on work we're
+                not the right shape for. If a different studio fits better,
+                we'll point you there.
               </p>
             </motion.div>
           </motion.div>

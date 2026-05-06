@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { stage, fadeUp } from "@/lib/motion";
+import { LetterReveal } from "@/components/motion/letter-reveal";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -37,10 +38,12 @@ export function SectionHeading({
         </motion.p>
       )}
       <motion.h2
-        className="text-[clamp(2rem,4.5vw,3.75rem)] font-medium leading-[1.1] tracking-[-0.015em] pr-2"
+        className="text-[clamp(1.5rem,4.5vw,3.75rem)] font-medium leading-[1.1] tracking-[-0.015em] pr-2"
         variants={fadeUp}
       >
-        {title}
+        <LetterReveal stagger={0.014} duration={0.65}>
+          {title}
+        </LetterReveal>
       </motion.h2>
       {lead && (
         <motion.p

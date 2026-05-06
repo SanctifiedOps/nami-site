@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
-import { stage, fadeUp, lineMask } from "@/lib/motion";
+import { stage, fadeUp } from "@/lib/motion";
+import { LetterReveal } from "@/components/motion/letter-reveal";
+import { VideoBackground } from "@/components/hero/video-background";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -9,10 +11,12 @@ type Props = {
   title: React.ReactNode;
   lead?: string;
   className?: string;
+  /** Optional content rendered below the lead, inside the hero stack */
+  children?: React.ReactNode;
 };
 
-/** Inner-page hero: smaller than home, but still atmospheric */
-export function PageHero({ eyebrow, title, lead, className }: Props) {
+/** Inner-page hero: video background + letter-reveal title */
+export function PageHero({ eyebrow, title, lead, className, children }: Props) {
   return (
     <section
       className={cn(
@@ -20,39 +24,7 @@ export function PageHero({ eyebrow, title, lead, className }: Props) {
         className,
       )}
     >
-      {/* atmospheric backdrop: single drifting magenta orb, lighter than home */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-      >
-        <motion.div
-          className="absolute"
-          style={{
-            left: "-10%",
-            top: "-30%",
-            width: "60vw",
-            height: "60vw",
-            maxWidth: "900px",
-            maxHeight: "900px",
-            filter: "blur(90px)",
-            background:
-              "radial-gradient(circle, rgb(230 50 175 / 0.4) 0%, rgb(100 200 255 / 0.15) 30%, transparent 65%)",
-          }}
-          animate={{
-            x: [0, 60, -30, 0],
-            y: [0, -40, 30, 0],
-            scale: [1, 1.08, 0.95, 1],
-          }}
-          transition={{ duration: 24, ease: "easeInOut", repeat: Infinity }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>\")",
-          }}
-        />
-      </div>
+      <VideoBackground src="wave-3.mp4" overlay={0.78} />
 
       <motion.div
         className="container-shell relative z-10 pt-36 pb-16 md:pt-48 md:pb-24"
@@ -63,12 +35,8 @@ export function PageHero({ eyebrow, title, lead, className }: Props) {
         <motion.p className="eyebrow mb-6" variants={fadeUp}>
           {eyebrow}
         </motion.p>
-        <h1 className="max-w-[18ch] text-[clamp(2.25rem,5.5vw,5rem)] font-medium leading-[1.1] tracking-[-0.015em] pr-2">
-          <span className="block overflow-y-hidden pb-1">
-            <motion.span className="block" variants={lineMask}>
-              {title}
-            </motion.span>
-          </span>
+        <h1 className="max-w-[18ch] text-[clamp(1.75rem,5.5vw,5rem)] font-medium leading-[1.1] tracking-[-0.015em] pr-2">
+          <LetterReveal>{title}</LetterReveal>
         </h1>
         {lead && (
           <motion.p
@@ -77,6 +45,11 @@ export function PageHero({ eyebrow, title, lead, className }: Props) {
           >
             {lead}
           </motion.p>
+        )}
+        {children && (
+          <motion.div className="mt-10" variants={fadeUp}>
+            {children}
+          </motion.div>
         )}
       </motion.div>
     </section>

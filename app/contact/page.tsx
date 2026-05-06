@@ -62,8 +62,9 @@ export default function ContactPage() {
         eyebrow="Contact"
         title={
           <>
-            Let's talk about what{" "}
-            <span className="text-gradient">you're building.</span>
+            Let's talk about
+            <br className="hidden sm:inline" />
+            <span className="text-gradient">what you're building.</span>
           </>
         }
         lead="Tell us about your business, what's working, and what's stuck. We respond personally, usually within a working day."
@@ -105,7 +106,7 @@ export default function ContactPage() {
               </label>
             </div>
 
-            <motion.div variants={fadeUp} className="grid gap-6 md:grid-cols-2">
+            <motion.div variants={fadeUp} className="grid gap-4 md:grid-cols-2 md:gap-6">
               <Field
                 label="First name"
                 name="firstName"
@@ -119,7 +120,7 @@ export default function ContactPage() {
                 required
               />
             </motion.div>
-            <motion.div variants={fadeUp} className="grid gap-6 md:grid-cols-2">
+            <motion.div variants={fadeUp} className="grid gap-4 md:grid-cols-2 md:gap-6">
               <Field
                 label="Work email"
                 type="email"
@@ -217,7 +218,7 @@ export default function ContactPage() {
           >
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl border border-line bg-surface-1/60 p-8 backdrop-blur-md"
+              className="rounded-2xl border border-line bg-surface-1/60 p-6 backdrop-blur-md md:p-8"
             >
               <Mail size={20} className="text-accent" aria-hidden />
               <h3 className="mt-4 text-lg font-medium tracking-tight">
@@ -241,7 +242,7 @@ export default function ContactPage() {
 
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl border border-line bg-surface-1/60 p-8 backdrop-blur-md"
+              className="rounded-2xl border border-line bg-surface-1/60 p-6 backdrop-blur-md md:p-8"
             >
               <Calendar size={20} className="text-accent" aria-hidden />
               <h3 className="mt-4 text-lg font-medium tracking-tight">

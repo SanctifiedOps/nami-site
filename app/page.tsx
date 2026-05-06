@@ -4,15 +4,16 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { Magnetic } from "@/components/motion/magnetic";
-import { HeroAtmosphere } from "@/components/hero/atmosphere";
+import { VideoBackground } from "@/components/hero/video-background";
 import { HeroParticles } from "@/components/hero/particles";
+import { LetterReveal } from "@/components/motion/letter-reveal";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { ServicesGrid } from "@/components/sections/services-grid";
 import { ProcessList } from "@/components/sections/process-list";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
 import { PositioningBand } from "@/components/sections/positioning-band";
 import { WorkGrid } from "@/components/sections/work-grid";
-import { fadeUp, lineMask, ctaPop } from "@/lib/motion";
+import { fadeUp, ctaPop } from "@/lib/motion";
 
 export default function Home() {
   const reduced = useReducedMotion();
@@ -30,8 +31,8 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="relative flex min-h-[92vh] items-center overflow-hidden">
-        <HeroAtmosphere />
+      <section className="relative flex min-h-[80vh] items-center overflow-hidden md:min-h-[92vh]">
+        <VideoBackground src="wave-3.mp4" overlay={0.74} />
         <HeroParticles />
 
         <motion.div
@@ -52,27 +53,14 @@ export default function Home() {
           </motion.p>
 
           <h1 className="max-w-[22ch] text-[clamp(2.5rem,6vw,5.75rem)] font-medium leading-[1.05] tracking-[-0.015em] pr-2">
-            <span className="block overflow-y-hidden pb-1">
-              <motion.span className="block" variants={lineMask}>
-                Creative systems
-              </motion.span>
-            </span>
-            <span className="block overflow-y-hidden pb-1">
-              <motion.span className="block" variants={lineMask}>
+            <LetterReveal stagger={0.018} duration={0.8}>
+              <span className="block">Creative systems</span>
+              <span className="block">
                 built for{" "}
-                <span className="text-gradient">
-                  real-world
-                </span>
-              </motion.span>
-            </span>
-            <span className="block overflow-y-hidden pb-2">
-              <motion.span
-                className="block text-gradient"
-                variants={lineMask}
-              >
-                momentum.
-              </motion.span>
-            </span>
+                <span className="text-gradient">real-world</span>
+              </span>
+              <span className="block text-gradient">momentum.</span>
+            </LetterReveal>
           </h1>
 
           <motion.p
@@ -137,9 +125,10 @@ export default function Home() {
             eyebrow="What we build"
             title={
               <>
-                Five pillars that hold the brand,{" "}
+                Five pillars that hold
+                <br className="hidden sm:inline" />
                 <span className="text-gradient">
-                  end to end.
+                  the brand, end to end.
                 </span>
               </>
             }
@@ -159,9 +148,10 @@ export default function Home() {
             eyebrow="How we work"
             title={
               <>
-                A process that gets you{" "}
+                A process that
+                <br className="hidden sm:inline" />
                 <span className="text-gradient">
-                  to launch.
+                  gets you to launch.
                 </span>
               </>
             }
@@ -181,9 +171,10 @@ export default function Home() {
             eyebrow="Selected work"
             title={
               <>
-                Brands and systems built{" "}
+                Brands and systems
+                <br className="hidden sm:inline" />
                 <span className="text-gradient">
-                  to compound.
+                  built to compound.
                 </span>
               </>
             }
@@ -219,9 +210,10 @@ export default function Home() {
             eyebrow="Common questions"
             title={
               <>
-                Before we get on a{" "}
+                Before we get on
+                <br className="hidden sm:inline" />
                 <span className="text-gradient">
-                  call together.
+                  a call together.
                 </span>
               </>
             }

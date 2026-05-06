@@ -24,6 +24,7 @@
   /* brand accents */
   --color-accent: #e632af;
   --color-accent-soft: #ff64c8;
+  --color-accent-deep: #7a1158;
   --color-accent-2: #64c8ff;
 
   /* hairlines + glass */
@@ -133,15 +134,69 @@
     -webkit-backdrop-filter: blur(20px);
   }
 
+  /* Animated liquid pink gradient — flagship magenta + deeper magenta +
+     soft highlight, flowing slowly. Applied via background-clip:text. */
   .text-gradient {
     background: linear-gradient(
-      135deg,
-      var(--color-accent) 0%,
-      var(--color-accent-2) 100%
+      100deg,
+      var(--color-accent-deep) 0%,
+      var(--color-accent) 22%,
+      var(--color-accent-soft) 38%,
+      var(--color-accent) 54%,
+      var(--color-accent-deep) 70%,
+      var(--color-accent) 88%,
+      var(--color-accent-deep) 100%
     );
+    background-size: 280% 100%;
+    background-position: 0% 50%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    animation: text-gradient-flow 11s linear infinite;
+  }
+
+  /* LetterReveal chars inside .text-gradient need their OWN gradient +
+     flow animation, because the parent's background-clip:text won't pass
+     through a child that creates a stacking context (which the per-char
+     filter+opacity animation does). Two animations stacked: the per-char
+     reveal AND the continuous gradient flow. */
+  .text-gradient .lr-char {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-accent-deep) 0%,
+      var(--color-accent) 22%,
+      var(--color-accent-soft) 38%,
+      var(--color-accent) 54%,
+      var(--color-accent-deep) 70%,
+      var(--color-accent) 88%,
+      var(--color-accent-deep) 100%
+    );
+    background-size: 280% 100%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation:
+      lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards
+        cubic-bezier(0.16, 1, 0.3, 1),
+      text-gradient-flow 11s linear infinite;
+  }
+
+  @keyframes text-gradient-flow {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 280% 50%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .text-gradient,
+    .text-gradient .lr-char {
+      animation: none;
+      background-position: 50% 50%;
+    }
   }
 
   .eyebrow {
@@ -150,6 +205,43 @@
     letter-spacing: 0.32em;
     text-transform: uppercase;
     color: var(--color-fg-subtle);
+  }
+
+  /* ========================================================================
+     LetterReveal — per-character title animation.
+     Per-char gradient + flow is applied below so background-clip:text
+     works inside each animated char (the parent's gradient can't pass
+     through descendants with stacking contexts created by filter/opacity).
+     ======================================================================== */
+  /* Words are grouped to prevent mid-word line-breaks. .lr-word is the
+     atomic wrapper; per-char .lr-char animates inside. */
+  .lr-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .lr-char {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(6px);
+    animation: lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards
+      cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, filter;
+  }
+
+  @keyframes lr-reveal {
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lr-char {
+      opacity: 1;
+      filter: none;
+      animation: none;
+    }
   }
 
   /* ========================================================================

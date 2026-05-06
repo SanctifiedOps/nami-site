@@ -1,38 +1,13 @@
 import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
 import { NewsletterSubscribe } from "@/components/sections/newsletter-subscribe";
+import { VideoBackground } from "@/components/hero/video-background";
 
 export default function ThankYouPage() {
   return (
     <section className="relative flex min-h-[80vh] items-center overflow-hidden">
-      {/* atmosphere */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-      >
-        <div
-          className="absolute"
-          style={{
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "70vw",
-            height: "70vw",
-            maxWidth: "1100px",
-            maxHeight: "1100px",
-            filter: "blur(110px)",
-            background:
-              "radial-gradient(circle, rgb(230 50 175 / 0.45) 0%, rgb(100 200 255 / 0.18) 35%, transparent 65%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>\")",
-          }}
-        />
-      </div>
+      {/* video background */}
+      <VideoBackground src="wave-3.mp4" overlay={0.74} />
 
       <div className="container-shell relative z-10 py-24 md:py-32">
         <div className="mx-auto max-w-2xl text-center">

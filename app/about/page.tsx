@@ -16,7 +16,9 @@ export default function AboutPage() {
         eyebrow="About · NAMI Creative"
         title={
           <>
-            Brand as <span className="text-gradient">infrastructure.</span>
+            Brand as
+            <br className="hidden sm:inline" />
+            <span className="text-gradient">infrastructure.</span>
           </>
         }
         lead="A creative marketing studio building brand identity, content systems, and growth infrastructure for founders who want the work to compound."
@@ -143,9 +145,9 @@ export default function AboutPage() {
               layer.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              Currently working with a handful of founders building service
-              businesses, software products, and creator brands. All at the
-              point where DIY stops scaling.
+              Currently working with founders, small businesses, and trades
+              who care about doing the work properly. Independent operators
+              through to growing teams. The common thread is intent.
             </p>
             <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-2">
               <a
