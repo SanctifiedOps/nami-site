@@ -112,7 +112,7 @@ The work portfolio (above) is the receipts: brand systems, conversion sites, on-
 | Var | Purpose |
 | --- | --- |
 | `MAILCHIMP_API_KEY` | Mailchimp Marketing API key (suffix is data-center, must end `-us8`) |
-| `MAILCHIMP_AUDIENCE_ID` | Audience ID `d0a43e4ce2` |
+| `MAILCHIMP_AUDIENCE_ID` | Audience (list) ID; see Netlify env or `reference_mailchimp.md` |
 | `CONTACT_WEBHOOK_URL` | Make.com webhook for contact intake |
 
 Set in `.env.local` (gitignored) and Netlify env vars.
@@ -120,7 +120,7 @@ Set in `.env.local` (gitignored) and Netlify env vars.
 ## Operations stack (live + wired)
 
 - **Inbox:** `hello@namicreative.co.uk` (Outlook).
-- **Mailchimp:** DC `us8`, audience `d0a43e4ce2`. Tags: `Subscriber` / `Enquiry`, plus source/type/budget sub-tags. See `reference_mailchimp.md`.
+- **Mailchimp:** DC `us8`, audience ID stored in `MAILCHIMP_AUDIENCE_ID`. Tags: `Subscriber` / `Enquiry`, plus source/type/budget sub-tags. See `reference_mailchimp.md`.
 - **Make.com:** org `Nami Creative` (id 3343287, eu2 region), team 1535336. Contact-form intake scenario id **9186508**. Webhook fires → notification email to `hello@` → Notion CRM row → optional Slack ping. See `reference_make.md`.
 - **Newsletter loop:** Mailchimp webhook on `subscribe` → Make → tag + log.
 - **Microsoft OAuth note:** the Outlook connection in Make expires fast. `invalid_grant` errors are usually token expiry, not logic bugs — reauthorize first. See `feedback_microsoft_oauth.md`.
