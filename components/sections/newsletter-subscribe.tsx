@@ -16,6 +16,8 @@ type Props = {
   variant?: "section" | "card";
   /** Single-column layout for narrow containers (e.g. sidebar) */
   compact?: boolean;
+  /** Stack copy on top of the form, centered. Keeps the full-size styling. */
+  stacked?: boolean;
 };
 
 export function NewsletterSubscribe({
@@ -26,10 +28,11 @@ export function NewsletterSubscribe({
       <span className="text-gradient">straight to inbox.</span>
     </>
   ),
-  lead = "Occasional writing on brand systems, content engines, and the work behind the work. No fluff, no filler.",
+  lead = "Occasional writing on brand systems, content engines, and the work behind the work. Built to be read, kept, and used.",
   className,
   variant = "section",
   compact = false,
+  stacked = false,
 }: Props) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -73,7 +76,9 @@ export function NewsletterSubscribe({
 
   const layoutClass = compact
     ? "space-y-6"
-    : "grid gap-10 md:grid-cols-[1.4fr_1fr] md:items-end md:gap-16";
+    : stacked
+      ? "flex flex-col items-center gap-8 text-center md:gap-10"
+      : "grid gap-10 md:grid-cols-[1.4fr_1fr] md:items-end md:gap-16";
 
   return (
     <section className={cn(wrapperClass, className)}>
@@ -86,7 +91,7 @@ export function NewsletterSubscribe({
       >
         <motion.div
           variants={fadeUp}
-          className={compact ? "" : "max-w-xl"}
+          className={compact ? "" : stacked ? "max-w-2xl" : "max-w-xl"}
         >
           <p className={cn("eyebrow", compact ? "mb-3" : "mb-4")}>{eyebrow}</p>
           <h2
@@ -112,7 +117,7 @@ export function NewsletterSubscribe({
         <motion.form
           variants={fadeUp}
           onSubmit={onSubmit}
-          className="space-y-3"
+          className={cn("space-y-3", stacked && "w-full max-w-xl")}
           aria-live="polite"
         >
           <label className="block">

@@ -35,3 +35,128 @@ export const faq: FAQ[] = [
       "Often, yes. If the brand foundation is strong and what's missing is execution, content systems, or growth infrastructure, we'll plug into what exists. If the foundation needs work, we'll tell you. Sometimes you have to fix the base before scaling on top of it.",
   },
 ];
+
+/**
+ * Per-service FAQ. Keyed by service slug. Falls back to the general `faq`
+ * above if a slug isn't covered here.
+ */
+export const serviceFaq: Record<string, FAQ[]> = {
+  "brand-strategy": [
+    {
+      question: "What actually ships at the end of a brand engagement?",
+      answer:
+        "Positioning, messaging architecture, tone of voice, visual identity system, and a brand framework you can run a business off. Decisions, not a 60-page deck.",
+    },
+    {
+      question: "Do you do naming?",
+      answer:
+        "Yes. Brand naming, product naming, sub-brand architecture. We'll only suggest a rename if the current name is actively holding you back; otherwise we work with what you have.",
+    },
+    {
+      question: "We already have a logo and some assets. Do we start over?",
+      answer:
+        "Not always. If the foundation is workable, we keep it and rebuild around it. If it's in the way, we'll tell you. Either way, you'll know before any redesign work starts.",
+    },
+    {
+      question: "How long does a brand build take?",
+      answer:
+        "Four to six weeks for a focused brand reset. Eight when website and content sit alongside it. Faster than that usually means the strategy isn't being done; slower usually means scope creep.",
+    },
+  ],
+
+  "content-systems": [
+    {
+      question: "Do you only build the system, or also write the content?",
+      answer:
+        "Both. We design the formats and frameworks, then produce against them: copy, scripts, visual briefs. After launch your team can take over with the playbook, or we keep producing alongside you.",
+    },
+    {
+      question: "Which platforms do you cover?",
+      answer:
+        "LinkedIn, Instagram, YouTube, email, and long-form essays are the usual core. We pick platforms based on where your audience actually buys, not where the trend is loudest.",
+    },
+    {
+      question: "How does AI fit in?",
+      answer:
+        "Selectively. AI accelerates research, drafts, and asset variations. It does not replace voice, judgement, or strategy. Anything that ships is human-checked.",
+    },
+    {
+      question: "Can you take over an existing content function?",
+      answer:
+        "Often. We audit what's working, kill what isn't, and rebuild around the formats that compound. Most takeovers cut output volume and grow reach in the same quarter.",
+    },
+  ],
+
+  "website-funnel": [
+    {
+      question: "How do you decide what to build the site on?",
+      answer:
+        "Stack is picked against the brief, not assumed. Lightweight when speed of iteration matters most. Custom code when the site needs to do real work: apps, dashboards, integrations. The decision is made in scoping so you know what you're getting before we build.",
+    },
+    {
+      question: "Do you handle hosting and ongoing maintenance?",
+      answer:
+        "Hosting setup is part of every build, on a stack matched to the site. Ongoing maintenance is part of a partnership engagement; one-off fixes run on a small retainer.",
+    },
+    {
+      question: "Rebuild on top of our current site, or full restart?",
+      answer:
+        "Both options exist. If the structure and content are sound and the issue is design or conversion, we redesign. If the foundations don't hold, we restart cleanly. An audit happens before any quote.",
+    },
+    {
+      question: "Will the site be fast and SEO-ready?",
+      answer:
+        "Yes by default. Performance budgets, semantic HTML, Core Web Vitals, structured data, and analytics are part of the build, not add-ons.",
+    },
+  ],
+
+  "visual-direction": [
+    {
+      question: "Do you shoot photography and video, or only direct it?",
+      answer:
+        "Both, depending on the brief. Smaller shoots run in-house. Larger productions are art-directed with trusted shooters and editors. You stay one point of contact.",
+    },
+    {
+      question: "We already have visual assets. Can you direct from those?",
+      answer:
+        "Yes. Most engagements blend new direction with existing libraries. The point is consistency across surfaces, not throwing everything out.",
+    },
+    {
+      question: "Is creative direction a one-off or ongoing?",
+      answer:
+        "Both work. One-off direction sets the visual system and asset library. Ongoing direction means we're in the loop on every campaign, content piece, and surface the brand shows up on.",
+    },
+    {
+      question: "Do you deliver editable assets and templates?",
+      answer:
+        "Always. Editable design libraries, source files, asset catalogues, and applied templates. Everything you need to keep producing on-brand without us in the room.",
+    },
+  ],
+
+  "automation-growth": [
+    {
+      question: "How do you decide what to build with?",
+      answer:
+        "Stack is picked for fit, not preference, and we lean toward tooling your team can operate after handoff. Where the workflow needs custom logic, we build custom; where standard tooling holds up, we use it. Either way, you get documentation and training, not a black box.",
+    },
+    {
+      question: "Will my team be able to maintain this after you leave?",
+      answer:
+        "That's the goal. Builds come with documentation, training, and a handoff session. If something genuinely needs ongoing engineering, we say so up front and scope a partnership rather than pretending it's plug-and-play.",
+    },
+    {
+      question: "Do you do custom integrations or only no-code?",
+      answer:
+        "Both. No-code is faster for standard workflows; custom code shows up where the system needs to do something the platforms don't. The trade-off is cost vs. flexibility, and we'll be straight about it.",
+    },
+    {
+      question: "How do you decide what's worth automating?",
+      answer:
+        "A workflow earns automation when it runs at least weekly, has a clear trigger, and the build pays back inside three months. Anything below that bar is usually faster left manual.",
+    },
+  ],
+};
+
+export function getServiceFaq(slug: string): FAQ[] {
+  return serviceFaq[slug] ?? faq;
+}

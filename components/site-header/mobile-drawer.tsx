@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -67,9 +68,20 @@ export function MobileDrawer() {
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="container-shell flex h-16 items-center justify-between md:h-20">
-                <span className="font-semibold tracking-tight text-lg text-fg">
-                  NAMI<span className="text-accent">.</span>
-                </span>
+                <Link
+                  href="/"
+                  onClick={() => setOpen(false)}
+                  aria-label="NAMI Creative · home"
+                  className="inline-flex items-center transition-opacity duration-300 hover:opacity-80"
+                >
+                  <Image
+                    src="/Nami-Logo.png"
+                    alt="NAMI Creative"
+                    width={200}
+                    height={40}
+                    className="h-7 w-auto"
+                  />
+                </Link>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}

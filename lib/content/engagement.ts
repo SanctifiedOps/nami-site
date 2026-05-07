@@ -50,9 +50,9 @@ export const engagements: EngagementModel[] = [
     name: "Systems + product",
     best: "For founders productising their brand or content engine.",
     description:
-      "Standalone systems work: Notion stacks, automated content pipelines, lead-capture infrastructure, brand templates. Built to be operated by your team, not us.",
+      "Standalone systems work: operations stacks, automated content pipelines, lead-capture infrastructure, brand templates. Built to be operated by your team, not us.",
     scope: [
-      "Notion + Make automation builds",
+      "Workflow + automation builds",
       "CRM + lifecycle pipelines",
       "Brand template systems",
       "Internal team training",

@@ -14,6 +14,8 @@ export type CaseStudy = {
   cover: string;
   pillars: string[];
   tagline: string;
+  /** Hero-title split: lead in default colour, accent in gradient on a new line. */
+  heroTitle: { lead: string; accent: string };
   oneLiner: string;
   brief: string;
   approach: string[];
@@ -37,6 +39,10 @@ export const work: CaseStudy[] = [
     cover: "/case-study/millions-cs.png",
     pillars: ["Brand", "Dashboard", "AI Systems", "Automation"],
     tagline: "If you're checking Dexscreener, you're already late.",
+    heroTitle: {
+      lead: "If you're checking Dexscreener,",
+      accent: "you're already late.",
+    },
     oneLiner: "Brand and live infrastructure for an on-chain signal service.",
     brief:
       "MILLIONS is a real-time signal service for Solana: wallet scoring, dev-pattern detection, cluster alerts, alpha-funding detection. The brand had to feel as sharp as the data underneath it, and the product had to ship as one piece: identity, dashboard, and automated alerting in lockstep.",
@@ -73,6 +79,10 @@ export const work: CaseStudy[] = [
     cover: "/case-study/league-cs.png",
     pillars: ["Brand", "Website", "Content", "Email"],
     tagline: "Where Extraordinary Humans Meet.",
+    heroTitle: {
+      lead: "Where Extraordinary",
+      accent: "Humans Meet.",
+    },
     oneLiner: "A members club brand built around character, not status.",
     brief:
       "The League is a private dining society for people who have defied the odds. The brand had to carry that level of selectivity without sliding into the usual luxury-club tropes, and the digital infrastructure had to run nationwide events, invite-only applications, and ongoing member communications.",
@@ -107,6 +117,10 @@ export const work: CaseStudy[] = [
     cover: "/case-study/barking-puppy-cs.png",
     pillars: ["Brand", "Content", "Community", "Automation"],
     tagline: "Bark Louder. Become Undeniable.",
+    heroTitle: {
+      lead: "Bark Louder.",
+      accent: "Become Undeniable.",
+    },
     oneLiner: "A full-stack community brand. Identity, tooling, and 7,000+ holders.",
     brief:
       "Barking Puppy needed every layer at once: brand identity, copy and content, on-chain tooling holders interact with daily, and the day-to-day community management that keeps a Solana memecoin community aligned over months, not just at launch.",
@@ -146,12 +160,16 @@ export const work: CaseStudy[] = [
     cover: "/case-study/vessl-cs.png",
     pillars: ["Website", "Funnel", "Automation"],
     tagline: "Strength in Motion.",
+    heroTitle: {
+      lead: "Strength in",
+      accent: "Motion.",
+    },
     oneLiner: "A premium landing funnel for a movement-first fitness platform.",
     brief:
       "VESSL needed a high-conversion landing page for a tiered fitness subscription, built mobile-first with iOS-grade polish, scoped as a single conversion path from ad traffic to plan signup. Honest by design: no fake metrics, no inflated trust badges.",
     approach: [
       "One funnel, one ask. The page reads as a single corridor: hero, proof of system, three-tier pricing, signup. Every section earns its place against the conversion goal; nothing decorative, nothing detouring.",
-      "Premium feel without the heavy framework. Built in React 19 + Vite with CSS-only styling, prefers-reduced-motion respected, motion used only where it carries information. iOS-feel typography and a restrained palette (Charcoal, Mist, Core Teal) so the brand reads premium on the smallest device first.",
+      "Premium feel without a heavy framework. Lightweight build, CSS-only styling, prefers-reduced-motion respected, motion used only where it carries information. iOS-feel typography and a restrained palette (Charcoal, Mist, Core Teal) so the brand reads premium on the smallest device first.",
       "Automation wired behind the form: lead capture, qualification, and routing. Every signup gets handled the same way without manual triage.",
     ],
     deliverables: [

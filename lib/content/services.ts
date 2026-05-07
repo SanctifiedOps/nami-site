@@ -66,7 +66,7 @@ export const services: Service[] = [
       "Site architecture + user flow",
       "Conversion-led copywriting",
       "Premium design system",
-      "Build in Next.js, Webflow, or Framer",
+      "Performance-led build",
       "Analytics + experimentation setup",
     ],
     outcome:
@@ -98,12 +98,12 @@ export const services: Service[] = [
     tagline:
       "The infrastructure that lets the brand keep up with the business.",
     description:
-      "Notion, Make, lifecycle email, lead-capture pipelines, content automations. The connective tissue between brand and operations so consistency scales without burning your team.",
+      "Operations stacks, lifecycle email, lead-capture pipelines, content automations. The connective tissue between brand and operations so consistency scales without burning your team.",
     icon: Zap,
     pillar: "Systems",
     deliverables: [
       "Lead-capture + nurture pipelines",
-      "CRM + Notion operations stack",
+      "CRM + operations stack",
       "Content automation workflows",
       "Email + lifecycle marketing",
       "Reporting + dashboard systems",

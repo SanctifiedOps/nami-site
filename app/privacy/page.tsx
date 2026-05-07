@@ -103,25 +103,26 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc space-y-2 pl-5">
               <li>
-                <strong className="text-fg">Mailchimp</strong> (Intuit Inc., USA
-                — UK-EU SCCs) — newsletter delivery and contact form intake.
+                <strong className="text-fg">Mailchimp</strong> (Intuit Inc.,
+                USA, under UK-EU SCCs): newsletter delivery and contact form
+                intake.
               </li>
               <li>
-                <strong className="text-fg">Make.com</strong> (Celonis SE, EU)
-                — workflow automation between site, Mailchimp, and our internal
+                <strong className="text-fg">Make.com</strong> (Celonis SE, EU):
+                workflow automation between site, Mailchimp, and our internal
                 tools.
               </li>
               <li>
                 <strong className="text-fg">Calendly</strong> (Calendly LLC,
-                USA — UK-EU SCCs) — discovery call scheduling, only if you
+                USA, under UK-EU SCCs): discovery call scheduling, only if you
                 choose to book one.
               </li>
               <li>
                 <strong className="text-fg">Google Analytics</strong> (Google
-                LLC, USA — UK-EU SCCs) — aggregated site usage analytics.
+                LLC, USA, under UK-EU SCCs): aggregated site usage analytics.
               </li>
               <li>
-                <strong className="text-fg">Hosting provider</strong> — serves
+                <strong className="text-fg">Hosting provider</strong>: serves
                 this website and processes the request logs noted above.
               </li>
             </ul>
@@ -186,11 +187,11 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc space-y-2 pl-5">
               <li>
-                <strong className="text-fg">Strictly necessary</strong> —
+                <strong className="text-fg">Strictly necessary:</strong>{" "}
                 preserving form state and basic session functionality.
               </li>
               <li>
-                <strong className="text-fg">Analytics</strong> — Google
+                <strong className="text-fg">Analytics:</strong> Google
                 Analytics sets `_ga` and `_ga_*` cookies to recognise return
                 visitors and aggregate session data. No advertising cookies
                 are set by us.

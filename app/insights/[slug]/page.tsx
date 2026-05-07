@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, ArrowLeft, Clock, Calendar } from "lucide-react";
@@ -7,6 +8,7 @@ import { PageHero } from "@/components/sections/page-hero";
 import { InsightsSidebar } from "@/components/insights/sidebar";
 import {
   getAllPosts,
+  getAllTags,
   getPostBySlug,
   formatPostDate,
 } from "@/lib/content/insights";
@@ -27,7 +29,7 @@ export async function generateMetadata({
   const post = await getPostBySlug(slug);
   if (!post) return { title: "Not found" };
   return {
-    title: `${post.title} — The Wake`,
+    title: `${post.title} · Creative Waves`,
     description: post.summary,
     openGraph: {
       title: post.title,
@@ -48,7 +50,7 @@ export default async function InsightPostPage({
   if (!post) notFound();
 
   const allPosts = await getAllPosts();
-  const pillars = Array.from(new Set(allPosts.map((p) => p.pillar)));
+  const tags = await getAllTags();
   const idx = allPosts.findIndex((p) => p.slug === slug);
   const next = allPosts[(idx + 1) % allPosts.length];
   const hasNext = allPosts.length > 1 && next.slug !== slug;
@@ -56,7 +58,7 @@ export default async function InsightPostPage({
   return (
     <>
       <PageHero
-        eyebrow={`The Wake · ${post.pillar}`}
+        eyebrow={`Creative Waves · ${post.pillar}`}
         title={post.title}
         lead={post.subtitle ?? post.summary}
       />
@@ -87,15 +89,27 @@ export default async function InsightPostPage({
       </section>
 
       {/* Article body + sidebar */}
-      <section className="container-shell py-16 md:py-20">
+      <section className="container-shell py-12 md:py-16">
         <div className="grid gap-12 lg:grid-cols-[1fr_320px] lg:gap-16">
           <article className="prose-insights">
+            {post.cover && (
+              <div className="not-prose relative mb-10 aspect-[16/9] overflow-hidden rounded-3xl border border-line bg-surface-1 md:mb-14">
+                <Image
+                  src={post.cover}
+                  alt={post.title}
+                  fill
+                  sizes="(min-width: 1024px) 65vw, 100vw"
+                  priority
+                  className="object-cover"
+                />
+              </div>
+            )}
             <MDXRemote source={post.body} />
           </article>
 
           <InsightsSidebar
             posts={allPosts}
-            pillars={pillars}
+            tags={tags}
             excludeSlug={slug}
             className="lg:sticky lg:top-28 lg:self-start"
           />

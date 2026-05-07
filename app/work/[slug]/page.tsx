@@ -43,7 +43,14 @@ export default async function CaseStudyPage({
     <>
       <PageHero
         eyebrow={`${study.index} · ${study.client} · ${study.sector}`}
-        title={study.tagline}
+        title={
+          <>
+            {study.heroTitle.lead}{" "}
+            <span className="text-gradient sm:block">
+              {study.heroTitle.accent}
+            </span>
+          </>
+        }
         lead={study.oneLiner}
       />
 

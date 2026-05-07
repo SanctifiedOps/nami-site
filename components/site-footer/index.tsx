@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import {
@@ -48,9 +49,15 @@ export function SiteFooter() {
       <div className="container-shell py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div className="space-y-4">
-            <span className="font-semibold tracking-tight text-xl text-fg">
-              NAMI<span className="text-accent">.</span> Creative
-            </span>
+            <Link href="/" aria-label="NAMI Creative · home" className="inline-flex -ml-2 items-center transition-opacity duration-300 hover:opacity-80">
+              <Image
+                src="/Nami-Logo.png"
+                alt="NAMI Creative"
+                width={200}
+                height={40}
+                className="h-8 w-auto md:h-9"
+              />
+            </Link>
             <p className="max-w-xs text-sm text-fg-muted leading-relaxed">
               A future-focused studio building brand identity, content
               systems, and growth infrastructure.

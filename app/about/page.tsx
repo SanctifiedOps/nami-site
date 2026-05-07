@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { LinkedinIcon } from "@/components/icons/socials";
 import { PageHero } from "@/components/sections/page-hero";
+import { Testimonials } from "@/components/sections/testimonials";
 import { values } from "@/lib/content/values";
 import { stage, stageFast, fadeUp, cardIn } from "@/lib/motion";
 
@@ -111,6 +112,9 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Testimonials */}
+      <Testimonials />
 
       {/* Founder note */}
       <section className="container-shell py-24 md:py-32 border-t border-line">

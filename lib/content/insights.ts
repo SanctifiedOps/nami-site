@@ -5,7 +5,7 @@ import matter from "gray-matter";
 import type { InsightFrontmatter, InsightPost } from "./insights-utils";
 
 export type { InsightFrontmatter, InsightPost } from "./insights-utils";
-export { formatPostDate } from "./insights-utils";
+export { formatPostDate, slugifyTag } from "./insights-utils";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "insights");
 
@@ -42,4 +42,20 @@ export async function getPostBySlug(
   } catch {
     return null;
   }
+}
+
+/**
+ * Unique tags across every post, preserving the original casing of the
+ * first occurrence. Sorted alphabetically.
+ */
+export async function getAllTags(): Promise<string[]> {
+  const posts = await getAllPosts();
+  const seen = new Map<string, string>();
+  for (const post of posts) {
+    for (const tag of post.tags ?? []) {
+      const key = tag.toLowerCase();
+      if (!seen.has(key)) seen.set(key, tag);
+    }
+  }
+  return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
 }

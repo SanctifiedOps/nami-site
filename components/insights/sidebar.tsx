@@ -7,7 +7,7 @@ import { NewsletterSubscribe } from "@/components/sections/newsletter-subscribe"
 import { stage, fadeUp } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import type { InsightPost } from "@/lib/content/insights-utils";
-import { formatPostDate } from "@/lib/content/insights-utils";
+import { formatPostDate, slugifyTag } from "@/lib/content/insights-utils";
 
 type Props = {
   /** Posts to surface in the "Latest" widget. Caller can pass filtered list. */
@@ -16,15 +16,15 @@ type Props = {
   className?: string;
   /** When rendered next to an article body, the slug to exclude from "Latest" */
   excludeSlug?: string;
-  /** Distinct pillars across all posts, for the categories widget */
-  pillars?: string[];
+  /** Distinct tags across all posts, rendered as clickable Topics chips. */
+  tags?: string[];
 };
 
 export function InsightsSidebar({
   posts,
   className,
   excludeSlug,
-  pillars,
+  tags,
 }: Props) {
   const recent = posts
     .filter((p) => p.slug !== excludeSlug)
@@ -50,7 +50,7 @@ export function InsightsSidebar({
               <span className="text-gradient">in your inbox.</span>
             </>
           }
-          lead="Occasional. Direct from the studio. No fluff."
+          lead="Occasional. Direct from the studio. Worth your inbox."
           className="p-7 md:p-8"
         />
       </motion.div>
@@ -85,19 +85,22 @@ export function InsightsSidebar({
         </motion.div>
       )}
 
-      {/* Pillars / categories widget */}
-      {pillars && pillars.length > 0 && (
+      {/* Tags / topics widget — clickable, links to filtered topic page */}
+      {tags && tags.length > 0 && (
         <motion.div
           variants={fadeUp}
           className="rounded-3xl border border-line bg-surface-1/40 p-8"
         >
           <p className="eyebrow mb-5">Topics</p>
           <ul className="flex flex-wrap gap-2">
-            {pillars.map((pillar) => (
-              <li key={pillar}>
-                <span className="inline-flex items-center rounded-full border border-line bg-surface-2/60 px-3 py-1.5 text-xs uppercase tracking-widest text-fg-muted">
-                  {pillar}
-                </span>
+            {tags.map((tag) => (
+              <li key={tag}>
+                <Link
+                  href={`/insights/topic/${slugifyTag(tag)}`}
+                  className="inline-flex items-center rounded-full border border-line bg-surface-2/60 px-3 py-1.5 text-xs uppercase tracking-widest text-fg-muted transition-colors hover:border-accent/60 hover:bg-accent/10 hover:text-fg"
+                >
+                  {tag}
+                </Link>
               </li>
             ))}
           </ul>
@@ -111,7 +114,7 @@ export function InsightsSidebar({
       >
         <p className="eyebrow mb-3">From the studio</p>
         <p className="text-sm text-fg-muted leading-relaxed mb-5">
-          The Wake is the studio notes for NAMI Creative. Brand, content,
+          Creative Waves: studio notes from NAMI Creative. Brand, content,
           and systems for founders building something deliberate.
         </p>
         <Link

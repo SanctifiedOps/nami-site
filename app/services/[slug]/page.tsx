@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, Check } from "lucide-react";
 import { services, getService } from "@/lib/content/services";
+import { getServiceFaq } from "@/lib/content/faq";
 import { PageHero } from "@/components/sections/page-hero";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
 
@@ -40,11 +41,29 @@ export default async function ServiceDetailPage({
   const idx = services.findIndex((s) => s.slug === slug);
   const next = services[(idx + 1) % services.length];
 
+  // Split the service title on " + " so the second half drops to a new line
+  // in the brand gradient (matches the rest of the site's hero treatment).
+  // Top line keeps an "&"; the accent line is sentence-cased.
+  const [titleLead, ...titleRest] = service.title.split(" + ");
+  const titleAccentRaw = titleRest.join(" + ");
+  const titleAccent = titleAccentRaw
+    ? titleAccentRaw.charAt(0).toUpperCase() + titleAccentRaw.slice(1)
+    : "";
+
   return (
     <>
       <PageHero
         eyebrow={`${service.index} · ${service.pillar}`}
-        title={service.title}
+        title={
+          titleAccent ? (
+            <>
+              {titleLead} &{" "}
+              <span className="text-gradient sm:block">{titleAccent}</span>
+            </>
+          ) : (
+            service.title
+          )
+        }
         lead={service.tagline}
       />
 
@@ -141,7 +160,7 @@ export default async function ServiceDetailPage({
             </span>
           </h2>
         </div>
-        <FAQAccordion />
+        <FAQAccordion items={getServiceFaq(slug)} />
       </section>
 
       {/* Next service */}
