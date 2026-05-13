@@ -197,7 +197,7 @@ export const work: CaseStudy[] = [
     year: "2023–2024",
     status: "Live",
     liveUrl: "https://energyconsultantsassociation.co.uk",
-    cover: "/case-study/eca-cs.png",
+    cover: "/case-study/eca-cs.webp",
     pillars: ["Brand", "Content", "Events", "Membership Ops"],
     tagline: "A trade body built to be heard.",
     heroTitle: {
