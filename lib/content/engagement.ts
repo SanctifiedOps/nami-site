@@ -14,9 +14,9 @@ export const engagements: EngagementModel[] = [
   {
     index: "01",
     name: "Project",
-    best: "For a defined brand or website build with a clear scope.",
+    best: "For a defined brand or website build with a clear brief.",
     description:
-      "Single engagement: typically a brand build, a website, or a positioning + content reset. Fixed scope, fixed timeline, deliverable handoff. We talk first, scope honestly, then build.",
+      "Single engagement: typically a brand build, a website, or a positioning + content reset. Fixed brief, fixed timeline, deliverable handoff. We talk first, plan honestly, then build.",
     scope: [
       "Brand strategy + identity",
       "Conversion-led website",
@@ -24,8 +24,8 @@ export const engagements: EngagementModel[] = [
       "Launch handoff",
     ],
     timeline: "4–8 weeks",
-    starting: "Scoped to the work",
-    cta: { label: "Scope a project", href: "/contact" },
+    starting: "Sized to the work",
+    cta: { label: "Plan a project", href: "/contact" },
   },
   {
     index: "02",
@@ -38,7 +38,7 @@ export const engagements: EngagementModel[] = [
       "Content pipeline + production",
       "Funnel + conversion iteration",
       "Automation + lifecycle marketing",
-      "New surface design as needed",
+      "New design work as needed",
     ],
     timeline: "Monthly cadence",
     starting: "Monthly retainer",
@@ -58,7 +58,7 @@ export const engagements: EngagementModel[] = [
       "Internal team training",
     ],
     timeline: "2–5 weeks",
-    starting: "Scoped to the work",
+    starting: "Sized to the work",
     cta: { label: "Talk systems", href: "/contact" },
   },
 ];

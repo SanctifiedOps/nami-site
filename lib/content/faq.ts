@@ -17,17 +17,17 @@ export const faq: FAQ[] = [
   {
     question: "How long does a typical engagement run?",
     answer:
-      "A foundational brand + website project usually lands in 6–8 weeks. From there, most clients continue on an ongoing partnership for content, automation, and creative direction. We scope the cadence to whatever fits the business.",
+      "A foundational brand + website project usually lands in 6–8 weeks. From there, most clients continue on an ongoing partnership for content, automation, and creative direction. We shape the cadence to whatever fits the business.",
   },
   {
     question: "Do you only do digital, or campaigns + print too?",
     answer:
-      "Both. Digital is the default surface (sites, content, automation), but visual direction extends across whatever the brand needs. Photography, video, print, packaging. The brand has to hold across surfaces.",
+      "Both. Digital is the default home (sites, content, automation), but visual direction extends across whatever the brand needs. Photography, video, print, packaging. The brand has to hold everywhere it shows up.",
   },
   {
     question: "What does it cost?",
     answer:
-      "Engagements are scoped to the work, not bundled into packages. We talk to every potential client first, understand what's needed, then quote against scope. If we're not the right fit on budget or scope, we'll say so honestly and point you somewhere that is.",
+      "Engagements are sized to the work, not bundled into packages. We talk to every potential client first, understand what's needed, then quote against the brief. If we're not the right fit on budget or shape, we'll say so honestly and point you somewhere that is.",
   },
   {
     question: "Can you work with our existing brand?",
@@ -60,7 +60,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "How long does a brand build take?",
       answer:
-        "Four to six weeks for a focused brand reset. Eight when website and content sit alongside it. Faster than that usually means the strategy isn't being done; slower usually means scope creep.",
+        "Four to six weeks for a focused brand reset. Eight when website and content sit alongside it. Faster than that usually means the strategy isn't being done; slower usually means a brief that keeps growing.",
     },
   ],
 
@@ -119,12 +119,12 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "We already have visual assets. Can you direct from those?",
       answer:
-        "Yes. Most engagements blend new direction with existing libraries. The point is consistency across surfaces, not throwing everything out.",
+        "Yes. Most engagements blend new direction with existing libraries. The point is consistency across the brand, not throwing everything out.",
     },
     {
       question: "Is creative direction a one-off or ongoing?",
       answer:
-        "Both work. One-off direction sets the visual system and asset library. Ongoing direction means we're in the loop on every campaign, content piece, and surface the brand shows up on.",
+        "Both work. One-off direction sets the visual system and asset library. Ongoing direction means we're in the loop on every campaign, content piece, and channel the brand shows up on.",
     },
     {
       question: "Do you deliver editable assets and templates?",
@@ -142,7 +142,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Will my team be able to maintain this after you leave?",
       answer:
-        "That's the goal. Builds come with documentation, training, and a handoff session. If something genuinely needs ongoing engineering, we say so up front and scope a partnership rather than pretending it's plug-and-play.",
+        "That's the goal. Builds come with documentation, training, and a handoff session. If something genuinely needs ongoing engineering, we say so up front and propose a partnership rather than pretending it's plug-and-play.",
     },
     {
       question: "Do you do custom integrations or only no-code?",

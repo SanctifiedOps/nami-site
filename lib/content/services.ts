@@ -76,7 +76,7 @@ export const services: Service[] = [
     slug: "visual-direction",
     index: "04",
     title: "Visual storytelling + creative direction",
-    tagline: "Make the brand instantly recognisable across every surface.",
+    tagline: "Make the brand instantly recognisable everywhere it shows up.",
     description:
       "Cohesive visual language across content, product, and campaign, directed so the brand reads consistently whether someone meets it on Instagram, in an inbox, or on a billboard.",
     icon: Eye,

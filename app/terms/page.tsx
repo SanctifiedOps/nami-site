@@ -42,7 +42,7 @@ export default function TermsPage() {
             <p>
               The site provides information about our services, case studies,
               and a way to contact us. Nothing on the site is a binding offer
-              of services. Engagements are scoped, agreed, and contracted
+              of services. Engagements are sized, agreed, and contracted
               separately in writing.
             </p>
           </Block>

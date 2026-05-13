@@ -19,7 +19,7 @@ export default function PricingPage() {
             <span className="text-gradient sm:block">work together.</span>
           </>
         }
-        lead="Engagements are scoped, not packaged. Pricing depends on surface area and depth. Here's how we structure the work."
+        lead="Engagements are sized to the work, not packaged. Pricing depends on the breadth and depth of the engagement. Here's how we structure the work."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -103,7 +103,7 @@ export default function PricingPage() {
         </motion.div>
       </section>
 
-      {/* How we scope */}
+      {/* How we shape work */}
       <section className="border-t border-line bg-surface-1/40 py-24 md:py-32">
         <div className="container-shell">
           <motion.div
@@ -114,18 +114,18 @@ export default function PricingPage() {
             className="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20"
           >
             <motion.p className="eyebrow md:mt-2" variants={fadeUp}>
-              Honest scope
+              Honest pricing
             </motion.p>
             <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
               <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
                 How we{" "}
-                <span className="text-gradient">scope work.</span>
+                <span className="text-gradient">shape work.</span>
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
                 We talk to every potential client first. Real conversation, not
                 a quote-bot. We'll understand what you're trying to build,
                 what's working, what's stuck, and what good would look like in
-                six months. Then we scope honestly to that.
+                six months. Then we plan honestly to that.
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
                 Some engagements need the whole system. Some need a brand

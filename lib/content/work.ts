@@ -48,7 +48,7 @@ export const work: CaseStudy[] = [
       "MILLIONS is a real-time signal service for Solana: wallet scoring, dev-pattern detection, cluster alerts, alpha-funding detection. The brand had to feel as sharp as the data underneath it, and the product had to ship as one piece: identity, dashboard, and automated alerting in lockstep.",
     approach: [
       "Brand work set the tone: confident, technical, transparent. Identity leans into the precision side of on-chain rather than the speculation side, separating MILLIONS from the noise of generic alpha groups. The voice quotes the product's own logic: 'we follow the money.'",
-      "The live dashboard surfaces four scoring engines in one place: smart-wallet tracking, dev-wallet scoring, cluster detection, alpha-funding detection. Re-ranking runs continuously, cold wallets auto-demote, hot ones surface. Methodology is published, not black-boxed.",
+      "The live dashboard pulls four scoring engines into one place: smart-wallet tracking, dev-wallet scoring, cluster detection, alpha-funding detection. Re-ranking runs continuously, cold wallets auto-demote, hot ones rise. Methodology is published, not black-boxed.",
       "Automation closes the loop. Signals fire to Discord and Telegram in under a second of the on-chain event, hitting subscribers where they already are instead of asking them to refresh another tab.",
     ],
     deliverables: [
@@ -88,7 +88,7 @@ export const work: CaseStudy[] = [
       "The League is a private dining society for people who have defied the odds. The brand had to carry that level of selectivity without sliding into the usual luxury-club tropes, and the digital infrastructure had to run nationwide events, invite-only applications, and ongoing member communications.",
     approach: [
       "Positioning came first: 'we don't measure worth by wealth, title, or fame.' Voice, identity, and applied guidelines designed to read as confident and quietly elitist, never loud about it. Selection is by character, story, and achievement; the brand had to embody that.",
-      "The website was scoped as the application surface. Every visitor is a potential member, every page nudges toward the invitation conversation. Conversion structure runs underneath an editorial-feeling experience.",
+      "The website was built as the application entry point. Every visitor is a potential member, every page nudges toward the invitation conversation. Conversion structure runs underneath an editorial-feeling experience.",
       "Content and lifecycle email tie the brand into how members meet the club between events: gathering announcements, speaker reveals, post-event follow-ups, and the steady-state communications that hold a private community together.",
     ],
     deliverables: [
@@ -125,7 +125,7 @@ export const work: CaseStudy[] = [
     brief:
       "Barking Puppy needed every layer at once: brand identity, copy and content, on-chain tooling holders interact with daily, and the day-to-day community management that keeps a Solana memecoin community aligned over months, not just at launch.",
     approach: [
-      "Voice came first. 'Actions before words. Proof before promises.' / 'The blockchain doesn't lie.' / 'Stand with the underdog.' Applied across every surface holders touch, from the website to Discord pinned posts to charity drop announcements.",
+      "Voice came first. 'Actions before words. Proof before promises.' / 'The blockchain doesn't lie.' / 'Stand with the underdog.' Applied everywhere holders touch the brand, from the website to Discord pinned posts to charity drop announcements.",
       "Tooling layer: a PFP generator for holders to mint identity in the brand, a community game, and a live dashboard with automated Discord alerts on contract activity. The community has utility to point at, not just promises.",
       "Community management runs in parallel: moderation, content cadence, holder communications, and the steady drumbeat that turns a launch crowd into a real community of 7,000+ holders.",
     ],
@@ -166,7 +166,7 @@ export const work: CaseStudy[] = [
     },
     oneLiner: "A premium landing funnel for a movement-first fitness platform.",
     brief:
-      "VESSL needed a high-conversion landing page for a tiered fitness subscription, built mobile-first with iOS-grade polish, scoped as a single conversion path from ad traffic to plan signup. Honest by design: no fake metrics, no inflated trust badges.",
+      "VESSL needed a high-conversion landing page for a tiered fitness subscription, built mobile-first with iOS-grade polish, designed as a single conversion path from ad traffic to plan signup. Honest by design: no fake metrics, no inflated trust badges.",
     approach: [
       "One funnel, one ask. The page reads as a single corridor: hero, proof of system, three-tier pricing, signup. Every section earns its place against the conversion goal; nothing decorative, nothing detouring.",
       "Premium feel without a heavy framework. Lightweight build, CSS-only styling, prefers-reduced-motion respected, motion used only where it carries information. iOS-feel typography and a restrained palette (Charcoal, Mist, Core Teal) so the brand reads premium on the smallest device first.",

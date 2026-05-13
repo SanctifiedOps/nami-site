@@ -12,7 +12,7 @@ export const processSteps: ProcessStep[] = [
     title: "Discovery + positioning",
     duration: "Weeks 1–2",
     summary:
-      "Get inside the business, surface what's true, and lock the strategic narrative.",
+      "Get inside the business, uncover what's true, and lock the strategic narrative.",
     detail: [
       "Stakeholder + customer interviews",
       "Market + competitor audit",
@@ -56,7 +56,7 @@ export const processSteps: ProcessStep[] = [
       "Monthly creative direction",
       "Content pipeline support",
       "Conversion + funnel iteration",
-      "New surface design as needed",
+      "New design work as needed",
     ],
   },
 ];

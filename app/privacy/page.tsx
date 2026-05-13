@@ -80,7 +80,7 @@ export default function PrivacyPage() {
 
           <Block title="How we use it">
             <ul className="list-disc space-y-2 pl-5">
-              <li>To respond to enquiries and scope work with you.</li>
+              <li>To respond to enquiries and plan work with you.</li>
               <li>
                 To send newsletter emails you have explicitly subscribed to,
                 until you unsubscribe.
