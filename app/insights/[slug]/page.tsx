@@ -6,6 +6,7 @@ import { ArrowUpRight, ArrowLeft, Clock, Calendar } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { PageHero } from "@/components/sections/page-hero";
 import { InsightsSidebar } from "@/components/insights/sidebar";
+import { SocialShare } from "@/components/insights/social-share";
 import {
   getAllPosts,
   getAllTags,
@@ -105,6 +106,7 @@ export default async function InsightPostPage({
               </div>
             )}
             <MDXRemote source={post.body} />
+            <SocialShare slug={post.slug} title={post.title} />
           </article>
 
           <InsightsSidebar

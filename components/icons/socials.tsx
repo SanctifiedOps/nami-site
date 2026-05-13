@@ -49,3 +49,12 @@ export function FacebookIcon({ size = 16, ...rest }: IconProps) {
     </svg>
   );
 }
+
+export function XIcon({ size = 16, ...rest }: IconProps) {
+  return (
+    <svg {...baseProps(size)} {...rest}>
+      <path d="M4 4l16 16" />
+      <path d="M20 4L4 20" />
+    </svg>
+  );
+}
