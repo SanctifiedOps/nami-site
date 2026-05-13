@@ -122,6 +122,52 @@ async function notifyMake(d: Cleaned): Promise<void> {
   }
 }
 
+async function notifyDashboard(d: Cleaned): Promise<void> {
+  const url = process.env.DASHBOARD_LEAD_WEBHOOK_URL;
+  const secret = process.env.DASHBOARD_LEAD_WEBHOOK_SECRET;
+  if (!url || !secret) {
+    console.warn(
+      "DASHBOARD_LEAD_WEBHOOK_URL or DASHBOARD_LEAD_WEBHOOK_SECRET not set — skipping dashboard notify.",
+    );
+    return;
+  }
+
+  // The dashboard wants a single `name` plus an enriched `message` so the
+  // CRM activity log shows the brief context (project type + budget) without
+  // needing extra schema fields.
+  const fullName = [d.firstName, d.lastName].filter(Boolean).join(" ").trim();
+  const enrichedMessage = [
+    d.message,
+    d.projectType ? `Project type: ${d.projectType}` : null,
+    d.budget ? `Budget: ${d.budget}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${secret}`,
+    },
+    body: JSON.stringify({
+      name: fullName,
+      email: d.email,
+      company: d.company || undefined,
+      message: enrichedMessage,
+      subject: d.projectType
+        ? `Contact form — ${d.projectType}`
+        : "Contact form submission",
+      source: "website",
+      sourceRef: "namicreative.co.uk/contact",
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    console.warn("Dashboard webhook non-2xx:", res.status, body.slice(0, 400));
+  }
+}
+
 export async function POST(req: Request) {
   let payload: ContactPayload;
   try {
@@ -156,22 +202,25 @@ export async function POST(req: Request) {
     );
   }
 
-  // Run notify + upsert in parallel. Both are best-effort: as long as
-  // one path captures the lead we return success. Failures are logged
+  // Run all three pathways in parallel. Each is best-effort: as long as
+  // one captures the lead we return success. Failures are logged
   // server-side for follow-up.
-  const [makeRes, mcRes] = await Promise.allSettled([
+  const [makeRes, mcRes, dashRes] = await Promise.allSettled([
     notifyMake(d),
     upsertMailchimp(d),
+    notifyDashboard(d),
   ]);
 
   const makeOk = makeRes.status === "fulfilled";
   const mcOk = mcRes.status === "fulfilled";
+  const dashOk = dashRes.status === "fulfilled";
 
-  if (!makeOk && !mcOk) {
+  if (!makeOk && !mcOk && !dashOk) {
     console.error(
-      "Both contact pathways failed:",
+      "All contact pathways failed:",
       makeRes.status === "rejected" ? makeRes.reason : null,
       mcRes.status === "rejected" ? mcRes.reason : null,
+      dashRes.status === "rejected" ? dashRes.reason : null,
     );
     return NextResponse.json(
       { error: "We couldn't send your message. Please email hello@namicreative.co.uk." },
