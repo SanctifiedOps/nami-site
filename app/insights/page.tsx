@@ -56,9 +56,16 @@ export default async function InsightsPage() {
               {/* Featured post — full-width prominent card */}
               {featured && <PostCard post={featured} variant="featured" />}
 
-              {/* Rest of posts */}
+              {/* Rest of posts — single column when there's only one
+                  non-featured post so it sits at full width below the
+                  featured hero instead of orphaning in a half-width grid
+                  cell. 2-col grid returns automatically with 2+ posts. */}
               {rest.length > 0 && (
-                <ul className="mt-10 grid gap-6 md:grid-cols-2 md:gap-8">
+                <ul
+                  className={`mt-10 grid gap-6 md:gap-8 ${
+                    rest.length >= 2 ? "md:grid-cols-2" : "grid-cols-1"
+                  }`}
+                >
                   {rest.map((post) => (
                     <li key={post.slug}>
                       <PostCard post={post} />
