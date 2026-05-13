@@ -18,7 +18,12 @@ export function PostCard({ post, variant = "grid", className }: Props) {
     <Link
       href={`/insights/${post.slug}`}
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-surface-1/60 backdrop-blur-md transition-colors hover:border-accent/40",
+        "group flex flex-col overflow-hidden rounded-3xl border border-line bg-surface-1/60 backdrop-blur-md transition-colors hover:border-accent/40",
+        // Only grid cards need h-full (so siblings in the 2-col grid match
+        // heights). The featured card should size to its own content,
+        // otherwise it stretches to fill the column when the sticky
+        // sidebar is taller, ballooning the body section.
+        !isFeatured && "h-full",
         className,
       )}
     >
