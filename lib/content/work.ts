@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Crown, Activity, Dog, Dumbbell } from "lucide-react";
+import { Crown, Activity, Dog, Dumbbell, Zap } from "lucide-react";
 
 export type CaseStudyAccent = "magenta" | "cyan" | "amber" | "violet";
 
@@ -186,6 +186,48 @@ export const work: CaseStudy[] = [
       { label: "Trial", value: "7-day free, no commitment" },
     ],
     icon: Dumbbell,
+    accent: "cyan",
+    featured: false,
+  },
+  {
+    slug: "energy-consultants-association",
+    index: "05",
+    client: "Energy Consultants Association",
+    sector: "Trade body · UK energy industry",
+    year: "2023–2024",
+    status: "Live",
+    liveUrl: "https://energyconsultantsassociation.co.uk",
+    cover: "/case-study/eca-cs.png",
+    pillars: ["Brand", "Content", "Events", "Membership Ops"],
+    tagline: "A trade body built to be heard.",
+    heroTitle: {
+      lead: "A trade body",
+      accent: "built to be heard.",
+    },
+    oneLiner:
+      "Brand, member operations, and a Westminster-ready presence for the UK's independent energy consultants.",
+    brief:
+      "The ECA is the independent, not-for-profit trade body for UK energy consultants. The brand had to carry weight with members, suppliers, regulators, and Westminster in the same breath, and the operations had to scale from a standing start into a recognised industry voice. Identity, member ops, content, and live presence built as one piece.",
+    approach: [
+      "Positioning came first. Independent. Not-for-profit. Built by consultants, for consultants. Identity, voice, and applied guidelines designed to read as serious enough for regulators and policymakers while staying clearly owned by the members it represents. The brand had to sit on a Westminster briefing or an industry main stage without missing a beat.",
+      "Member operations wired end-to-end. Onboarding campaigns, membership billing, and the steady-state communications that hold a trade body together between events. A webinar programme built around the issues members actually care about: Commission Claims Defence, Ofgem Non-Domestic Reviews, Flexible Purchasing. Members hear from the association consistently, not just at renewal.",
+      "Visibility was the multiplier. AGMs and member events run in person, speaking spaces secured at Energy Live News (one of the largest utilities roadshows in the UK), and direct campaign work alongside Sarah Edwards MP that took the association inside Downing Street. Every appearance reinforced the same message: consultants deserve a seat at the table.",
+    ],
+    deliverables: [
+      "Brand identity, voice, and applied guidelines",
+      "Member onboarding campaigns",
+      "Membership onboarding + billing operations",
+      "Webinar programme (regulatory + commercial topics)",
+      "AGMs and in-person member events",
+      "Speaker placements + Westminster campaign presence",
+    ],
+    outcomes: [
+      { label: "Members onboarded", value: "75" },
+      { label: "Time to scale", value: "18 months" },
+      { label: "Industry stage", value: "Energy Live News" },
+      { label: "Westminster", value: "Downing Street campaign" },
+    ],
+    icon: Zap,
     accent: "cyan",
     featured: false,
   },
