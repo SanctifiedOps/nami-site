@@ -38,7 +38,7 @@ function ServicesCtaCard() {
           className="pointer-events-none absolute -inset-px rounded-2xl opacity-60 transition-opacity duration-500 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(450px circle at 70% 100%, rgb(230 50 175 / 0.22), transparent 70%)",
+              "radial-gradient(450px circle at 70% 100%, rgb(255 0 188 / 0.22), transparent 70%)",
           }}
         />
 
@@ -66,7 +66,7 @@ function ServicesCtaCard() {
             </p>
           </div>
 
-          <div className="mt-auto inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(230_50_175/0.25)] transition-shadow duration-500 group-hover:shadow-[0_8px_32px_rgb(230_50_175/0.5)] w-fit">
+          <div className="mt-auto inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-shadow duration-500 group-hover:shadow-[0_8px_32px_rgb(255_0_188/0.5)] w-fit">
             Open a conversation
             <ArrowUpRight
               size={14}

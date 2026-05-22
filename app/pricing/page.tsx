@@ -37,7 +37,7 @@ export default function PricingPage() {
               className={cn(
                 "relative flex flex-col rounded-2xl border bg-surface-1/60 p-6 backdrop-blur-md md:p-8 lg:p-10",
                 e.highlight
-                  ? "border-accent/40 shadow-[0_0_60px_rgb(230_50_175/0.15)]"
+                  ? "border-accent/40 shadow-[0_0_60px_rgb(255_0_188/0.15)]"
                   : "border-line",
               )}
             >
@@ -87,7 +87,7 @@ export default function PricingPage() {
                 className={cn(
                   "group mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300",
                   e.highlight
-                    ? "bg-accent text-white shadow-[0_4px_16px_rgb(230_50_175/0.3)] hover:bg-accent-soft"
+                    ? "bg-accent text-white shadow-[0_4px_16px_rgb(255_0_188/0.3)] hover:bg-accent-soft"
                     : "border border-line-strong text-fg hover:bg-white/5 hover:border-accent",
                 )}
               >

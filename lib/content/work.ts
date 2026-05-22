@@ -246,9 +246,9 @@ export const ACCENT_GRADIENTS: Record<
   { from: string; to: string; glow: string }
 > = {
   magenta: {
-    from: "rgb(230 50 175 / 0.55)",
+    from: "rgb(255 0 188 / 0.55)",
     to: "rgb(100 200 255 / 0.18)",
-    glow: "rgb(230 50 175 / 0.25)",
+    glow: "rgb(255 0 188 / 0.25)",
   },
   cyan: {
     from: "rgb(100 200 255 / 0.5)",
@@ -257,7 +257,7 @@ export const ACCENT_GRADIENTS: Record<
   },
   amber: {
     from: "rgb(255 180 80 / 0.5)",
-    to: "rgb(230 50 175 / 0.2)",
+    to: "rgb(255 0 188 / 0.2)",
     glow: "rgb(255 180 80 / 0.22)",
   },
   violet: {

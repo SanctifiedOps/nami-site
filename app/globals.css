@@ -22,9 +22,9 @@
   --color-fg-subtle: rgb(140 142 150);
 
   /* brand accents */
-  --color-accent: #e632af;
-  --color-accent-soft: #ff64c8;
-  --color-accent-deep: #7a1158;
+  --color-accent: #ff00bc;
+  --color-accent-soft: #ff66db;
+  --color-accent-deep: #800060;
   --color-accent-2: #64c8ff;
 
   /* hairlines + glass */
@@ -50,8 +50,8 @@
   --shadow-sm: 0 2px 8px rgb(0 0 0 / 0.15);
   --shadow-md: 0 8px 24px rgb(0 0 0 / 0.2);
   --shadow-lg: 0 16px 48px rgb(0 0 0 / 0.25);
-  --shadow-glow: 0 8px 32px rgb(230 50 175 / 0.25);
-  --shadow-glow-lg: 0 16px 48px rgb(230 50 175 / 0.3);
+  --shadow-glow: 0 8px 32px rgb(255 0 188 / 0.25);
+  --shadow-glow-lg: 0 16px 48px rgb(255 0 188 / 0.3);
 
   /* container */
   --container-max: 88rem; /* 1408px — premium width */

@@ -53,7 +53,7 @@ export function HeroParticles() {
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
       {particles.map((p) => {
-        const colour = p.isCyan ? "rgb(100 200 255)" : "rgb(230 50 175)";
+        const colour = p.isCyan ? "rgb(100 200 255)" : "rgb(255 0 188)";
         return (
           <motion.span
             key={p.id}

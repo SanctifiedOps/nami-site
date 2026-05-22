@@ -20,7 +20,7 @@ export default function NotFound() {
             maxHeight: "900px",
             filter: "blur(110px)",
             background:
-              "radial-gradient(circle, rgb(230 50 175 / 0.35) 0%, rgb(100 200 255 / 0.15) 30%, transparent 65%)",
+              "radial-gradient(circle, rgb(255 0 188 / 0.35) 0%, rgb(100 200 255 / 0.15) 30%, transparent 65%)",
           }}
         />
         <div
@@ -53,7 +53,7 @@ export default function NotFound() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/"
-              className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(230_50_175/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(230_50_175/0.5)]"
+              className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
             >
               <ArrowLeft
                 size={14}

@@ -167,7 +167,7 @@ export default function ContactPage() {
                 type="submit"
                 disabled={status === "submitting"}
                 className={cn(
-                  "group relative inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(230_50_175/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(230_50_175/0.5)] disabled:opacity-60",
+                  "group relative inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)] disabled:opacity-60",
                 )}
               >
                 {status === "submitting" ? "Sending..." : "Start the conversation"}

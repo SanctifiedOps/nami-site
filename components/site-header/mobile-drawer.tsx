@@ -146,7 +146,7 @@ export function MobileDrawer() {
                 >
                   <Link
                     href={ctaNav.href}
-                    className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 text-base font-semibold text-white shadow-[0_4px_16px_rgb(230_50_175/0.25)] transition-all hover:bg-accent-soft"
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 text-base font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-all hover:bg-accent-soft"
                   >
                     {ctaNav.label}
                     <ArrowUpRight size={18} aria-hidden />

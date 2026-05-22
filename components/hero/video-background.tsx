@@ -75,7 +75,7 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
         className="absolute inset-0 mix-blend-soft-light opacity-60"
         style={{
           background:
-            "radial-gradient(ellipse at 30% 0%, rgb(230 50 175 / 0.35) 0%, transparent 60%), radial-gradient(ellipse at 80% 100%, rgb(100 200 255 / 0.25) 0%, transparent 65%)",
+            "radial-gradient(ellipse at 30% 0%, rgb(255 0 188 / 0.35) 0%, transparent 60%), radial-gradient(ellipse at 80% 100%, rgb(100 200 255 / 0.25) 0%, transparent 65%)",
         }}
       />
     </div>

@@ -55,7 +55,7 @@ export function ServiceCard({ service, className }: Props) {
           className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(400px circle at 50% 0%, rgb(230 50 175 / 0.18), transparent 70%)",
+              "radial-gradient(400px circle at 50% 0%, rgb(255 0 188 / 0.18), transparent 70%)",
           }}
         />
 

@@ -37,7 +37,7 @@ export function SiteFooter() {
           <div className="flex md:justify-end">
             <Link
               href={ctaNav.href}
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(230_50_175/0.25)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_32px_rgb(230_50_175/0.4)] hover:-translate-y-px"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_32px_rgb(255_0_188/0.4)] hover:-translate-y-px"
             >
               Start a project
               <ArrowUpRight size={16} aria-hidden />

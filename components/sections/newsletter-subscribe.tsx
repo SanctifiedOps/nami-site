@@ -148,7 +148,7 @@ export function NewsletterSubscribe({
                   type="submit"
                   disabled={status === "submitting" || status === "success"}
                   className={cn(
-                    "group mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(230_50_175/0.25)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_32px_rgb(230_50_175/0.4)] disabled:opacity-60",
+                    "group mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_32px_rgb(255_0_188/0.4)] disabled:opacity-60",
                   )}
                 >
                   {status === "success" ? (
@@ -192,7 +192,7 @@ export function NewsletterSubscribe({
                   type="submit"
                   disabled={status === "submitting" || status === "success"}
                   className={cn(
-                    "group absolute right-1.5 top-1/2 inline-flex -translate-y-1/2 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(230_50_175/0.25)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_32px_rgb(230_50_175/0.4)] disabled:opacity-60",
+                    "group absolute right-1.5 top-1/2 inline-flex -translate-y-1/2 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_32px_rgb(255_0_188/0.4)] disabled:opacity-60",
                   )}
                 >
                   {status === "success" ? (
