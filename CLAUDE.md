@@ -4,7 +4,7 @@ This file is the single source of truth for any Claude instance working in this 
 
 ## The business
 
-**NAMI Creative** is a one-person creative marketing studio operated by **Joe Wilson** (founder, sole operator). Trading as NAMI Creative; site at **namicreative.co.uk**. UK-based, sells globally.
+**NAMI Creative** is a one-person creative marketing studio operated by **Joe Wilson** (founder, sole operator). Trading as NAMI Creative; site at **namicreative.co.uk**. Based in Jarrow, Tyne and Wear (Newcastle area), UK. Sells globally.
 
 The studio sells one integrated offer: **brand, content, websites, visual direction, and growth automation, built by the same hands.** The pitch is that strategy, design, and systems aren't separable when the goal is compounding growth — splitting them across vendors is where most brands fall apart.
 
@@ -59,8 +59,11 @@ Process is four phases (`lib/content/process.ts`): **01 Discovery + positioning*
 | **The League** | Members club · UK | Live | Positioning, identity, conversion-led website, lifecycle email. Invitation-only private dining society, nationwide UK. |
 | **Barking Puppy** | Community brand · Solana | Ongoing | Full-stack: identity, copy, PFP generator, dashboard, Telegram bot, community management. 7,000+ holders. |
 | **VESSL** | Fitness · DTC | Recently shipped | Premium mobile-first landing funnel, three-tier pricing, lead automation. React 19 + Vite, CSS-only. |
+| **Energy Consultants Association** | Trade body · UK energy industry | Live | Brand, member operations, webinar programme, AGMs, Westminster campaign presence (Downing Street, Sarah Edwards MP). 75 members onboarded across 18 months. |
 
-When discussing work, default to these four. Don't invent other clients.
+When discussing work, default to these five. Don't invent other clients.
+
+**Public portfolio vs paying roster.** The five case studies above are the *public proof* — the work NAMI links to externally as marketing claims. The current paying engagements (live MRR) are a separate list: WPG/NEHB, VESSL, and The League. Two of the five public studies (VESSL, The League) overlap with the paying roster; the other three don't, and one paying client (WPG/NEHB) is intentionally not on the public portfolio. Use the public five for proof copy; never claim those five are "current clients," and never name WPG/NEHB on public-facing copy.
 
 ## Tone + voice (read this carefully)
 
@@ -74,7 +77,8 @@ The brand voice is the whole product. Match it in any user-facing copy you write
 
 **Signature phrases (verbatim — quote, don't paraphrase):**
 - "We Build Brands That Move With Meaning."
-- "Creative systems built for real-world momentum."
+- "Your business shouldn't depend on you being in every room."
+- "Self-sustaining creative ecosystems."
 - "Clarity Over Chaos."
 - "Creative With Weight."
 - "Systems That Carry You."
