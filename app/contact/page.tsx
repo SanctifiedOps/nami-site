@@ -29,7 +29,7 @@ export default function ContactPage() {
       email: String(fd.get("email") ?? ""),
       company: String(fd.get("company") ?? ""),
       projectType: String(fd.get("projectType") ?? ""),
-      budget: String(fd.get("budget") ?? ""),
+      budget: "", // captured on the call, not the form
       message: String(fd.get("message") ?? ""),
       website: String(fd.get("website") ?? ""), // honeypot
     };
@@ -147,16 +147,6 @@ export default function ContactPage() {
               </Select>
             </motion.div>
             <motion.div variants={fadeUp}>
-              <Select label="Budget range" name="budget">
-                <option value="">Choose one</option>
-                <option value="under-5k">Under £5k</option>
-                <option value="5-15k">£5k to £15k</option>
-                <option value="15-40k">£15k to £40k</option>
-                <option value="40k+">£40k+</option>
-                <option value="not-sure">Not sure yet</option>
-              </Select>
-            </motion.div>
-            <motion.div variants={fadeUp}>
               <TextArea
                 label="What are you working on?"
                 name="message"
@@ -165,6 +155,13 @@ export default function ContactPage() {
                 required
               />
             </motion.div>
+            <motion.p
+              variants={fadeUp}
+              className="text-xs text-fg-subtle leading-relaxed"
+            >
+              We&apos;ll cover scope and budget on the call. The form is just
+              the way in.
+            </motion.p>
             <motion.div variants={fadeUp} className="space-y-3">
               <button
                 type="submit"
@@ -173,7 +170,7 @@ export default function ContactPage() {
                   "group relative inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(230_50_175/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(230_50_175/0.5)] disabled:opacity-60",
                 )}
               >
-                {status === "submitting" ? "Sending..." : "Send the brief"}
+                {status === "submitting" ? "Sending..." : "Start the conversation"}
                 <ArrowUpRight
                   size={16}
                   aria-hidden
@@ -196,8 +193,8 @@ export default function ContactPage() {
                 </p>
               )}
               <p className="text-xs text-fg-subtle leading-relaxed">
-                By sending the brief you consent to us holding the details to
-                respond. See our{" "}
+                By starting the conversation you consent to us holding the
+                details to respond. See our{" "}
                 <a
                   href="/privacy"
                   className="underline underline-offset-4 hover:text-fg-muted transition-colors"

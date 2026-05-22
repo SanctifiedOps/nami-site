@@ -5,6 +5,12 @@ import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { CustomCursor } from "@/components/providers/custom-cursor";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import {
+  JsonLd,
+  organizationSchema,
+  localBusinessSchema,
+  websiteSchema,
+} from "@/components/seo/json-ld";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,20 +19,20 @@ export const metadata: Metadata = {
     template: "%s · NAMI Creative",
   },
   description:
-    "NAMI Creative is a future-focused studio building brands with structure, identity, and impact. Waves of creative impact, from identity to execution and launch to scale.",
+    "NAMI Creative builds self-sustaining creative ecosystems for founders. One creative partner across brand, content, websites, visual direction, and growth automation, so your business stops depending on you being in every room. Newcastle-built, working globally.",
   metadataBase: new URL("https://namicreative.co.uk"),
   openGraph: {
     type: "website",
     locale: "en_GB",
     title: "NAMI Creative · Brand, Content, Systems",
     description:
-      "A future-focused studio aligning brand, content, and systems into one cohesive structure. Waves of creative impact.",
+      "Self-sustaining creative ecosystems for founders. One studio across brand, content, websites, visual direction, and growth automation.",
     images: [
       {
         url: "/assets/images/Nami-OG.png",
         width: 1600,
         height: 1000,
-        alt: "NAMI Creative · Waves of creative impact",
+        alt: "NAMI Creative · Self-sustaining creative ecosystems for founders",
       },
     ],
   },
@@ -34,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NAMI Creative · Brand, Content, Systems",
     description:
-      "A future-focused studio aligning brand, content, and systems into one cohesive structure. Waves of creative impact.",
+      "Self-sustaining creative ecosystems for founders. One studio across brand, content, websites, visual direction, and growth automation.",
     images: ["/assets/images/Nami-OG.png"],
   },
   icons: {
@@ -56,6 +62,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-surface-0 text-fg antialiased">
+        <JsonLd
+          schema={[organizationSchema, localBusinessSchema, websiteSchema]}
+        />
         <SmoothScroll />
         <CustomCursor />
         <SiteHeader />

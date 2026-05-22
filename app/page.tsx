@@ -10,6 +10,8 @@ import { WorkGrid } from "@/components/sections/work-grid";
 import { Testimonials } from "@/components/sections/testimonials";
 import { RecentInsights } from "@/components/sections/recent-insights";
 import { getAllPosts } from "@/lib/content/insights";
+import { faq } from "@/lib/content/faq";
+import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 
 export default async function Home() {
   const posts = await getAllPosts();
@@ -17,6 +19,7 @@ export default async function Home() {
 
   return (
     <>
+      <JsonLd schema={buildFaqPageSchema(faq)} />
       <HomeHero />
 
       <PositioningBand />
@@ -28,16 +31,17 @@ export default async function Home() {
             eyebrow="What we build"
             title={
               <>
-                Five pillars that hold{" "}
+                One studio for the five pieces that should{" "}
                 <span className="text-gradient sm:block">
-                  the brand, end to end.
+                  never have been split.
                 </span>
               </>
             }
           />
           <p className="text-fg-muted md:text-lg leading-relaxed">
-            Most studios pick one. We integrate all five so the work stops
-            fragmenting and starts compounding.
+            Most teams hire a brand designer, a content person, a web developer,
+            and an automations freelancer. None of them see the others&apos;
+            work. We build all five so nothing falls between them.
           </p>
         </div>
         <ServicesGrid />
@@ -50,16 +54,17 @@ export default async function Home() {
             eyebrow="How we work"
             title={
               <>
-                A process that{" "}
+                A process that gets you out of the{" "}
                 <span className="text-gradient sm:block">
-                  gets you to launch.
+                  day-to-day.
                 </span>
               </>
             }
           />
           <p className="text-fg-muted md:text-lg leading-relaxed">
-            Four phases: discovery, design, launch, and ongoing partnership.
-            Tight enough to ship, deep enough to last.
+            Four phases. We do the strategic thinking, the build, the launch,
+            and the system that keeps it running after we leave. Tight enough
+            to ship in eight weeks, deep enough to keep working two years on.
           </p>
         </div>
         <ProcessList />
@@ -72,17 +77,18 @@ export default async function Home() {
             eyebrow="Selected work"
             title={
               <>
-                Brands and systems{" "}
+                Work where brand, content, and systems{" "}
                 <span className="text-gradient sm:block">
-                  built to compound.
+                  shipped as one.
                 </span>
               </>
             }
           />
           <p className="text-fg-muted md:text-lg leading-relaxed">
-            Four engagements where brand, product, and infrastructure shipped
-            together. Community at scale, on-chain intelligence, members-only
-            experiences, and high-conversion funnels.
+            Five engagements. On-chain intelligence, members-only experiences,
+            community brands, conversion funnels, and a national trade body.
+            Different sectors, same principle: integrated at strategy, not
+            stitched at handoff.
           </p>
         </div>
 

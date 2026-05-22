@@ -125,11 +125,32 @@ Set in `.env.local` (gitignored) and Netlify env vars.
 - **Newsletter loop:** Mailchimp webhook on `subscribe` → Make → tag + log.
 - **Microsoft OAuth note:** the Outlook connection in Make expires fast. `invalid_grant` errors are usually token expiry, not logic bugs — reauthorize first. See `feedback_microsoft_oauth.md`.
 
+## Connected workspaces
+
+This repo is one node in a small NAMI ecosystem. When a task touches internal ops, client work, or strategy docs, the answer usually lives in one of these.
+
+### NC Marketing Hub — internal owner dashboard
+
+- **Path:** `D:\SanctifiedOps\nc-marketing-hub` (separate Next.js 16 repo; its own `CLAUDE.md` + `AGENTS.md` + `README.md` live there).
+- **What it is:** Joe's owner-only iOS-style PWA dashboard. Unified workspace for managing every client brand. Tasks, content calendar, daily ideas, news feed, hours tracker, invoicing, client portals.
+- **Stack:** Next.js 16 (App Router) + TypeScript + Tailwind v4 + Framer Motion + Drizzle ORM. Deployed to **Cloudflare Pages** via `@opennextjs/cloudflare`. Backed by **D1** (SQLite), **R2** (file storage), **KV** (AI cache + magic-link tokens + RSS dedupe), and **Workers** crons. AI through **Anthropic Claude** (Sonnet 4.6 default, Opus 4.7 for deep brainstorm). **Make.com** handles outbound orchestration (Outlook send/receive, Drive sync).
+- **Access:** Cloudflare Access gates the owner shell to `opsanctus@proton.me`. Public client portals at `/portal/[brand]` are gated by JWT magic-link tokens.
+- **Relationship to this site:** namicreative.co.uk is the public marketing surface; nc-marketing-hub is the back office behind it. Contact-form submissions from this repo's `/api/contact` flow through Make.com scenario **9186508** and ultimately land in the hub's brief + task systems. The `MAKE_WEBHOOK_SECRET` value in the hub's `.dev.vars` is the shared secret for that hand-off.
+- **Build phase:** rolling out in six weekly phases. Approved plan dated 2026-05-06. Verify current phase in the hub's `README.md` before assuming state — the snapshot will drift.
+- **When to reach for it:** any work involving client briefs, hours/invoicing logic, internal AI workflows, the iOS card design system (`IOSCard`, `IOSSheet`, `IOSSegmented`, `IOSSwitch`), per-brand workspaces, or shared brand-voice/seed data. The hub is also where Notion API integration will live (see below).
+
+### Notion portal — Nami Creative · Waves Of Creative Impact
+
+- **URL:** [Nami Creative · Waves Of Creative Impact](https://www.notion.so/Nami-Creative-Waves-Of-Creative-Impact-1baa4ea78303807ba4a5f38a31502e21)
+- **What it is:** Joe's master Notion workspace for the studio. Strategy, planning, content backlog, references, archives. The hand-tended brain behind the site + hub.
+- **API access:** the hub's `.dev.vars` reserves `NOTION_API_KEY`. **Currently empty — not yet populated.** Once Joe drops the integration token in, programmatic Notion reads/writes will flow through nc-marketing-hub, not this site. This site has no direct Notion dependency today.
+- **When to reach for it:** whenever Joe references a strategic doc, brand intel, content idea, or "in Notion" — open the URL above. Treat this as the canonical source for strategy + planning content that lives outside the codebases.
+
 ## How to be useful in this repo
 
 - **Edit content in `lib/content/*.ts`**, not the page components — the pages render from those modules and updates propagate everywhere.
 - **Match the existing voice** in any copy. Re-read the signature phrases above before writing user-facing text.
-- **Don't invent clients, metrics, or services** — the four case studies and five service pillars are the canon.
+- **Don't invent clients, metrics, or services** — the five case studies and five service pillars are the canon.
 - **Mobile-first.** The site is built mobile-first with iOS-grade polish in mind. Test narrow viewports.
 - **Respect `prefers-reduced-motion`.** Motion is informational, never decorative noise.
 - **Pick defaults and proceed.** When Joe asks for a decision, recommend + execute rather than waiting. Surface the choice if it's load-bearing, but drive forward.

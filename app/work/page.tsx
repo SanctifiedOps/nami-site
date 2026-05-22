@@ -17,13 +17,13 @@ export default function WorkPage() {
         eyebrow="Selected work"
         title={
           <>
-            Brands and systems{" "}
+            Brands where every layer shipped{" "}
             <span className="text-gradient sm:block">
-              built to compound.
+              against one brief.
             </span>
           </>
         }
-        lead="Four engagements where brand, product, and infrastructure shipped together. Community at scale, on-chain intelligence, members-only experiences, and high-conversion funnels."
+        lead="Five engagements across on-chain intelligence, UK members clubs, community brands, conversion funnels, and a national trade body. Different sectors, same principle: brand, content, product, and systems designed against each other, not stitched at handoff."
       />
 
       <section className="container-shell py-24 md:py-32">

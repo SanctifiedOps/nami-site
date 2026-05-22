@@ -3,25 +3,28 @@ import { PageHero } from "@/components/sections/page-hero";
 import { ServicesGrid } from "@/components/sections/services-grid";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
 import { SectionHeading } from "@/components/sections/section-heading";
+import { faq } from "@/lib/content/faq";
+import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Brand strategy, content systems, website + funnel design, visual direction, and growth automation. Five pillars built into one cohesive structure.",
+    "Brand strategy, content systems, website + funnel design, visual direction, and growth automation. Five pillars built as one studio, designed against each other from day one.",
 };
 
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd schema={buildFaqPageSchema(faq)} />
       <PageHero
         eyebrow="Services"
         title={
           <>
-            Five pillars,{" "}
-            <span className="text-gradient sm:block">one structure.</span>
+            Five pillars.{" "}
+            <span className="text-gradient sm:block">Built as one studio.</span>
           </>
         }
-        lead="Brand, content, websites, visual direction, and growth systems, built integrated, not as separate engagements. The work compounds because the parts are designed to fit together."
+        lead="Most agencies sell each of these separately and stitch them at handoff. One creative partner designs all five against each other from day one, so the work reads as one voice and nothing falls between vendors."
       />
 
       <section className="container-shell py-24 md:py-32">

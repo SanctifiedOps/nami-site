@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, Check, ExternalLink } from "lucide-react";
 import { work, getCaseStudy } from "@/lib/content/work";
 import { PageHero } from "@/components/sections/page-hero";
+import { JsonLd, buildCaseStudySchema } from "@/components/seo/json-ld";
 
 type Params = { slug: string };
 
@@ -41,6 +42,15 @@ export default async function CaseStudyPage({
 
   return (
     <>
+      <JsonLd
+        schema={buildCaseStudySchema({
+          slug: study.slug,
+          client: study.client,
+          oneLiner: study.oneLiner,
+          sector: study.sector,
+          coverUrl: study.cover,
+        })}
+      />
       <PageHero
         eyebrow={`${study.index} · ${study.client} · ${study.sector}`}
         title={

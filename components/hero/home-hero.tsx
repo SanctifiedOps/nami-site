@@ -44,9 +44,9 @@ export function HomeHero() {
 
         <h1 className="mx-auto max-w-[20ch] text-5xl font-semibold leading-[1.1] tracking-tight md:text-7xl">
           <LetterReveal stagger={0.018} duration={0.8}>
-            Creative systems built for{" "}
+            Your business shouldn&rsquo;t depend on you{" "}
             <span className="text-gradient sm:block">
-              real-world momentum.
+              being in every room.
             </span>
           </LetterReveal>
         </h1>
@@ -55,8 +55,8 @@ export function HomeHero() {
           className="mx-auto mt-10 max-w-xl text-lg text-fg-muted md:text-xl leading-relaxed"
           variants={fadeUp}
         >
-          Brand, content, and systems built to move together and hold while
-          you scale.
+          Self-sustaining creative ecosystems for founders. One creative
+          partner across brand, content, and growth systems.
         </motion.p>
 
         <motion.div
@@ -79,10 +79,10 @@ export function HomeHero() {
           </Magnetic>
 
           <Link
-            href="/services"
+            href="/work"
             className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-8 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:bg-white/5 hover:border-accent"
           >
-            Explore the work
+            See selected work
             <ArrowRight
               size={16}
               aria-hidden

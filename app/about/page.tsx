@@ -21,7 +21,7 @@ export default function AboutPage() {
             <span className="text-gradient sm:block">infrastructure.</span>
           </>
         }
-        lead="A creative marketing studio building brand identity, content systems, and growth infrastructure for founders who want the work to compound."
+        lead="A creative marketing studio building brand identity, content systems, and growth infrastructure for founders who want the work to keep running after they stop being in every room."
       />
 
       {/* Story */}

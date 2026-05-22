@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { services } from "@/lib/content/services";
 import { work } from "@/lib/content/work";
 import { getAllPosts } from "@/lib/content/insights";
+import { offers } from "@/lib/content/offers";
 
 const SITE = "https://namicreative.co.uk";
 
@@ -43,5 +44,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...workRoutes, ...insightRoutes];
+  const offerRoutes: MetadataRoute.Sitemap = offers.map((o) => ({
+    url: `${SITE}/offers/${o.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.85,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...serviceRoutes,
+    ...workRoutes,
+    ...insightRoutes,
+    ...offerRoutes,
+  ];
 }

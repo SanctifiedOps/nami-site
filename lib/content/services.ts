@@ -31,7 +31,7 @@ export const services: Service[] = [
       "Decision-ready brand book",
     ],
     outcome:
-      "A brand that compounds. Every piece of content, marketing, and product feels deliberate and connected.",
+      "A brand that holds together when you stop being in every room. Every piece of content, marketing, and product feels deliberate and connected.",
   },
   {
     slug: "content-systems",
@@ -50,7 +50,7 @@ export const services: Service[] = [
       "Performance review system",
     ],
     outcome:
-      "Content that stops feeling random. Formats compound, narrative deepens, and growth becomes explainable.",
+      "Content that stops feeling random. Formats repeat, narrative deepens, and you stop guessing what to post.",
   },
   {
     slug: "website-funnel",

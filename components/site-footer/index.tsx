@@ -29,8 +29,9 @@ export function SiteFooter() {
               <span className="text-gradient">that lasts?</span>
             </h2>
             <p className="max-w-xl text-fg-muted">
-              Waves of creative impact. Brand, content, and systems, built to
-              move together and hold while you scale.
+              Self-sustaining creative ecosystems for founders. One creative
+              partner across brand, content, and growth systems, so your
+              business stops depending on you being in every room.
             </p>
           </div>
           <div className="flex md:justify-end">
@@ -59,8 +60,8 @@ export function SiteFooter() {
               />
             </Link>
             <p className="max-w-xs text-sm text-fg-muted leading-relaxed">
-              A future-focused studio building brand identity, content
-              systems, and growth infrastructure.
+              Brand, content, and growth systems for founders. Senior-led
+              across every layer, so the work stops depending on you.
             </p>
             <p className="max-w-xs text-xs uppercase tracking-[0.32em] text-fg-subtle pt-1">
               Waves of creative impact.
@@ -113,7 +114,7 @@ export function SiteFooter() {
       <div className="border-t border-line">
         <div className="container-shell flex flex-col gap-3 py-6 md:flex-row md:items-center md:justify-between">
           <p className="text-xs text-fg-subtle">
-            © {new Date().getFullYear()} NAMI Creative. All rights reserved.
+            © {new Date().getFullYear()} NAMI Creative. Built from Newcastle upon Tyne. Working globally.
           </p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-fg-subtle">
             <li>

@@ -6,6 +6,11 @@ import { services, getService } from "@/lib/content/services";
 import { getServiceFaq } from "@/lib/content/faq";
 import { PageHero } from "@/components/sections/page-hero";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
+import {
+  JsonLd,
+  buildServiceSchema,
+  buildFaqPageSchema,
+} from "@/components/seo/json-ld";
 
 type Params = { slug: string };
 
@@ -50,8 +55,21 @@ export default async function ServiceDetailPage({
     ? titleAccentRaw.charAt(0).toUpperCase() + titleAccentRaw.slice(1)
     : "";
 
+  const serviceFaq = getServiceFaq(slug);
+
   return (
     <>
+      <JsonLd
+        schema={[
+          buildServiceSchema({
+            slug: service.slug,
+            name: service.title,
+            description: service.description,
+            pillar: service.pillar,
+          }),
+          buildFaqPageSchema(serviceFaq),
+        ]}
+      />
       <PageHero
         eyebrow={`${service.index} · ${service.pillar}`}
         title={
@@ -160,7 +178,7 @@ export default async function ServiceDetailPage({
             </span>
           </h2>
         </div>
-        <FAQAccordion items={getServiceFaq(slug)} />
+        <FAQAccordion items={serviceFaq} />
       </section>
 
       {/* Next service */}

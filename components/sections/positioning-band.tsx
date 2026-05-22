@@ -3,8 +3,6 @@
 import { motion } from "motion/react";
 import { stage, fadeUp } from "@/lib/motion";
 
-const PILLARS = ["Brand", "Content", "Systems"] as const;
-
 export function PositioningBand() {
   return (
     <section className="relative border-y border-line bg-surface-1/40 py-12 md:py-16">
@@ -19,28 +17,20 @@ export function PositioningBand() {
           className="eyebrow mb-6 text-center"
           variants={fadeUp}
         >
-          The structure
+          What founders actually face
         </motion.p>
-        <motion.div
-          className="flex flex-col items-center justify-center gap-3 text-[clamp(1.75rem,4vw,3rem)] font-medium leading-[1.1] tracking-tight md:flex-row md:gap-6"
+        <motion.p
+          className="mx-auto max-w-3xl text-center text-[clamp(1.25rem,2.8vw,2rem)] font-medium leading-tight tracking-tight text-fg"
           variants={fadeUp}
         >
-          {PILLARS.map((pillar, i) => (
-            <span key={pillar} className="flex items-center gap-3 md:gap-6">
-              <span className="text-fg">{pillar}</span>
-              {i < PILLARS.length - 1 && (
-                <span className="text-accent" aria-hidden>
-                  +
-                </span>
-              )}
-            </span>
-          ))}
-        </motion.div>
+          Your brand is stitched together. Your marketing is inconsistent. Your tracking is fragmented. And you&apos;re the one{" "}
+          <span className="text-gradient">holding it all together.</span>
+        </motion.p>
         <motion.p
           className="mx-auto mt-6 max-w-xl text-center text-fg-muted md:text-lg"
           variants={fadeUp}
         >
-          Wired into one cohesive structure that supports growth.
+          We build self-sustaining creative ecosystems. So your brand, content, and systems run as one, backing you up as you scale.
         </motion.p>
       </motion.div>
     </section>
