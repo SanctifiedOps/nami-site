@@ -15,11 +15,22 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "NAMI Creative · Brand, Content, Systems",
+    default:
+      "NAMI Creative · Independent creative studio for founders, freelancers, and small businesses",
     template: "%s · NAMI Creative",
   },
   description:
-    "NAMI Creative builds self-sustaining creative ecosystems for founders. One creative partner across brand, content, websites, visual direction, and growth automation, so your business stops depending on you being in every room. Newcastle-built, working globally.",
+    "Independent creative studio in Newcastle upon Tyne, working globally. One creative partner across brand strategy, content systems, websites, visual direction, and growth automation. For founders, freelancers, artists, and small businesses ready to build a brand that compounds.",
+  keywords: [
+    "creative studio for founders",
+    "brand and content studio",
+    "independent creative studio UK",
+    "brand strategy studio Newcastle",
+    "creative partner for founders",
+    "fractional creative director UK",
+    "brand and automation agency",
+    "self-sustaining creative ecosystem",
+  ],
   metadataBase: new URL("https://namicreative.co.uk"),
   openGraph: {
     type: "website",

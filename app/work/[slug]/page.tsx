@@ -5,7 +5,11 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, Check, ExternalLink } from "lucide-react";
 import { work, getCaseStudy } from "@/lib/content/work";
 import { PageHero } from "@/components/sections/page-hero";
-import { JsonLd, buildCaseStudySchema } from "@/components/seo/json-ld";
+import {
+  JsonLd,
+  buildCaseStudySchema,
+  buildBreadcrumbSchema,
+} from "@/components/seo/json-ld";
 
 type Params = { slug: string };
 
@@ -22,8 +26,19 @@ export async function generateMetadata({
   const study = getCaseStudy(slug);
   if (!study) return { title: "Not found" };
   return {
-    title: `${study.client} · case study`,
-    description: study.oneLiner,
+    title: `${study.client} · ${study.sector} case study`,
+    description: `${study.oneLiner} A ${study.status.toLowerCase()} engagement from NAMI Creative spanning ${study.pillars.join(", ").toLowerCase()}.`,
+    keywords: [
+      ...study.pillars.map((p) => `${p.toLowerCase()} case study`),
+      `${study.sector.toLowerCase()} agency`,
+      `${study.client} case study`,
+    ],
+    openGraph: {
+      title: `${study.client} · case study`,
+      description: study.oneLiner,
+      type: "article",
+      images: [{ url: study.cover, alt: `${study.client} case study cover` }],
+    },
   };
 }
 
@@ -43,13 +58,20 @@ export default async function CaseStudyPage({
   return (
     <>
       <JsonLd
-        schema={buildCaseStudySchema({
-          slug: study.slug,
-          client: study.client,
-          oneLiner: study.oneLiner,
-          sector: study.sector,
-          coverUrl: study.cover,
-        })}
+        schema={[
+          buildCaseStudySchema({
+            slug: study.slug,
+            client: study.client,
+            oneLiner: study.oneLiner,
+            sector: study.sector,
+            coverUrl: study.cover,
+          }),
+          buildBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Selected work", url: "/work" },
+            { name: study.client, url: `/work/${study.slug}` },
+          ]),
+        ]}
       />
       <PageHero
         eyebrow={`${study.index} · ${study.client} · ${study.sector}`}

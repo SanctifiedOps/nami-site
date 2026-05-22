@@ -194,6 +194,29 @@ export function buildCaseStudySchema(args: {
 }
 
 /**
+ * BreadcrumbList schema for nested routes. Improves SERP appearance
+ * (path crumbs in Google results) and helps AI systems understand
+ * site hierarchy.
+ *
+ * Usage: pass an ordered list of [name, url] tuples starting with the
+ * site root. Each entry becomes a ListItem at position N+1.
+ */
+export function buildBreadcrumbSchema(
+  trail: { name: string; url: string }[],
+): JsonLdSchema {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: item.url.startsWith("http") ? item.url : `${SITE_URL}${item.url}`,
+    })),
+  };
+}
+
+/**
  * Article schema for each /insights/[slug].
  */
 export function buildArticleSchema(args: {

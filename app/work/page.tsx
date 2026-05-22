@@ -5,9 +5,15 @@ import { PageHero } from "@/components/sections/page-hero";
 import { WorkGrid } from "@/components/sections/work-grid";
 
 export const metadata: Metadata = {
-  title: "Selected work",
+  title: "Selected work · Brand, content, and conversion case studies",
   description:
-    "Brand, content, and systems engagements: from on-chain signal infrastructure (MILLIONS) to UK members clubs (The League), community brands (Barking Puppy), and conversion funnels (VESSL).",
+    "Five engagements where brand, content, and systems shipped as one. On-chain intelligence (MILLIONS), UK members clubs (The League), community brands (Barking Puppy), DTC conversion funnels (VESSL), and a national trade body (Energy Consultants Association).",
+  keywords: [
+    "creative studio case studies",
+    "brand strategy case studies UK",
+    "conversion funnel case studies",
+    "boutique brand studio work",
+  ],
 };
 
 export default function WorkPage() {

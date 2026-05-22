@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {
   JsonLd,
   buildFaqPageSchema,
+  buildBreadcrumbSchema,
   type JsonLdSchema,
 } from "@/components/seo/json-ld";
 import { flowFunnel } from "@/lib/content/offers";
@@ -10,13 +11,23 @@ const SITE_URL = "https://namicreative.co.uk";
 const OFFER_URL = `${SITE_URL}/offers/${flowFunnel.slug}`;
 
 export const metadata: Metadata = {
-  title: "The Flow Funnel",
+  title: "The Flow Funnel · Landing page + lead capture in 7 days, £500",
   description:
-    "A landing page, lead capture, and private lead dashboard. Built and live in 7 days for £500. For founders, freelancers, and creatives whose DMs are doing the work their website should be.",
+    "Productised landing page, lead capture form, and private lead dashboard. Built and live in 7 days for £500. For founders, freelancers, artists, and small businesses whose website is leaving money on the table.",
+  keywords: [
+    "flow funnel",
+    "landing page agency UK",
+    "lead capture page for founders",
+    "landing funnel for freelancers",
+    "lead capture page for coaches",
+    "productised landing page",
+    "instagram funnel for creators",
+    "small business landing page UK",
+  ],
   openGraph: {
     title: "The Flow Funnel · NAMI Creative",
     description:
-      "A landing page, lead capture, and lead dashboard. Built and live in 7 days for £500. For founders, freelancers, and creatives.",
+      "Landing page, lead capture, and lead dashboard. Live in 7 days for £500. Built for founders, freelancers, artists, and small businesses.",
     url: OFFER_URL,
     type: "website",
   },
@@ -62,7 +73,14 @@ export default function FlowFunnelLayout({
   return (
     <>
       <JsonLd
-        schema={[offerServiceSchema, buildFaqPageSchema(flowFunnel.faq)]}
+        schema={[
+          offerServiceSchema,
+          buildFaqPageSchema(flowFunnel.faq),
+          buildBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: flowFunnel.name, url: `/offers/${flowFunnel.slug}` },
+          ]),
+        ]}
       />
       {children}
     </>

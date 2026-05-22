@@ -4,9 +4,15 @@ import { ProcessList } from "@/components/sections/process-list";
 import { SectionHeading } from "@/components/sections/section-heading";
 
 export const metadata: Metadata = {
-  title: "Process",
+  title: "Process · Discovery, design, launch, partnership",
   description:
-    "Discovery, design, launch, and ongoing partnership. The four phases of a NAMI engagement.",
+    "Four phases inside a NAMI engagement. Strategic discovery and positioning. Design and build of brand, content, and website. Launch and integration. Ongoing partnership for content, automation, and creative direction.",
+  keywords: [
+    "creative agency process",
+    "brand engagement process",
+    "design and build process UK",
+    "founder brand engagement",
+  ],
 };
 
 export default function ProcessPage() {

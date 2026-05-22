@@ -93,6 +93,38 @@ export default function FlowFunnelPage() {
         </div>
       </PageHero>
 
+      {/* 1b. DEFINITION SNIPPET (40-60 words, AI-extractable, leads with direct
+          definition. Search engines and AI Overviews lift this as the answer
+          to "what is a Flow Funnel?". Lives near the top of the rendered HTML
+          for early crawl extraction, visually quiet so it doesn't interrupt
+          the funnel narrative.) */}
+      <section
+        aria-label="What is a Flow Funnel"
+        className="border-b border-line py-14 md:py-20"
+      >
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.4 }}
+          variants={stage}
+          className="container-shell mx-auto max-w-2xl text-center"
+        >
+          <motion.p
+            className="eyebrow mb-6"
+            variants={fadeUp}
+          >
+            What is a Flow Funnel
+          </motion.p>
+          <motion.p
+            className="text-balance text-fg-muted leading-relaxed md:text-lg"
+            variants={fadeUp}
+          >
+            <strong className="font-medium text-fg">A Flow Funnel is a productised landing page, lead capture form, and private lead dashboard</strong>{" "}
+            built by NAMI Creative in seven days for £500. Designed for founders, freelancers, artists, and small businesses to turn audience attention into bookings, sales, and enquiries, without the cost or timeline of a full custom website.
+          </motion.p>
+        </motion.div>
+      </section>
+
       {/* 2. RECOGNITION STACK */}
       <section className="border-b border-line bg-surface-1/40 py-24 md:py-32">
         <motion.div
@@ -251,7 +283,7 @@ export default function FlowFunnelPage() {
                 >
                   <Image
                     src={study.cover}
-                    alt={`${study.client} case study cover`}
+                    alt={`${study.client} case study by NAMI Creative: ${study.tagline}`}
                     fill
                     sizes="(min-width: 768px) 768px, 100vw"
                     className="object-cover transition-transform duration-1000 ease-[var(--ease-out-expo)] group-hover:scale-[1.02]"

@@ -13,7 +13,11 @@ import {
   getPostBySlug,
   formatPostDate,
 } from "@/lib/content/insights";
-import { JsonLd, buildArticleSchema } from "@/components/seo/json-ld";
+import {
+  JsonLd,
+  buildArticleSchema,
+  buildBreadcrumbSchema,
+} from "@/components/seo/json-ld";
 
 type Params = { slug: string };
 
@@ -60,12 +64,19 @@ export default async function InsightPostPage({
   return (
     <>
       <JsonLd
-        schema={buildArticleSchema({
-          slug: post.slug,
-          title: post.title,
-          description: post.summary,
-          datePublished: post.date,
-        })}
+        schema={[
+          buildArticleSchema({
+            slug: post.slug,
+            title: post.title,
+            description: post.summary,
+            datePublished: post.date,
+          }),
+          buildBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Creative Waves", url: "/insights" },
+            { name: post.title, url: `/insights/${post.slug}` },
+          ]),
+        ]}
       />
       <PageHero
         eyebrow={`Creative Waves · ${post.pillar}`}

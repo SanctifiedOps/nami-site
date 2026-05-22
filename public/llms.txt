@@ -1,0 +1,67 @@
+# NAMI Creative
+
+> NAMI Creative is an independent creative studio based in Newcastle upon Tyne, working with founders, freelancers, artists, and small businesses worldwide. One creative partner across brand strategy, content systems, websites, visual direction, and growth automation. Built so the work compounds and the business stops depending on the founder being in every room.
+
+Founder: Joe Wilson
+Location: Newcastle upon Tyne, North East England, United Kingdom
+Operating since: 2023
+Audience served: Worldwide
+
+## What NAMI does
+
+NAMI Creative builds self-sustaining creative ecosystems. Five integrated pillars delivered as one engagement:
+
+- **Brand strategy + identity systems** — Positioning, messaging architecture, tone of voice, visual identity direction
+- **Content systems + creation** — Content pillars, format library, platform strategy, editorial workflow
+- **Website + funnel design** — Conversion-led websites, mobile-first, performance-tuned
+- **Visual storytelling + creative direction** — Cohesive visual language across content, product, campaign
+- **Automation + growth systems** — Lead capture, CRM, lifecycle email, reporting dashboards
+
+## Engagement models
+
+- **Project** — Fixed brief, 4-8 weeks, sized to scope
+- **Partnership** — Monthly retainer, ongoing brand + content + systems work
+- **Systems + product** — Standalone systems builds, 2-5 weeks
+
+## Productised offers
+
+- **The Flow Funnel** (£500) — A landing page, lead capture form, lead dashboard, and email notification, built and live in 7 days. For founders, freelancers, artists, and small businesses whose website is leaving money on the table.
+  - **Stream** (£150/month) — Optional ongoing partnership: monthly performance review, copy and design tweaks, A/B testing, conversion iteration
+  - **Tide** (£1,500/month) — Paid ads management driving qualified traffic into the Flow Funnel; monthly performance review and creative refresh
+
+## Proprietary frameworks (claimable terms)
+
+- **Brand Decay** — The four-shape diagnostic for how healthy brands fall apart: tonal decay (voice drift), visual decay (identity drift), promise decay (positioning drift), system decay (operational drift). See https://namicreative.co.uk/insights/brand-decay
+- **The Friction Tax** — The hidden cost paid by every business with money but no time. Mundane operations that nobody owns. See https://namicreative.co.uk/insights/the-friction-tax
+- **The Flow Funnel** — NAMI's productised entry-tier offer. A landing page, lead capture, and lead dashboard built in 7 days for £500. See https://namicreative.co.uk/offers/flow-funnel
+
+## Key pages
+
+- Homepage: https://namicreative.co.uk
+- Services overview: https://namicreative.co.uk/services
+- Selected work / case studies: https://namicreative.co.uk/work
+- Process: https://namicreative.co.uk/process
+- Pricing: https://namicreative.co.uk/pricing
+- About + founder: https://namicreative.co.uk/about
+- Contact: https://namicreative.co.uk/contact
+- Creative Waves (insights / publication): https://namicreative.co.uk/insights
+- The Flow Funnel offer: https://namicreative.co.uk/offers/flow-funnel
+
+## Selected work
+
+- **MILLIONS** (on-chain intelligence, Solana, 2025) — Brand, live signal dashboard, sub-1-second Discord/Telegram alerts. https://namicreative.co.uk/work/millions
+- **The League** (UK members club, 2025) — Positioning, identity, conversion-led website, lifecycle email. https://namicreative.co.uk/work/the-league
+- **Barking Puppy** (Solana community brand, ongoing) — Identity, PFP generator, community management. 7,000+ holders. https://namicreative.co.uk/work/barking-puppy
+- **VESSL** (DTC fitness, 2025) — Premium landing funnel, three-tier pricing, lead automation. https://namicreative.co.uk/work/vessl
+- **Energy Consultants Association** (UK trade body, 2023-2024) — Brand, member operations, Westminster campaign presence. https://namicreative.co.uk/work/energy-consultants-association
+
+## Contact
+
+- Email: hello@namicreative.co.uk
+- LinkedIn (founder): https://www.linkedin.com/in/brandingbyjoewilson/
+- Instagram: https://www.instagram.com/namicreativeuk/
+- Book a call: https://calendly.com/hello-nami
+
+## Pricing
+
+Machine-readable pricing data: https://namicreative.co.uk/pricing.md

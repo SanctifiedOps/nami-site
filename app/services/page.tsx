@@ -7,9 +7,17 @@ import { faq } from "@/lib/content/faq";
 import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Services · Brand strategy, content, websites, visual direction, automation",
   description:
-    "Brand strategy, content systems, website + funnel design, visual direction, and growth automation. Five pillars built as one studio, designed against each other from day one.",
+    "Five integrated pillars for founders and growing brands: brand strategy and identity, content systems, conversion websites, visual direction, and growth automation. Designed against each other from day one, not stitched at handoff.",
+  keywords: [
+    "brand strategy studio UK",
+    "content systems agency",
+    "conversion website agency",
+    "creative direction studio",
+    "marketing automation agency UK",
+    "creative studio services",
+  ],
 };
 
 export default function ServicesPage() {

@@ -10,6 +10,7 @@ import {
   JsonLd,
   buildServiceSchema,
   buildFaqPageSchema,
+  buildBreadcrumbSchema,
 } from "@/components/seo/json-ld";
 
 type Params = { slug: string };
@@ -27,8 +28,18 @@ export async function generateMetadata({
   const service = getService(slug);
   if (!service) return { title: "Not found" };
   return {
-    title: service.title,
-    description: service.tagline,
+    title: `${service.title} · ${service.pillar} studio`,
+    description: `${service.tagline} ${service.description}`,
+    keywords: [
+      `${service.title.toLowerCase()} studio`,
+      `${service.pillar.toLowerCase()} agency UK`,
+      `${service.pillar.toLowerCase()} for founders`,
+      `${service.title.toLowerCase()} Newcastle`,
+    ],
+    openGraph: {
+      title: `${service.title} · NAMI Creative`,
+      description: service.tagline,
+    },
   };
 }
 
@@ -68,6 +79,11 @@ export default async function ServiceDetailPage({
             pillar: service.pillar,
           }),
           buildFaqPageSchema(serviceFaq),
+          buildBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Services", url: "/services" },
+            { name: service.title, url: `/services/${service.slug}` },
+          ]),
         ]}
       />
       <PageHero
