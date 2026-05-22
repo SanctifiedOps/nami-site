@@ -217,7 +217,11 @@ export function buildBreadcrumbSchema(
 }
 
 /**
- * Article schema for each /insights/[slug].
+ * Article schema for each /insights/[slug]. Inlines author + publisher
+ * with full ImageObject for the article image and publisher logo so the
+ * page qualifies as a Google Article rich result. The @id references on
+ * Person and Organization preserve entity coherence with the root
+ * schemas.
  */
 export function buildArticleSchema(args: {
   slug: string;
@@ -234,9 +238,29 @@ export function buildArticleSchema(args: {
     description: args.description,
     datePublished: args.datePublished,
     dateModified: args.datePublished,
-    author: { "@id": `${SITE_URL}/about#joe-wilson` },
-    publisher: { "@id": `${SITE_URL}/#organization` },
-    image: args.imageUrl ? `${SITE_URL}${args.imageUrl}` : STUDIO_OG,
+    author: {
+      "@type": "Person",
+      "@id": `${SITE_URL}/about#joe-wilson`,
+      name: FOUNDER_NAME,
+      url: `${SITE_URL}/about`,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: STUDIO_NAME,
+      logo: {
+        "@type": "ImageObject",
+        url: STUDIO_LOGO,
+        width: 512,
+        height: 512,
+      },
+    },
+    image: {
+      "@type": "ImageObject",
+      url: args.imageUrl ? `${SITE_URL}${args.imageUrl}` : STUDIO_OG,
+      width: 1600,
+      height: 1000,
+    },
     mainEntityOfPage: `${SITE_URL}/insights/${args.slug}`,
     inLanguage: "en-GB",
   };
