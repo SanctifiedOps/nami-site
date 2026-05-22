@@ -60,8 +60,8 @@ export function SiteFooter() {
               />
             </Link>
             <p className="max-w-xs text-sm text-fg-muted leading-relaxed">
-              Brand, content, and growth systems for founders. Senior-led
-              across every layer, so the work stops depending on you.
+              Brand, content, and growth systems for founders. Waves of
+              creative impact, built to carry on without you.
             </p>
             <p className="max-w-xs text-xs uppercase tracking-[0.32em] text-fg-subtle pt-1">
               Waves of creative impact.
