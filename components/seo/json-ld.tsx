@@ -252,8 +252,8 @@ export function buildArticleSchema(args: {
     "@id": `${SITE_URL}/insights/${args.slug}#article`,
     headline: args.title,
     description: args.description,
-    datePublished: args.datePublished,
-    dateModified: args.datePublished,
+    datePublished: new Date(args.datePublished).toISOString(),
+    dateModified: new Date(args.datePublished).toISOString(),
     author: {
       "@type": "Person",
       "@id": `${SITE_URL}/about#joe-wilson`,
