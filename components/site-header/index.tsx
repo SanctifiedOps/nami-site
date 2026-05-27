@@ -14,6 +14,11 @@ import { cn } from "@/lib/utils";
 export function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  // Gate pathname-driven active state behind mount so the server and first
+  // client render are identical (no active link). Prevents a hydration
+  // mismatch in this shared layout nav; the active underline animates in
+  // a frame after hydration.
+  const [mounted, setMounted] = useState(false);
 
   // Page scroll progress → the hairline under the bar grows left to right.
   const { scrollYProgress } = useScroll();
@@ -22,6 +27,8 @@ export function SiteHeader() {
     damping: 30,
     mass: 0.3,
   });
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -50,8 +57,9 @@ export function SiteHeader() {
         >
           {primaryNav.map((item) => {
             const active =
-              pathname === item.href ||
-              (item.href !== "/" && pathname?.startsWith(item.href));
+              mounted &&
+              (pathname === item.href ||
+                (item.href !== "/" && pathname?.startsWith(item.href)));
             return (
               <Link
                 key={item.href}
