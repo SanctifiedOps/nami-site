@@ -32,6 +32,11 @@ export const metadata: Metadata = {
     "self-sustaining creative ecosystem",
   ],
   metadataBase: new URL("https://namicreative.co.uk"),
+  verification: {
+    other: {
+      "msvalidate.01": "3A2F2990F57CF69F305081E0AD32C1BF",
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_GB",
