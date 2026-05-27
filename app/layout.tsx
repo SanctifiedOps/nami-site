@@ -15,12 +15,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default:
-      "NAMI Creative · Independent creative studio for founders, freelancers, and small businesses",
+    default: "NAMI Creative · Independent creative studio for founders",
     template: "%s · NAMI Creative",
   },
   description:
-    "Independent creative studio in Newcastle upon Tyne, working globally. One creative partner across brand strategy, content systems, websites, visual direction, and growth automation. For founders, freelancers, artists, and small businesses ready to build a brand that compounds.",
+    "Independent creative studio for founders, working globally from Newcastle. One partner across brand, content, websites, visual direction, and growth automation.",
   keywords: [
     "creative studio for founders",
     "brand and content studio",
