@@ -392,3 +392,104 @@
     margin: 3em 0;
   }
 }
+
+/* ==========================================================================
+   Premium lift — refractive material, instrument detail, kinetic primitives
+   Added for the cinematic redesign. Brand tokens only; no new hues.
+   ========================================================================== */
+@layer components {
+  /* Refractive "double-bezel" glass. Outer hairline + inner top highlight +
+     tinted depth shadow so a surface reads as machined material, not a flat
+     card. Pairs with .glass-refractive--hover for the lift on interaction. */
+  .glass-refractive {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.045), rgb(255 255 255 / 0.012)),
+      var(--color-surface-1);
+    border: 1px solid var(--color-line);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.08),
+      0 24px 60px -28px rgb(0 0 0 / 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition:
+      border-color 0.5s var(--ease-out-expo),
+      box-shadow 0.5s var(--ease-out-expo),
+      transform 0.5s var(--ease-out-expo);
+  }
+
+  .glass-refractive--hover:hover {
+    border-color: var(--color-line-strong);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.12),
+      0 32px 80px -28px rgb(255 0 188 / 0.28);
+  }
+
+  /* Faint blueprint field for section backgrounds — instrument-grade detail
+     that reads on close inspection without competing with content. */
+  .hairline-grid {
+    background-image:
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+    background-size: 72px 72px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
+  }
+
+  /* Underline-draw link — a wipe-in rule that grows from the left on hover.
+     More crafted than a static text-decoration; reads as intentional. */
+  .link-underline {
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.45s var(--ease-out-expo);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+
+  /* Mono instrument label — coordinate/index detail. Tight, technical. */
+  .mono-label {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-fg-subtle);
+  }
+
+  /* Cyan companion to .text-gradient — the secondary accent finally earns a
+     role (data, secondary headings) so the magenta/cyan duality is a system. */
+  .text-gradient-cyan {
+    background: linear-gradient(
+      100deg,
+      var(--color-accent-2) 0%,
+      var(--color-accent-soft) 50%,
+      var(--color-accent-2) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: text-gradient-flow 24s linear infinite;
+  }
+
+  /* Filmic grain — a single fixed, pointer-safe layer (never on a scroller).
+     Applied to one <div> in the layout root. Extremely low opacity. */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .text-gradient-cyan {
+      animation: none;
+      background-position: 50% 50%;
+    }
+  }
+}

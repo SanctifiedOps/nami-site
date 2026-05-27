@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { services } from "@/lib/content/services";
 import { cardIn, stageFast } from "@/lib/motion";
+import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { ServiceCard } from "./service-card";
 
 export function ServicesGrid() {
@@ -28,54 +29,56 @@ export function ServicesGrid() {
 function ServicesCtaCard() {
   return (
     <motion.div variants={cardIn} className="group">
-      <Link
-        href="/contact"
-        className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-accent/30 bg-surface-1/60 p-8 backdrop-blur-md transition-colors duration-500 hover:border-accent/60 md:p-10"
+      <SpotlightCard
+        tilt={5}
+        glow={0.26}
+        className="glass-refractive h-full rounded-2xl border-accent/30"
       >
-        {/* Ambient accent glow: stronger than the service cards' hover glow, always on */}
+        {/* Always-on ambient glow — this is the conversion cell, so it reads warmer */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -inset-px rounded-2xl opacity-60 transition-opacity duration-500 group-hover:opacity-100"
+          className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-70"
           style={{
             background:
-              "radial-gradient(450px circle at 70% 100%, rgb(255 0 188 / 0.22), transparent 70%)",
+              "radial-gradient(460px circle at 70% 100%, rgb(255 0 188 / 0.2), transparent 70%)",
           }}
         />
-
-        <div className="relative flex flex-1 flex-col gap-6">
+        <Link
+          href="/contact"
+          className="relative z-10 flex h-full flex-col gap-6 rounded-2xl p-8 md:p-10"
+        >
           <div className="flex items-start justify-between">
-            <span className="font-mono text-xs text-fg-subtle">06</span>
+            <span className="mono-label">06</span>
             <ArrowUpRight
               size={28}
               aria-hidden
-              className="text-accent transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="text-accent transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
           </div>
 
           <div className="space-y-3">
-            <p className="eyebrow text-accent/80">Start a project</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent/80">
+              Start a project
+            </p>
             <h3 className="text-2xl font-medium tracking-tight text-fg md:text-3xl">
-              Bring us{" "}
-              <span className="text-gradient">
-                your brief.
-              </span>
+              Bring us <span className="text-gradient">your brief.</span>
             </h3>
-            <p className="text-fg-muted leading-relaxed">
+            <p className="leading-relaxed text-fg-muted">
               We take a small number of new engagements each quarter. Brand,
               content, systems, or all of it together.
             </p>
           </div>
 
-          <div className="mt-auto inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-shadow duration-500 group-hover:shadow-[0_8px_32px_rgb(255_0_188/0.5)] w-fit">
+          <div className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-shadow duration-500 group-hover:shadow-[0_8px_32px_rgb(255_0_188/0.5)]">
             Open a conversation
             <ArrowUpRight
               size={14}
               aria-hidden
-              className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
           </div>
-        </div>
-      </Link>
+        </Link>
+      </SpotlightCard>
     </motion.div>
   );
 }

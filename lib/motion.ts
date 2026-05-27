@@ -63,3 +63,32 @@ export const cardIn: Variants = {
     transition: { duration: 0.65, ease: EASE_OUT_EXPO },
   },
 };
+
+/** Fade + rise + de-blur. Softer, more cinematic than a plain fadeUp. */
+export const blurUp: Variants = {
+  hidden: { opacity: 0, y: 22, filter: "blur(10px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.85, ease: EASE_OUT_EXPO },
+  },
+};
+
+/** Clip-path wipe reveal — for media/images. Reveals from the bottom up. */
+export const clipUp: Variants = {
+  hidden: { clipPath: "inset(0 0 100% 0)", opacity: 0 },
+  show: {
+    clipPath: "inset(0 0 0% 0)",
+    opacity: 1,
+    transition: { duration: 1, ease: EASE_OUT_EXPO },
+  },
+};
+
+/** Slower container stagger for deliberate, sequential reveals. */
+export const stageSlow: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.14, delayChildren: 0.08 },
+  },
+};
