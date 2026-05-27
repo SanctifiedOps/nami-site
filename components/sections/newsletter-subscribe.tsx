@@ -71,7 +71,7 @@ export function NewsletterSubscribe({
 
   const wrapperClass =
     variant === "card"
-      ? "rounded-3xl border border-line bg-surface-1/40 p-10 md:p-16"
+      ? "glass-refractive rounded-3xl p-10 md:p-16"
       : "container-shell py-24 md:py-32 border-t border-line";
 
   const layoutClass = compact

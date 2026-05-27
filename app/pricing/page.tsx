@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, Check } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
+import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { engagements } from "@/lib/content/engagement";
 import { stage, stageFast, fadeUp, cardIn } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -31,74 +32,76 @@ export default function PricingPage() {
           className="grid gap-6 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8"
         >
           {engagements.map((e) => (
-            <motion.article
-              key={e.name}
-              variants={cardIn}
-              className={cn(
-                "relative flex flex-col rounded-2xl border bg-surface-1/60 p-6 backdrop-blur-md md:p-8 lg:p-10",
-                e.highlight
-                  ? "border-accent/40 shadow-[0_0_60px_rgb(255_0_188/0.15)]"
-                  : "border-line",
-              )}
-            >
-              {e.highlight && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white">
-                  Most chosen
-                </span>
-              )}
-              <span className="font-mono text-sm text-accent">{e.index}</span>
-              <h3 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
-                {e.name}
-              </h3>
-              <p className="mt-3 text-sm text-fg-subtle">{e.best}</p>
-              <p className="mt-6 text-fg-muted leading-relaxed">
-                {e.description}
-              </p>
-
-              <ul className="mt-8 space-y-3 border-t border-line pt-8">
-                {e.scope.map((s) => (
-                  <li
-                    key={s}
-                    className="flex items-start gap-3 text-sm text-fg-muted"
-                  >
-                    <Check
-                      size={16}
-                      aria-hidden
-                      className="mt-0.5 shrink-0 text-accent"
-                    />
-                    <span>{s}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-auto pt-8 grid gap-1 border-t border-line">
-                <p className="text-xs uppercase tracking-widest text-fg-subtle pt-8">
-                  Timeline
-                </p>
-                <p className="text-sm text-fg">{e.timeline}</p>
-                <p className="mt-3 text-xs uppercase tracking-widest text-fg-subtle">
-                  Investment
-                </p>
-                <p className="text-sm text-fg">{e.starting}</p>
-              </div>
-
-              <Link
-                href={e.cta.href}
+            <motion.div key={e.name} variants={cardIn} className="relative h-full">
+              <SpotlightCard
+                tilt={0}
+                glow={e.highlight ? 0.24 : 0.14}
                 className={cn(
-                  "group mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300",
-                  e.highlight
-                    ? "bg-accent text-white shadow-[0_4px_16px_rgb(255_0_188/0.3)] hover:bg-accent-soft"
-                    : "border border-line-strong text-fg hover:bg-white/5 hover:border-accent",
+                  "glass-refractive glass-refractive--hover h-full rounded-2xl",
+                  e.highlight && "border-accent/40 shadow-[0_0_60px_rgb(255_0_188/0.15)]",
                 )}
               >
-                {e.cta.label}
-                <ArrowUpRight
-                  size={14}
-                  aria-hidden
-                  className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </Link>
-            </motion.article>
+                {e.highlight && (
+                  <span className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white">
+                    Most chosen
+                  </span>
+                )}
+                <div className="relative z-10 flex h-full flex-col p-6 md:p-8 lg:p-10">
+                  <span className="font-mono text-sm text-accent">{e.index}</span>
+                  <h3 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
+                    {e.name}
+                  </h3>
+                  <p className="mt-3 text-sm text-fg-subtle">{e.best}</p>
+                  <p className="mt-6 leading-relaxed text-fg-muted">
+                    {e.description}
+                  </p>
+
+                  <ul className="mt-8 space-y-3 border-t border-line pt-8">
+                    {e.scope.map((s) => (
+                      <li
+                        key={s}
+                        className="flex items-start gap-3 text-sm text-fg-muted"
+                      >
+                        <Check
+                          size={16}
+                          aria-hidden
+                          className="mt-0.5 shrink-0 text-accent"
+                        />
+                        <span>{s}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto grid gap-1 border-t border-line pt-8">
+                    <p className="pt-8 text-xs uppercase tracking-widest text-fg-subtle">
+                      Timeline
+                    </p>
+                    <p className="text-sm text-fg">{e.timeline}</p>
+                    <p className="mt-3 text-xs uppercase tracking-widest text-fg-subtle">
+                      Investment
+                    </p>
+                    <p className="text-sm text-fg">{e.starting}</p>
+                  </div>
+
+                  <Link
+                    href={e.cta.href}
+                    className={cn(
+                      "group mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300",
+                      e.highlight
+                        ? "bg-accent text-white shadow-[0_4px_16px_rgb(255_0_188/0.3)] hover:bg-accent-soft"
+                        : "border border-line-strong text-fg hover:border-accent hover:bg-white/5",
+                    )}
+                  >
+                    {e.cta.label}
+                    <ArrowUpRight
+                      size={14}
+                      aria-hidden
+                      className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </Link>
+                </div>
+              </SpotlightCard>
+            </motion.div>
           ))}
         </motion.div>
       </section>
@@ -113,7 +116,7 @@ export default function PricingPage() {
             variants={stage}
             className="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20"
           >
-            <motion.p className="eyebrow md:mt-2" variants={fadeUp}>
+            <motion.p className="mono-label md:mt-2" variants={fadeUp}>
               Honest pricing
             </motion.p>
             <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">

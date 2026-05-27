@@ -216,7 +216,7 @@ export default function ContactPage() {
           >
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl border border-line bg-surface-1/60 p-6 backdrop-blur-md md:p-8"
+              className="glass-refractive rounded-2xl p-6 md:p-8"
             >
               <Mail size={20} className="text-accent" aria-hidden />
               <h3 className="mt-4 text-lg font-medium tracking-tight">
@@ -240,7 +240,7 @@ export default function ContactPage() {
 
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl border border-line bg-surface-1/60 p-6 backdrop-blur-md md:p-8"
+              className="glass-refractive rounded-2xl p-6 md:p-8"
             >
               <Calendar size={20} className="text-accent" aria-hidden />
               <h3 className="mt-4 text-lg font-medium tracking-tight">

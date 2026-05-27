@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/page-hero";
-import { ProcessList } from "@/components/sections/process-list";
+import { ProcessScroll } from "@/components/sections/process-scroll";
 import { SectionHeading } from "@/components/sections/section-heading";
 
 export const metadata: Metadata = {
@@ -32,7 +32,18 @@ export default function ProcessPage() {
       />
 
       <section className="container-shell py-24 md:py-32">
-        <ProcessList />
+        <ProcessScroll
+          index=""
+          title={
+            <>
+              Four phases, from{" "}
+              <span className="text-gradient sm:block">
+                strategy to sustained.
+              </span>
+            </>
+          }
+          lead="The strategic thinking, the build, the launch, and the system that keeps running after we leave. Tight enough to ship in eight weeks, deep enough to keep working two years on."
+        />
       </section>
 
       <section className="border-t border-line bg-surface-1/40 py-24 md:py-32">

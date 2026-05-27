@@ -108,7 +108,7 @@ export function SiteHeader() {
       <motion.div
         aria-hidden
         style={{ scaleX: progress }}
-        className="absolute inset-x-0 bottom-0 h-px origin-left bg-gradient-to-r from-accent via-accent-soft to-accent-2"
+        className="absolute inset-x-0 bottom-0 h-px origin-left bg-linear-to-r from-accent via-accent-soft to-accent-2"
       />
     </header>
   );

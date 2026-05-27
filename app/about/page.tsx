@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { LinkedinIcon } from "@/components/icons/socials";
 import { PageHero } from "@/components/sections/page-hero";
 import { Testimonials } from "@/components/sections/testimonials";
+import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { values } from "@/lib/content/values";
 import { stage, stageFast, fadeUp, cardIn } from "@/lib/motion";
 
@@ -33,8 +34,8 @@ export default function AboutPage() {
           variants={stage}
           className="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20"
         >
-          <motion.p className="eyebrow md:mt-2" variants={fadeUp}>
-            The story
+          <motion.p className="mono-label md:mt-2" variants={fadeUp}>
+            01 / The story
           </motion.p>
           <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
             <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
@@ -71,17 +72,14 @@ export default function AboutPage() {
             variants={stage}
             className="mb-14 max-w-2xl"
           >
-            <motion.p className="eyebrow mb-5" variants={fadeUp}>
+            <motion.span className="mono-label mb-5 block" variants={fadeUp}>
               How we think
-            </motion.p>
+            </motion.span>
             <motion.h2
               className="text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-[1.05] tracking-tight"
               variants={fadeUp}
             >
-              Three principles{" "}
-              <span className="text-gradient">
-                we hold to.
-              </span>
+              Three principles <span className="text-gradient">we hold to.</span>
             </motion.h2>
           </motion.div>
 
@@ -93,21 +91,24 @@ export default function AboutPage() {
             className="grid gap-6 md:grid-cols-3 md:gap-8"
           >
             {values.map((value, i) => (
-              <motion.article
-                key={value.title}
-                variants={cardIn}
-                className="rounded-2xl border border-line bg-surface-1/60 p-8 backdrop-blur-md md:p-10"
-              >
-                <span className="font-mono text-sm text-accent">
-                  0{i + 1}
-                </span>
-                <h3 className="mt-6 text-2xl font-medium tracking-tight md:text-3xl">
-                  {value.title}
-                </h3>
-                <p className="mt-4 text-fg-muted leading-relaxed">
-                  {value.body}
-                </p>
-              </motion.article>
+              <motion.div key={value.title} variants={cardIn}>
+                <SpotlightCard
+                  tilt={4}
+                  className="glass-refractive glass-refractive--hover h-full rounded-2xl"
+                >
+                  <div className="relative z-10 p-8 md:p-10">
+                    <span className="font-mono text-sm text-accent">
+                      0{i + 1}
+                    </span>
+                    <h3 className="mt-6 text-2xl font-medium tracking-tight md:text-3xl">
+                      {value.title}
+                    </h3>
+                    <p className="mt-4 leading-relaxed text-fg-muted">
+                      {value.body}
+                    </p>
+                  </div>
+                </SpotlightCard>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -126,7 +127,7 @@ export default function AboutPage() {
           className="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20 md:items-start"
         >
           <motion.div variants={fadeUp}>
-            <div className="relative aspect-3/4 overflow-hidden rounded-2xl border border-line bg-surface-1">
+            <div className="glass-refractive relative aspect-3/4 overflow-hidden rounded-2xl">
               <Image
                 src="/assets/images/bb.jpg"
                 alt="Joe Wilson, founder of NAMI Creative"
@@ -137,7 +138,7 @@ export default function AboutPage() {
             </div>
           </motion.div>
           <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
-            <p className="eyebrow">The founder</p>
+            <p className="mono-label">02 / The founder</p>
             <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
               Hi, I'm <span className="text-gradient">Joe Wilson.</span>
             </p>

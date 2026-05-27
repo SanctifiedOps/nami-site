@@ -59,7 +59,7 @@ export function InsightsSidebar({
       {recent.length > 0 && (
         <motion.div
           variants={fadeUp}
-          className="rounded-3xl border border-line bg-surface-1/40 p-8"
+          className="glass-refractive rounded-3xl p-8"
         >
           <p className="eyebrow mb-5">Latest</p>
           <ul className="space-y-5">
@@ -89,7 +89,7 @@ export function InsightsSidebar({
       {tags && tags.length > 0 && (
         <motion.div
           variants={fadeUp}
-          className="rounded-3xl border border-line bg-surface-1/40 p-8"
+          className="glass-refractive rounded-3xl p-8"
         >
           <p className="eyebrow mb-5">Topics</p>
           <ul className="flex flex-wrap gap-2">

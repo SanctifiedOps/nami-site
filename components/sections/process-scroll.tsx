@@ -13,15 +13,32 @@ import { processSteps } from "@/lib/content/process";
 import { LetterReveal } from "@/components/motion/letter-reveal";
 import { cn } from "@/lib/utils";
 
+type Props = {
+  index?: string;
+  title?: React.ReactNode;
+  lead?: string;
+};
+
+const DEFAULT_TITLE = (
+  <>
+    A process that gets you out of the{" "}
+    <span className="text-gradient sm:block">day-to-day.</span>
+  </>
+);
+
 /**
  * Pinned scroll-storytelling. The left column sticks while the phase cards
  * scroll past on the right; a vertical rail fills with scroll progress and the
- * active phase lights up in sync. This is the homepage's signature scroll
- * moment. Falls back to a clean stacked list under reduced motion (the sticky
- * is pure CSS; the rail fill + active-dim are the only motion, and both are
- * informational rather than decorative).
+ * active phase lights up in sync. This is the signature scroll moment, reused
+ * on the homepage and the /process page. Falls back to a clean stacked list
+ * under reduced motion (the sticky is pure CSS; the rail fill + active-dim are
+ * the only motion, and both are informational rather than decorative).
  */
-export function ProcessScroll() {
+export function ProcessScroll({
+  index = "02 / How we work",
+  title = DEFAULT_TITLE,
+  lead = "Four phases. The strategic thinking, the build, the launch, and the system that keeps running after we leave. Tight enough to ship in eight weeks, deep enough to keep working two years on.",
+}: Props = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
@@ -51,17 +68,14 @@ export function ProcessScroll() {
     >
       {/* Sticky left: heading + scroll-spy stepper */}
       <div className="lg:sticky lg:top-28 lg:self-start">
-        <span className="mono-label">02 / How we work</span>
+        {index && <span className="mono-label">{index}</span>}
         <h2 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight md:text-5xl">
           <LetterReveal stagger={0.014} duration={0.65}>
-            A process that gets you out of the{" "}
-            <span className="text-gradient sm:block">day-to-day.</span>
+            {title}
           </LetterReveal>
         </h2>
         <p className="mt-6 max-w-md leading-relaxed text-fg-muted md:text-lg">
-          Four phases. The strategic thinking, the build, the launch, and the
-          system that keeps running after we leave. Tight enough to ship in
-          eight weeks, deep enough to keep working two years on.
+          {lead}
         </p>
 
         <ol className="relative mt-10 hidden pl-7 lg:block">

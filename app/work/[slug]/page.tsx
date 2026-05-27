@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, Check, ExternalLink } from "lucide-react";
 import { work, getCaseStudy } from "@/lib/content/work";
 import { PageHero } from "@/components/sections/page-hero";
+import { SpotlightCard } from "@/components/motion/spotlight-card";
 import {
   JsonLd,
   buildCaseStudySchema,
@@ -88,7 +89,7 @@ export default async function CaseStudyPage({
 
       {/* Meta strip + visit live */}
       <section className="container-shell py-12 md:py-16">
-        <div className="grid gap-6 rounded-3xl border border-line bg-surface-1/60 p-6 backdrop-blur-md md:grid-cols-[auto_1fr_auto] md:items-center md:gap-12 md:p-10">
+        <div className="glass-refractive grid gap-6 rounded-3xl p-6 md:grid-cols-[auto_1fr_auto] md:items-center md:gap-12 md:p-10">
           <div className="inline-grid size-14 place-items-center rounded-2xl border border-line bg-surface-2/60">
             <Icon size={24} className="text-accent" aria-hidden />
           </div>
@@ -148,14 +149,14 @@ export default async function CaseStudyPage({
       {/* Brief / cover panel */}
       <section className="container-shell py-12 md:py-20">
         <div className="grid gap-10 md:grid-cols-[1fr_2fr] md:gap-20">
-          <p className="eyebrow md:mt-2">The brief</p>
+          <p className="mono-label md:mt-2">The brief</p>
           <p className="max-w-2xl text-2xl font-medium leading-snug tracking-tight md:text-3xl">
             {study.brief}
           </p>
         </div>
 
         {/* Cover */}
-        <div className="relative mt-16 aspect-[16/9] overflow-hidden rounded-3xl border border-line bg-surface-1 md:mt-20">
+        <div className="glass-refractive relative mt-16 aspect-[16/9] overflow-hidden rounded-3xl md:mt-20">
           <Image
             src={study.cover}
             alt={`${study.client}: ${study.tagline}`}
@@ -185,7 +186,7 @@ export default async function CaseStudyPage({
         <div className="container-shell">
           <div className="mb-12 grid gap-8 md:grid-cols-[1fr_2fr] md:gap-20">
             <div>
-              <p className="eyebrow mb-4">The approach</p>
+              <p className="mono-label mb-4">The approach</p>
               <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
                 How we{" "}
                 <span className="text-gradient">
@@ -214,7 +215,7 @@ export default async function CaseStudyPage({
       <section className="container-shell py-20 md:py-28 border-t border-line">
         <div className="mb-12 grid gap-8 md:grid-cols-[1fr_2fr] md:gap-20">
           <div>
-            <p className="eyebrow mb-4">What shipped</p>
+            <p className="mono-label mb-4">What shipped</p>
             <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
               Deliverables that{" "}
               <span className="text-gradient">
@@ -226,7 +227,7 @@ export default async function CaseStudyPage({
             {study.deliverables.map((d) => (
               <li
                 key={d}
-                className="flex items-start gap-3 rounded-xl border border-line bg-surface-1/60 p-5 backdrop-blur-md"
+                className="glass-refractive flex items-start gap-3 rounded-xl p-5"
               >
                 <Check
                   size={18}
@@ -246,7 +247,7 @@ export default async function CaseStudyPage({
           <div className="container-shell">
             <div className="mb-12 grid gap-8 md:grid-cols-[1fr_2fr] md:gap-20">
               <div>
-                <p className="eyebrow mb-4">Where it landed</p>
+                <p className="mono-label mb-4">Where it landed</p>
                 <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
                   Outcomes,{" "}
                   <span className="text-gradient">
@@ -258,7 +259,7 @@ export default async function CaseStudyPage({
                 {study.outcomes.map((o) => (
                   <div
                     key={o.label}
-                    className="rounded-2xl border border-line bg-surface-1/60 p-6 backdrop-blur-md md:p-8"
+                    className="glass-refractive rounded-2xl p-6 md:p-8"
                   >
                     <dt className="text-xs uppercase tracking-widest text-fg-subtle">
                       {o.label}
@@ -297,27 +298,31 @@ export default async function CaseStudyPage({
 
       {/* Next case study */}
       <section className="container-shell py-20 md:py-28 border-t border-line">
-        <Link
-          href={`/work/${next.slug}`}
-          className="group block rounded-3xl border border-line bg-surface-1/60 p-10 backdrop-blur-md transition-colors hover:border-accent/50 md:p-16"
+        <SpotlightCard
+          tilt={2}
+          glow={0.2}
+          className="glass-refractive glass-refractive--hover rounded-3xl"
         >
-          <p className="eyebrow mb-4">
-            Next case study · {next.index} · {next.client}
-          </p>
-          <p className="text-3xl font-medium leading-tight tracking-tight md:text-5xl">
-            <span className="text-gradient">
-              {next.tagline}
+          <Link
+            href={`/work/${next.slug}`}
+            className="group relative z-10 block rounded-3xl p-10 md:p-16"
+          >
+            <p className="mono-label mb-4">
+              Next case study · {next.index} · {next.client}
+            </p>
+            <p className="text-3xl font-medium leading-tight tracking-tight md:text-5xl">
+              <span className="text-gradient">{next.tagline}</span>
+            </p>
+            <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent">
+              Continue
+              <ArrowUpRight
+                size={14}
+                aria-hidden
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
             </span>
-          </p>
-          <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent">
-            Continue
-            <ArrowUpRight
-              size={14}
-              aria-hidden
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </span>
-        </Link>
+          </Link>
+        </SpotlightCard>
       </section>
     </>
   );

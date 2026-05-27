@@ -6,6 +6,7 @@ import { services, getService } from "@/lib/content/services";
 import { getServiceFaq } from "@/lib/content/faq";
 import { PageHero } from "@/components/sections/page-hero";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
+import { SpotlightCard } from "@/components/motion/spotlight-card";
 import {
   JsonLd,
   buildServiceSchema,
@@ -105,7 +106,7 @@ export default async function ServiceDetailPage({
       <section className="container-shell py-20 md:py-28">
         <div className="grid gap-10 md:grid-cols-[1fr_2fr] md:gap-20">
           <div>
-            <div className="inline-grid size-16 place-items-center rounded-2xl border border-line bg-surface-1/60 backdrop-blur-md">
+            <div className="glass-refractive inline-grid size-16 place-items-center rounded-2xl">
               <Icon size={28} className="text-accent" aria-hidden />
             </div>
           </div>
@@ -128,26 +129,24 @@ export default async function ServiceDetailPage({
         <div className="container-shell">
           <div className="mb-12 grid gap-8 md:grid-cols-[1fr_2fr] md:gap-20">
             <div>
-              <p className="eyebrow mb-4">What's included</p>
+              <p className="mono-label mb-4">What&apos;s included</p>
               <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
                 Deliverables that{" "}
-                <span className="text-gradient">
-                  hold up daily.
-                </span>
+                <span className="text-gradient">hold up daily.</span>
               </h2>
             </div>
             <ul className="grid gap-4 md:grid-cols-2 md:gap-6">
               {service.deliverables.map((d) => (
                 <li
                   key={d}
-                  className="flex items-start gap-3 rounded-xl border border-line bg-surface-1/60 p-5 backdrop-blur-md"
+                  className="glass-refractive flex items-start gap-3 rounded-xl p-5"
                 >
                   <Check
                     size={18}
                     aria-hidden
                     className="mt-0.5 shrink-0 text-accent"
                   />
-                  <span className="text-fg-muted leading-relaxed">{d}</span>
+                  <span className="leading-relaxed text-fg-muted">{d}</span>
                 </li>
               ))}
             </ul>
@@ -158,7 +157,7 @@ export default async function ServiceDetailPage({
       {/* Pillar context */}
       <section className="container-shell py-20 md:py-28 border-t border-line">
         <div className="grid gap-10 md:grid-cols-[1fr_2fr] md:gap-20">
-          <p className="eyebrow">Where it fits</p>
+          <p className="mono-label">Where it fits</p>
           <div className="space-y-6 max-w-2xl">
             <p className="text-xl font-medium leading-snug tracking-tight md:text-2xl">
               This is one of five pillars. The others sit alongside.
@@ -186,12 +185,9 @@ export default async function ServiceDetailPage({
       {/* FAQ */}
       <section className="container-shell py-20 md:py-28 border-t border-line">
         <div className="mb-12 max-w-3xl">
-          <p className="eyebrow mb-4">Common questions</p>
+          <p className="mono-label mb-4">Common questions</p>
           <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
-            Before we{" "}
-            <span className="text-gradient">
-              get started.
-            </span>
+            Before we <span className="text-gradient">get started.</span>
           </h2>
         </div>
         <FAQAccordion items={serviceFaq} />
@@ -199,23 +195,29 @@ export default async function ServiceDetailPage({
 
       {/* Next service */}
       <section className="container-shell py-20 md:py-28 border-t border-line">
-        <Link
-          href={`/services/${next.slug}`}
-          className="group block rounded-3xl border border-line bg-surface-1/60 p-10 backdrop-blur-md transition-colors hover:border-accent/50 md:p-16"
+        <SpotlightCard
+          tilt={2}
+          glow={0.2}
+          className="glass-refractive glass-refractive--hover rounded-3xl"
         >
-          <p className="eyebrow mb-4">Next service · {next.index}</p>
-          <p className="text-3xl font-medium leading-tight tracking-tight md:text-5xl">
-            {next.title}
-          </p>
-          <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent">
-            Continue
-            <ArrowUpRight
-              size={14}
-              aria-hidden
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </span>
-        </Link>
+          <Link
+            href={`/services/${next.slug}`}
+            className="group relative z-10 block rounded-3xl p-10 md:p-16"
+          >
+            <p className="mono-label mb-4">Next service · {next.index}</p>
+            <p className="text-3xl font-medium leading-tight tracking-tight md:text-5xl">
+              {next.title}
+            </p>
+            <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent">
+              Continue
+              <ArrowUpRight
+                size={14}
+                aria-hidden
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </span>
+          </Link>
+        </SpotlightCard>
       </section>
     </>
   );

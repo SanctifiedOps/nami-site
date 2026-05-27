@@ -35,9 +35,9 @@ export default function WorkPage() {
       <section className="container-shell py-24 md:py-32">
         <WorkGrid />
 
-        <div className="mt-20 flex flex-col items-start gap-6 rounded-3xl border border-line bg-surface-1/40 p-10 md:mt-28 md:flex-row md:items-center md:justify-between md:p-16">
+        <div className="glass-refractive mt-20 flex flex-col items-start gap-6 rounded-3xl p-10 md:mt-28 md:flex-row md:items-center md:justify-between md:p-16">
           <div className="max-w-xl">
-            <p className="eyebrow mb-3">Want to be next?</p>
+            <p className="mono-label mb-3">Want to be next?</p>
             <p className="text-2xl font-medium tracking-tight md:text-3xl">
               We take a small number of new engagements{" "}
               <span className="text-gradient">

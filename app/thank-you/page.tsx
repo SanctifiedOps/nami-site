@@ -2,12 +2,14 @@ import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
 import { NewsletterSubscribe } from "@/components/sections/newsletter-subscribe";
 import { VideoBackground } from "@/components/hero/video-background";
+import { HeroLights } from "@/components/hero/hero-lights";
 
 export default function ThankYouPage() {
   return (
     <section className="relative flex min-h-[80vh] items-center overflow-hidden">
       {/* video background */}
       <VideoBackground src="wave-3.mp4" overlay={0.74} />
+      <HeroLights />
 
       <div className="container-shell relative z-10 py-24 md:py-32">
         <div className="mx-auto max-w-2xl text-center">
