@@ -44,7 +44,7 @@ export const metadata: Metadata = {
       "Self-sustaining creative ecosystems for founders. One studio across brand, content, websites, visual direction, and growth automation.",
     images: [
       {
-        url: "/assets/images/Nami-OG.png",
+        url: "/assets/images/Nami-OG-v2.png",
         width: 1600,
         height: 1000,
         alt: "NAMI Creative · Self-sustaining creative ecosystems for founders",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     title: "NAMI Creative · Brand, Content, Systems",
     description:
       "Self-sustaining creative ecosystems for founders. One studio across brand, content, websites, visual direction, and growth automation.",
-    images: ["/assets/images/Nami-OG.png"],
+    images: ["/assets/images/Nami-OG-v2.png"],
   },
   icons: {
     icon: [
