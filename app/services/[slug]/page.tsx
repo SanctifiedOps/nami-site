@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { services, getService } from "@/lib/content/services";
 import { getServiceFaq } from "@/lib/content/faq";
 import { PageHero } from "@/components/sections/page-hero";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
 import { SpotlightCard } from "@/components/motion/spotlight-card";
+import { SectionIntro } from "@/components/sections/section-intro";
+import { PillarMap } from "@/components/sections/pillar-map";
 import {
   JsonLd,
   buildServiceSchema,
@@ -102,95 +104,87 @@ export default async function ServiceDetailPage({
         lead={service.tagline}
       />
 
-      {/* Description + Icon panel */}
+      {/* Statement + outcome */}
       <section className="container-shell py-20 md:py-28">
-        <div className="grid gap-10 md:grid-cols-[1fr_2fr] md:gap-20">
-          <div>
-            <div className="glass-refractive inline-grid size-16 place-items-center rounded-2xl">
-              <Icon size={28} className="text-accent" aria-hidden />
-            </div>
+        <div className="grid gap-10 lg:grid-cols-[auto_1fr] lg:items-start lg:gap-16">
+          <div className="glass-refractive inline-grid size-20 place-items-center rounded-2xl">
+            <Icon size={36} className="text-accent" aria-hidden />
           </div>
-          <div className="space-y-6 max-w-2xl">
-            <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
+          <div className="max-w-3xl">
+            <p className="text-[clamp(1.6rem,3vw,2.5rem)] font-medium leading-[1.15] tracking-tight">
               {service.description}
             </p>
-            <p className="text-fg-muted md:text-lg leading-relaxed">
-              <span className="text-gradient">
-                Outcome ·{" "}
-              </span>
-              {service.outcome}
-            </p>
+            <div className="glass-refractive mt-10 rounded-2xl p-6 md:p-8">
+              <p className="mono-label text-accent/80">The outcome</p>
+              <p className="mt-3 leading-relaxed text-fg-muted md:text-lg">
+                {service.outcome}
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Deliverables */}
+      {/* Deliverables — numbered readout */}
       <section className="border-t border-line bg-surface-1/40 py-20 md:py-28">
         <div className="container-shell">
-          <div className="mb-12 grid gap-8 md:grid-cols-[1fr_2fr] md:gap-20">
-            <div>
-              <p className="mono-label mb-4">What&apos;s included</p>
-              <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
+          <SectionIntro
+            index="What's included"
+            title={
+              <>
                 Deliverables that{" "}
-                <span className="text-gradient">hold up daily.</span>
-              </h2>
-            </div>
-            <ul className="grid gap-4 md:grid-cols-2 md:gap-6">
-              {service.deliverables.map((d) => (
-                <li
-                  key={d}
-                  className="glass-refractive flex items-start gap-3 rounded-xl p-5"
-                >
-                  <Check
-                    size={18}
-                    aria-hidden
-                    className="mt-0.5 shrink-0 text-accent"
-                  />
-                  <span className="leading-relaxed text-fg-muted">{d}</span>
-                </li>
-              ))}
-            </ul>
+                <span className="text-gradient sm:block">hold up daily.</span>
+              </>
+            }
+            className="mb-12 md:mb-16"
+          />
+          <div className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-2">
+            {service.deliverables.map((d, i) => (
+              <div
+                key={d}
+                className={`flex items-start gap-5 bg-surface-1/60 p-8 backdrop-blur-md${
+                  i === service.deliverables.length - 1 &&
+                  service.deliverables.length % 2 === 1
+                    ? " md:col-span-2"
+                    : ""
+                }`}
+              >
+                <span className="font-mono text-sm text-accent">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="leading-relaxed text-fg">{d}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Pillar context */}
-      <section className="container-shell py-20 md:py-28 border-t border-line">
-        <div className="grid gap-10 md:grid-cols-[1fr_2fr] md:gap-20">
-          <p className="mono-label">Where it fits</p>
-          <div className="space-y-6 max-w-2xl">
-            <p className="text-xl font-medium leading-snug tracking-tight md:text-2xl">
-              This is one of five pillars. The others sit alongside.
-              When they ship together, the brand stops feeling assembled
-              and starts feeling{" "}
-              <span className="text-gradient">
-                considered.
-              </span>
-            </p>
-            <Link
-              href="/services"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent transition-colors"
-            >
-              See the full system
-              <ArrowUpRight
-                size={14}
-                aria-hidden
-                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="container-shell py-20 md:py-28 border-t border-line">
-        <div className="mb-12 max-w-3xl">
-          <p className="mono-label mb-4">Common questions</p>
+      {/* Where it fits — the five-pillar map */}
+      <section className="container-shell border-t border-line py-20 md:py-28">
+        <div className="mb-12 max-w-2xl">
+          <p className="mono-label mb-4">Where it fits</p>
           <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
-            Before we <span className="text-gradient">get started.</span>
+            One of five pillars.{" "}
+            <span className="text-gradient">Stronger together.</span>
           </h2>
+          <p className="mt-5 leading-relaxed text-fg-muted md:text-lg">
+            When they ship together, the brand stops feeling assembled and
+            starts feeling considered. Here is where this one sits.
+          </p>
         </div>
-        <FAQAccordion items={serviceFaq} />
+        <PillarMap currentSlug={service.slug} />
+      </section>
+
+      {/* FAQ — sticky two-column */}
+      <section className="container-shell border-t border-line py-20 md:py-28">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <p className="mono-label mb-4">Common questions</p>
+            <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
+              Before we <span className="text-gradient">get started.</span>
+            </h2>
+          </div>
+          <FAQAccordion items={serviceFaq} />
+        </div>
       </section>
 
       {/* Next service */}
