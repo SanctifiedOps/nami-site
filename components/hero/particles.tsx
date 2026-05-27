@@ -28,10 +28,10 @@ export function HeroParticles() {
 
   useEffect(() => {
     if (reduced) return;
-    // Fewer motes on small screens; the bloom shadows are the expensive part.
-    const count = window.innerWidth < 768 ? 12 : 24;
+    // No particles on mobile — the bloom shadows are the expensive part. Desktop only.
+    if (window.innerWidth < 768) return;
     setParticles(
-      Array.from({ length: count }, (_, i) => ({
+      Array.from({ length: 24 }, (_, i) => ({
         id: i,
         size: Math.random() * 2 + 1, // 1–3px
         x: Math.random() * 100,

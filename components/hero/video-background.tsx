@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   /** Video filename relative to /public/assets/videos/ (e.g. "wave-1.mp4") */
@@ -15,60 +16,87 @@ type Props = {
 };
 
 /**
- * Looping autoplay video background. Muted + playsInline so iOS/Safari
- * respect autoplay. Stretched to fill its absolute parent. Heavy darken
- * overlay sits above so foreground type stays legible. Respects
- * prefers-reduced-motion: pauses video and shows a static gradient instead.
+ * Hero background. The poster image is the base layer — optimised, preloaded,
+ * and the LCP element, so it paints instantly on every device while the video
+ * streams in over it. The video plays on mobile too; it is skipped only for
+ * explicit user preferences (reduced motion, save-data) and very slow (2G)
+ * links. The video pauses while the hero is offscreen.
+ *
+ * Rendering the video only after mount keeps SSR + first client render
+ * identical (poster-only), so there's no hydration mismatch.
  */
 export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
+  const [showVideo, setShowVideo] = useState(false);
+  const [videoSrc, setVideoSrc] = useState("");
   const posterSrc =
     poster ?? `/assets/videos/${src.replace(/\.mp4$/, "-poster.jpg")}`;
 
   useEffect(() => {
+    // Play the video everywhere, including mobile. Skip it only for explicit
+    // user preferences or a genuinely slow link; the poster keeps first paint
+    // instant either way.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const conn = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+    if (conn?.saveData) return;
+    if (conn?.effectiveType && /(slow-2g|2g)/.test(conn.effectiveType)) return;
+    // Phones get a lighter (~720px) encode; larger screens get the full file.
+    const file =
+      window.innerWidth < 768 ? src.replace(/\.mp4$/, "-mobile.mp4") : src;
+    setVideoSrc(`/assets/videos/${file}`);
+    setShowVideo(true);
+  }, [src]);
+
+  useEffect(() => {
+    if (!showVideo) return;
     const video = ref.current;
     if (!video) return;
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (reduced) {
-      video.pause();
-      video.removeAttribute("autoplay");
-      return;
-    }
-    // Only run the video while the hero is on screen. Once the user scrolls
-    // past, pausing frees the decode/compositing cost (meaningful on mobile).
+    // Pause while offscreen so the hero stops costing once scrolled past.
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
+        if (entry.isIntersecting) video.play().catch(() => {});
+        else video.pause();
       },
       { threshold: 0.01 },
     );
     io.observe(video);
     return () => io.disconnect();
-  }, []);
+  }, [showVideo]);
 
   return (
     <div
       aria-hidden
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
-      <video
-        ref={ref}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
-        poster={posterSrc}
-        className="absolute inset-0 h-full w-full object-cover"
-      >
-        <source src={`/assets/videos/${src}`} type="video/mp4" />
-      </video>
+      {/* Poster base layer — optimised, preloaded, the LCP element */}
+      <Image
+        src={posterSrc}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+
+      {/* Video enhancement — capable clients only, fades in over the poster */}
+      {showVideo && (
+        <video
+          ref={ref}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster={posterSrc}
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      )}
 
       {/* Darken overlay — single layer, tunable */}
       <div
@@ -85,7 +113,7 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
         }}
       />
 
-      {/* Brand accent wash — very low alpha so video reads through */}
+      {/* Brand accent wash — very low alpha so the layers read through */}
       <div
         className="absolute inset-0 mix-blend-soft-light opacity-60"
         style={{

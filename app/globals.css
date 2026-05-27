@@ -264,6 +264,24 @@
     }
   }
 
+  /* Mobile: drop the per-letter reveal and the gradient shimmer so the main
+     thread isn't animating dozens of clipped-text spans during load. Text
+     renders instantly; the video and layout still carry the atmosphere. */
+  @media (max-width: 767px) {
+    .lr-char {
+      opacity: 1;
+      filter: none;
+      animation: none;
+      will-change: auto;
+    }
+    .text-gradient,
+    .text-gradient .lr-char,
+    .text-gradient-cyan {
+      animation: none;
+      background-position: 50% 50%;
+    }
+  }
+
   /* ========================================================================
      Insights article body — long-form prose styling
      Applied via .prose-insights wrapper around <MDXRemote>
