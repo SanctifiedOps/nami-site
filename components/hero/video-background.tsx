@@ -34,7 +34,22 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
     if (reduced) {
       video.pause();
       video.removeAttribute("autoplay");
+      return;
     }
+    // Only run the video while the hero is on screen. Once the user scrolls
+    // past, pausing frees the decode/compositing cost (meaningful on mobile).
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.01 },
+    );
+    io.observe(video);
+    return () => io.disconnect();
   }, []);
 
   return (

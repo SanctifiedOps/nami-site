@@ -20,7 +20,7 @@ export const services: Service[] = [
     title: "Brand strategy + identity systems",
     tagline: "Positioning that gets used daily, not documented and forgotten.",
     description:
-      "Foundational work: positioning, messaging architecture, tone of voice, visual direction. Assembled into a brand framework you can run a business off, not a deck you reference once.",
+      "Foundational work: positioning, messaging architecture, tone of voice, visual direction. Assembled into a brand framework you run a business off day to day.",
     icon: Compass,
     pillar: "Brand",
     deliverables: [

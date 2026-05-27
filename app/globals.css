@@ -88,6 +88,26 @@
     color: var(--color-surface-0);
   }
 
+  /* Visible, on-brand keyboard focus. Mouse users are unaffected
+     (:focus-visible only fires for keyboard/AT navigation), so this restores
+     accessibility without showing rings on click. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* Balance display headings so they never strand a single word on the last
+     line; tidy body orphans. Progressive enhancement; ignored where unsupported. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
   /* hide native cursor when custom cursor is active (desktop only, set by JS) */
   html[data-cursor="custom"] {
     cursor: none;
@@ -130,8 +150,8 @@
   .glass {
     background-color: var(--color-glass);
     border: 1px solid var(--color-line);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   /* Animated liquid pink gradient. Flagship magenta with deep and soft
@@ -410,8 +430,8 @@
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.08),
       0 24px 60px -28px rgb(0 0 0 / 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     transition:
       border-color 0.5s var(--ease-out-expo),
       box-shadow 0.5s var(--ease-out-expo),

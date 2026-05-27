@@ -51,7 +51,7 @@ export function SiteFooter() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`NAMI Creative on ${s.label}`}
-                      className="inline-grid size-9 place-items-center rounded-full border border-line text-fg-muted transition-colors hover:border-accent hover:text-accent"
+                      className="inline-grid size-11 place-items-center rounded-full border border-line text-fg-muted transition-colors hover:border-accent hover:text-accent"
                     >
                       <Icon size={16} aria-hidden />
                     </a>

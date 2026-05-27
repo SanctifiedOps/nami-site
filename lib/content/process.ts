@@ -38,7 +38,7 @@ export const processSteps: ProcessStep[] = [
     title: "Launch + integrate",
     duration: "Week 7",
     summary:
-      "Ship the brand into the wild, wired into the systems that keep it running.",
+      "Ship the brand live, wired into the systems that keep it running.",
     detail: [
       "Live site + analytics in place",
       "Lead-capture + nurture flows",

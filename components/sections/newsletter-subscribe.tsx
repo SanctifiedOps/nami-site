@@ -45,26 +45,37 @@ export function NewsletterSubscribe({
     setMessage(null);
 
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        ok?: boolean;
-        message?: string;
-        error?: string;
-      };
-      if (!res.ok || !data.ok) {
-        throw new Error(data.error ?? "Something went wrong.");
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      try {
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+          signal: controller.signal,
+        });
+        const data = (await res.json().catch(() => ({}))) as {
+          ok?: boolean;
+          message?: string;
+          error?: string;
+        };
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error ?? "Something went wrong.");
+        }
+        setStatus("success");
+        setMessage(data.message ?? "Check your inbox to confirm.");
+        setEmail("");
+      } finally {
+        clearTimeout(timeout);
       }
-      setStatus("success");
-      setMessage(data.message ?? "Check your inbox to confirm.");
-      setEmail("");
     } catch (err) {
       setStatus("error");
       setMessage(
-        err instanceof Error ? err.message : "Something went wrong.",
+        err instanceof DOMException && err.name === "AbortError"
+          ? "That took too long. Check your connection and try again."
+          : err instanceof Error
+            ? err.message
+            : "Something went wrong.",
       );
     }
   }

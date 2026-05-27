@@ -54,7 +54,7 @@ export default function AboutPage() {
             <p className="text-fg-muted md:text-lg leading-relaxed">
               We sit between three roles (brand studio, creative partner,
               systems builder) because that's the shape of the work that
-              actually moves the needle. Strategy without execution is a
+              compounds. Strategy without execution is a
               deck. Execution without systems is exhaustion. We do all
               three so what gets built keeps working after we leave.
             </p>

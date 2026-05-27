@@ -35,23 +35,35 @@ export default function ContactPage() {
     };
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        ok?: boolean;
-        error?: string;
-      };
-      if (!res.ok || !data.ok) {
-        throw new Error(data.error ?? "We couldn't send your message.");
+      // Abort a stalled request so the form can never get stuck on "Sending...".
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
+        const data = (await res.json().catch(() => ({}))) as {
+          ok?: boolean;
+          error?: string;
+        };
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error ?? "We couldn't send your message.");
+        }
+        router.push("/thank-you");
+      } finally {
+        clearTimeout(timeout);
       }
-      router.push("/thank-you");
     } catch (err) {
       setStatus("error");
       setErrorMsg(
-        err instanceof Error ? err.message : "Something went wrong.",
+        err instanceof DOMException && err.name === "AbortError"
+          ? "That took too long to send. Check your connection and try again."
+          : err instanceof Error
+            ? err.message
+            : "Something went wrong.",
       );
     }
   };
@@ -112,12 +124,14 @@ export default function ContactPage() {
                 label="First name"
                 name="firstName"
                 autoComplete="given-name"
+                maxLength={80}
                 required
               />
               <Field
                 label="Last name"
                 name="lastName"
                 autoComplete="family-name"
+                maxLength={80}
                 required
               />
             </motion.div>
@@ -127,12 +141,14 @@ export default function ContactPage() {
                 type="email"
                 name="email"
                 autoComplete="email"
+                maxLength={160}
                 required
               />
               <Field
                 label="Company"
                 name="company"
                 autoComplete="organization"
+                maxLength={120}
               />
             </motion.div>
             <motion.div variants={fadeUp}>
@@ -152,6 +168,7 @@ export default function ContactPage() {
                 name="message"
                 placeholder="A few sentences about the business, what you've tried, and what would success look like in 6 months."
                 rows={6}
+                maxLength={2000}
                 required
               />
             </motion.div>
@@ -166,6 +183,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={status === "submitting"}
+                aria-busy={status === "submitting"}
                 className={cn(
                   "group relative inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)] disabled:opacity-60",
                 )}
@@ -287,12 +305,14 @@ function Field({
   type = "text",
   required,
   autoComplete,
+  maxLength,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
   autoComplete?: string;
+  maxLength?: number;
 }) {
   return (
     <label className="block">
@@ -304,6 +324,7 @@ function Field({
         type={type}
         required={required}
         autoComplete={autoComplete}
+        maxLength={maxLength}
         className="w-full rounded-xl border border-line bg-surface-1/60 px-5 py-4 text-fg placeholder:text-fg-subtle backdrop-blur-md transition-all focus:border-accent focus:bg-surface-1 focus:outline-none focus:ring-4 focus:ring-accent/15"
       />
     </label>
@@ -340,12 +361,14 @@ function TextArea({
   placeholder,
   rows = 5,
   required,
+  maxLength,
 }: {
   label: string;
   name: string;
   placeholder?: string;
   rows?: number;
   required?: boolean;
+  maxLength?: number;
 }) {
   return (
     <label className="block">
@@ -357,6 +380,7 @@ function TextArea({
         rows={rows}
         placeholder={placeholder}
         required={required}
+        maxLength={maxLength}
         className="w-full rounded-xl border border-line bg-surface-1/60 px-5 py-4 text-fg placeholder:text-fg-subtle backdrop-blur-md transition-all focus:border-accent focus:bg-surface-1 focus:outline-none focus:ring-4 focus:ring-accent/15 resize-none"
       />
     </label>

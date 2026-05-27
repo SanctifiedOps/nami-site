@@ -12,7 +12,7 @@ export const faq: FAQ[] = [
   {
     question: "Who do you work with?",
     answer:
-      "Founders, small businesses, and teams who care about doing the work properly. Independent trades through to growing service brands. The common thread is intent, not size. If you're trying to build something deliberate and want a partner who treats it that way, we're a fit.",
+      "Founders, small businesses, and teams who care about doing the work properly. Independent trades through to growing service brands. The common thread is intent, whatever the size. If you're trying to build something deliberate and want a partner who treats it that way, we're a fit.",
   },
   {
     question: "How long does a typical engagement run?",
@@ -27,7 +27,7 @@ export const faq: FAQ[] = [
   {
     question: "What does it cost?",
     answer:
-      "Engagements are sized to the work, not bundled into packages. We talk to every potential client first, understand what's needed, then quote against the brief. If we're not the right fit on budget or shape, we'll say so honestly and point you somewhere that is.",
+      "Engagements are sized to the work, not bundled into packages. We talk to every potential client first, understand what's needed, then quote against the brief. If we're not the right fit on budget or shape, we'll say so and point you somewhere that is.",
   },
   {
     question: "Can you work with our existing brand?",
@@ -50,7 +50,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Do you do naming?",
       answer:
-        "Yes. Brand naming, product naming, sub-brand architecture. We'll only suggest a rename if the current name is actively holding you back; otherwise we work with what you have.",
+        "Yes. Brand naming, product naming, sub-brand architecture. We only suggest a rename if the current name is holding you back; otherwise we work with what you have.",
     },
     {
       question: "We already have a logo and some assets. Do we start over?",
@@ -68,12 +68,12 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Do you only build the system, or also write the content?",
       answer:
-        "Both. We design the formats and frameworks, then produce against them: copy, scripts, visual briefs. After launch your team can take over with the playbook, or we keep producing alongside you.",
+        "We design the formats and frameworks, then produce against them: copy, scripts, visual briefs. After launch your team can take over with the playbook, or we keep producing alongside you.",
     },
     {
       question: "Which platforms do you cover?",
       answer:
-        "LinkedIn, Instagram, YouTube, email, and long-form essays are the usual core. We pick platforms based on where your audience actually buys, not where the trend is loudest.",
+        "LinkedIn, Instagram, YouTube, email, and long-form essays are the usual core. We pick platforms based on where your audience buys, not where the trend is loudest.",
     },
     {
       question: "How does AI fit in?",
@@ -83,7 +83,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Can you take over an existing content function?",
       answer:
-        "Often. We audit what's working, kill what isn't, and rebuild around the formats that compound. Most takeovers cut output volume and grow reach in the same quarter.",
+        "We can, and often do. We audit what's working, kill what isn't, and rebuild around the formats that compound. Most takeovers cut output volume and grow reach in the same quarter.",
     },
   ],
 
@@ -91,7 +91,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "How do you decide what to build the site on?",
       answer:
-        "Stack is picked against the brief, not assumed. Lightweight when speed of iteration matters most. Custom code when the site needs to do real work: apps, dashboards, integrations. The decision is made in scoping so you know what you're getting before we build.",
+        "We pick the stack against the brief. Lightweight when speed of iteration matters most. Custom code when the site needs to do real work: apps, dashboards, integrations. You know the decision in scoping, before we build.",
     },
     {
       question: "Do you handle hosting and ongoing maintenance?",
@@ -114,12 +114,12 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Do you shoot photography and video, or only direct it?",
       answer:
-        "Both, depending on the brief. Smaller shoots run in-house. Larger productions are art-directed with trusted shooters and editors. You stay one point of contact.",
+        "Depends on the brief. Smaller shoots run in-house; larger productions are art-directed with trusted shooters and editors. You stay the one point of contact.",
     },
     {
       question: "We already have visual assets. Can you direct from those?",
       answer:
-        "Yes. Most engagements blend new direction with existing libraries. The point is consistency across the brand, not throwing everything out.",
+        "Most engagements blend new direction with your existing libraries. The point is consistency across the brand, not throwing everything out.",
     },
     {
       question: "Is creative direction a one-off or ongoing?",
@@ -129,7 +129,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Do you deliver editable assets and templates?",
       answer:
-        "Always. Editable design libraries, source files, asset catalogues, and applied templates. Everything you need to keep producing on-brand without us in the room.",
+        "You always get the editable layer: design libraries, source files, asset catalogues, and applied templates. Everything you need to keep producing on-brand without us in the room.",
     },
   ],
 
@@ -137,17 +137,17 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "How do you decide what to build with?",
       answer:
-        "Stack is picked for fit, not preference, and we lean toward tooling your team can operate after handoff. Where the workflow needs custom logic, we build custom; where standard tooling holds up, we use it. Either way, you get documentation and training, not a black box.",
+        "We pick the stack for fit, not preference, and lean toward tooling your team can operate after handoff. Where the workflow needs custom logic, we build custom; where standard tooling holds up, we use it. Either way you get documentation and training, not a black box.",
     },
     {
       question: "Will my team be able to maintain this after you leave?",
       answer:
-        "That's the goal. Builds come with documentation, training, and a handoff session. If something genuinely needs ongoing engineering, we say so up front and propose a partnership rather than pretending it's plug-and-play.",
+        "That's the goal. Builds come with documentation, training, and a handoff session. If something needs ongoing engineering, we say so up front and propose a partnership rather than pretending it's plug-and-play.",
     },
     {
       question: "Do you do custom integrations or only no-code?",
       answer:
-        "Both. No-code is faster for standard workflows; custom code shows up where the system needs to do something the platforms don't. The trade-off is cost vs. flexibility, and we'll be straight about it.",
+        "No-code is faster for standard workflows; custom code shows up where the system needs to do something the platforms don't. The trade-off is cost vs flexibility, and we'll be straight about it.",
     },
     {
       question: "How do you decide what's worth automating?",

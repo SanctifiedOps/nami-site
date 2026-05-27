@@ -2,7 +2,7 @@
 
 > Single source-of-truth brand brief. Synthesised from three sources: this codebase (`lib/content/*.ts`, `content/insights/`, live copy), the Notion strategy hub ([Waves Of Creative Impact](https://www.notion.so/Nami-Creative-Waves-Of-Creative-Impact-1baa4ea78303807ba4a5f38a31502e21)), and the live site ([namicreative.co.uk](https://www.namicreative.co.uk)).
 >
-> Last reconciled 22 May 2026. The codebase is canonical for brand copy and design tokens; Notion follows. The dashboard is canonical for live revenue numbers. Where slow-moving frames sit (mission, ICP, voice rules), this file plus `CLAUDE.md` are canon.
+> Last reconciled 22 May 2026. Precedence in brief: the codebase content modules (`lib/content/*.ts`, `content/insights/`) are the source of truth for brand copy and design tokens, and the live site is their deployed snapshot (a divergence is a deploy gap, not a contradiction). Notion follows the codebase. The dashboard is canonical for live revenue numbers. For slow-moving frames (mission, ICP, voice rules), this file plus `CLAUDE.md` are canon. Full conflict rules in section 14.
 
 ---
 
@@ -171,6 +171,20 @@ Live at `/offers/flow-funnel`. Productised £500 turnkey landing-page + lead cap
 
 > Pricing note: the public site keeps bespoke pricing soft ("sized to the work", "monthly retainer"). The hard numbers above live in Notion and are for proposals and internal scoping. Flow Funnel pricing (£500 / £150 / £1.5k) is public on `/offers/flow-funnel` and machine-readable at `/pricing.md`.
 
+### Buyer FAQ (canonical stances, `faq.ts`)
+
+The site ships a general buyer FAQ plus per-service FAQs (`serviceFaq`, keyed by service slug, rendered on each `/services/[slug]` page; the Flow Funnel carries its own set in `offers.ts`). These stances double as canonical positioning, so quote them rather than improvising:
+
+- **How NAMI differs:** it doesn't sit in one lane. It builds brand, content, web, and automation into one structure so the work compounds instead of fragmenting. Depth over volume: fewer clients, more thinking.
+- **Who it's for:** founders, small businesses, and teams who care about doing the work properly. The common thread is intent, not size.
+- **Engagement length:** a foundational brand plus website usually lands in 6–8 weeks, then most clients continue on an ongoing partnership.
+- **Digital vs print:** both. Digital is the default home (sites, content, automation); visual direction extends across photography, video, print, and packaging.
+- **Cost:** sized to the work, not bundled into packages. Talk first, quote against the brief, and say so honestly when it isn't the right fit.
+- **Existing brand:** often plug into what's strong. If the foundation needs work, say so before scaling on top of it.
+- **On AI (content + automation):** used selectively to accelerate research, drafts, and variations. It never replaces voice, judgement, or strategy, and everything that ships is human-checked.
+- **On what to automate:** a workflow earns automation when it runs at least weekly, has a clear trigger, and pays back inside three months. Below that bar, leave it manual.
+- **On ownership:** clients get source files, documentation, and training. Builds are made to be operated without NAMI in the room.
+
 ---
 
 ## 7. Process: four phases
@@ -208,7 +222,7 @@ As of 13 May 2026, three paying retainers: **WPG / NEHB** (Strategic), **VESSL**
 
 Six on-record recommendations: Michael Tansey (Procure Smart), Chris Howe (Peak Performance), Rowena Wilding (B2B marketing strategist), Colin Beard (Prosperity Care and Wellbeing), John McKie (email revenue systems), Orange John (Three Peaks Mountain Guide). Theme across all: understood the vision, easy to work with, met commitments, showstopping output.
 
-Plus a flagship VESSL testimonial used on `/offers/flow-funnel`: *"We had the brand. We had the audience. We didn't have anywhere to send them. Joe built the funnel that turned that around. Trial signups doubled in the first month."* — Andrew Miller, Founder, VESSL.
+Plus a flagship VESSL testimonial used on `/offers/flow-funnel`, from Andrew Miller (Founder, VESSL): *"We had the brand. We had the audience. We didn't have anywhere to send them. Joe built the funnel that turned that around. Trial signups doubled in the first month, the brand looks better than anything I could've briefed, and the whole thing went live in seven days."*
 
 ---
 
@@ -271,7 +285,7 @@ Direct, action-first, terse. Trusts recommendations: when given a decision, surf
 | Primary accent | `#ff00bc` | Magenta, the Nami signature. CTAs, emphasis, brand moments. Used sparingly so it carries weight. |
 | Accent soft | `#ff66db` | Lighter magenta. Used in the wave-gradient sweep, hover states, accent-soft surfaces. |
 | Accent deep | `#800060` | Darker magenta. Used in the wave-gradient sweep as the deep stop, glow shadows, hover-emphasis. |
-| Secondary accent | `#00bcf6` / `#64c8ff` | Cyan. Counterbalance, used for systems / data / technical context. |
+| Secondary accent | `#64c8ff` | Cyan (`--color-accent-2`). Counterbalance to magenta, used for systems / data / technical context. Supersedes the earlier Notion value `#00bcf6`. |
 | Neutral light | `#f2f3f5` | Page backgrounds, cards. |
 | Neutral mid | `#3b3c3c` | Body text on light, borders on dark. |
 | Near-black | `#0e0f11` / `#18191d` | Dark surface backgrounds. |
@@ -305,6 +319,19 @@ The studio's owned content surface is **Creative Waves** (the `/insights` blog, 
 
 Each cornerstone article generates 5–10 social atoms (quotable lines, frameworks, before/after callouts) that get spread across Instagram and LinkedIn over 1–2 weeks. See `.agents/social-content-strategy.md` for the full repurposing map.
 
+### Social distribution (four channels)
+
+Full playbook in `.agents/social-content-strategy.md`. Social is being reactivated off the back of **NAMI Up North**, a community brand Joe built in 2021 spotlighting the North East creative scene (~2,300 Instagram followers, went quiet through Covid, now gently reactivated; a recent ~2,000 story-views-in-a-day confirmed the audience is still warm). The governing constraint: reactivate the community brand without burning the studio brand, so the community channel stays value-first and the studio channel carries the selling.
+
+Four channels, distinct roles:
+
+- **Instagram** (community anchor, top of funnel): NAMI Up North voice updated, curation and value first. Reactivates the warm NE audience. Soft funnel via bio link and DM, never hard selling.
+- **LinkedIn** (sales pipeline, mid-to-bottom funnel): studio voice, framework-led, direct CTA to `/offers/flow-funnel`, `/work`, and `/insights`. Carries the conversion weight.
+- **TikTok** (amplification, top of funnel): looser and hooks-first, mostly IG reel cross-posts plus the occasional native short.
+- **Facebook** (passive mirror): auto cross-post from IG via Meta Business Suite, near-zero extra effort, kept for local discovery and trust.
+
+Five content pillars with a target ratio: NE Brand & Creator Spotlight 35%, Brand & Funnel Wisdom 25%, Studio Glimpses & BTS 20%, Founder Voice & Hot Takes 12%, Studio Soft Sell 8%. Time budget is light (3–5 hours/week, batched into a few sessions). Carousel templates use the site tokens (magenta `#ff00bc`, cyan `#64c8ff`, Instrument Sans). Soft-sell stays scarce on the community channels (roughly 1 post in 10); LinkedIn carries the direct selling. Cornerstone Creative Waves articles and the five case studies are the repurposing source: each long-form asset yields 5–10 social atoms spread over 1–2 weeks.
+
 Newsletter CTA: "Subscribe to Creative Waves." Primary site CTA: "Start a project" / "Build With Us."
 
 ---
@@ -322,8 +349,8 @@ Newsletter CTA: "Subscribe to Creative Waves." Primary site CTA: "Start a projec
 
 ### SEO + AI-search infrastructure (post-overhaul as of 22 May 2026)
 
-- **Comprehensive JSON-LD** via `components/seo/json-ld.tsx`: Organization, LocalBusiness (Jarrow / Tyne and Wear / NE32 5XQ, expanded `areaServed` across NE cities + UK + Worldwide), WebSite, Person (Joe Wilson), Service, CreativeWork, Article, FAQPage, BreadcrumbList. Wired across every route.
-- **`/robots.txt`** explicitly allows AI crawlers (GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot, Claude-Web, anthropic-ai, Google-Extended, PerplexityBot, Bingbot, Applebot, CCBot).
+- **Comprehensive JSON-LD** via `components/seo/json-ld.tsx`: Organization, ProfessionalService (a LocalBusiness subtype, carrying the PostalAddress on Regent Road / Jarrow / NE32 5XQ and `areaServed` across Newcastle upon Tyne, Jarrow, Gateshead, Sunderland, Tyne and Wear, North East England, UK, and Worldwide), WebSite, Person (Joe Wilson), FAQPage, Service, CreativeWork, Article, BreadcrumbList. Wired across every route.
+- **`/robots.txt`** (generated by `app/robots.ts`) explicitly allows the AI crawlers: GPTBot, ChatGPT-User, OAI-SearchBot (OpenAI), ClaudeBot, Claude-Web, anthropic-ai (Anthropic), Google-Extended, PerplexityBot, Perplexity-User, Bingbot, BingPreview, Applebot, Applebot-Extended, and CCBot. Disallows `/api/` and `/thank-you`.
 - **`/llms.txt`** at site root: AI-context file with brand summary, frameworks, services, offers, key URLs.
 - **`/pricing.md`** at site root: machine-readable pricing for AI agents evaluating creative studios.
 - **Dynamic sitemap** at `/sitemap.xml`, registering all static + dynamic routes including `/offers/flow-funnel` and every `/insights/[slug]`.
@@ -346,10 +373,10 @@ Joe's owner-only iOS-style PWA dashboard. Tasks, content calendar, daily ideas, 
 
 Sister docs to this file. Future Claude sessions read these as canonical strategy context:
 
-- **`.agents/product-marketing-context.md`** — voice + ICP + positioning source of truth for marketing tasks.
-- **`.agents/seo-strategy.md`** — keyword tier map (Tier 0–5), page-by-page meta targeting, AI Overview citation strategy, content cluster roadmap.
-- **`.agents/copy-overhaul-plan.md`** — the May 2026 site-wide copy overhaul plan (historical reference).
-- **`.agents/social-content-strategy.md`** — four-platform social playbook (IG community channel, LinkedIn sales channel, TikTok amplification, FB cross-post), 5-pillar content mosaic, first-month content calendar, hooks library, algorithm + psychology levers per platform.
+- **`.agents/product-marketing-context.md`**: voice + ICP + positioning source of truth for marketing tasks.
+- **`.agents/seo-strategy.md`**: keyword tier map (Tier 0–5), page-by-page meta targeting, AI Overview citation strategy, content cluster roadmap.
+- **`.agents/copy-overhaul-plan.md`**: the May 2026 site-wide copy overhaul plan (historical reference).
+- **`.agents/social-content-strategy.md`**: four-platform social playbook (IG community channel, LinkedIn sales channel, TikTok amplification, FB cross-post), 5-pillar content mosaic, first-month content calendar, hooks library, algorithm + psychology levers per platform.
 
 ---
 
@@ -380,10 +407,11 @@ As of 22 May 2026 the three sources (codebase, Notion hub, live site) have been 
 
 When sources diverge again, this is the precedence:
 
-1. **The live site wins for public copy.** If something is live on namicreative.co.uk and contradicts a doc, the doc is stale.
-2. **The codebase wins for brand design tokens, voice rules, and content modules.** Notion follows the codebase, not the other way round.
-3. **The Notion hub wins for strategy, ICP, and pricing frameworks** (slow-moving conceptual layer).
-4. **The dashboard wins for live revenue numbers** (MRR, leads, retainers, conversion rates).
-5. **`CLAUDE.md` plus this file win for working conventions, voice rules, and inter-source navigation.**
+1. **The codebase content modules are the source of truth for brand copy** (`lib/content/*.ts`, `content/insights/`). The public site renders from them, so copy is authored and changed there first. Notion and these docs follow the codebase, not the other way round.
+2. **The live site is the deployed snapshot of that copy, not a separate authority.** When the live site and the codebase match, that match is the published truth. When they differ, treat it as a deploy gap rather than a contradiction: the codebase is canonical (changes pending deploy), unless the live site carries a production hotfix that never made it back to the repo, in which case back-port it to the codebase the same day. If a strategy doc or Notion disagrees with what is both in the code and live, the doc is the stale one.
+3. **The codebase also wins for design tokens** (colours, gradients, typography). Notion follows.
+4. **The Notion hub wins for strategy, ICP, and pricing frameworks** (slow-moving conceptual layer).
+5. **The dashboard wins for live revenue numbers** (MRR, leads, retainers, conversion rates).
+6. **`CLAUDE.md` plus this file win for working conventions, voice rules, and inter-source navigation.**
 
 When something changes in one source, log the corresponding update in the others within the same week. Drift compounds; reconciliation is a working discipline, not a one-off task.

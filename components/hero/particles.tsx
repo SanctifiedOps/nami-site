@@ -16,7 +16,6 @@ type Particle = {
   isCyan: boolean;
 };
 
-const COUNT = 36;
 
 /**
  * Floating particle field for the hero: small magenta and cyan motes
@@ -29,8 +28,10 @@ export function HeroParticles() {
 
   useEffect(() => {
     if (reduced) return;
+    // Fewer motes on small screens; the bloom shadows are the expensive part.
+    const count = window.innerWidth < 768 ? 12 : 24;
     setParticles(
-      Array.from({ length: COUNT }, (_, i) => ({
+      Array.from({ length: count }, (_, i) => ({
         id: i,
         size: Math.random() * 2 + 1, // 1–3px
         x: Math.random() * 100,

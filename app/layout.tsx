@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { CustomCursor } from "@/components/providers/custom-cursor";
+import { MotionProvider } from "@/components/providers/motion-config";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import {
   JsonLd,
@@ -82,9 +83,11 @@ export default function RootLayout({
         />
         <SmoothScroll />
         <CustomCursor />
-        <SiteHeader />
-        <main id="main">{children}</main>
-        <SiteFooter />
+        <MotionProvider>
+          <SiteHeader />
+          <main id="main">{children}</main>
+          <SiteFooter />
+        </MotionProvider>
         <GoogleAnalytics />
       </body>
     </html>

@@ -16,7 +16,7 @@ export const engagements: EngagementModel[] = [
     name: "Project",
     best: "For a defined brand or website build with a clear brief.",
     description:
-      "Single engagement: typically a brand build, a website, or a positioning + content reset. Fixed brief, fixed timeline, deliverable handoff. We talk first, plan honestly, then build.",
+      "Single engagement: typically a brand build, a website, or a positioning + content reset. Fixed brief, fixed timeline, deliverable handoff. We talk first, plan to the brief, then build.",
     scope: [
       "Brand strategy + identity",
       "Conversion-led website",
