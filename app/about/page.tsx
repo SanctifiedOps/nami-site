@@ -124,7 +124,7 @@ export default function AboutPage() {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
           variants={stage}
-          className="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20 md:items-start"
+          className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:items-start md:gap-16 lg:gap-20"
         >
           <motion.div variants={fadeUp}>
             <div className="glass-refractive relative aspect-3/4 overflow-hidden rounded-2xl">
@@ -132,12 +132,13 @@ export default function AboutPage() {
                 src="/assets/images/bb.jpg"
                 alt="Joe Wilson, founder of NAMI Creative"
                 fill
-                sizes="(min-width: 768px) 33vw, 100vw"
+                sizes="(min-width: 768px) 40vw, 100vw"
                 className="object-cover"
               />
             </div>
+            <p className="mono-label mt-4">Joe Wilson · Founder, NAMI Creative</p>
           </motion.div>
-          <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
+          <motion.div variants={fadeUp} className="max-w-2xl space-y-6">
             <p className="mono-label">02 / The founder</p>
             <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
               Hi, I'm <span className="text-gradient">Joe Wilson.</span>
@@ -149,10 +150,48 @@ export default function AboutPage() {
               layer.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              Currently working with founders, small businesses, and trades
-              who care about doing the work properly. Independent operators
-              through to growing teams. The common thread is intent.
+              Twenty years in brand building and design sit behind that. I held
+              a head-of-department role at the UK&apos;s leading energy
+              consultants&apos; trade body, building a brand with enough weight
+              to earn a seat in Westminster, and I&apos;ve been featured on BBC
+              Radio for the Nami Up North project.
             </p>
+            <p className="text-fg-muted md:text-lg leading-relaxed">
+              Today I work with founders, small businesses, and trades who care
+              about doing the work properly. Independent operators through to
+              growing teams. The common thread is intent.
+            </p>
+
+            <dl className="grid gap-8 border-t border-line pt-6 sm:grid-cols-3">
+              <div>
+                <dt className="mono-label">Experience</dt>
+                <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
+                  20 years
+                </dd>
+                <p className="mt-1 text-sm text-fg-muted">
+                  Brand building + design
+                </p>
+              </div>
+              <div>
+                <dt className="mono-label">Leadership</dt>
+                <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
+                  Head of Dept.
+                </dd>
+                <p className="mt-1 text-sm text-fg-muted">
+                  UK&apos;s leading energy consultants&apos; trade body
+                </p>
+              </div>
+              <div>
+                <dt className="mono-label">Featured</dt>
+                <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
+                  BBC Radio
+                </dd>
+                <p className="mt-1 text-sm text-fg-muted">
+                  Nami Up North project
+                </p>
+              </div>
+            </dl>
+
             <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-2">
               <a
                 href="https://www.linkedin.com/in/brandingbyjoewilson/"

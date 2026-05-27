@@ -9,6 +9,7 @@ import { FAQAccordion } from "@/components/sections/faq-accordion";
 import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { SectionIntro } from "@/components/sections/section-intro";
 import { PillarMap } from "@/components/sections/pillar-map";
+import { DeliverablesList } from "@/components/sections/deliverables-list";
 import {
   JsonLd,
   buildServiceSchema,
@@ -137,24 +138,7 @@ export default async function ServiceDetailPage({
             }
             className="mb-12 md:mb-16"
           />
-          <div className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-2">
-            {service.deliverables.map((d, i) => (
-              <div
-                key={d}
-                className={`flex items-start gap-5 bg-surface-1/60 p-8 backdrop-blur-md${
-                  i === service.deliverables.length - 1 &&
-                  service.deliverables.length % 2 === 1
-                    ? " md:col-span-2"
-                    : ""
-                }`}
-              >
-                <span className="font-mono text-sm text-accent">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="leading-relaxed text-fg">{d}</span>
-              </div>
-            ))}
-          </div>
+          <DeliverablesList items={service.deliverables} />
         </div>
       </section>
 

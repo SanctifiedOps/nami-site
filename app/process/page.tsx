@@ -49,6 +49,7 @@ export default function ProcessPage() {
       <section className="border-t border-line bg-surface-1/40 py-24 md:py-32">
         <div className="container-shell">
           <SectionHeading
+            align="center"
             eyebrow="The principle"
             title={
               <>

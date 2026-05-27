@@ -8,6 +8,7 @@ import { PageHero } from "@/components/sections/page-hero";
 import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { ApproachSteps } from "@/components/sections/approach-steps";
 import { MetricsBand } from "@/components/sections/metrics-band";
+import { DeliverablesList } from "@/components/sections/deliverables-list";
 import {
   JsonLd,
   buildCaseStudySchema,
@@ -89,24 +90,24 @@ export default async function CaseStudyPage({
       />
 
       {/* Meta — editorial dossier line */}
-      <section className="container-shell py-10 md:py-12">
-        <div className="flex flex-col gap-8 border-b border-line pb-10 md:flex-row md:items-end md:justify-between md:gap-12">
-          <dl className="grid grid-cols-2 gap-x-10 gap-y-6 md:flex md:flex-wrap md:gap-0">
-            <div className="md:border-l md:border-line md:pl-10 md:first:border-l-0 md:first:pl-0">
+      <section className="container-shell py-14 md:py-20">
+        <div className="flex flex-col gap-12 border-b border-line pb-14 md:flex-row md:items-end md:justify-between md:gap-20">
+          <dl className="grid grid-cols-2 gap-x-12 gap-y-10 sm:flex sm:flex-wrap sm:gap-x-20">
+            <div>
               <dt className="mono-label">Client</dt>
-              <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
+              <dd className="mt-3 text-lg font-medium tracking-tight text-fg">
                 {study.client}
               </dd>
             </div>
-            <div className="md:border-l md:border-line md:pl-10">
+            <div>
               <dt className="mono-label">Year</dt>
-              <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
+              <dd className="mt-3 text-lg font-medium tracking-tight text-fg">
                 {study.year}
               </dd>
             </div>
-            <div className="md:border-l md:border-line md:pl-10">
+            <div>
               <dt className="mono-label">Status</dt>
-              <dd className="mt-2 flex items-center gap-2 text-lg font-medium tracking-tight text-fg">
+              <dd className="mt-3 flex items-center gap-2 text-lg font-medium tracking-tight text-fg">
                 <span
                   aria-hidden
                   className="size-1.5 rounded-full bg-accent shadow-[0_0_10px_rgb(255_0_188/0.7)]"
@@ -114,10 +115,10 @@ export default async function CaseStudyPage({
                 {study.status}
               </dd>
             </div>
-            <div className="md:border-l md:border-line md:pl-10">
+            <div>
               <dt className="mono-label">Pillars</dt>
-              <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
-                {study.pillars.join(" · ")}
+              <dd className="mt-3 text-lg font-medium tracking-tight text-fg">
+                {study.pillars.join("  ·  ")}
               </dd>
             </div>
           </dl>
@@ -189,24 +190,7 @@ export default async function CaseStudyPage({
             <span className="text-gradient">hold up daily.</span>
           </h2>
         </div>
-        <div className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-2">
-          {study.deliverables.map((d, i) => (
-            <div
-              key={d}
-              className={`flex items-start gap-5 bg-surface-1/60 p-8 backdrop-blur-md${
-                i === study.deliverables.length - 1 &&
-                study.deliverables.length % 2 === 1
-                  ? " md:col-span-2"
-                  : ""
-              }`}
-            >
-              <span className="font-mono text-sm text-accent">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="leading-relaxed text-fg">{d}</span>
-            </div>
-          ))}
-        </div>
+        <DeliverablesList items={study.deliverables} />
       </section>
 
       {/* Outcomes — bold metrics readout */}
