@@ -12,21 +12,8 @@ import type { FAQ } from "@/lib/content/faq";
 /**
  * Productised offers. Sit below the studio's main engagement ladder
  * (lib/content/engagement.ts). Entry-tier offers with their own sales
- * pages under /offers/[slug]. Not surfaced in primary nav. Brand
- * dilution protection.
+ * pages under /offers/[slug]. Not surfaced in primary nav.
  */
-
-export type OfferTier = {
-  index: string;
-  name: string;
-  price: string;
-  cadence: string;
-  best: string;
-  description: string;
-  scope: string[];
-  cta: { label: string; href: string };
-  highlight?: boolean;
-};
 
 export type OfferDeliverable = {
   icon: LucideIcon;
@@ -39,12 +26,53 @@ export type OfferProofRef = {
   slug: string;
   /** Treatment in the proof section. */
   variant: "primary" | "range";
-  /** Bespoke headline override for this proof slot. */
+  /** Headline override specific to this proof slot. */
   headline: { lead: string; accent: string };
-  /** Bespoke body copy for this proof slot. */
+  /** Body copy specific to this proof slot. */
   body: string;
   /** Optional closing line beneath the body. */
   closing?: string;
+};
+
+export type OfferFlowPhase = {
+  day: string;
+  title: string;
+  body: string;
+};
+
+export type OfferPerformanceTerms = {
+  buildFee: number;
+  perLeadFee: number;
+  monthlyCap: number;
+  minimumMonths: number;
+  /** What the minimum applies to. "rate-lock" = the rate is fixed for N months, not a payment floor. */
+  monthsApplyTo: "rate-lock";
+};
+
+export type OfferPricing = {
+  eyebrow: string;
+  headline: { lead: string; accent: string };
+  formula: {
+    buildLabel: { amount: string; unit: string; note: string };
+    perLeadLabel: { amount: string; unit: string; note: string };
+    capLabel: { amount: string; unit: string; note: string };
+    chips: string[];
+  };
+  workedExample: {
+    month: string;
+    label: string;
+    amount: string;
+    note?: string;
+  }[];
+  qualifiedLeadCriteria: {
+    eyebrow: string;
+    items: string[];
+  };
+  comparison: {
+    eyebrow: string;
+    rows: { label: string; price: string; weakness: string }[];
+  };
+  cta: { label: string; href: string };
 };
 
 export type Offer = {
@@ -52,8 +80,10 @@ export type Offer = {
   name: string;
   /** Headline price for meta + schema. */
   priceLabel: string;
-  /** Numeric price for schema (GBP). */
+  /** Numeric build fee for schema (GBP). */
   priceGBP: number;
+  /** Performance pricing mechanics. */
+  performanceTerms: OfferPerformanceTerms;
   /** Calendly URL (or any external CTA). */
   callUrl: string;
   /** ICP description used in copy + meta. */
@@ -65,7 +95,7 @@ export type Offer = {
     eyebrow: string;
     title: { lead: string; accent: string };
     subhead: string;
-    /** Three small fact chips beneath the subhead. Scannable in 2 seconds. */
+    /** Small fact chips beneath the subhead. Scannable in 2 seconds. */
     chips: string[];
     primaryCta: { label: string; href: string };
     secondaryCta: { label: string; href: string };
@@ -83,41 +113,32 @@ export type Offer = {
     headline: { lead: string; accent: string };
     paragraphs: string[];
   };
-  /** Possibility section. Future-pacing imagery. */
-  possibility: {
-    eyebrow: string;
-    lines: string[];
-    pivot: string;
-  };
-  /** Proof references. Case studies pulled from work.ts. */
-  proof: OfferProofRef[];
-  /** Primary testimonial (large pull-quote treatment). */
-  testimonial: { quote: string; author: string; role: string };
-  /** Supporting voices strip (short quotes, smaller treatment). */
-  voices: {
-    eyebrow: string;
-    headline: { lead: string; accent: string };
-    items: { quote: string; author: string; role: string }[];
-  };
-  /** Five-piece deliverable list. */
-  deliverables: {
-    eyebrow: string;
-    headline: { lead: string; accent: string };
-    items: OfferDeliverable[];
-  };
-  /** Tier ladder. */
-  tiers: OfferTier[];
-  /** Tier section heading. */
-  tiersHeading: {
-    eyebrow: string;
-    headline: { lead: string; accent: string };
-  };
-  /** Qualification section. */
+  /** Qualification (for you / not for you). */
   qualification: {
     eyebrow: string;
     forYou: string[];
     notForYou: string[];
   };
+  /** Proof references. Case studies pulled from work.ts. */
+  proof: OfferProofRef[];
+  /** Primary testimonial (rendered inline within the VESSL proof block). */
+  testimonial: { quote: string; author: string; role: string };
+  /** Six-piece deliverable list. */
+  deliverables: {
+    eyebrow: string;
+    headline: { lead: string; accent: string };
+    items: OfferDeliverable[];
+  };
+  /** Day 0 to Day 7 build process. */
+  flowPhases: OfferFlowPhase[];
+  /** Risk-reversal manifesto statement, sits immediately before pricing. */
+  riskReversal: {
+    eyebrow: string;
+    headline: { lead: string; accent: string };
+    subline: string;
+  };
+  /** Pricing section: formula, worked example, criteria, comparison. */
+  pricing: OfferPricing;
   /** Final CTA / scarcity. */
   finalCta: {
     eyebrow: string;
@@ -134,36 +155,48 @@ const CALENDLY_URL = "https://calendly.com/hello-nami";
 export const flowFunnel: Offer = {
   slug: "flow-funnel",
   name: "The Flow Funnel",
-  priceLabel: "£500",
-  priceGBP: 500,
+  priceLabel: "£750 build + £50 / qualified lead",
+  priceGBP: 750,
+  performanceTerms: {
+    buildFee: 750,
+    perLeadFee: 50,
+    monthlyCap: 750,
+    minimumMonths: 6,
+    monthsApplyTo: "rate-lock",
+  },
   callUrl: CALENDLY_URL,
-  icp: "founders, freelancers, and creatives",
+  icp: "UK independent service operators with a personal brand",
   sla: "Live in 7 days",
   hero: {
     eyebrow: "The Flow Funnel",
     title: {
-      lead: "You've built the audience.",
-      accent: "Now convert it.",
+      lead: "You've already done the hard part.",
+      accent: "The website is where it dies.",
     },
     subhead:
-      "A landing page, lead capture, and lead dashboard for founders, freelancers, artists, and small businesses whose website is leaving money on the table.",
-    chips: ["£500", "Live in 7 days", "4 slots open"],
+      "We build the page, the capture, the dashboard, and the attribution in 7 days for £750. After that you only pay monthly if qualified leads actually land.",
+    chips: [
+      "£750 build",
+      "£50 / qualified lead",
+      "Capped at £750 / mo",
+      "Live in 7 days",
+    ],
     primaryCta: { label: "Book the fit-call", href: CALENDLY_URL },
-    secondaryCta: { label: "See the case study", href: "#proof" },
+    secondaryCta: { label: "See the pricing", href: "#pricing" },
     trustStrip:
-      "Currently building for founders, freelancers, artists, and small businesses.",
+      "Same hands that shipped MILLIONS' live alerting stack and VESSL's premium funnel. Not a template. Not a GHL skin. Built into your brand, owned by you, priced on the outcome.",
   },
   recognition: {
     eyebrow: "If any of this sounds familiar",
     pains: [
-      "You see traffic, DMs, and enquiries land. You can't tell which one will pay.",
-      "You spend hours answering 'what does this cost?' before anyone buys.",
-      "Your Linktree, Squarespace, or one-pager isn't doing the work your business needs.",
-      "Attention is going up. Revenue isn't.",
+      "You see traffic, DMs, and warm introductions land. You can't tell which ones will pay.",
+      "Half your week is replying to 'do you have availability?' before anyone has agreed a price.",
+      "Your Squarespace, Linktree, or one-pager sends every lead back into your inbox to die.",
+      "Audience is going up. Diary is full of admin. Revenue isn't keeping pace.",
     ],
     closing: {
-      lead: "Your work isn't the problem.",
-      accent: "Your funnel is.",
+      lead: "There's a name for that feeling.",
+      accent: "Attribution shame.",
     },
   },
   diagnosis: {
@@ -173,25 +206,31 @@ export const flowFunnel: Offer = {
       accent: "the path.",
     },
     paragraphs: [
-      "Anyone building something pours energy into the work before they pour any into the path that turns interest into money. Every visit, every enquiry, every quiet message is a warm lead landing somewhere that isn't built to catch them. The work that should be sitting in a structured pipeline ends up sitting in your head.",
-      "The fix isn't more posts, more ads, or more hustle. It's an actual path. A place to send the people who already want to buy from you, designed to capture, qualify, and notify you the moment they show up.",
+      "When you sell time, every warm conversation is a warm lead. Yours land in DMs, replies, and forwarded emails, and they sit in your head instead of a system. The work that should be queued and qualified ends up being remembered, half-answered, or quietly lost.",
+      "The fix isn't more posts, more ads, or another funnel builder. It's a route that catches the leads you already have, qualifies them automatically, and tells you which post, ad, or reply each one came from. So you stop guessing and start spending your hours on the people who can actually pay.",
     ],
   },
-  possibility: {
-    eyebrow: "Imagine this",
-    lines: [
-      "Imagine waking up to a sale, a booking, or an enquiry that landed while you slept.",
-      "Imagine knowing exactly which post, ad, or referral brought your last customer in.",
-      "Imagine your funnel doing the work while you make the work.",
+  qualification: {
+    eyebrow: "Be honest with yourself",
+    forYou: [
+      "You're a UK service operator, £80k to £300k revenue, selling time at a premium price.",
+      "You have a real audience or referral base. Bookings come through DMs, replies, and word of mouth.",
+      "You can't tell which post, ad, or introduction sent your last paying client.",
+      "You're ready to stop being the bottleneck between interest and revenue.",
     ],
-    pivot: "That's what the Flow Funnel is.",
+    notForYou: [
+      "You don't have an audience or referral base yet. Build that first.",
+      "You sell products at low margin. This is built for service operators who sell time.",
+      "You want a full multi-page corporate website. We build those too, just not for £750.",
+      "You're based outside the UK. We're optimised for UK service operators right now.",
+    ],
   },
   proof: [
     {
       slug: "vessl",
       variant: "primary",
       headline: { lead: "For VESSL.", accent: "A funnel that converts." },
-      body: "A premium landing funnel for a movement-first fitness platform. Single corridor from ad traffic to plan signup, three-tier pricing flow, 7-day free trial built in, and lead automation wired behind every form submission. Built mobile-first with iOS-grade polish and a restrained palette so the brand reads premium on the smallest device first.",
+      body: "A premium landing funnel for a movement-first fitness platform. Single corridor from ad traffic to plan signup, three-tier pricing flow, 7-day free trial built in, lead automation wired behind every form submission. Built mobile-first with iOS-grade polish so the brand reads premium on the smallest device first. Same hands, same system, applied to your category.",
     },
     {
       slug: "millions",
@@ -210,30 +249,6 @@ export const flowFunnel: Offer = {
     author: "Andrew Miller",
     role: "Founder, VESSL",
   },
-  voices: {
-    eyebrow: "More voices",
-    headline: { lead: "Not a one-off.", accent: "A pattern." },
-    items: [
-      {
-        quote:
-          "Joe's work is amazing. Incredibly easy to work with, meets his commitments, and a creative genius making waves.",
-        author: "Chris Howe",
-        role: "Executive Performance Coach",
-      },
-      {
-        quote:
-          "Working with Joe was so easy. From initial contact, through design, to revisions.",
-        author: "John McKie",
-        role: "Email Revenue Systems for Coaches and Founders",
-      },
-      {
-        quote:
-          "The transformation he's brought to my brand is exceptional.",
-        author: "Orange John",
-        role: "Three Peaks Mountain Guide",
-      },
-    ],
-  },
   deliverables: {
     eyebrow: "What you get",
     headline: { lead: "Six pieces.", accent: "One working funnel." },
@@ -242,112 +257,151 @@ export const flowFunnel: Offer = {
         icon: Globe,
         title: "A conversion-built landing page",
         description:
-          "Designed and shipped by NAMI. Mobile-first, fast, on-brand. Built to convert from the first scroll.",
+          "Designed and shipped by NAMI. Mobile-first, fast, on-brand. Built to convert from the first scroll, not to look like a template.",
       },
       {
         icon: Inbox,
         title: "Lead capture into your dashboard",
         description:
-          "Every submission lands in a private lead dashboard we build for you. You own it. Always.",
+          "Every submission lands in a private lead dashboard we build for you. Live status, contact info, source data. You own it. Always.",
       },
       {
         icon: Bell,
         title: "Instant new-lead notification",
         description:
-          "Email alert the moment a lead lands. Optional auto-reply so nobody waits on you.",
+          "Email alert the moment a qualified lead lands. Optional auto-reply so nobody waits on you. Cuts the inbox-shame loop at the root.",
       },
       {
         icon: BarChart3,
-        title: "Lead-source analytics",
+        title: "Attribution wired in",
         description:
-          "See exactly which post, ad, or channel sent each lead. Know where to double down and where to stop.",
+          "See exactly which post, ad, or referral sent each lead. Know where to spend the next hour and where to stop. The bit ClickFunnels and GHL can't give you.",
       },
       {
         icon: PlayCircle,
         title: "Handover walkthrough",
         description:
-          "A 15-minute training video on how to read the data and what to do with it. One-page domain guide if you bring your own.",
+          "A 15-minute Loom on how to read the dashboard, what each metric means, and what to do with it. One-page DNS guide if you bring your own domain.",
       },
       {
         icon: Timer,
         title: "Live in 7 days",
         description:
-          "From kickoff call to working funnel inside a week. Four builds open per month.",
+          "From kickoff to working funnel inside a week. Four builds open per month, no exceptions.",
       },
     ],
   },
-  tiers: [
+  flowPhases: [
     {
-      index: "01",
-      name: "Flow",
-      price: "£500",
-      cadence: "One-off",
-      best: "The Flow Funnel build. Start here.",
-      description:
-        "A complete Flow Funnel build, end to end. Landing page, lead capture, lead dashboard, instant notification, handover walkthrough. Live in 7 days.",
-      scope: [
-        "Conversion-built landing page",
-        "Lead capture form + private lead dashboard",
-        "Instant email notification on every lead",
-        "Lead-source analytics built in",
-        "15-min handover walkthrough",
-        "Built and live in 7 days",
-      ],
-      cta: { label: "Book the fit-call", href: CALENDLY_URL },
-      highlight: true,
+      day: "Day 0",
+      title: "15-min fit-call",
+      body: "We confirm we're a fit, scope the brief, and answer your questions. No pitch deck, no high-pressure close. If we're not right for each other, we say so on the call.",
     },
     {
-      index: "02",
-      name: "Stream",
-      price: "£150",
-      cadence: "Per month",
-      best: "Keep getting better. Add on after Flow.",
-      description:
-        "Ongoing monthly partnership. We keep your funnel sharp: tightening copy as your offer evolves, reviewing performance, and chasing higher conversion every month. So the funnel keeps growing instead of going stale.",
-      scope: [
-        "Monthly performance review delivered to your inbox",
-        "Copy and design tweaks as your offer evolves",
-        "One A/B test per month to chase higher conversion",
-        "Funnel iteration based on real lead data",
-        "Priority 24-hour support",
-      ],
-      cta: { label: "Add on the call", href: CALENDLY_URL },
+      day: "Day 1",
+      title: "Kickoff and brief",
+      body: "Deposit invoice sent. You fill in a 20-minute brief on your audience, your offer, and your ICP. We sign off the qualified-lead criteria together in writing. Work starts the same day.",
     },
     {
-      index: "03",
-      name: "Tide",
-      price: "£1.5k",
-      cadence: "Per month",
-      best: "Drive traffic to the funnel you just built.",
-      description:
-        "Ongoing retainer. Paid ads management across Meta and Google driving qualified traffic into your Flow Funnel, with monthly performance review and creative refresh. Includes Stream.",
-      scope: [
-        "Paid ads management (Meta + Google)",
-        "Ongoing creative refresh",
-        "Monthly performance review",
-        "Funnel conversion iteration",
-        "Includes Stream",
-      ],
-      cta: { label: "Ask about Tide on the call", href: CALENDLY_URL },
+      day: "Days 2 to 6",
+      title: "Build",
+      body: "Landing page, lead capture form, dashboard, attribution tagging, email automation. Every layer wired against your brief and your written ICP, not a template.",
+    },
+    {
+      day: "Day 7",
+      title: "Live and handover",
+      body: "Training Loom, DNS guide if needed, and your funnel live. Qualified leads landing in your dashboard from the first share. Performance pricing kicks in from day 8.",
     },
   ],
-  tiersHeading: {
-    eyebrow: "The ladder",
-    headline: { lead: "Start with Flow.", accent: "Grow from there." },
+  riskReversal: {
+    eyebrow: "The deal",
+    headline: {
+      lead: "We build it.",
+      accent: "If it doesn't bring leads, you don't pay past the build.",
+    },
+    subline:
+      "Most agencies charge a retainer whether they perform or not. We don't. After day 7, every pound you spend with us is a pound a qualified lead landed.",
   },
-  qualification: {
-    eyebrow: "Be honest with yourself",
-    forYou: [
-      "Your work is better than the website doing the selling for it.",
-      "Bookings, sales, enquiries. They all run through your DMs and your inbox.",
-      "You can't tell which post, ad, or referral drove your last sale.",
-      "You're ready to stop being the bottleneck between interest and revenue.",
+  pricing: {
+    eyebrow: "Priced on the outcome",
+    headline: {
+      lead: "One number you control.",
+      accent: "One we earn.",
+    },
+    formula: {
+      buildLabel: {
+        amount: "£750",
+        unit: "build",
+        note: "One-off, paid on kickoff",
+      },
+      perLeadLabel: {
+        amount: "£50",
+        unit: "per qualified lead",
+        note: "Billed monthly, only on delivery",
+      },
+      capLabel: {
+        amount: "£750",
+        unit: "monthly ceiling",
+        note: "Rate locked for 6 months",
+      },
+      chips: ["7-day SLA", "You own everything", "Built for UK service operators"],
+    },
+    workedExample: [
+      {
+        month: "Month 1",
+        label: "Build",
+        amount: "£750",
+        note: "One-off build fee. Funnel goes live on day 7.",
+      },
+      {
+        month: "Month 2",
+        label: "8 qualified leads × £50",
+        amount: "£400",
+        note: "Below the cap. You pay only for what landed.",
+      },
+      {
+        month: "Month 3",
+        label: "18 qualified leads × £50",
+        amount: "£750",
+        note: "Hits the monthly ceiling. Anything above is free.",
+      },
     ],
-    notForYou: [
-      "You need a full multi-page website. We build those too, just not for £500.",
-      "You don't have an audience, list, or customer base to send to the page yet.",
-      "You want 100 leads in week one with no plan to drive traffic. That's what Tide solves.",
-    ],
+    qualifiedLeadCriteria: {
+      eyebrow: "What counts as qualified",
+      items: [
+        "Matches your written ICP, signed off together at kickoff.",
+        "Submits a complete form. No bots, no spam, no half-fills.",
+        "Contactable and responds to outreach inside the dashboard.",
+        "Not an existing client, employee, or known competitor.",
+        "Disputes resolved by review. Ambiguous cases don't count.",
+      ],
+    },
+    comparison: {
+      eyebrow: "Compared to everything else",
+      rows: [
+        {
+          label: "What you've probably tried",
+          price: "Free, plus your time",
+          weakness: "No attribution. No capture. Every lead lost in DMs.",
+        },
+        {
+          label: "Hire a freelancer",
+          price: "£2k to £5k up front",
+          weakness: "No skin in the game once invoice is paid.",
+        },
+        {
+          label: "Agency retainer",
+          price: "£2k to £4k per month",
+          weakness: "You pay whether leads land or not.",
+        },
+        {
+          label: "NAMI Flow Funnel",
+          price: "£750 + only when leads land",
+          weakness: "Performance pricing. Locked for 6 months.",
+        },
+      ],
+    },
+    cta: { label: "Book the fit-call", href: CALENDLY_URL },
   },
   finalCta: {
     eyebrow: "Open this month",
@@ -356,44 +410,59 @@ export const flowFunnel: Offer = {
       accent: "The next is yours.",
     },
     body:
-      "Fifteen minutes, no pitch. If we're not the right fit on the call, we'll say so honestly. Worst case you leave with clarity on what you actually need.",
+      "Fifteen minutes, no pitch. If we're not the right fit on the call, we say so honestly. Worst case you leave with clarity on what you actually need.",
     button: { label: "Book the fit-call", href: CALENDLY_URL },
   },
   faq: [
     {
-      question: "Why only £500?",
+      question: "What counts as a 'qualified lead'?",
       answer:
-        "We've engineered the build process down to a sharp seven days. You get a premium funnel without the £4k brand-build overhead because we know exactly how to ship one fast. The price reflects scope, not quality.",
+        "Anyone who matches your written ICP (signed off at kickoff), submits a complete form, is contactable, and isn't already a client, an employee, or a known competitor. Bots, spam, and half-fills don't count. Ambiguous cases we review together; if it stays ambiguous, it doesn't count.",
     },
     {
-      question: "Who owns the page and the data?",
+      question: "What if no leads land in month 1?",
       answer:
-        "You. Always. The page, the lead dashboard, the leads, the source files. Everything ships to you on handover, and you keep it whether you continue with us or not.",
+        "Then you owe £0 that month. The £50 fee is only charged when a qualified lead is delivered. No retainer, no floor, no minimum payment. Build a track record together, and only pay for what works.",
     },
     {
-      question: "What if I already have a brand and logo?",
+      question: "Why £750 now and not £500?",
       answer:
-        "We build into your existing visual language. Bring colours, fonts, and the logo. The Flow Funnel reads as an extension of your brand, not a NAMI template.",
+        "The £750 covers the new attribution layer, the written ICP sign-off, and the dispute-resolution time the performance model needs. It also signals what this is: a senior productised build, not a cheap template. The performance tail is where the value compounds.",
     },
     {
-      question: "Can I edit the page myself later?",
+      question: "The 6-month minimum, am I locked into paying you for 6 months?",
       answer:
-        "Yes. Sign up to Stream (£150/mo) and we handle every change. Otherwise small tweaks run at £75 per change. We send you the source files either way, so you're never locked in.",
+        "No. The minimum locks the rate (£50 per qualified lead, £750/mo cap) in your favour for 6 months. It is not a payment floor. If zero qualified leads land in a month, that month's invoice is zero. You're committing to the pricing structure, not to spend.",
     },
     {
-      question: "What about driving traffic to the page?",
+      question: "Do I own the page, the dashboard, and the lead data?",
       answer:
-        "That's what Tide is. £1.5k/month for paid ads management across Meta and Google, monthly performance review, ongoing creative refresh. Let's talk about it on the fit-call once the funnel is live.",
+        "Yes. Always. The page, the dashboard, the leads, the source files all ship to you on handover. You keep everything whether we continue working together or not. No lock-in, no hostage data.",
     },
     {
-      question: "What if I want a full website later?",
+      question: "What if I want to drive paid traffic too?",
       answer:
-        "Your Flow fee credits against a future Project engagement. You won't pay twice for the same thinking.",
+        "Paid traffic is a separate project quoted off-page. We'll only suggest it once the funnel is live and converting organic, so we know what the page actually does before we spend on ads. Most clients run organic for 60 days before paid.",
     },
     {
-      question: "Can I see a Flow Funnel in action?",
+      question: "What if I'm based outside the UK?",
       answer:
-        "VESSL above is the closest reference build. We'll walk you through it on the fit-call and show you a few others off the record.",
+        "Right now this is built for UK service operators. The ICP, the dispute-resolution process, and the contract are all UK-tuned. If you're international and the work still fits, talk to us on the fit-call. We'll be straight about whether it's a sensible match.",
+    },
+    {
+      question: "Do I need a brand or audience first?",
+      answer:
+        "Brand: helpful, not required. We build into whatever visual language you have, or sharpen one as part of the work. Audience: yes. The Flow Funnel converts the audience you already have. If you're starting from zero traffic, you need content and reach first; we can talk about that on the call.",
+    },
+    {
+      question: "Can I edit the page myself after launch?",
+      answer:
+        "Yes. Source files ship to you on day 7. Small tweaks run at £75 per change. If you want continuous iteration, that's part of the partnership conversation; the Flow Funnel itself stops at day 7 by design.",
+    },
+    {
+      question: "Can I see a live Flow Funnel in action?",
+      answer:
+        "VESSL above is the closest reference build. We'll walk you through it on the fit-call and show you a few others off the record so you can see the dashboard, the attribution layer, and the lead-flow before you commit.",
     },
   ],
 };

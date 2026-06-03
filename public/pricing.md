@@ -1,8 +1,8 @@
-# Pricing — NAMI Creative
+# Pricing. NAMI Creative
 
-> NAMI Creative offers three engagement models for bespoke work, plus a productised entry-tier offer. All pricing is in GBP. Engagements are scoped to the work rather than packaged into fixed bundles, so the figures below are starting-point ranges. Final scope is determined on a discovery call.
+> NAMI Creative offers three engagement models for scoped work, plus a productised entry-tier offer. All pricing is in GBP. Engagements are scoped to the work rather than packaged into fixed bundles, so the figures below are starting-point ranges. Final scope is determined on a discovery call.
 
-Last updated: 2026-05-22
+Last updated: 2026-06-03
 Currency: GBP
 Location: Newcastle upon Tyne, UK (serves worldwide)
 Contact: hello@namicreative.co.uk
@@ -11,30 +11,20 @@ Contact: hello@namicreative.co.uk
 
 ## Productised offer (entry tier)
 
-### The Flow Funnel — Flow
+### The Flow Funnel
 
-- Price: £500 (one-off)
+- Build fee: £750 (one-off, paid on kickoff)
+- Performance tail: £50 per qualified lead delivered, capped at £750 per month, rate locked for 6 months
 - Timeline: Live in 7 days
-- Deliverable: Conversion-built landing page, lead capture form, private lead dashboard, instant email notification on every lead, lead-source analytics, 15-minute handover walkthrough
-- For: Founders, freelancers, artists, and small businesses whose website is leaving money on the table
-- Sales motion: Call-gated. 15-minute fit-call first, deposit invoice after
+- Deliverable: Conversion-built landing page, lead capture form, private lead dashboard, attribution layer, instant email notification on every qualified lead, 15-minute handover walkthrough
+- For: UK independent service operators with a personal brand, £80k to £300k revenue, who sell time. Solo coaches, consultants, therapists, photographers, premium trades, designers, small studios.
+- Qualified lead criteria: matches the client's written ICP (signed off at kickoff), submits a complete form, contactable, not an existing client or known competitor. Disputed leads do not count.
+- Sales motion: Call-gated. 15-minute fit-call first, deposit invoice after.
 - URL: https://namicreative.co.uk/offers/flow-funnel
-
-### The Flow Funnel — Stream (optional monthly add-on)
-
-- Price: £150 per month
-- Type: Ongoing partnership add-on (sold alongside Flow)
-- Includes: Monthly performance review, copy and design tweaks, one A/B test per month, funnel iteration based on real lead data, priority 24-hour support
-
-### The Flow Funnel — Tide (retainer)
-
-- Price: £1,500 per month
-- Type: Ongoing retainer (drives traffic to the Flow Funnel)
-- Includes: Paid ads management (Meta + Google), ongoing creative refresh, monthly performance review, funnel conversion iteration. Includes everything in Stream.
 
 ---
 
-## Bespoke engagement models
+## Scoped engagement models
 
 ### 01. Project
 
@@ -66,16 +56,16 @@ Contact: hello@namicreative.co.uk
 
 NAMI does not bundle work into fixed packages. Every engagement starts with a 15-minute discovery call to scope what is actually needed. Three rules:
 
-1. NAMI quotes against the brief, not against a price list
-2. If a different studio is a better fit on budget or shape, NAMI says so on the call and points elsewhere
-3. Flow Funnel buyers get their £500 fee credited against any future Project engagement (no double-pay for the same thinking)
+1. NAMI quotes against the brief, not against a price list.
+2. If a different studio is a better fit on budget or shape, NAMI says so on the call and points elsewhere.
+3. Flow Funnel buyers get their £750 build fee credited against any future Project engagement (no double-pay for the same thinking).
 
 ---
 
 ## Standard add-ons
 
 - **Custom domain setup for Flow Funnel buyers:** +£150 (one-off)
-- **Ad-hoc copy or design tweaks for Flow Funnel buyers without Stream:** £75 per change
+- **Ad-hoc copy or design tweaks for Flow Funnel buyers after handover:** £75 per change
 - **Founder fit-call:** Free, 15 minutes, no pitch, no high-pressure close
 
 ---
@@ -83,7 +73,7 @@ NAMI does not bundle work into fixed packages. Every engagement starts with a 15
 ## What NAMI does not sell
 
 - Logo-only engagements (NAMI is an integrated brand + systems studio)
-- Website-only engagements under £500 (use Flow Funnel instead)
+- Website-only engagements under £750 (use Flow Funnel instead)
 - Ad management without a Flow Funnel or equivalent conversion destination already live
 - Generic marketing audits without engagement scope
 
