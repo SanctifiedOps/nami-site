@@ -29,7 +29,7 @@ export default function WorkPage() {
             </span>
           </>
         }
-        lead="Five engagements across on-chain intelligence, UK members clubs, community brands, conversion funnels, and a national trade body. Different sectors, same principle: brand, content, product, and systems designed against each other, not stitched at handoff."
+        lead="Five engagements across on-chain intelligence, UK members clubs, community brands, conversion funnels, and a national trade body. The common thread is simple: the public face and the operating layer were built to match."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -39,9 +39,9 @@ export default function WorkPage() {
           <div className="max-w-xl">
             <p className="mono-label mb-3">Want to be next?</p>
             <p className="text-2xl font-medium tracking-tight md:text-3xl">
-              We take a small number of new engagements{" "}
+              We keep the calendar deliberately narrow{" "}
               <span className="text-gradient">
-                each quarter.
+                so the work gets the room it needs.
               </span>
             </p>
           </div>

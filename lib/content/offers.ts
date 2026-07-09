@@ -320,7 +320,7 @@ export const flowFunnel: Offer = {
       accent: "If it doesn't bring leads, you don't pay past the build.",
     },
     subline:
-      "Most agencies charge a retainer whether they perform or not. We don't. After day 7, every pound you spend with us is a pound a qualified lead landed.",
+      "After day 7, the monthly fee only moves when a qualified lead lands. No qualified leads means no monthly invoice for that period.",
   },
   pricing: {
     eyebrow: "Priced on the outcome",

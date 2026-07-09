@@ -37,7 +37,7 @@ const DEFAULT_TITLE = (
 export function ProcessScroll({
   index = "02 / How we work",
   title = DEFAULT_TITLE,
-  lead = "Four phases. The strategic thinking, the build, the launch, and the system that keeps running after we leave. Tight enough to ship in eight weeks, deep enough to keep working two years on.",
+  lead = "We start with the shape of the business, then build the brand, site, content, and systems around it. Launch is the first test, not the last step.",
 }: Props = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();

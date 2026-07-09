@@ -46,17 +46,16 @@ export default function AboutPage() {
               and hold while the business scales.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              Most businesses don't have a brand problem. They have an
-              alignment problem. Identity drifts away from messaging,
-              messaging drifts from product, content drifts from strategy,
-              and growth becomes harder than it should be.
+              The warning signs are usually small at first. The sales deck
+              says one thing, the website says another, the content calendar is
+              being rebuilt from scratch every month, and the founder is still
+              the only person who knows how it should all sound.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              We sit between three roles (brand studio, creative partner,
-              systems builder) because that's the shape of the work that
-              compounds. Strategy without execution is a
-              deck. Execution without systems is exhaustion. We do all
-              three so what gets built keeps working after we leave.
+              That is the work NAMI was built for: the strategy, the identity,
+              the site, the content formats, and the operating layer underneath
+              them. Built together, so the brand can keep moving without every
+              decision coming back to the same desk.
             </p>
           </motion.div>
         </motion.div>
@@ -158,8 +157,9 @@ export default function AboutPage() {
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
               Today I work with founders, small businesses, and trades who care
-              about doing the work properly. Independent operators through to
-              growing teams. The common thread is intent.
+              about doing the work properly. Independent operators, growing
+              teams, and people who would rather build the base once than keep
+              patching the same cracks.
             </p>
 
             <dl className="grid gap-8 border-t border-line pt-6 sm:grid-cols-3">

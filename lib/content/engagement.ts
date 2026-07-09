@@ -14,9 +14,9 @@ export const engagements: EngagementModel[] = [
   {
     index: "01",
     name: "Project",
-    best: "For a defined brand or website build with a clear brief.",
+    best: "For a defined brand, website, or positioning reset.",
     description:
-      "Single engagement: typically a brand build, a website, or a positioning + content reset. Fixed brief, fixed timeline, deliverable handoff. We talk first, plan to the brief, then build.",
+      "A focused engagement with a fixed brief and a clean handoff. Useful when one part of the business needs rebuilding properly before the rest can move.",
     scope: [
       "Brand strategy + identity",
       "Conversion-led website",
@@ -30,9 +30,9 @@ export const engagements: EngagementModel[] = [
   {
     index: "02",
     name: "Partnership",
-    best: "For teams scaling brand, content, and systems together.",
+    best: "For teams that need regular creative direction and shipping support.",
     description:
-      "Ongoing creative partnership. We sit close, ship regularly, and evolve the brand as the business grows. Usually starts after a foundational project; sometimes ports from another team's work.",
+      "Ongoing creative partnership for brands that need the work to keep moving: content, funnel iteration, new assets, automation, and the decisions between them.",
     scope: [
       "Monthly creative direction",
       "Content pipeline + production",
@@ -48,9 +48,9 @@ export const engagements: EngagementModel[] = [
   {
     index: "03",
     name: "Systems + product",
-    best: "For founders productising their brand or content engine.",
+    best: "For founders turning repeatable work into a system or product.",
     description:
-      "Standalone systems work: operations stacks, automated content pipelines, lead-capture infrastructure, brand templates. Built to be operated by your team, not us.",
+      "Standalone systems work: operations stacks, content pipelines, lead capture, dashboards, and templates your team can run without asking how it was built.",
     scope: [
       "Workflow + automation builds",
       "CRM + lifecycle pipelines",

@@ -6,14 +6,14 @@ export type Value = {
 export const values: Value[] = [
   {
     title: "Branding is infrastructure",
-    body: "Identity systems aren't decoration. They're the load-bearing structure for content, marketing, and growth. Build the foundation properly and everything on top moves faster.",
+    body: "A good identity system takes pressure off daily decisions. It tells the next writer, designer, founder, or hire what belongs and what does not.",
   },
   {
     title: "Clarity over volume",
-    body: "Sharp positioning beats more output every time. We'd rather ship one piece that lands than five that drift. Volume is what you earn after clarity, not before.",
+    body: "More output will not fix a weak centre. First we make the offer, audience, and message easier to recognise. Then we scale the work around it.",
   },
   {
     title: "Systems compound, posts decay",
-    body: "Anyone can ship a post. Few build engines. We design for the second order: formats, frameworks, and pipelines so today's work makes tomorrow's easier.",
+    body: "A single post disappears quickly. A useful format, workflow, or lead path pays back every time the team uses it again.",
   },
 ];

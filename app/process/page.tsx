@@ -28,7 +28,7 @@ export default function ProcessPage() {
             </span>
           </>
         }
-        lead="Four phases: strategic, applied, shipped, sustained. Tight enough to launch in eight weeks, deep enough to keep working two years on."
+        lead="Four phases: find the shape, build the system, launch it cleanly, then keep improving it once real people start using it."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -42,7 +42,7 @@ export default function ProcessPage() {
               </span>
             </>
           }
-          lead="The strategic thinking, the build, the launch, and the system that keeps running after we leave. Tight enough to ship in eight weeks, deep enough to keep working two years on."
+          lead="The thinking, the build, the launch, and the month-after-month work that shows whether the brand can hold outside the workshop."
         />
       </section>
 
@@ -59,7 +59,7 @@ export default function ProcessPage() {
                 </span>
               </>
             }
-            lead="Most agencies treat launch as the finish line. We treat it as the start. The brand only proves itself in the months after: when content has to ship, funnels have to convert, and the system has to keep working without us in the room every day."
+            lead="Launch is when the assumptions meet real traffic, real content deadlines, real leads, and real team habits. That is where the system either holds or shows us what to improve next."
             className="max-w-3xl"
           />
         </div>

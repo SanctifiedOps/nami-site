@@ -105,17 +105,6 @@ export function HomeHero() {
         className="container-shell relative z-10 py-24 text-center md:py-32"
       >
         <motion.div initial="hidden" animate="show" variants={stageHero}>
-          <motion.p
-            className="eyebrow mb-7 inline-flex items-center gap-3"
-            variants={fadeUp}
-          >
-            <span className="relative inline-flex size-1.5">
-              <span className="absolute inset-0 animate-ping rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
-            </span>
-            Waves of Creative Impact
-          </motion.p>
-
           <h1 className="mx-auto max-w-[20ch] text-5xl font-semibold leading-[1.1] tracking-tight md:text-7xl">
             <LetterReveal stagger={0.018} duration={0.8}>
               Your business shouldn&rsquo;t depend on you{" "}

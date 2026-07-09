@@ -18,9 +18,9 @@ export const services: Service[] = [
     slug: "brand-strategy",
     index: "01",
     title: "Brand strategy + identity systems",
-    tagline: "Positioning that gets used daily, not documented and forgotten.",
+    tagline: "Positioning your team can actually use on the next decision.",
     description:
-      "Foundational work: positioning, messaging architecture, tone of voice, visual direction. Assembled into a brand framework you run a business off day to day.",
+      "Positioning, messaging architecture, tone of voice, and visual direction. The work ends in usable rules, not a document nobody opens after launch.",
     icon: Compass,
     pillar: "Brand",
     deliverables: [
@@ -31,15 +31,15 @@ export const services: Service[] = [
       "Decision-ready brand book",
     ],
     outcome:
-      "A brand that holds together when you stop being in every room. Every piece of content, marketing, and product feels deliberate and connected.",
+      "The next page, post, deck, and product decision all have the same centre of gravity, even when you are not there to explain it.",
   },
   {
     slug: "content-systems",
     index: "02",
     title: "Content systems + creation",
-    tagline: "Build a content engine, not a stream of disconnected posts.",
+    tagline: "Formats, angles, and workflows your team can repeat without guessing.",
     description:
-      "Repeatable content formats, platform-specific strategy, and narrative architecture. Designed so every output earns its place and supports the next.",
+      "Repeatable content formats, platform-specific strategy, and narrative architecture. Built so the next post starts from a system, not a blank page.",
     icon: Layers,
     pillar: "Content",
     deliverables: [
@@ -50,16 +50,16 @@ export const services: Service[] = [
       "Performance review system",
     ],
     outcome:
-      "Content that stops feeling random. Formats repeat, narrative deepens, and you stop guessing what to post.",
+      "Your content starts to sound like it is coming from the same business every time, with formats that get stronger the more they are used.",
   },
   {
     slug: "website-funnel",
     index: "03",
     title: "Website + funnel design",
     tagline:
-      "Websites are conversion environments, not online brochures.",
+      "A site built around the decision you need the visitor to make.",
     description:
-      "User flow, messaging hierarchy, and conversion structure designed around action. Built premium, performant, and ready to scale traffic into pipeline.",
+      "User flow, messaging hierarchy, and conversion structure designed around action. Built fast, clear, and ready to turn attention into the next step.",
     icon: Globe,
     pillar: "Brand",
     deliverables: [
@@ -70,15 +70,15 @@ export const services: Service[] = [
       "Analytics + experimentation setup",
     ],
     outcome:
-      "Traffic turns into action: qualified leads, booked calls, and a brand experience that earns trust on the first visit.",
+      "Visitors know where they are, why it matters, and what to do next. Leads stop disappearing between interest and enquiry.",
   },
   {
     slug: "visual-direction",
     index: "04",
     title: "Visual storytelling + creative direction",
-    tagline: "Make the brand instantly recognisable everywhere it shows up.",
+    tagline: "Give every campaign, shoot, and asset the same visual nerve.",
     description:
-      "Cohesive visual language across content, product, and campaign, directed so the brand reads consistently whether someone meets it on Instagram, in an inbox, or on a billboard.",
+      "Creative direction across content, product, and campaign, so the brand does not change personality every time it moves to a new channel.",
     icon: Eye,
     pillar: "Brand",
     deliverables: [
@@ -89,16 +89,16 @@ export const services: Service[] = [
       "Cross-platform style guides",
     ],
     outcome:
-      "Recognition before recall. The brand is identifiable from a frame, a colour, a single line of copy.",
+      "The brand becomes easier to recognise because the same visual decisions keep showing up in the right places.",
   },
   {
     slug: "automation-growth",
     index: "05",
     title: "Automation + growth systems",
     tagline:
-      "The infrastructure that lets the brand keep up with the business.",
+      "The repeatable work moved out of your head and into the stack.",
     description:
-      "Operations stacks, lifecycle email, lead-capture pipelines, content automations. The connective tissue between brand and operations so consistency scales without burning your team.",
+      "Operations stacks, lifecycle email, lead-capture pipelines, and content workflows. Built around the tasks that keep coming back each week.",
     icon: Zap,
     pillar: "Systems",
     deliverables: [
@@ -109,7 +109,7 @@ export const services: Service[] = [
       "Reporting + dashboard systems",
     ],
     outcome:
-      "Less manual work, more leverage. The brand stays consistent at 10× volume because the systems are doing the carrying.",
+      "Leads, content, follow-ups, and reporting stop depending on memory. The system carries the recurring work before it eats the week.",
   },
 ];
 

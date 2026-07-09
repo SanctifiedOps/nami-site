@@ -29,11 +29,11 @@ export default function ServicesPage() {
         eyebrow="Services"
         title={
           <>
-            Five pillars.{" "}
-            <span className="text-gradient sm:block">Built as one studio.</span>
+            Five parts of the same{" "}
+            <span className="text-gradient sm:block">working system.</span>
           </>
         }
-        lead="Most agencies sell each of these separately and stitch them at handoff. One creative partner designs all five against each other from day one, so the work reads as one voice and nothing falls between vendors."
+        lead="Brand, content, website, visual direction, and automation all shape each other in the real world. We plan them together so the work does not splinter the moment it leaves the brand deck."
       />
 
       {/* The five pillars */}
@@ -42,13 +42,13 @@ export default function ServicesPage() {
           index="01 / The five pillars"
           title={
             <>
-              Buy one pillar.{" "}
+              Start where the pressure is.{" "}
               <span className="text-gradient sm:block">
-                Or the whole system.
+                Build toward the whole system.
               </span>
             </>
           }
-          lead="Each pillar stands on its own. Built together they compound: the brand informs the content, the content feeds the funnel, and the systems carry all of it."
+          lead="Some clients need the website first. Some need the voice cleaned up before another campaign goes live. The point is to fix the part that is dragging the rest out of shape, then connect it properly."
           className="mb-16 md:mb-20"
         />
         <ServicesGrid />
@@ -63,11 +63,11 @@ export default function ServicesPage() {
             index="02 / The model"
             title={
               <>
-                Integrated,{" "}
-                <span className="text-gradient sm:block">not bundled.</span>
+                One brief.{" "}
+                <span className="text-gradient sm:block">Fewer handoffs.</span>
               </>
             }
-            lead="Most agencies sell each pillar separately and stitch them together at handoff. We design across all five from day one. Same brief, same hands, same brain."
+            lead="The costly part is rarely the deliverable itself. It is the translation between people who were never working from the same picture."
             className="mb-14 md:mb-16"
           />
           <IntegratedSystem />

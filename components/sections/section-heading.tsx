@@ -14,7 +14,6 @@ type Props = {
 };
 
 export function SectionHeading({
-  eyebrow,
   title,
   lead,
   align = "left",
@@ -32,11 +31,6 @@ export function SectionHeading({
         className,
       )}
     >
-      {eyebrow && (
-        <motion.p className="eyebrow mb-5" variants={fadeUp}>
-          {eyebrow}
-        </motion.p>
-      )}
       <motion.h2
         className="text-4xl font-semibold leading-[1.1] tracking-tight md:text-6xl pr-2"
         variants={fadeUp}

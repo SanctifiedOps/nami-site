@@ -30,13 +30,13 @@ export default async function Home() {
           index="01 / What we build"
           title={
             <>
-              One studio for the five pieces that should{" "}
+              One studio for the five pieces founders keep{" "}
               <span className="text-gradient sm:block">
-                never have been split.
+                trying to hold together.
               </span>
             </>
           }
-          lead="Most teams hire a brand designer, a content person, a web developer, and an automations freelancer. None of them see the others' work. We build all five so nothing falls between them."
+          lead="The logo lives in one folder, the website in another, the content plan in someone's notes, and the lead flow in a tool nobody opens. NAMI brings those pieces back into one working system."
         />
         <div className="mt-16 md:mt-20">
           <ServicesGrid />

@@ -20,7 +20,7 @@ export default function PricingPage() {
             <span className="text-gradient sm:block">work together.</span>
           </>
         }
-        lead="Engagements are sized to the work, not packaged. Pricing depends on the breadth and depth of the engagement. Here's how we structure the work."
+        lead="There is no useful price list for half-built brands. We scope against what is actually broken, what needs building, and how much of the system needs to move at once."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -125,17 +125,16 @@ export default function PricingPage() {
                 <span className="text-gradient">shape work.</span>
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                We talk to every potential client first. Real conversation, not
-                a quote-bot. We'll understand what you're trying to build,
-                what's working, what's stuck, and what good would look like in
-                six months. Then we plan honestly to that.
+                We talk first because the same request can mean three different
+                jobs. "New website" might mean positioning, copy, analytics,
+                lead capture, or a rebuild of the whole front door. The quote
+                comes after we know which one it is.
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                Some engagements need the whole system. Some need a brand
-                refresh and a website. Some are smaller still. We don't
-                push more work than is needed, and we don't take on work we're
-                not the right shape for. If a different studio fits better,
-                we'll point you there.
+                If the brief is too small, too early, or better handled by a
+                specialist, we say that before a proposal appears. The work has
+                to fit the business, the timing, and the person who will be
+                left running it.
               </p>
             </motion.div>
           </motion.div>

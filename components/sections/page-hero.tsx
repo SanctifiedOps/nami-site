@@ -8,7 +8,7 @@ import { HeroLights } from "@/components/hero/hero-lights";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  eyebrow: string;
+  eyebrow?: string;
   title: React.ReactNode;
   lead?: string;
   className?: string;
@@ -17,7 +17,7 @@ type Props = {
 };
 
 /** Inner-page hero: video background + letter-reveal title */
-export function PageHero({ eyebrow, title, lead, className, children }: Props) {
+export function PageHero({ title, lead, className, children }: Props) {
   return (
     <section
       className={cn(
@@ -40,9 +40,6 @@ export function PageHero({ eyebrow, title, lead, className, children }: Props) {
         animate="show"
         variants={stage}
       >
-        <motion.p className="eyebrow mb-6" variants={fadeUp}>
-          {eyebrow}
-        </motion.p>
         <h1 className="mx-auto max-w-[20ch] text-4xl font-semibold leading-[1.1] tracking-tight md:text-6xl">
           <LetterReveal>{title}</LetterReveal>
         </h1>

@@ -6,7 +6,7 @@ import { LetterReveal } from "@/components/motion/letter-reveal";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  /** Mono instrument index, e.g. "01 / What we build". */
+  /** Retained for existing callers; no longer rendered as a visual eyebrow. */
   index?: string;
   title: React.ReactNode;
   lead?: string;
@@ -14,13 +14,8 @@ type Props = {
   className?: string;
 };
 
-/**
- * Homepage section header. Uses a mono coordinate index instead of an
- * uppercase eyebrow — the numbered system is the deliberate rhythm, replacing
- * the eyebrow-on-every-section AI tell.
- */
+/** Homepage section header without decorative eyebrow labels. */
 export function SectionIntro({
-  index,
   title,
   lead,
   align = "left",
@@ -38,11 +33,6 @@ export function SectionIntro({
         className,
       )}
     >
-      {index && (
-        <motion.p className="mono-label mb-5" variants={fadeUp}>
-          {index}
-        </motion.p>
-      )}
       <motion.h2
         className="text-4xl font-semibold leading-[1.1] tracking-tight md:text-6xl"
         variants={fadeUp}

@@ -34,16 +34,16 @@ export function FooterCta() {
           className="mx-auto mt-6 max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl lg:text-7xl"
           variants={fadeUp}
         >
-          Ready to build something{" "}
-          <span className="text-gradient sm:block">that lasts?</span>
+          Ready to give the brand{" "}
+          <span className="text-gradient sm:block">something to stand on?</span>
         </motion.h2>
         <motion.p
           className="mx-auto mt-8 max-w-xl leading-relaxed text-fg-muted md:text-lg"
           variants={fadeUp}
         >
-          Self-sustaining creative ecosystems for founders. One creative partner
-          across brand, content, and growth systems, so your business stops
-          depending on you being in every room.
+          Bring the brand, website, content, and lead flow into one working
+          shape, then hand it to the business without making the founder the
+          glue.
         </motion.p>
         <motion.div className="mt-12 flex justify-center" variants={fadeUp}>
           <Magnetic>

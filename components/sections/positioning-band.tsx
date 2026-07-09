@@ -22,16 +22,16 @@ export function PositioningBand() {
           className="mx-auto max-w-3xl text-center text-[clamp(1.4rem,3vw,2.25rem)] font-medium leading-tight tracking-tight text-fg"
           variants={blurUp}
         >
-          Your brand is stitched together. Your marketing is inconsistent. Your
-          tracking is fragmented. And you&apos;re the one{" "}
-          <span className="text-gradient">holding it all together.</span>
+          The deck says one thing. The site says another. Leads land in three
+          different places. And somehow you are still the one{" "}
+          <span className="text-gradient">keeping the shape in your head.</span>
         </motion.p>
         <motion.p
           className="mx-auto mt-6 max-w-xl text-center text-fg-muted md:text-lg"
           variants={fadeUp}
         >
-          We build self-sustaining creative ecosystems. So your brand, content,
-          and systems run as one, backing you up as you scale.
+          NAMI rebuilds the brand, content, website, and operating layer so the
+          business has a system to lean on, not another set of files to manage.
         </motion.p>
       </motion.div>
     </section>

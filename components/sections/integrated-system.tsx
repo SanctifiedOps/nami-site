@@ -38,10 +38,10 @@ export function IntegratedSystem() {
         variants={blurUp}
         className="rounded-3xl border border-line bg-surface-1/30 p-8 md:p-10"
       >
-        <p className="mono-label">The usual way</p>
+        <p className="mono-label">Fragmented</p>
         <h3 className="mt-4 text-2xl font-medium tracking-tight md:text-3xl">
-          Four vendors.{" "}
-          <span className="text-fg-subtle">None see each other&apos;s work.</span>
+          Four specialists.{" "}
+          <span className="text-fg-subtle">Four different versions of the brief.</span>
         </h3>
         <ul className="mt-8 space-y-3">
           {FRAGMENTED.map((v) => (
@@ -55,8 +55,9 @@ export function IntegratedSystem() {
           ))}
         </ul>
         <p className="mt-6 text-sm leading-relaxed text-fg-subtle">
-          Handoffs, version drift, four invoices, and a brand that reads as
-          four different voices.
+          The drift usually starts in the handoff: one person owns the look,
+          another owns the words, another owns the site, and nobody owns the
+          full customer journey.
         </p>
       </motion.div>
 
@@ -69,10 +70,10 @@ export function IntegratedSystem() {
           aria-hidden
           className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgb(255_0_188/0.2),transparent_70%)] blur-2xl"
         />
-        <p className="mono-label text-accent/80">One integrated studio</p>
+        <p className="mono-label text-accent/80">Connected</p>
         <h3 className="mt-4 text-2xl font-medium tracking-tight md:text-3xl">
-          Five pillars.{" "}
-          <span className="text-gradient">Designed against each other.</span>
+          Five pieces.{" "}
+          <span className="text-gradient">One operating picture.</span>
         </h3>
         <ol className="relative mt-8 space-y-3 pl-7">
           <span
@@ -93,8 +94,9 @@ export function IntegratedSystem() {
           ))}
         </ol>
         <p className="mt-6 text-sm leading-relaxed text-fg-muted">
-          One brief, one team, one voice. The pieces reinforce each other
-          instead of needing translation between vendors.
+          The positioning shapes the content. The content shapes the site. The
+          site shapes the lead flow. The system is built in the order the
+          customer actually meets it.
         </p>
       </motion.div>
     </motion.div>
