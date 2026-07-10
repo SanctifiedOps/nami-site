@@ -40,7 +40,7 @@ export function PageHero({ title, lead, className, children }: Props) {
         animate="show"
         variants={stage}
       >
-        <h1 className="mx-auto max-w-[20ch] text-4xl font-semibold leading-[1.18] tracking-tight md:text-6xl">
+        <h1 className="mx-auto max-w-[20ch] text-4xl font-semibold leading-[1.12] tracking-tight md:text-6xl">
           <LetterReveal>{title}</LetterReveal>
         </h1>
         {lead && (

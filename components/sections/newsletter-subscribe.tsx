@@ -110,7 +110,7 @@ export function NewsletterSubscribe({
               "font-medium tracking-[-0.015em]",
               compact
                 ? "text-2xl leading-[1.15]"
-                : "text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.18] pr-2",
+                : "text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.12] pr-2",
             )}
           >
             {title}

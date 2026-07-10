@@ -80,7 +80,7 @@
     color: var(--color-fg);
     letter-spacing: -0.02em;
     font-weight: 600;
-    line-height: 1.16;
+    line-height: 1.12;
   }
 
   ::selection {
@@ -159,14 +159,14 @@
   .text-gradient {
     color: var(--color-accent);
     display: inline-block;
-    padding-bottom: 0.08em;
+    padding-bottom: 0.04em;
   }
 
   /* LetterReveal chars inside .text-gradient need their own color because
      every character is wrapped in an animated span. */
   .text-gradient .lr-char {
     color: var(--color-accent);
-    padding-bottom: 0.08em;
+    padding-bottom: 0.04em;
     animation: lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards
       cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -192,15 +192,15 @@
      atomic wrapper; per-char .lr-char animates inside. */
   .lr-word {
     display: inline-block;
-    line-height: 1.18;
-    padding-bottom: 0.08em;
+    line-height: 1.1;
+    padding-bottom: 0.04em;
     white-space: nowrap;
   }
 
   .lr-char {
     display: inline-block;
-    line-height: 1.18;
-    padding-bottom: 0.08em;
+    line-height: 1.1;
+    padding-bottom: 0.04em;
     opacity: 0;
     filter: blur(6px);
     animation: lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards

@@ -75,7 +75,7 @@ export default function AboutPage() {
               How we think
             </motion.span>
             <motion.h2
-              className="text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-[1.14] tracking-tight"
+              className="text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-[1.1] tracking-tight"
               variants={fadeUp}
             >
               Three principles <span className="text-gradient">we hold to.</span>

@@ -105,7 +105,7 @@ export function HomeHero() {
         className="container-shell relative z-10 py-24 text-center md:py-32"
       >
         <motion.div initial="hidden" animate="show" variants={stageHero}>
-          <h1 className="mx-auto max-w-[20ch] text-5xl font-semibold leading-[1.18] tracking-tight md:text-7xl">
+          <h1 className="mx-auto max-w-[20ch] text-5xl font-semibold leading-[1.12] tracking-tight md:text-7xl">
             <LetterReveal stagger={0.018} duration={0.8}>
               Your business shouldn&rsquo;t depend on you{" "}
               <span className="text-gradient sm:block">

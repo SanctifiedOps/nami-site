@@ -17,7 +17,7 @@ export default function ThankYouPage() {
             <Check size={28} className="text-accent" aria-hidden />
           </div>
           <p className="eyebrow mt-8">Got it</p>
-          <h1 className="mt-4 text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.14] tracking-[-0.02em]">
+          <h1 className="mt-4 text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
             Thanks. We'll be{" "}
             <span className="text-gradient">
               in touch shortly.

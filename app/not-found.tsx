@@ -40,7 +40,7 @@ export default function NotFound() {
           >
             404
           </p>
-          <h1 className="mt-6 text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.14] tracking-[-0.02em]">
+          <h1 className="mt-6 text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
             That page{" "}
             <span className="text-gradient">
               isn't here.
