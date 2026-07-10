@@ -4,6 +4,8 @@ import { ServicesGrid } from "@/components/sections/services-grid";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
 import { SectionIntro } from "@/components/sections/section-intro";
 import { IntegratedSystem } from "@/components/sections/integrated-system";
+import { PressurePaths } from "@/components/sections/pressure-paths";
+import { CommonStartingPoints } from "@/components/sections/common-starting-points";
 import { faq } from "@/lib/content/faq";
 import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 
@@ -36,6 +38,17 @@ export default function ServicesPage() {
         lead="Brand, content, website, visual direction, and automation all shape each other in the real world. We plan them together so the work does not splinter the moment it leaves the brand deck."
       />
 
+      <PressurePaths
+        title={
+          <>
+            Which part is{" "}
+            <span className="text-gradient sm:block">costing you momentum?</span>
+          </>
+        }
+        lead="You do not need to diagnose the whole system before we talk. Start with the part that keeps creating drag, then we trace what is causing it."
+        className="border-t-0"
+      />
+
       {/* The five pillars */}
       <section className="container-shell py-24 md:py-32">
         <SectionIntro
@@ -55,6 +68,8 @@ export default function ServicesPage() {
       </section>
 
       {/* The model — integrated vs fragmented */}
+      <CommonStartingPoints />
+
       <section className="relative overflow-hidden border-t border-line bg-surface-1/40 py-24 md:py-32">
         <div aria-hidden className="hairline-grid absolute inset-0 opacity-40" />
         <div className="container-shell relative">

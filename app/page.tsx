@@ -6,6 +6,7 @@ import { ServicesGrid } from "@/components/sections/services-grid";
 import { ProcessScroll } from "@/components/sections/process-scroll";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
 import { PositioningBand } from "@/components/sections/positioning-band";
+import { PressurePaths } from "@/components/sections/pressure-paths";
 import { WorkGrid } from "@/components/sections/work-grid";
 import { Testimonials } from "@/components/sections/testimonials";
 import { RecentInsights } from "@/components/sections/recent-insights";
@@ -23,6 +24,7 @@ export default async function Home() {
       <HomeHero />
 
       <PositioningBand />
+      <PressurePaths />
 
       {/* SERVICES — stacked-left intro, plain surface */}
       <section className="container-shell py-28 md:py-40">

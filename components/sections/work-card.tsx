@@ -74,6 +74,21 @@ export function WorkCard({ study, className }: Props) {
 
             <p className="leading-relaxed text-fg-muted">{study.oneLiner}</p>
 
+            {study.outcomes && study.outcomes.length > 0 && (
+              <dl className="grid gap-3 border-y border-line py-4 sm:grid-cols-2">
+                {study.outcomes.slice(0, 2).map((outcome) => (
+                  <div key={outcome.label}>
+                    <dt className="text-[10px] uppercase tracking-widest text-fg-subtle">
+                      {outcome.label}
+                    </dt>
+                    <dd className="mt-1 text-lg font-medium tracking-tight text-fg">
+                      {outcome.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+
             <div className="flex flex-wrap gap-2 pt-2">
               {study.pillars.map((p) => (
                 <span

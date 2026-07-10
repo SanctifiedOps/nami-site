@@ -32,7 +32,7 @@ export function SectionHeading({
       )}
     >
       <motion.h2
-        className="text-4xl font-semibold leading-[1.1] tracking-tight md:text-6xl pr-2"
+        className="text-4xl font-semibold leading-[1.18] tracking-tight md:text-6xl pr-2"
         variants={fadeUp}
       >
         <LetterReveal stagger={0.014} duration={0.65}>

@@ -80,7 +80,7 @@
     color: var(--color-fg);
     letter-spacing: -0.02em;
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.16;
   }
 
   ::selection {
@@ -154,68 +154,27 @@
     -webkit-backdrop-filter: blur(16px);
   }
 
-  /* Animated liquid pink gradient. Flagship magenta with deep and soft
-     waypoints. Color stops are symmetric (deep at 0% and 100%) and equally
-     spaced so the gradient is a true period. Animation shift equals one
-     full background-size, so the loop wraps invisibly. Linear easing keeps
-     the motion continuous; duration is intentionally long for the
-     slow-motion liquid feel. */
+  /* Solid NAMI pink emphasis. Kept as a class because it is used throughout
+     headings and inline highlights. */
   .text-gradient {
-    background: linear-gradient(
-      100deg,
-      var(--color-accent-deep) 0%,
-      var(--color-accent) 25%,
-      var(--color-accent-soft) 50%,
-      var(--color-accent) 75%,
-      var(--color-accent-deep) 100%
-    );
-    background-size: 200% 100%;
-    background-position: 0% 50%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: text-gradient-flow 24s linear infinite;
+    color: var(--color-accent);
+    display: inline-block;
+    padding-bottom: 0.08em;
   }
 
-  /* LetterReveal chars inside .text-gradient need their OWN gradient +
-     flow animation, because the parent's background-clip:text won't pass
-     through a child that creates a stacking context (which the per-char
-     filter+opacity animation does). Two animations stacked: the per-char
-     reveal AND the continuous gradient flow. */
+  /* LetterReveal chars inside .text-gradient need their own color because
+     every character is wrapped in an animated span. */
   .text-gradient .lr-char {
-    background-image: linear-gradient(
-      100deg,
-      var(--color-accent-deep) 0%,
-      var(--color-accent) 25%,
-      var(--color-accent-soft) 50%,
-      var(--color-accent) 75%,
-      var(--color-accent-deep) 100%
-    );
-    background-size: 200% 100%;
-    background-position: 0% 50%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation:
-      lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards
-        cubic-bezier(0.16, 1, 0.3, 1),
-      text-gradient-flow 24s linear infinite;
-  }
-
-  @keyframes text-gradient-flow {
-    0% {
-      background-position: 0% 50%;
-    }
-    100% {
-      background-position: 200% 50%;
-    }
+    color: var(--color-accent);
+    padding-bottom: 0.08em;
+    animation: lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards
+      cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .text-gradient,
     .text-gradient .lr-char {
       animation: none;
-      background-position: 50% 50%;
     }
   }
 
@@ -233,11 +192,15 @@
      atomic wrapper; per-char .lr-char animates inside. */
   .lr-word {
     display: inline-block;
+    line-height: 1.18;
+    padding-bottom: 0.08em;
     white-space: nowrap;
   }
 
   .lr-char {
     display: inline-block;
+    line-height: 1.18;
+    padding-bottom: 0.08em;
     opacity: 0;
     filter: blur(6px);
     animation: lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards
@@ -271,10 +234,8 @@
       will-change: auto;
     }
     .text-gradient,
-    .text-gradient .lr-char,
-    .text-gradient-cyan {
+    .text-gradient .lr-char {
       animation: none;
-      background-position: 50% 50%;
     }
   }
 
@@ -492,20 +453,9 @@
     color: var(--color-fg-subtle);
   }
 
-  /* Cyan companion to .text-gradient — the secondary accent finally earns a
-     role (data, secondary headings) so the magenta/cyan duality is a system. */
+  /* Secondary accent emphasis. Solid, not gradient animated. */
   .text-gradient-cyan {
-    background: linear-gradient(
-      100deg,
-      var(--color-accent-2) 0%,
-      var(--color-accent-soft) 50%,
-      var(--color-accent-2) 100%
-    );
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: text-gradient-flow 24s linear infinite;
+    color: var(--color-accent-2);
   }
 
   /* Filmic grain — a single fixed, pointer-safe layer (never on a scroller).
@@ -520,10 +470,4 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .text-gradient-cyan {
-      animation: none;
-      background-position: 50% 50%;
-    }
-  }
 }

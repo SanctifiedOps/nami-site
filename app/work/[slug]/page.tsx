@@ -185,7 +185,7 @@ export default async function CaseStudyPage({
       <section className="container-shell border-t border-line py-20 md:py-28">
         <div className="mb-12 max-w-2xl md:mb-16">
           <p className="mono-label mb-4">What shipped</p>
-          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
+          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.14] tracking-tight">
             Deliverables that{" "}
             <span className="text-gradient">hold up daily.</span>
           </h2>
@@ -200,7 +200,7 @@ export default async function CaseStudyPage({
           <div className="container-shell relative">
             <div className="mb-12 max-w-2xl md:mb-16">
               <p className="mono-label mb-4">Where it landed</p>
-              <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
+              <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.14] tracking-tight">
                 Outcomes,{" "}
                 <span className="text-gradient">not vanity.</span>
               </h2>

@@ -31,7 +31,7 @@ export function FooterCta() {
           Build with us
         </motion.p>
         <motion.h2
-          className="mx-auto mt-6 max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl lg:text-7xl"
+          className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[1.16] tracking-tight md:text-6xl lg:text-7xl"
           variants={fadeUp}
         >
           Ready to give the brand{" "}

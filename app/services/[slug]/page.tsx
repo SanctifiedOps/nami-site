@@ -146,7 +146,7 @@ export default async function ServiceDetailPage({
       <section className="container-shell border-t border-line py-20 md:py-28">
         <div className="mb-12 max-w-2xl">
           <p className="mono-label mb-4">Where it fits</p>
-          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
+          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.14] tracking-tight">
             One of five pillars.{" "}
             <span className="text-gradient">Stronger together.</span>
           </h2>
@@ -163,7 +163,7 @@ export default async function ServiceDetailPage({
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="mono-label mb-4">Common questions</p>
-            <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight">
+            <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.14] tracking-tight">
               Before we <span className="text-gradient">get started.</span>
             </h2>
           </div>

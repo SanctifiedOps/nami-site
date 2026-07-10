@@ -23,6 +23,40 @@ export default function PricingPage() {
         lead="There is no useful price list for half-built brands. We scope against what is actually broken, what needs building, and how much of the system needs to move at once."
       />
 
+      <section className="container-shell border-b border-line py-20 md:py-24">
+        <div className="grid gap-8 md:grid-cols-3 md:gap-6">
+          {[
+            {
+              label: "Pick Project if",
+              body:
+                "You need a defined rebuild: brand, website, positioning, or a tightly scoped system.",
+            },
+            {
+              label: "Pick Partnership if",
+              body:
+                "The brand needs regular direction, production, and iteration after the first build ships.",
+            },
+            {
+              label: "Pick Systems + product if",
+              body:
+                "A recurring workflow, dashboard, template set, or lead path needs turning into something the team can run.",
+            },
+          ].map((item) => (
+            <article
+              key={item.label}
+              className="rounded-2xl border border-line bg-surface-1/45 p-6"
+            >
+              <h2 className="text-lg font-medium tracking-tight text-fg">
+                {item.label}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+                {item.body}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="container-shell py-24 md:py-32">
         <motion.div
           initial="hidden"
