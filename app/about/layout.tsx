@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import { JsonLd, founderPersonSchema } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "About · Joe Wilson, founder of NAMI Creative",
+  title: "About - Joe Wilson, founder of NAMI Creative",
   description:
-    "NAMI Creative is a one-studio operation by Joe Wilson, based in Newcastle upon Tyne, working globally. Senior-only output, direct founder relationships, no middle layer. Brand, content, websites, visual direction, and growth systems delivered as one engagement, not five vendors.",
+    "Joe Wilson is the founder of NAMI Creative, a Newcastle-born creative partner helping businesses with brand, websites, content, and the working bits behind them. NAMI also spotlights North East creatives, artists, local businesses, and brands doing things properly.",
   keywords: [
     "Joe Wilson NAMI",
     "NAMI Creative founder",
-    "creative studio founder Newcastle",
+    "independent creative partner Newcastle",
     "independent creative director UK",
     "fractional brand director",
   ],
   openGraph: {
-    title: "About · NAMI Creative",
+    title: "About - NAMI Creative",
     description:
-      "Joe Wilson on building NAMI Creative: senior-only output, direct founder relationships, no middle layer.",
+      "Joe Wilson on NAMI Creative, North East creativity, brand work, websites, content, and helping good people get their work seen.",
     url: "https://namicreative.co.uk/about",
   },
 };

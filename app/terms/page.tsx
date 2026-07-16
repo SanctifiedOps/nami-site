@@ -18,7 +18,7 @@ export default function TermsPage() {
         eyebrow="Legal"
         title={
           <>
-            Terms of <span className="text-gradient">use.</span>
+            Terms of <span className="text-gradient">use</span>
           </>
         }
         lead="The ground rules for using this website. Engagement-specific terms are agreed in writing per project."

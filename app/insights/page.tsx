@@ -6,9 +6,9 @@ import { PostCard } from "@/components/insights/post-card";
 import { getAllPosts, getAllTags } from "@/lib/content/insights";
 
 export const metadata: Metadata = {
-  title: "Creative Waves · Studio notes from NAMI Creative",
+  title: "Creative Waves Â· Studio notes from NAMI Creative",
   description:
-    "Notes, frameworks, and breakdowns from inside the studio. Brand systems, content engines, automation infrastructure, and the work behind the work.",
+    "Notes, frameworks, and breakdowns from inside the work. Brand, content, automation, and the decisions behind them.",
 };
 
 export default async function InsightsPage() {
@@ -23,10 +23,10 @@ export default async function InsightsPage() {
         eyebrow="Brands for the future"
         title={
           <>
-            Creative <span className="text-gradient">Waves.</span>
+            Creative <span className="text-gradient">Waves</span>
           </>
         }
-        lead="Branding is being rebuilt by automation. Frameworks, breakdowns, and where the industry is heading next."
+        lead="Notes on brand, content, websites, and the decisions behind good creative work."
       >
         <NewsletterSubscribe
           variant="card"
@@ -35,7 +35,7 @@ export default async function InsightsPage() {
           title={
             <>
               Get the next piece,{" "}
-              <span className="text-gradient">when it lands.</span>
+              <span className="text-gradient">when it lands</span>
             </>
           }
           lead="One email when there's something worth your inbox. Unsubscribe anytime."
@@ -46,17 +46,17 @@ export default async function InsightsPage() {
       <section className="container-shell py-20 md:py-28">
         {posts.length === 0 ? (
           <p className="text-fg-muted text-lg">
-            First essays shipping shortly. Subscribe above to get them when
+            First essays landing shortly. Subscribe above to get them when
             they land.
           </p>
         ) : (
           <div className="grid gap-12 lg:grid-cols-[1fr_360px] lg:gap-16">
             {/* Main column */}
             <div>
-              {/* Featured post — full-width prominent card */}
+              {/* Featured post â€” full-width prominent card */}
               {featured && <PostCard post={featured} variant="featured" />}
 
-              {/* Rest of posts — single column when there's only one
+              {/* Rest of posts â€” single column when there's only one
                   non-featured post so it sits at full width below the
                   featured hero instead of orphaning in a half-width grid
                   cell. 2-col grid returns automatically with 2+ posts. */}

@@ -7,12 +7,12 @@ import { WorkGrid } from "@/components/sections/work-grid";
 export const metadata: Metadata = {
   title: "Selected work · Brand, content, and conversion case studies",
   description:
-    "Five engagements where brand, content, and systems shipped as one. On-chain intelligence (MILLIONS), UK members clubs (The League), community brands (Barking Puppy), DTC conversion funnels (VESSL), and a national trade body (Energy Consultants Association).",
+    "Five projects where the brand, website, content, and working parts were built together. On-chain intelligence, UK members clubs, community brands, DTC conversion funnels, and a national trade body.",
   keywords: [
-    "creative studio case studies",
+    "creative partner case studies",
     "brand strategy case studies UK",
     "conversion funnel case studies",
-    "boutique brand studio work",
+    "independent brand work",
   ],
 };
 
@@ -23,13 +23,13 @@ export default function WorkPage() {
         eyebrow="Selected work"
         title={
           <>
-            Brands where every layer shipped{" "}
+            Brands where the public face and{" "}
             <span className="text-gradient sm:block">
-              against one brief.
+              working parts line up
             </span>
           </>
         }
-        lead="Five engagements across on-chain intelligence, UK members clubs, community brands, conversion funnels, and a national trade body. The common thread is simple: the public face and the operating layer were built to match."
+        lead="Five projects across on-chain intelligence, UK members clubs, community brands, conversion funnels, and a national trade body. The common thread is simple: the public face and the working parts line up."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -39,9 +39,9 @@ export default function WorkPage() {
           <div className="max-w-xl">
             <p className="mono-label mb-3">Want to be next?</p>
             <p className="text-2xl font-medium tracking-tight md:text-3xl">
-              We keep the calendar deliberately narrow{" "}
+              I keep the calendar narrow{" "}
               <span className="text-gradient">
-                so the work gets the room it needs.
+                so the work gets the room it needs
               </span>
             </p>
           </div>

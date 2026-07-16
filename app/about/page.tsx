@@ -15,14 +15,14 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        eyebrow="About · NAMI Creative"
+        eyebrow="About - NAMI Creative"
         title={
           <>
-            Brand as{" "}
-            <span className="text-gradient sm:block">infrastructure.</span>
+            Born in Newcastle,{" "}
+            <span className="text-gradient sm:block">built around proper graft</span>
           </>
         }
-        lead="A creative marketing studio building brand identity, content systems, and growth infrastructure for founders who want the work to keep running after they stop being in every room."
+        lead="I'm Joe Wilson. I help businesses figure out what they're trying to say, who they're saying it to, and then build the brand, content, website, and working bits around that properly."
       />
 
       {/* Story */}
@@ -39,26 +39,67 @@ export default function AboutPage() {
           </motion.p>
           <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
             <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
-              NAMI exists to build brands that{" "}
-              <span className="text-gradient">
-                move with intention
-              </span>{" "}
-              and hold while the business scales.
+              I work in marketing, but I have never felt like just a marketing guy.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              The warning signs are usually small at first. The sales deck
-              says one thing, the website says another, the content calendar is
-              being rebuilt from scratch every month, and the founder is still
-              the only person who knows how it should all sound.
+              Most of my work has been around brands: helping businesses work out
+              what they are trying to say, who they are saying it to, and what
+              needs building around that. Content, websites, campaigns,
+              positioning, the lot.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              That is the work NAMI was built for: the strategy, the identity,
-              the site, the content formats, and the operating layer underneath
-              them. Built together, so the brand can keep moving without every
-              decision coming back to the same desk.
+              More recently, I started building the working bits myself too:
+              automations, dashboards, small tools, and the unglamorous jobs
+              that stop a business relying on five platforms that do not speak
+              to each other.
+            </p>
+            <p className="text-fg-muted md:text-lg leading-relaxed">
+              That is where I am most useful. I understand the brand
+              and the thinking behind it, but I can also get into the detail and
+              make the thing work.
             </p>
           </motion.div>
         </motion.div>
+      </section>
+
+      {/* North East */}
+      <section className="border-t border-line bg-surface-1/30 py-24 md:py-32">
+        <div className="container-shell">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={stage}
+            className="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20"
+          >
+            <motion.p className="mono-label md:mt-2" variants={fadeUp}>
+              02 / The North East
+            </motion.p>
+            <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
+              <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
+                NAMI started with a simple idea: support the North East and give
+                good creative work a bit more light.
+              </p>
+              <p className="text-fg-muted md:text-lg leading-relaxed">
+                I am a born and bred Newcastle lad, and I love seeing people
+                around here win. Artists, musicians, makers, local businesses,
+                independent brands, people grafting away and putting proper
+                thought into how they show up.
+              </p>
+              <p className="text-fg-muted md:text-lg leading-relaxed">
+                That is still part of NAMI. The client work helps businesses
+                get their marketing sorted, but the wider page keeps spotlighting
+                the people, places, and projects making the region feel alive.
+              </p>
+              <p className="text-fg-muted md:text-lg leading-relaxed">
+                When a business feels sorted from Instagram to website to shop
+                floor, it gets noticed straight away. Those details deserve credit,
+                especially up here, where there is far more good work happening
+                than people give the region credit for.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
       </section>
 
       {/* Values */}
@@ -72,13 +113,13 @@ export default function AboutPage() {
             className="mb-14 max-w-2xl"
           >
             <motion.span className="mono-label mb-5 block" variants={fadeUp}>
-              How we think
+              How I think
             </motion.span>
             <motion.h2
-              className="text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-[1.1] tracking-tight"
+              className="text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]"
               variants={fadeUp}
             >
-              Three principles <span className="text-gradient">we hold to.</span>
+              Three principles <span className="text-gradient">I work by</span>
             </motion.h2>
           </motion.div>
 
@@ -135,18 +176,18 @@ export default function AboutPage() {
                 className="object-cover"
               />
             </div>
-            <p className="mono-label mt-4">Joe Wilson · Founder, NAMI Creative</p>
+            <p className="mono-label mt-4">Joe Wilson - Founder, NAMI Creative</p>
           </motion.div>
           <motion.div variants={fadeUp} className="max-w-2xl space-y-6">
-            <p className="mono-label">02 / The founder</p>
+            <p className="mono-label">03 / The founder</p>
             <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
-              Hi, I'm <span className="text-gradient">Joe Wilson.</span>
+              Hi, I'm <span className="text-gradient">Joe Wilson</span>
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              I started NAMI Creative to do the kind of work that only happens
-              when strategy, design, and systems are built by the same hands.
-              Direct client relationships, senior-only output, no middle
-              layer.
+              I started NAMI Creative because I got tired of seeing good ideas
+              slowed down by messy processes, unclear words, or five different
+              tools that did not quite talk to each other. I like figuring out
+              the idea, then getting it live.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
               Twenty years in brand building and design sit behind that. I held
@@ -156,12 +197,11 @@ export default function AboutPage() {
               Radio for the Nami Up North project.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              Today I work with founders, small businesses, and trades who care
-              about doing the work properly. Independent operators, growing
-              teams, and people who would rather build the base once than keep
-              patching the same cracks.
+              I am a proud dad, easy to get along with, and I love nothing more
+              than seeing people around me win. I am always open to good
+              conversations, interesting projects, and people doing things
+              properly.
             </p>
-
             <dl className="grid gap-8 border-t border-line pt-6 sm:grid-cols-3">
               <div>
                 <dt className="mono-label">Experience</dt>

@@ -44,13 +44,13 @@ export function Testimonials({
             title ?? (
               <>
                 What people say{" "}
-                <span className="text-gradient sm:block">about the work.</span>
+                <span className="text-gradient sm:block">about the work</span>
               </>
             )
           }
           lead={
             lead ??
-            "Honest words from founders, operators, and partners we've shipped alongside."
+            "Honest words from founders, operators, and people I have worked alongside."
           }
           className="mb-16 md:mb-20"
         />

@@ -29,7 +29,7 @@ export async function generateMetadata({
   if (!display) return { title: "Topic not found" };
   return {
     title: `${display} · Creative Waves`,
-    description: `Posts tagged ${display}, from inside the studio.`,
+    description: `Posts tagged ${display}, from inside the work.`,
   };
 }
 
@@ -55,10 +55,10 @@ export default async function TopicPage({
         eyebrow="Creative Waves · Topic"
         title={
           <>
-            Tagged <span className="text-gradient">{display}.</span>
+            Tagged <span className="text-gradient">{display}</span>
           </>
         }
-        lead={`Every Creative Waves piece tagged ${display}, from inside the studio.`}
+        lead={`Every Creative Waves piece tagged ${display}, from inside the work.`}
       />
 
       <section className="container-shell py-20 md:py-28">

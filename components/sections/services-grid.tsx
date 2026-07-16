@@ -61,11 +61,11 @@ function ServicesCtaCard() {
               Start a project
             </p>
             <h3 className="text-2xl font-medium tracking-tight text-fg md:text-3xl">
-              Bring us <span className="text-gradient">your brief.</span>
+              Bring me <span className="text-gradient">your brief</span>
             </h3>
             <p className="leading-relaxed text-fg-muted">
-              We take a small number of new engagements each quarter. Brand,
-              content, systems, or all of it together.
+              I take a small number of new engagements each quarter. Brand,
+              content, automation, or all of it together.
             </p>
           </div>
 

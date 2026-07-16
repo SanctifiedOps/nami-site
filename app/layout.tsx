@@ -16,20 +16,20 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "NAMI Creative · Independent creative studio for founders",
-    template: "%s · NAMI Creative",
+    default: "NAMI Creative - Marketing and creative work done properly",
+    template: "%s - NAMI Creative",
   },
   description:
-    "Independent creative studio for founders, working globally from Newcastle. One partner across brand, content, websites, visual direction, and growth automation.",
+    "Marketing and creative work for founder-led businesses, handled by Joe Wilson from the North East. Brand, websites, content, visual direction, and automation done properly.",
   keywords: [
-    "creative studio for founders",
-    "brand and content studio",
-    "independent creative studio UK",
-    "brand strategy studio Newcastle",
+    "marketing and creative support",
+    "brand website content support",
+    "independent creative partner UK",
+    "brand strategy Newcastle",
     "creative partner for founders",
     "fractional creative director UK",
     "brand and automation agency",
-    "self-sustaining creative ecosystem",
+    "marketing support for founders",
   ],
   metadataBase: new URL("https://namicreative.co.uk"),
   verification: {
@@ -40,23 +40,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_GB",
-    title: "NAMI Creative · Brand, Content, Systems",
+    title: "NAMI Creative - Brand, Content, Automation",
     description:
-      "Self-sustaining creative ecosystems for founders. One studio across brand, content, websites, visual direction, and growth automation.",
+      "Marketing and creative work done properly for founder-led businesses. Brand, websites, content, visual direction, and automation handled by Joe Wilson.",
     images: [
       {
         url: "/assets/images/Nami-OG-v2.png",
         width: 1600,
         height: 1000,
-        alt: "NAMI Creative · Self-sustaining creative ecosystems for founders",
+        alt: "NAMI Creative - Marketing and creative work done properly",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NAMI Creative · Brand, Content, Systems",
+    title: "NAMI Creative - Brand, Content, Automation",
     description:
-      "Self-sustaining creative ecosystems for founders. One studio across brand, content, websites, visual direction, and growth automation.",
+      "Marketing and creative work done properly for founder-led businesses. Brand, websites, content, visual direction, and automation handled by Joe Wilson.",
     images: ["/assets/images/Nami-OG-v2.png"],
   },
   icons: {

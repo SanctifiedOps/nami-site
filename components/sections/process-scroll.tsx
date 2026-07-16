@@ -21,8 +21,8 @@ type Props = {
 
 const DEFAULT_TITLE = (
   <>
-    A process that gets you out of the{" "}
-    <span className="text-gradient sm:block">day-to-day.</span>
+    A straightforward way to get the{" "}
+    <span className="text-gradient sm:block">work sorted</span>
   </>
 );
 
@@ -37,7 +37,7 @@ const DEFAULT_TITLE = (
 export function ProcessScroll({
   index = "02 / How we work",
   title = DEFAULT_TITLE,
-  lead = "We start with the shape of the business, then build the brand, site, content, and systems around it. Launch is the first test, not the last step.",
+  lead = "I start with what the business needs, then build the brand, site, content, and automation around that. Launch gets the work into the real world.",
 }: Props = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -69,7 +69,7 @@ export function ProcessScroll({
       {/* Sticky left: heading + scroll-spy stepper */}
       <div className="lg:sticky lg:top-28 lg:self-start">
         {index && <span className="mono-label">{index}</span>}
-        <h2 className="mt-5 text-4xl font-semibold leading-[1.12] tracking-tight md:text-5xl">
+        <h2 className="mt-5 text-4xl font-semibold leading-[1.06] tracking-tight md:text-5xl md:leading-[1.03]">
           <LetterReveal stagger={0.014} duration={0.65}>
             {title}
           </LetterReveal>

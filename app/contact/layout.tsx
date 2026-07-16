@@ -6,8 +6,8 @@ export const metadata: Metadata = {
     "Start a conversation with NAMI Creative. Three questions on the form, scope and budget on the call. Personal response within one working day. For brand, website, content, or growth automation projects.",
   keywords: [
     "start a creative project UK",
-    "book a creative studio call",
-    "hire a brand studio Newcastle",
+    "book a creative project call",
+    "hire a brand partner Newcastle",
     "brand consultation booking",
   ],
   openGraph: {

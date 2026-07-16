@@ -184,10 +184,10 @@ export default async function CaseStudyPage({
       {/* Deliverables — numbered readout */}
       <section className="container-shell border-t border-line py-20 md:py-28">
         <div className="mb-12 max-w-2xl md:mb-16">
-          <p className="mono-label mb-4">What shipped</p>
-          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.1] tracking-tight">
+          <p className="mono-label mb-4">What was built</p>
+          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
             Deliverables that{" "}
-            <span className="text-gradient">hold up daily.</span>
+            <span className="text-gradient">hold up daily</span>
           </h2>
         </div>
         <DeliverablesList items={study.deliverables} />
@@ -200,9 +200,9 @@ export default async function CaseStudyPage({
           <div className="container-shell relative">
             <div className="mb-12 max-w-2xl md:mb-16">
               <p className="mono-label mb-4">Where it landed</p>
-              <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.1] tracking-tight">
+              <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
                 Outcomes,{" "}
-                <span className="text-gradient">not vanity.</span>
+                <span className="text-gradient">not vanity</span>
               </h2>
             </div>
             <MetricsBand items={study.outcomes} />

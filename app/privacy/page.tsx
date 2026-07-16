@@ -18,7 +18,7 @@ export default function PrivacyPage() {
         eyebrow="Legal"
         title={
           <>
-            Privacy <span className="text-gradient">notice.</span>
+            Privacy <span className="text-gradient">notice</span>
           </>
         }
         lead="Plain-English explanation of what we collect, why, and how to control it. GDPR-aligned and UK-resident."
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
           <Block title="Who we are">
             <p>
               NAMI Creative (&ldquo;NAMI&rdquo;, &ldquo;we&rdquo;,
-              &ldquo;us&rdquo;) is a UK-based creative studio operating from
+              &ldquo;us&rdquo;) is a UK-based creative service operating from
               England. For the purposes of UK GDPR and the Data Protection Act
               2018, we are the data controller for personal data you share
               with us through this site.

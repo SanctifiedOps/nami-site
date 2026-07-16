@@ -22,16 +22,15 @@ export function PositioningBand() {
           className="mx-auto max-w-3xl text-center text-[clamp(1.4rem,3vw,2.25rem)] font-medium leading-tight tracking-tight text-fg"
           variants={blurUp}
         >
-          The deck says one thing. The site says another. Leads land in three
-          different places. And somehow you are still the one{" "}
-          <span className="text-gradient">keeping the shape in your head.</span>
+          The content says one thing. The site says another. Leads land in three
+          different places. And somehow it still all comes back to you.
         </motion.p>
         <motion.p
           className="mx-auto mt-6 max-w-xl text-center text-fg-muted md:text-lg"
           variants={fadeUp}
         >
-          NAMI rebuilds the brand, content, website, and operating layer so the
-          business has a system to lean on, not another set of files to manage.
+          I tidy up the brand, website, content, and automation so the business
+          has something proper to lean on week to week.
         </motion.p>
       </motion.div>
     </section>

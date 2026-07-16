@@ -18,7 +18,7 @@ export const services: Service[] = [
     slug: "brand-strategy",
     index: "01",
     title: "Brand strategy + identity systems",
-    tagline: "Positioning your team can actually use on the next decision.",
+    tagline: "Positioning your team can use on the next decision",
     description:
       "Positioning, messaging architecture, tone of voice, and visual direction. The work ends in usable rules, not a document nobody opens after launch.",
     icon: Compass,
@@ -37,7 +37,7 @@ export const services: Service[] = [
     slug: "content-systems",
     index: "02",
     title: "Content systems + creation",
-    tagline: "Formats, angles, and workflows your team can repeat without guessing.",
+    tagline: "Formats, angles, and workflows your team can repeat without guessing",
     description:
       "Repeatable content formats, platform-specific strategy, and narrative architecture. Built so the next post starts from a system, not a blank page.",
     icon: Layers,
@@ -57,7 +57,7 @@ export const services: Service[] = [
     index: "03",
     title: "Website + funnel design",
     tagline:
-      "A site built around the decision you need the visitor to make.",
+      "A site built around the decision you need the visitor to make",
     description:
       "User flow, messaging hierarchy, and conversion structure designed around action. Built fast, clear, and ready to turn attention into the next step.",
     icon: Globe,
@@ -76,7 +76,7 @@ export const services: Service[] = [
     slug: "visual-direction",
     index: "04",
     title: "Visual storytelling + creative direction",
-    tagline: "Give every campaign, shoot, and asset the same visual nerve.",
+    tagline: "Give every campaign, shoot, and asset the same visual nerve",
     description:
       "Creative direction across content, product, and campaign, so the brand does not change personality every time it moves to a new channel.",
     icon: Eye,
@@ -96,7 +96,7 @@ export const services: Service[] = [
     index: "05",
     title: "Automation + growth systems",
     tagline:
-      "The repeatable work moved out of your head and into the stack.",
+      "The repeatable work moved out of your head and into the stack",
     description:
       "Operations stacks, lifecycle email, lead-capture pipelines, and content workflows. Built around the tasks that keep coming back each week.",
     icon: Zap,
@@ -109,7 +109,7 @@ export const services: Service[] = [
       "Reporting + dashboard systems",
     ],
     outcome:
-      "Leads, content, follow-ups, and reporting stop depending on memory. The system carries the recurring work before it eats the week.",
+      "Leads, content, automations, and reporting stop depending on memory. The system carries the recurring work before it eats the week.",
   },
 ];
 

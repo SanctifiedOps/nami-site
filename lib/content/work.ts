@@ -9,7 +9,7 @@ export type CaseStudy = {
   client: string;
   sector: string;
   year: string;
-  status: "Live" | "Ongoing" | "Recently shipped" | "In delivery";
+  status: "Live" | "Ongoing" | "Recently launched" | "In delivery";
   liveUrl: string;
   cover: string;
   pillars: string[];
@@ -38,14 +38,14 @@ export const work: CaseStudy[] = [
     liveUrl: "https://thiswilldomillions.com",
     cover: "/case-study/millions-cs.png",
     pillars: ["Brand", "Dashboard", "AI Systems", "Automation"],
-    tagline: "If you're checking Dexscreener, you're already late.",
+    tagline: "If you're checking Dexscreener, you're already late",
     heroTitle: {
       lead: "If you're checking Dexscreener,",
       accent: "you're already late.",
     },
     oneLiner: "Brand and live infrastructure for an on-chain signal service.",
     brief:
-      "MILLIONS is a real-time signal service for Solana: wallet scoring, dev-pattern detection, cluster alerts, alpha-funding detection. The brand had to feel as sharp as the data underneath it, and the product had to ship as one piece: identity, dashboard, and automated alerting in lockstep.",
+      "MILLIONS is a real-time signal service for Solana: wallet scoring, dev-pattern detection, cluster alerts, alpha-funding detection. The brand had to feel as sharp as the data underneath it, and the product had to launch as one piece: identity, dashboard, and automated alerting in lockstep.",
     approach: [
       "Brand work set the tone: confident, technical, transparent. Identity leans into the precision side of on-chain rather than the speculation side, separating MILLIONS from the noise of generic alpha groups. The voice quotes the product's own logic: 'we follow the money.'",
       "The live dashboard pulls four scoring engines into one place: smart-wallet tracking, dev-wallet scoring, cluster detection, alpha-funding detection. Re-ranking runs continuously, cold wallets auto-demote, hot ones rise. Methodology is published, not black-boxed.",
@@ -78,7 +78,7 @@ export const work: CaseStudy[] = [
     liveUrl: "https://jointheleague.uk",
     cover: "/case-study/league-cs.png",
     pillars: ["Brand", "Website", "Content", "Email"],
-    tagline: "Where Extraordinary Humans Meet.",
+    tagline: "Where Extraordinary Humans Meet",
     heroTitle: {
       lead: "Where Extraordinary",
       accent: "Humans Meet.",
@@ -89,7 +89,7 @@ export const work: CaseStudy[] = [
     approach: [
       "Positioning came first: 'we don't measure worth by wealth, title, or fame.' Voice, identity, and applied guidelines designed to read as confident and quietly elitist, never loud about it. Selection is by character, story, and achievement; the brand had to embody that.",
       "The website was built as the application entry point. Every visitor is a potential member, every page nudges toward the invitation conversation. Conversion structure runs underneath an editorial-feeling experience.",
-      "Content and lifecycle email tie the brand into how members meet the club between events: gathering announcements, speaker reveals, post-event follow-ups, and the steady-state communications that hold a private community together.",
+      "Content and lifecycle email tie the brand into how members meet the club between events: gathering announcements, speaker reveals, post-event automations, and the steady-state communications that hold a private community together.",
     ],
     deliverables: [
       "Positioning, voice, and identity system",
@@ -116,7 +116,7 @@ export const work: CaseStudy[] = [
     liveUrl: "https://barkingpuppysol.com",
     cover: "/case-study/barking-puppy-cs.png",
     pillars: ["Brand", "Content", "Community", "Automation"],
-    tagline: "Bark Louder. Become Undeniable.",
+    tagline: "Bark Louder. Become Undeniable",
     heroTitle: {
       lead: "Bark Louder.",
       accent: "Become Undeniable.",
@@ -155,11 +155,11 @@ export const work: CaseStudy[] = [
     client: "VESSL",
     sector: "Fitness · Direct-to-consumer",
     year: "2025",
-    status: "Recently shipped",
+    status: "Recently launched",
     liveUrl: "https://vessl-ltd.co.uk",
     cover: "/case-study/vessl-cs.png",
     pillars: ["Website", "Funnel", "Automation"],
-    tagline: "Strength in Motion.",
+    tagline: "Strength in Motion",
     heroTitle: {
       lead: "Strength in",
       accent: "Motion.",
@@ -199,7 +199,7 @@ export const work: CaseStudy[] = [
     liveUrl: "https://energyconsultantsassociation.co.uk",
     cover: "/case-study/eca-cs.webp",
     pillars: ["Brand", "Content", "Events", "Membership Ops"],
-    tagline: "A trade body built to be heard.",
+    tagline: "A trade body built to be heard",
     heroTitle: {
       lead: "A trade body",
       accent: "built to be heard.",
@@ -210,7 +210,7 @@ export const work: CaseStudy[] = [
       "The ECA is the independent, not-for-profit trade body for UK energy consultants. The brand had to carry weight with members, suppliers, regulators, and Westminster in the same breath, and the operations had to scale from a standing start into a recognised industry voice. Identity, member ops, content, and live presence built as one piece.",
     approach: [
       "Positioning came first. Independent. Not-for-profit. Built by consultants, for consultants. Identity, voice, and applied guidelines designed to read as serious enough for regulators and policymakers while staying clearly owned by the members it represents. The brand had to sit on a Westminster briefing or an industry main stage without missing a beat.",
-      "Member operations wired end-to-end. Onboarding campaigns, membership billing, and the steady-state communications that hold a trade body together between events. A webinar programme built around the issues members actually care about: Commission Claims Defence, Ofgem Non-Domestic Reviews, Flexible Purchasing. Members hear from the association consistently, not just at renewal.",
+      "Member operations wired end-to-end. Onboarding campaigns, membership billing, and the steady-state communications that hold a trade body together between events. A webinar programme built around the issues members care about: Commission Claims Defence, Ofgem Non-Domestic Reviews, Flexible Purchasing. Members hear from the association consistently, not just at renewal.",
       "Visibility was the multiplier. AGMs and member events run in person, speaking spaces secured at Energy Live News (one of the largest utilities roadshows in the UK), and direct campaign work alongside Sarah Edwards MP that took the association inside Downing Street. Every appearance reinforced the same message: consultants deserve a seat at the table.",
     ],
     deliverables: [

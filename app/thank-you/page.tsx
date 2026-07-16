@@ -17,16 +17,16 @@ export default function ThankYouPage() {
             <Check size={28} className="text-accent" aria-hidden />
           </div>
           <p className="eyebrow mt-8">Got it</p>
-          <h1 className="mt-4 text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
-            Thanks. We'll be{" "}
+          <h1 className="mt-4 text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.06] tracking-[-0.02em] md:leading-[1.03]">
+            Thanks. I'll be{" "}
             <span className="text-gradient">
-              in touch shortly.
+              in touch shortly
             </span>
           </h1>
           <p className="mt-6 text-lg text-fg-muted md:text-xl leading-relaxed">
-            Your brief has landed. We respond personally, usually within one
-            working day. If it's a fit, we'll suggest a discovery call. If it
-            isn't, we'll be honest about it.
+            Your brief has landed. I usually respond within one
+            working day. If it's a fit, I'll suggest a discovery call. If it
+            isn't, I'll say so.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
@@ -55,11 +55,11 @@ export default function ThankYouPage() {
           eyebrow="While you wait"
           title={
             <>
-              Get the studio notes,{" "}
-              <span className="text-gradient">delivered.</span>
+              Get Joe's notes,{" "}
+              <span className="text-gradient">delivered</span>
             </>
           }
-          lead="Occasional writing on brand systems, content engines, and the work behind the work. We'll send the next piece your way."
+          lead="Occasional writing on brand, content, and the work behind the work. I'll send the next piece your way."
         />
       </div>
     </section>

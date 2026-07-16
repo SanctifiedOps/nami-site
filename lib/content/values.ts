@@ -5,15 +5,15 @@ export type Value = {
 
 export const values: Value[] = [
   {
-    title: "Branding is infrastructure",
-    body: "A good identity system takes pressure off daily decisions. It tells the next writer, designer, founder, or hire what belongs and what does not.",
+    title: "Make it feel sorted",
+    body: "The Instagram, website, content, and automation should feel like the same business. Nothing jars. Nothing feels rushed.",
   },
   {
-    title: "Clarity over volume",
-    body: "More output will not fix a weak centre. First we make the offer, audience, and message easier to recognise. Then we scale the work around it.",
+    title: "Clear thinking first",
+    body: "Before more posts, pages, or campaigns, the business needs to know what it is saying and who it is for.",
   },
   {
-    title: "Systems compound, posts decay",
-    body: "A single post disappears quickly. A useful format, workflow, or lead path pays back every time the team uses it again.",
+    title: "Keep good ideas moving",
+    body: "Good ideas die when they stay in your head. I help turn them into something people can see, use, and build on.",
   },
 ];

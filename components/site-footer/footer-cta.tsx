@@ -31,19 +31,18 @@ export function FooterCta() {
           Build with us
         </motion.p>
         <motion.h2
-          className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[1.12] tracking-tight md:text-6xl lg:text-7xl"
+          className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[1.06] tracking-tight md:text-6xl md:leading-[1.03] lg:text-7xl"
           variants={fadeUp}
         >
-          Ready to give the brand{" "}
-          <span className="text-gradient sm:block">something to stand on?</span>
+          Need the marketing side{" "}
+          <span className="text-gradient sm:block">properly sorted?</span>
         </motion.h2>
         <motion.p
           className="mx-auto mt-8 max-w-xl leading-relaxed text-fg-muted md:text-lg"
           variants={fadeUp}
         >
-          Bring the brand, website, content, and lead flow into one working
-          shape, then hand it to the business without making the founder the
-          glue.
+          I can help with the brand, website, content, and automation, so the
+          business looks right and you can get back to the graft.
         </motion.p>
         <motion.div className="mt-12 flex justify-center" variants={fadeUp}>
           <Magnetic>

@@ -47,10 +47,10 @@ export function InsightsSidebar({
           title={
             <>
               The next piece,{" "}
-              <span className="text-gradient">in your inbox.</span>
+              <span className="text-gradient">in your inbox</span>
             </>
           }
-          lead="Occasional. Direct from the studio. Worth your inbox."
+          lead="Occasional. Direct from Joe. Worth your inbox."
           className="p-7 md:p-8"
         />
       </motion.div>
@@ -112,9 +112,9 @@ export function InsightsSidebar({
         variants={fadeUp}
         className="rounded-3xl border border-line bg-surface-1/40 p-8"
       >
-        <p className="eyebrow mb-3">From the studio</p>
+        <p className="eyebrow mb-3">From Joe</p>
         <p className="text-sm text-fg-muted leading-relaxed mb-5">
-          Creative Waves: studio notes from NAMI Creative. Brand, content,
+          Creative Waves: notes from NAMI Creative. Brand, content,
           and systems for founders building something deliberate.
         </p>
         <Link

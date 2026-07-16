@@ -5,10 +5,10 @@ export const metadata: Metadata = {
   description:
     "Three ways to work with NAMI Creative: scoped projects (4-8 weeks), ongoing partnerships (monthly retainer), and systems + product builds (2-5 weeks). Engagements sized to the work, not packaged into fixed bundles. Honest scoping on every call.",
   keywords: [
-    "creative studio pricing UK",
+    "creative marketing pricing UK",
     "brand engagement pricing",
     "creative retainer pricing",
-    "boutique brand studio cost",
+    "independent brand support cost",
   ],
   openGraph: {
     title: "Pricing · NAMI Creative",

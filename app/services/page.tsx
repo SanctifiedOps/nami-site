@@ -14,12 +14,12 @@ export const metadata: Metadata = {
   description:
     "Five integrated pillars for founders and growing brands: brand strategy and identity, content systems, conversion websites, visual direction, and growth automation. Designed against each other from day one, not stitched at handoff.",
   keywords: [
-    "brand strategy studio UK",
+    "brand strategy UK",
     "content systems agency",
     "conversion website agency",
-    "creative direction studio",
+    "creative direction support",
     "marketing automation agency UK",
-    "creative studio services",
+    "creative marketing services",
   ],
 };
 
@@ -32,10 +32,10 @@ export default function ServicesPage() {
         title={
           <>
             Five parts of the same{" "}
-            <span className="text-gradient sm:block">working system.</span>
+            <span className="text-gradient sm:block">working system</span>
           </>
         }
-        lead="Brand, content, website, visual direction, and automation all shape each other in the real world. We plan them together so the work does not splinter the moment it leaves the brand deck."
+        lead="Brand, content, website, visual direction, and automation all affect each other in the real world. I plan them together so the work still feels like one business once it goes live."
       />
 
       <PressurePaths
@@ -45,7 +45,7 @@ export default function ServicesPage() {
             <span className="text-gradient sm:block">costing you momentum?</span>
           </>
         }
-        lead="You do not need to diagnose the whole system before we talk. Start with the part that keeps creating drag, then we trace what is causing it."
+        lead="You do not need to diagnose the whole setup before we talk. Start with the part that keeps creating drag, then I trace what is causing it."
         className="border-t-0"
       />
 
@@ -57,11 +57,11 @@ export default function ServicesPage() {
             <>
               Start where the pressure is.{" "}
               <span className="text-gradient sm:block">
-                Build toward the whole system.
+                Build toward the whole system
               </span>
             </>
           }
-          lead="Some clients need the website first. Some need the voice cleaned up before another campaign goes live. The point is to fix the part that is dragging the rest out of shape, then connect it properly."
+          lead="Some clients need the website first. Some need the voice cleaned up before another campaign goes live. The point is to fix the part making the rest harder, then connect it properly."
           className="mb-16 md:mb-20"
         />
         <ServicesGrid />
@@ -79,7 +79,7 @@ export default function ServicesPage() {
             title={
               <>
                 One brief.{" "}
-                <span className="text-gradient sm:block">Fewer handoffs.</span>
+                <span className="text-gradient sm:block">Fewer handoffs</span>
               </>
             }
             lead="The costly part is rarely the deliverable itself. It is the translation between people who were never working from the same picture."
@@ -97,10 +97,10 @@ export default function ServicesPage() {
               title={
                 <>
                   Questions,{" "}
-                  <span className="text-gradient sm:block">answered.</span>
+                  <span className="text-gradient sm:block">answered</span>
                 </>
               }
-              lead="The things founders ask before we start. Anything else, drop us a line."
+              lead="The things founders ask before we start. Anything else, send me a note."
             />
           </div>
           <FAQAccordion />

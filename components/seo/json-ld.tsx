@@ -54,7 +54,7 @@ export const organizationSchema: JsonLdSchema = {
   },
   image: STUDIO_OG,
   description:
-    "Independent creative studio for founders. Brand strategy, content systems, websites, visual direction, and growth automation, delivered as one engagement with one creative partner.",
+    "Marketing and creative work for founder-led businesses. Brand strategy, content, websites, visual direction, and automation handled by one creative partner.",
   founder: { "@id": `${SITE_URL}/about#joe-wilson` },
   email: STUDIO_EMAIL,
   sameAs: [STUDIO_LINKEDIN],
@@ -81,7 +81,7 @@ export const organizationSchema: JsonLdSchema = {
 /**
  * LocalBusiness for local discovery (Google Business Profile, AI overview
  * local intent). Same NAP as Organization but typed for local schema
- * parsers. ProfessionalService is the closest fit for a creative studio.
+ * parsers. ProfessionalService is the closest fit for this creative service.
  */
 export const localBusinessSchema: JsonLdSchema = {
   "@context": "https://schema.org",
@@ -92,7 +92,7 @@ export const localBusinessSchema: JsonLdSchema = {
   image: STUDIO_OG,
   email: STUDIO_EMAIL,
   description:
-    "North East England creative studio based in Jarrow, Tyne and Wear. Brand, content, websites, and growth systems for founders, built by one creative partner. Serving Newcastle, Tyneside, and clients worldwide.",
+    "North East England creative partner based in Jarrow, Tyne and Wear. Brand, content, websites, and automation for founder-led businesses. Serving Newcastle, Tyneside, and clients worldwide.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Regent Road",
@@ -122,7 +122,7 @@ export const websiteSchema: JsonLdSchema = {
   url: SITE_URL,
   name: STUDIO_NAME,
   description:
-    "NAMI Creative. One studio for founders across brand, content, and growth systems.",
+    "NAMI Creative. Marketing and creative work done properly for founder-led businesses.",
   publisher: { "@id": `${SITE_URL}/#organization` },
   inLanguage: "en-GB",
 };

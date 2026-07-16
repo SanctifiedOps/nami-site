@@ -105,11 +105,11 @@ export function HomeHero() {
         className="container-shell relative z-10 py-24 text-center md:py-32"
       >
         <motion.div initial="hidden" animate="show" variants={stageHero}>
-          <h1 className="mx-auto max-w-[20ch] text-5xl font-semibold leading-[1.12] tracking-tight md:text-7xl">
+          <h1 className="mx-auto max-w-[20ch] text-5xl font-semibold leading-[1.06] tracking-tight md:text-7xl md:leading-[1.03]">
             <LetterReveal stagger={0.018} duration={0.8}>
-              Your business shouldn&rsquo;t depend on you{" "}
+              Marketing and creative work done properly{" "}
               <span className="text-gradient sm:block">
-                being in every room.
+                so you can focus on the graft
               </span>
             </LetterReveal>
           </h1>
@@ -118,8 +118,9 @@ export function HomeHero() {
             className="mx-auto mt-10 max-w-xl text-lg leading-relaxed text-fg-muted md:text-xl"
             variants={fadeUp}
           >
-            Self-sustaining creative ecosystems for founders. One creative
-            partner across brand, content, and growth systems.
+            I help businesses sort the brand, website, content, and automation
+            behind the scenes. Clear work, built properly, without turning
+            marketing into a second job.
           </motion.p>
 
           <motion.div
@@ -162,8 +163,7 @@ export function HomeHero() {
           >
             <p className="mono-label">Currently building</p>
             <p className="text-sm text-fg-subtle md:text-base">
-              Brand systems · content engines · funnel websites · automation
-              infrastructure for founders building something deliberate.
+              Brand, websites, content, and the automation that keeps the work moving.
             </p>
           </motion.div>
         </motion.div>

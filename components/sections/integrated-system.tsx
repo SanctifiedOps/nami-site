@@ -41,7 +41,7 @@ export function IntegratedSystem() {
         <p className="mono-label">Fragmented</p>
         <h3 className="mt-4 text-2xl font-medium tracking-tight md:text-3xl">
           Four specialists.{" "}
-          <span className="text-fg-subtle">Four different versions of the brief.</span>
+          <span className="text-fg-subtle">Four different versions of the brief</span>
         </h3>
         <ul className="mt-8 space-y-3">
           {FRAGMENTED.map((v) => (
@@ -73,7 +73,7 @@ export function IntegratedSystem() {
         <p className="mono-label text-accent/80">Connected</p>
         <h3 className="mt-4 text-2xl font-medium tracking-tight md:text-3xl">
           Five pieces.{" "}
-          <span className="text-gradient">One operating picture.</span>
+          <span className="text-gradient">One operating picture</span>
         </h3>
         <ol className="relative mt-8 space-y-3 pl-7">
           <span
@@ -94,9 +94,9 @@ export function IntegratedSystem() {
           ))}
         </ol>
         <p className="mt-6 text-sm leading-relaxed text-fg-muted">
-          The positioning shapes the content. The content shapes the site. The
-          site shapes the lead flow. The system is built in the order the
-          customer actually meets it.
+          The positioning guides the content. The content guides the site. The
+          site guides the automation. I build the work in the order your
+          customer meets it.
         </p>
       </motion.div>
     </motion.div>

@@ -35,11 +35,11 @@ export function SiteFooter() {
               />
             </Link>
             <p className="max-w-xs text-sm text-fg-muted leading-relaxed">
-              Brand, content, and growth systems for founders. Waves of
-              creative impact, built to carry on without you.
+              Brand, websites, content, and automation for businesses that want the
+              marketing side handled properly.
             </p>
             <p className="max-w-xs text-xs uppercase tracking-[0.32em] text-fg-subtle pt-1">
-              Waves of creative impact.
+              Done properly, up North.
             </p>
             <ul className="flex items-center gap-3 pt-4">
               {socials.map((s) => {

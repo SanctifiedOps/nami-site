@@ -32,13 +32,13 @@ export default async function Home() {
           index="01 / What we build"
           title={
             <>
-              One studio for the five pieces founders keep{" "}
+              One person for the marketing jobs{" "}
               <span className="text-gradient sm:block">
-                trying to hold together.
+                you keep carrying yourself
               </span>
             </>
           }
-          lead="The logo lives in one folder, the website in another, the content plan in someone's notes, and the lead flow in a tool nobody opens. NAMI brings those pieces back into one working system."
+          lead="Your brand, website, content, and automation should feel like the same business. I help get those parts sorted, then leave you with a setup you can use."
         />
         <div className="mt-16 md:mt-20">
           <ServicesGrid />
@@ -59,11 +59,11 @@ export default async function Home() {
           index="03 / Selected work"
           title={
             <>
-              Work where brand, content, and systems{" "}
-              <span className="text-gradient sm:block">shipped as one.</span>
+              Work where the brand, website, and content{" "}
+              <span className="text-gradient sm:block">were built together</span>
             </>
           }
-          lead="Five engagements. On-chain intelligence, members-only experiences, community brands, conversion funnels, and a national trade body. Different sectors, same principle: integrated at strategy, not stitched at handoff."
+          lead="Five projects across on-chain intelligence, members clubs, community brands, conversion funnels, and a national trade body. Different sectors, same job: make the public face and the working parts line up."
           className="mb-16 md:mb-20"
         />
 
@@ -97,13 +97,13 @@ export default async function Home() {
             <SectionIntro
               title={
                 <>
-                  Before we get on{" "}
+                  Before we talk{" "}
                   <span className="text-gradient sm:block">
-                    a call together.
+                    properly
                   </span>
                 </>
               }
-              lead="Quick answers to the questions we get most. Anything else, drop us a line."
+              lead="Straight answers to the usual questions. Anything else, send me a note."
             />
           </div>
           <FAQAccordion />

@@ -24,8 +24,8 @@ export function NewsletterSubscribe({
   eyebrow = "Stay close",
   title = (
     <>
-      Notes from the studio,{" "}
-      <span className="text-gradient">straight to inbox.</span>
+      Notes from Joe,{" "}
+      <span className="text-gradient">straight to inbox</span>
     </>
   ),
   lead = "Occasional writing on brand systems, content engines, and the work behind the work. Built to be read, kept, and used.",
@@ -109,8 +109,8 @@ export function NewsletterSubscribe({
             className={cn(
               "font-medium tracking-[-0.015em]",
               compact
-                ? "text-2xl leading-[1.15]"
-                : "text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.12] pr-2",
+                ? "text-2xl leading-[1.06] md:leading-[1.03]"
+                : "text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.06] md:leading-[1.03] pr-2",
             )}
           >
             {title}

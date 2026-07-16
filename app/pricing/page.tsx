@@ -17,10 +17,10 @@ export default function PricingPage() {
         title={
           <>
             Three ways to{" "}
-            <span className="text-gradient sm:block">work together.</span>
+            <span className="text-gradient sm:block">work together</span>
           </>
         }
-        lead="There is no useful price list for half-built brands. We scope against what is actually broken, what needs building, and how much of the system needs to move at once."
+        lead="There is no useful price list for half-built brands. I scope against what is broken, what needs building, and how much needs to move at once."
       />
 
       <section className="container-shell border-b border-line py-20 md:py-24">
@@ -34,7 +34,7 @@ export default function PricingPage() {
             {
               label: "Pick Partnership if",
               body:
-                "The brand needs regular direction, production, and iteration after the first build ships.",
+                "The brand needs regular direction, production, and updates after the first build goes live.",
             },
             {
               label: "Pick Systems + product if",
@@ -140,7 +140,7 @@ export default function PricingPage() {
         </motion.div>
       </section>
 
-      {/* How we shape work */}
+      {/* How I scope work */}
       <section className="border-t border-line bg-surface-1/40 py-24 md:py-32">
         <div className="container-shell">
           <motion.div
@@ -155,20 +155,19 @@ export default function PricingPage() {
             </motion.p>
             <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
               <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
-                How we{" "}
-                <span className="text-gradient">shape work.</span>
+                How I{" "}
+                <span className="text-gradient">scope work</span>
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
                 We talk first because the same request can mean three different
                 jobs. "New website" might mean positioning, copy, analytics,
-                lead capture, or a rebuild of the whole front door. The quote
-                comes after we know which one it is.
+                lead capture, or a rebuild of the whole front door. I quote
+                once I know which job it is.
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
                 If the brief is too small, too early, or better handled by a
-                specialist, we say that before a proposal appears. The work has
-                to fit the business, the timing, and the person who will be
-                left running it.
+                specialist, I say that before a proposal appears. The work has
+                to fit the business, the timing, and the person left running it.
               </p>
             </motion.div>
           </motion.div>

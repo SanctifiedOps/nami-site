@@ -76,11 +76,11 @@ export default function ContactPage() {
           <>
             Let's talk about{" "}
             <span className="text-gradient sm:block">
-              what you're building.
+              what you're building
             </span>
           </>
         }
-        lead="Tell us about your business, what's working, and what's stuck. We respond personally, usually within a working day."
+        lead="Tell me about your business, what's working, and what's stuck. I usually respond within a working day."
       />
 
       <section className="container-shell py-20 md:py-28">
@@ -176,7 +176,7 @@ export default function ContactPage() {
               variants={fadeUp}
               className="text-xs text-fg-subtle leading-relaxed"
             >
-              We&apos;ll cover scope and budget on the call. The form is just
+              I&apos;ll cover scope and budget on the call. The form is just
               the way in.
             </motion.p>
             <motion.div variants={fadeUp} className="space-y-3">
@@ -265,7 +265,7 @@ export default function ContactPage() {
                 Book a discovery call
               </h3>
               <p className="mt-2 text-sm text-fg-muted leading-relaxed">
-                30 minutes to walk through what you're building and whether we
+                30 minutes to walk through what you're building and whether I
                 can help. No pitch deck.
               </p>
               <a
@@ -287,10 +287,9 @@ export default function ContactPage() {
               variants={fadeUp}
               className="text-xs leading-relaxed text-fg-subtle"
             >
-              We typically respond within one working day. If a project doesn't
-              feel like the right fit on either side, we'll say so honestly.
-              Where useful, we'll point you to studios that might fit
-              better.
+              I usually respond within one working day. If a project doesn't
+              feel like the right fit on either side, I'll say so. Where useful,
+              I'll point you to people who might fit better.
             </motion.p>
           </motion.aside>
         </div>

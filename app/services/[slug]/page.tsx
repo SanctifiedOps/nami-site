@@ -32,16 +32,16 @@ export async function generateMetadata({
   const service = getService(slug);
   if (!service) return { title: "Not found" };
   return {
-    title: `${service.title} · ${service.pillar} studio`,
+    title: `${service.title} - ${service.pillar} support`,
     description: `${service.tagline} ${service.description}`,
     keywords: [
-      `${service.title.toLowerCase()} studio`,
+      `${service.title.toLowerCase()} support`,
       `${service.pillar.toLowerCase()} agency UK`,
       `${service.pillar.toLowerCase()} for founders`,
       `${service.title.toLowerCase()} Newcastle`,
     ],
     openGraph: {
-      title: `${service.title} · NAMI Creative`,
+      title: `${service.title} - NAMI Creative`,
       description: service.tagline,
     },
   };
@@ -91,7 +91,7 @@ export default async function ServiceDetailPage({
         ]}
       />
       <PageHero
-        eyebrow={`${service.index} · ${service.pillar}`}
+        eyebrow={`${service.index} - ${service.pillar}`}
         title={
           titleAccent ? (
             <>
@@ -112,7 +112,7 @@ export default async function ServiceDetailPage({
             <Icon size={36} className="text-accent" aria-hidden />
           </div>
           <div className="max-w-3xl">
-            <p className="text-[clamp(1.6rem,3vw,2.5rem)] font-medium leading-[1.15] tracking-tight">
+            <p className="text-[clamp(1.6rem,3vw,2.5rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
               {service.description}
             </p>
             <div className="glass-refractive mt-10 rounded-2xl p-6 md:p-8">
@@ -133,7 +133,7 @@ export default async function ServiceDetailPage({
             title={
               <>
                 Deliverables that{" "}
-                <span className="text-gradient sm:block">hold up daily.</span>
+                <span className="text-gradient sm:block">hold up daily</span>
               </>
             }
             className="mb-12 md:mb-16"
@@ -146,12 +146,12 @@ export default async function ServiceDetailPage({
       <section className="container-shell border-t border-line py-20 md:py-28">
         <div className="mb-12 max-w-2xl">
           <p className="mono-label mb-4">Where it fits</p>
-          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.1] tracking-tight">
+          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
             One of five pillars.{" "}
-            <span className="text-gradient">Stronger together.</span>
+            <span className="text-gradient">Stronger together</span>
           </h2>
           <p className="mt-5 leading-relaxed text-fg-muted md:text-lg">
-            When they ship together, the brand stops feeling assembled and
+            When they go live together, the brand stops feeling assembled and
             starts feeling considered. Here is where this one sits.
           </p>
         </div>
@@ -163,8 +163,8 @@ export default async function ServiceDetailPage({
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="mono-label mb-4">Common questions</p>
-            <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.1] tracking-tight">
-              Before we <span className="text-gradient">get started.</span>
+            <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
+              Before we <span className="text-gradient">get started</span>
             </h2>
           </div>
           <FAQAccordion items={serviceFaq} />
@@ -182,7 +182,7 @@ export default async function ServiceDetailPage({
             href={`/services/${next.slug}`}
             className="group relative z-10 block rounded-3xl p-10 md:p-16"
           >
-            <p className="mono-label mb-4">Next service · {next.index}</p>
+            <p className="mono-label mb-4">Next service - {next.index}</p>
             <p className="text-3xl font-medium leading-tight tracking-tight md:text-5xl">
               {next.title}
             </p>

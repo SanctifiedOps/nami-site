@@ -30,7 +30,7 @@ export const engagements: EngagementModel[] = [
   {
     index: "02",
     name: "Partnership",
-    best: "For teams that need regular creative direction and shipping support.",
+    best: "For teams that need regular creative direction and hands-on support.",
     description:
       "Ongoing creative partnership for brands that need the work to keep moving: content, funnel iteration, new assets, automation, and the decisions between them.",
     scope: [

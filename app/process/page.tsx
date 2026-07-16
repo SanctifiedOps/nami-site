@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/sections/section-heading";
 export const metadata: Metadata = {
   title: "Process · Discovery, design, launch, partnership",
   description:
-    "Four phases inside a NAMI engagement. Strategic discovery and positioning. Design and build of brand, content, and website. Launch and integration. Ongoing partnership for content, automation, and creative direction.",
+    "Four phases inside a NAMI engagement. Understand the job, build the brand, website, and content, launch cleanly, then keep improving the work.",
   keywords: [
     "creative agency process",
     "brand engagement process",
@@ -24,11 +24,11 @@ export default function ProcessPage() {
           <>
             From discovery to{" "}
             <span className="text-gradient sm:block">
-              ongoing momentum.
+              ongoing momentum
             </span>
           </>
         }
-        lead="Four phases: find the shape, build the system, launch it cleanly, then keep improving it once real people start using it."
+        lead="Four phases: understand the job, build the work, launch it cleanly, then keep improving it once real people start using it."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -38,7 +38,7 @@ export default function ProcessPage() {
             <>
               Four phases, from{" "}
               <span className="text-gradient sm:block">
-                strategy to sustained.
+                strategy to sustained
               </span>
             </>
           }
@@ -55,7 +55,7 @@ export default function ProcessPage() {
               <>
                 We launch fast,{" "}
                 <span className="text-gradient sm:block">
-                  then stay close.
+                  then stay close
                 </span>
               </>
             }

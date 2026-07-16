@@ -28,9 +28,9 @@ export const pressurePaths: PressurePath[] = [
     cta: "Build the content system",
   },
   {
-    problem: "Leads and follow-ups live in your head",
+    problem: "Automation still lives in your head",
     detail:
-      "Enquiries arrive through forms, DMs, email, and referrals, but the follow-up still depends on memory. You need the recurring work moved into the stack.",
+      "Enquiries arrive through forms, DMs, email, and referrals, but the automation still depends on memory. You need the recurring work moved into the stack.",
     href: "/services/automation-growth",
     cta: "Wire the system",
   },
@@ -55,7 +55,7 @@ export const commonStartingPoints: StartingPoint[] = [
     when:
       "The brand is usable, but attention is not turning into qualified enquiries.",
     includes:
-      "Landing flow, form logic, analytics, lead routing, and follow-up structure.",
+      "Landing flow, form logic, analytics, lead routing, and automation structure.",
   },
   {
     name: "Content system + visual direction",

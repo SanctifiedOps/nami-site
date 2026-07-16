@@ -81,7 +81,7 @@ export function PostCard({ post, variant = "grid", className }: Props) {
 
           <h3
             className={cn(
-              "font-medium leading-[1.15] tracking-tight",
+              "font-medium leading-[1.06] tracking-tight md:leading-[1.03]",
               isFeatured
                 ? "mt-6 text-[clamp(1.5rem,3.5vw,2.75rem)]"
                 : "mt-5 text-xl leading-snug md:text-2xl",
