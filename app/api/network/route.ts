@@ -311,6 +311,12 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
+  if (d.category.toLowerCase() === "other") {
+    return NextResponse.json(
+      { error: "Please type your category." },
+      { status: 400 },
+    );
+  }
   if (!d.location) {
     return NextResponse.json(
       { error: "Please add a North East location." },

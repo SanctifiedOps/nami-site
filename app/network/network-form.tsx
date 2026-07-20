@@ -24,6 +24,7 @@ export function NetworkForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
 
   const onFormFocus = () => {
@@ -44,16 +45,30 @@ export function NetworkForm() {
 
     const form = e.currentTarget;
     const fd = new FormData(form);
+    const category = String(fd.get("category") ?? "");
+    const otherCategory = String(fd.get("otherCategory") ?? "").trim();
     const payload = {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
       instagram: String(fd.get("instagram") ?? ""),
-      category: String(fd.get("category") ?? ""),
+      category: category === "Other" ? otherCategory : category,
       location: String(fd.get("location") ?? ""),
       note: String(fd.get("note") ?? ""),
       link: String(fd.get("link") ?? ""),
       website: String(fd.get("website") ?? ""),
     };
+
+    if (category === "Other" && !otherCategory) {
+      setStatus("error");
+      setErrorMsg("Please type your category.");
+      trackEvent("network_form_error", {
+        form_name: "creative_network_join",
+        category: "other_empty",
+        error_type: "missing_other_category",
+        source_context: "nami_creative_network",
+      });
+      return;
+    }
 
     trackEvent("network_form_submit_attempted", {
       form_name: "creative_network_join",
@@ -88,6 +103,7 @@ export function NetworkForm() {
           source_context: "nami_creative_network",
         });
         form.reset();
+        setSelectedCategory("");
         router.push("/network/thank-you");
       } finally {
         clearTimeout(timeout);
@@ -168,7 +184,13 @@ export function NetworkForm() {
           maxLength={120}
           required
         />
-        <Select label="Category" name="category" required>
+        <Select
+          label="Category"
+          name="category"
+          required
+          value={selectedCategory}
+          onChange={(event) => setSelectedCategory(event.currentTarget.value)}
+        >
           <option value="">Choose one</option>
           {categories.map((category) => (
             <option key={category} value={category}>
@@ -177,6 +199,18 @@ export function NetworkForm() {
           ))}
         </Select>
       </div>
+
+      {selectedCategory === "Other" && (
+        <div className="mt-5">
+          <Field
+            label="Type your category"
+            name="otherCategory"
+            placeholder="Ceramicist, poet, filmmaker, venue..."
+            maxLength={80}
+            required
+          />
+        </div>
+      )}
 
       <div className="mt-5 grid gap-4 md:grid-cols-2 md:gap-5">
         <Field
@@ -292,11 +326,15 @@ function Select({
   label,
   name,
   required,
+  value,
+  onChange,
   children,
 }: {
   label: string;
   name: string;
   required?: boolean;
+  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   children: React.ReactNode;
 }) {
   return (
@@ -307,6 +345,8 @@ function Select({
       <select
         name={name}
         required={required}
+        value={value}
+        onChange={onChange}
         className="w-full rounded-xl border border-line bg-surface-1/60 px-5 py-4 text-fg backdrop-blur-md transition-all focus:border-accent focus:bg-surface-1 focus:outline-none focus:ring-4 focus:ring-accent/15"
       >
         {children}

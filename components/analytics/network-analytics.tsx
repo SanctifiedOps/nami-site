@@ -47,6 +47,12 @@ export function NetworkAnalytics() {
         event_category: "conversion",
         conversion_type: "creative_network_join",
       });
+      trackEvent("generate_lead", {
+        ...sharedParams,
+        event_category: "conversion",
+        lead_type: "creative_network_join",
+        method: "network_thank_you_page",
+      });
     }
   }, [pathname]);
 
