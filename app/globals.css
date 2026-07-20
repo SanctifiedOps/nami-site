@@ -460,6 +460,24 @@
 
   /* Filmic grain — a single fixed, pointer-safe layer (never on a scroller).
      Applied to one <div> in the layout root. Extremely low opacity. */
+
+  /* The network thank-you page already has its own CTAs, so pull the global
+     footer CTA up instead of leaving a dead transition band before it. */
+  body:has([data-compact-footer="network-thank-you"]) footer {
+    margin-top: 0 !important;
+  }
+
+  body:has([data-compact-footer="network-thank-you"]) footer > section:first-child > .container-shell {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  @media (min-width: 768px) {
+    body:has([data-compact-footer="network-thank-you"]) footer > section:first-child > .container-shell {
+      padding-top: 5rem !important;
+      padding-bottom: 5rem !important;
+    }
+  }
   .grain {
     position: fixed;
     inset: 0;
