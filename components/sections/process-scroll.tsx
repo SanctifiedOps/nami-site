@@ -69,7 +69,7 @@ export function ProcessScroll({
       {/* Sticky left: heading + scroll-spy stepper */}
       <div className="lg:sticky lg:top-28 lg:self-start">
         {index && <span className="mono-label">{index}</span>}
-        <h2 className="mt-5 text-4xl font-semibold leading-[1.06] tracking-tight md:text-5xl md:leading-[1.03]">
+        <h2 className="mt-5 text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
           <LetterReveal stagger={0.014} duration={0.65}>
             {title}
           </LetterReveal>

@@ -3,9 +3,11 @@ import Link from "next/link";
 import {
   ArrowDown,
   ArrowUpRight,
+  CalendarDays,
+  Mail,
+  Handshake,
   Heart,
   MapPin,
-  MessageCircle,
   Sparkles,
   Users,
 } from "lucide-react";
@@ -13,19 +15,17 @@ import { PageHero } from "@/components/sections/page-hero";
 import { NetworkForm } from "./network-form";
 
 export const metadata: Metadata = {
-  title: "NAMI Creative Network - North East creatives and businesses",
+  title: "NAMI Creative Network - North East creators and businesses",
   description:
-    "A community front door for NAMI Creative. Apply to be featured, discover the story behind NAMI Up North, and support North East creatives, artists, businesses, and brands.",
+    "Join NAMI Creative Network, a growing home for North East creators, artists, freelancers, local businesses, and brands doing proper work.",
   openGraph: {
+    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
     title: "NAMI Creative Network",
     description:
-      "A home for North East creatives, artists, businesses, freelancers, and brands doing proper work.",
+      "A growing network for North East creators, artists, freelancers, local businesses, and brands doing proper work.",
     url: "https://namicreative.co.uk/network",
   },
 };
-
-const facebookUrl = "https://www.facebook.com/groups/1033572522893615";
-const whatsappUrl = "https://chat.whatsapp.com/Fq8MpjoXZTo7FFGM9KUiOr";
 
 const audience = [
   "Creatives",
@@ -38,23 +38,62 @@ const audience = [
   "Independent brands",
 ];
 
-const promiseCards = [
+const reasons = [
   {
     icon: Heart,
-    title: "Spotlights come first",
-    body: "The page exists to give good North East work more light. No pay-to-play feature wall, no awkward sales pitch.",
-  },
-  {
-    icon: MapPin,
-    title: "Built for the region",
-    body: "Newcastle, Sunderland, Durham, Teesside, Northumberland, the coast, the towns, the graft. If it is North East and it has care behind it, it belongs here.",
+    title: "More eyes on the work",
+    body: "NAMI spotlights people building something with care. Features, reposts, stories, and recommendations all start with knowing who is out there.",
   },
   {
     icon: Users,
-    title: "Quality over noise",
-    body: "NAMI looks for people putting proper thought into how they show up: strong work, good stories, clear identity, and a bit of soul.",
+    title: "A stronger circle around you",
+    body: "The network brings together people who understand the graft behind creative work and want to see more North East people win.",
+  },
+  {
+    icon: Handshake,
+    title: "More ways to be put forward",
+    body: "As the network grows, NAMI can point partner businesses, collaborators, and local opportunities towards the right people.",
   },
 ];
+
+const futureAccess = [
+  {
+    icon: Sparkles,
+    title: "Showcase opportunities",
+    body: "Regular chances to get your work seen through NAMI posts, roundups, stories, and future creative features.",
+  },
+  {
+    icon: Mail,
+    title: "Weekly roundups",
+    body: "A regular email with featured creators, spotlights, local creative news, events, and useful opportunities from across the North East.",
+  },
+  {
+    icon: CalendarDays,
+    title: "Events and meetups",
+    body: "A route into future gatherings for people making, building, selling, and creating across the region.",
+  },
+  {
+    icon: MapPin,
+    title: "Local referrals",
+    body: "A cleaner way for NAMI to remember who does what, where you are based, and when to recommend you.",
+  },
+];
+
+function FormAnchor({ children = "Join the network" }: { children?: string }) {
+  return (
+    <Link
+      href="#join-network"
+      className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+    >
+      {children}
+      <ArrowDown
+        size={16}
+        aria-hidden
+        className="transition-transform duration-300 group-hover:translate-y-0.5"
+      />
+    </Link>
+  );
+}
 
 export default function NetworkPage() {
   return (
@@ -63,63 +102,60 @@ export default function NetworkPage() {
         eyebrow="NAMI Creative Network"
         title={
           <>
-            NAMI Creative{" "}
-            <span className="text-gradient sm:block">Network</span>
+            Join the North East&apos;s growing{" "}
+            <span className="text-gradient sm:block">creative network</span>
           </>
         }
-        lead="A home for North East creatives making waves. Spotlights, stories, and support for the people, places, and projects putting proper work into the world."
+        lead="A place for creators, artists, freelancers, local businesses, and independent brands doing proper work across the region. Put your name in the network so NAMI can keep you in mind for features, showcases, referrals, and future opportunities."
       >
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="#feature-form"
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
-          >
-            Apply to be featured
-            <ArrowDown
-              size={16}
-              aria-hidden
-              className="transition-transform duration-300 group-hover:translate-y-0.5"
-            />
-          </Link>
+          <FormAnchor>Join the network</FormAnchor>
         </div>
       </PageHero>
 
       <section className="container-shell py-20 md:py-28">
         <div className="grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:gap-20">
-          <p className="mono-label md:mt-2">01 / The story</p>
+          <p className="mono-label md:mt-2">01 / Why this exists</p>
           <div className="max-w-2xl space-y-6">
-            <p className="text-2xl font-medium leading-[1.06] tracking-tight md:text-3xl md:leading-[1.03]">
-              NAMI started as NAMI Up North, built around one simple idea:
-              support local creativity and give good work a bit more light
+            <p className="text-2xl font-medium leading-[0.98] tracking-tight md:text-3xl md:leading-[0.96]">
+              The North East is full of people making good things, but too much
+              of it sits in separate corners
             </p>
             <p className="leading-relaxed text-fg-muted md:text-lg">
-              The name has evolved, but the message has not. NAMI still backs
-              the North East. Artists, musicians, photographers, designers,
-              independent businesses, freelancers, makers, and brands grafting
-              away deserve to be seen by more people.
+              NAMI started as NAMI Up North because I wanted to give local
+              creativity more attention. Artists, musicians, photographers,
+              makers, designers, freelancers, small businesses, and brands were
+              doing work that deserved more credit.
             </p>
             <p className="leading-relaxed text-fg-muted md:text-lg">
-              This page is the front door for that. If you are building
-              something up here, or you know someone who is, send it in. I will
-              keep an eye on the work and feature the projects that feel right
-              for the page.
+              NAMI Creative Network is the next step. I am building a proper
+              list of people across the region so there is one place to find
+              the work, share opportunities, make introductions, and back the
+              people who are putting themselves out there.
             </p>
+            <div className="pt-2">
+              <FormAnchor>Put your name in</FormAnchor>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="border-y border-line bg-surface-1/35 py-20 md:py-28">
         <div className="container-shell">
-          <div className="mb-12 max-w-3xl">
-            <p className="mono-label mb-5">02 / The promise</p>
-            <h2 className="text-4xl font-semibold leading-[1.06] tracking-tight md:text-6xl md:leading-[1.03]">
-              This is about giving{" "}
-              <span className="text-gradient sm:block">good work a platform</span>
+          <div className="mx-auto mb-12 max-w-4xl text-center">
+            <p className="mono-label mb-5">02 / Why join</p>
+            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl md:leading-[0.96]">
+              Be easier to find when the right people are looking
             </h2>
+            <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-fg-muted md:text-lg">
+              NAMI can use this network to spotlight, recommend, connect, and
+              bring more attention to the people shaping the creative side of
+              the North East.
+            </p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
-            {promiseCards.map((card) => {
+            {reasons.map((card) => {
               const Icon = card.icon;
               return (
                 <div
@@ -137,20 +173,26 @@ export default function NetworkPage() {
               );
             })}
           </div>
+
+          <div className="mt-10 text-center">
+            <FormAnchor>Join NAMI Creative Network</FormAnchor>
+          </div>
         </div>
       </section>
 
       <section className="container-shell py-20 md:py-28">
         <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
           <div>
-            <p className="mono-label mb-5">03 / Who it is for</p>
-            <h2 className="text-4xl font-semibold leading-[1.06] tracking-tight md:text-5xl md:leading-[1.03]">
-              If you are making something in the North East,{" "}
-              <span className="text-gradient sm:block">I want to see it</span>
+            <p className="mono-label mb-5">03 / Who belongs here</p>
+            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
+              If your work adds something to the region, NAMI should know
+              about it
             </h2>
             <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
               You do not need a huge following. You do not need everything
-              polished. If the work has care behind it, send it over.
+              polished. If you are making, building, selling, designing,
+              filming, playing, painting, running a place, or growing a brand
+              up here, put it forward.
             </p>
           </div>
 
@@ -167,64 +209,78 @@ export default function NetworkPage() {
         </div>
       </section>
 
-
-      <section className="border-y border-line py-16 md:py-20">
+      <section className="border-y border-line py-20 md:py-28">
         <div className="container-shell">
-          <div className="mx-auto max-w-4xl rounded-2xl border border-line bg-surface-1/55 p-6 text-center backdrop-blur-md md:p-10">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="mono-label mb-5">04 / What it can open up</p>
+            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl md:leading-[0.96]">
+              A network built for visibility, support, and proper opportunity
+            </h2>
+            <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-fg-muted md:text-lg">
+              The first job is simple: learn who is doing what across the North
+              East. From there, NAMI can build better spotlights, better
+              introductions, better events, and better reasons for people to
+              work with local talent.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {futureAccess.map((card) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={card.title}
+                  className="rounded-2xl border border-line bg-surface-1/45 p-7 md:p-8"
+                >
+                  <Icon size={22} className="text-accent" aria-hidden />
+                  <h3 className="mt-6 text-2xl font-medium tracking-tight">
+                    {card.title}
+                  </h3>
+                  <p className="mt-4 leading-relaxed text-fg-muted">
+                    {card.body}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mx-auto mt-12 max-w-3xl rounded-2xl border border-line bg-surface-1/55 p-6 text-center backdrop-blur-md md:p-10">
             <p className="text-xl font-bold leading-relaxed text-accent md:text-2xl">
-              I am building the region&apos;s largest community of creatives,
-              artists, musicians, and small businesses, so people have one
-              central place to discover your work and hire you for what you do.
+              I am building the region&apos;s largest creator network, and this is how I know who to keep in mind.
             </p>
-            <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-fg-muted md:text-lg">
-              Join the communities below to be part of the journey. Showcase
-              your work in the Facebook group, then share experiences, ideas,
-              and best practice in the WhatsApp creative community.
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-fg-muted md:text-lg">
+              Joining now means NAMI can keep track of your work while the
+              network grows around spotlights, weekly roundups, events, showcases, referrals, and community support.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={facebookUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
-              >
-                Join our Facebook group
-                <Users size={16} aria-hidden />
-              </a>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
-              >
-                Join the WhatsApp community
-                <MessageCircle size={16} aria-hidden />
-              </a>
+            <div className="mt-8">
+              <FormAnchor>Join before the next round of features</FormAnchor>
             </div>
           </div>
         </div>
       </section>
+
       <section
-        id="feature-form"
+        id="join-network"
         className="border-t border-line bg-surface-1/30 py-20 md:py-28"
       >
         <div className="container-shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <div>
-            <p className="mono-label mb-5">04 / Apply to be featured</p>
-            <h2 className="text-4xl font-semibold leading-[1.06] tracking-tight md:text-5xl md:leading-[1.03]">
-              Drop the work in.{" "}
-              <span className="text-gradient sm:block">I will take a look</span>
+            <p className="mono-label mb-5">05 / Join the network</p>
+            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
+              Put your work in front of NAMI
             </h2>
             <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
-              Use this for your own work, a business you love, or someone you
-              think more people should know about. There is no cost to feature.
+              Use this for your own work, a business you love, or someone more
+              people should know about. I will review each submission and keep
+              the details in the network for relevant features, referrals, and
+              future opportunities.
             </p>
             <div className="mt-8 rounded-2xl border border-line bg-surface-0/60 p-6">
               <Sparkles size={20} className="text-accent" aria-hidden />
               <p className="mt-4 text-sm leading-relaxed text-fg-muted">
-                Future bits might include a creative map, events,
-                collaborations, or opportunities. For now, the focus is simple:
-                find good North East work and put more eyes on it.
+                There is no cost to join. The form helps me understand who you
+                are, where you are based, what you do, and how NAMI can point
+                people towards your work.
               </p>
             </div>
           </div>

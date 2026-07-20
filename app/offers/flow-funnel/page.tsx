@@ -135,7 +135,7 @@ export default function FlowFunnelPage() {
           <motion.p className="eyebrow mb-10" variants={fadeUp}>
             {offer.recognition.eyebrow}
           </motion.p>
-          <div className="space-y-5 text-[clamp(1.125rem,2.2vw,1.5rem)] font-medium leading-snug tracking-tight md:space-y-6">
+          <div className="space-y-5 text-[clamp(1.125rem,2.2vw,1.5rem)] font-medium leading-[1.03] tracking-tight md:space-y-6">
             {offer.recognition.pains.map((pain) => (
               <motion.p
                 key={pain}
@@ -339,7 +339,7 @@ export default function FlowFunnelPage() {
                   {proofRef.body}
                 </p>
                 {proofRef.closing && (
-                  <p className="text-balance text-xl font-medium leading-snug tracking-tight text-fg md:text-2xl">
+                  <p className="text-balance text-xl font-medium leading-[1.03] tracking-tight text-fg md:text-2xl">
                     {proofRef.closing}
                   </p>
                 )}
@@ -355,7 +355,7 @@ export default function FlowFunnelPage() {
                     aria-hidden
                     className="mx-auto block h-px w-10 bg-accent"
                   />
-                  <blockquote className="mt-8 text-balance text-[clamp(1.2rem,2.5vw,1.75rem)] font-medium leading-snug tracking-tight text-fg">
+                  <blockquote className="mt-8 text-balance text-[clamp(1.2rem,2.5vw,1.75rem)] font-medium leading-[1.03] tracking-tight text-fg">
                     &ldquo;{offer.testimonial.quote}&rdquo;
                   </blockquote>
                   <figcaption className="mt-8 flex flex-col items-center gap-1.5 text-sm">

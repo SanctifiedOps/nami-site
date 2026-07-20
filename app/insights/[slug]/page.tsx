@@ -38,6 +38,7 @@ export async function generateMetadata({
     title: `${post.title} · Creative Waves`,
     description: post.summary,
     openGraph: {
+    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
       title: post.title,
       description: post.summary,
       type: "article",

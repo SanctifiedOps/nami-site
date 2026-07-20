@@ -160,9 +160,9 @@ export function NetworkForm() {
 
       <div className="mt-5">
         <TextArea
-          label="What should NAMI know?"
+          label="What are you putting forward?"
           name="note"
-          placeholder="Tell me who you are, what you are building, or why this person deserves a spotlight."
+          placeholder="Tell me who you are, what you are making, who it is for, and what people should know about the work."
           rows={6}
           maxLength={1600}
           required
@@ -170,8 +170,9 @@ export function NetworkForm() {
       </div>
 
       <p className="mt-4 text-xs leading-relaxed text-fg-subtle">
-        By applying, you consent to NAMI holding these details so I can review
-        the feature and reply if it feels like a fit. See the{" "}
+        By joining, you consent to NAMI holding these details so I can review
+        the submission, keep you in mind for relevant opportunities, send
+        Creative Network updates, and reply if it feels useful. See the{" "}
         <a
           href="/privacy"
           className="underline underline-offset-4 transition-colors hover:text-fg-muted"
@@ -190,7 +191,7 @@ export function NetworkForm() {
             "group relative inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)] disabled:opacity-60",
           )}
         >
-          {status === "submitting" ? "Sending..." : "Apply to be featured"}
+          {status === "submitting" ? "Sending..." : "Join the network"}
           <ArrowUpRight
             size={16}
             aria-hidden

@@ -13,7 +13,7 @@ export function RecentInsights({ posts }: Props) {
   return (
     <section className="container-shell border-t border-line py-24 md:py-32">
       <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <h2 className="max-w-xl text-3xl font-semibold leading-[1.06] tracking-tight md:text-4xl md:leading-[1.03]">
+        <h2 className="max-w-xl text-3xl font-semibold leading-[0.98] tracking-tight md:text-4xl md:leading-[0.96]">
           Notes on where this{" "}
           <span className="text-gradient">industry is heading</span>
         </h2>

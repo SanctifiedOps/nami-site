@@ -95,7 +95,7 @@ export default function ContactPage() {
             className="space-y-6"
             noValidate
           >
-            {/* Honeypot — kept off-screen rather than display:none so bots
+            {/* Honeypot â€” kept off-screen rather than display:none so bots
                 that skip hidden inputs still fill it. */}
             <div
               aria-hidden

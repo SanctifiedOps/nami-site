@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   NAMI Creative — Design Tokens (Tailwind v4 @theme)
+   NAMI Creative ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Design Tokens (Tailwind v4 @theme)
    Token names are chosen so Tailwind v4 auto-generates clean utility names:
      --color-fg          -> text-fg, bg-fg, border-fg, ring-fg, ...
      --color-surface-0   -> bg-surface-0, text-surface-0, ...
@@ -9,7 +9,7 @@
      --font-sans         -> font-sans
    ========================================================================== */
 @theme {
-  /* surface scale — dark-first */
+  /* surface scale ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â dark-first */
   --color-surface-0: rgb(12 13 15);
   --color-surface-1: rgb(18 19 22);
   --color-surface-2: rgb(22 24 28);
@@ -54,7 +54,7 @@
   --shadow-glow-lg: 0 16px 48px rgb(255 0 188 / 0.3);
 
   /* container */
-  --container-max: 88rem; /* 1408px — premium width */
+  --container-max: 88rem; /* 1408px ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â premium width */
 }
 
 /* ==========================================================================
@@ -159,14 +159,14 @@
   .text-gradient {
     color: var(--color-accent);
     display: inline-block;
-    padding-bottom: 0.04em;
+    padding-bottom: 0;
   }
 
   /* LetterReveal chars inside .text-gradient need their own color because
      every character is wrapped in an animated span. */
   .text-gradient .lr-char {
     color: var(--color-accent);
-    padding-bottom: 0.04em;
+    padding-bottom: 0;
     animation: lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards
       cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -183,7 +183,7 @@
   }
 
   /* ========================================================================
-     LetterReveal — per-character title animation.
+     LetterReveal per-character title animation.
      Per-char gradient + flow is applied below so background-clip:text
      works inside each animated char (the parent's gradient can't pass
      through descendants with stacking contexts created by filter/opacity).
@@ -192,15 +192,15 @@
      atomic wrapper; per-char .lr-char animates inside. */
   .lr-word {
     display: inline-block;
-    line-height: 1.1;
-    padding-bottom: 0.04em;
+    line-height: inherit;
+    padding-bottom: 0.01em;
     white-space: nowrap;
   }
 
   .lr-char {
     display: inline-block;
-    line-height: 1.1;
-    padding-bottom: 0.04em;
+    line-height: inherit;
+    padding-bottom: 0.01em;
     opacity: 0;
     filter: blur(6px);
     animation: lr-reveal var(--lr-duration, 0.7s) var(--lr-delay, 0s) forwards
@@ -240,7 +240,7 @@
   }
 
   /* ========================================================================
-     Insights article body — long-form prose styling
+     Insights article body ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â long-form prose styling
      Applied via .prose-insights wrapper around <MDXRemote>
      ======================================================================== */
   .prose-insights {
@@ -389,7 +389,7 @@
 }
 
 /* ==========================================================================
-   Premium lift — refractive material, instrument detail, kinetic primitives
+   Premium lift ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â refractive material, instrument detail, kinetic primitives
    Added for the cinematic redesign. Brand tokens only; no new hues.
    ========================================================================== */
 @layer components {
@@ -420,7 +420,7 @@
       0 32px 80px -28px rgb(255 0 188 / 0.28);
   }
 
-  /* Faint blueprint field for section backgrounds — instrument-grade detail
+  /* Faint blueprint field for section backgrounds ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â instrument-grade detail
      that reads on close inspection without competing with content. */
   .hairline-grid {
     background-image:
@@ -431,7 +431,7 @@
     mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
   }
 
-  /* Underline-draw link — a wipe-in rule that grows from the left on hover.
+  /* Underline-draw link ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â a wipe-in rule that grows from the left on hover.
      More crafted than a static text-decoration; reads as intentional. */
   .link-underline {
     background-image: linear-gradient(var(--color-accent), var(--color-accent));
@@ -444,7 +444,7 @@
     background-size: 100% 1px;
   }
 
-  /* Mono instrument label — coordinate/index detail. Tight, technical. */
+  /* Mono instrument label ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â coordinate/index detail. Tight, technical. */
   .mono-label {
     font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
     font-size: 0.6875rem;
@@ -458,22 +458,25 @@
     color: var(--color-accent-2);
   }
 
-  /* Filmic grain — a single fixed, pointer-safe layer (never on a scroller).
+  /* Filmic grain ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â a single fixed, pointer-safe layer (never on a scroller).
      Applied to one <div> in the layout root. Extremely low opacity. */
 
-  /* The network thank-you page already has its own CTAs, so pull the global
+  /* These thank-you pages already have their own CTAs, so pull the global
      footer CTA up instead of leaving a dead transition band before it. */
-  body:has([data-compact-footer="network-thank-you"]) footer {
+  body:has([data-compact-footer="network-thank-you"]) footer,
+  body:has([data-compact-footer="compact-thank-you"]) footer {
     margin-top: 0 !important;
   }
 
-  body:has([data-compact-footer="network-thank-you"]) footer > section:first-child > .container-shell {
+  body:has([data-compact-footer="network-thank-you"]) footer > section:first-child > .container-shell,
+  body:has([data-compact-footer="compact-thank-you"]) footer > section:first-child > .container-shell {
     padding-top: 4rem !important;
     padding-bottom: 4rem !important;
   }
 
   @media (min-width: 768px) {
-    body:has([data-compact-footer="network-thank-you"]) footer > section:first-child > .container-shell {
+    body:has([data-compact-footer="network-thank-you"]) footer > section:first-child > .container-shell,
+    body:has([data-compact-footer="compact-thank-you"]) footer > section:first-child > .container-shell {
       padding-top: 5rem !important;
       padding-bottom: 5rem !important;
     }

@@ -38,7 +38,7 @@ export function InsightsSidebar({
       variants={stage}
       className={cn("space-y-8", className)}
     >
-      {/* Newsletter signup — compact card variant */}
+      {/* Newsletter signup â€” compact card variant */}
       <motion.div variants={fadeUp}>
         <NewsletterSubscribe
           variant="card"
@@ -72,7 +72,7 @@ export function InsightsSidebar({
                   <p className="text-xs uppercase tracking-widest text-accent/80">
                     {post.pillar}
                   </p>
-                  <p className="mt-1.5 text-base font-medium leading-snug tracking-tight text-fg group-hover:text-accent transition-colors">
+                  <p className="mt-1.5 text-base font-medium leading-[1.03] tracking-tight text-fg group-hover:text-accent transition-colors">
                     {post.title}
                   </p>
                   <p className="mt-1 text-xs text-fg-subtle">
@@ -85,7 +85,7 @@ export function InsightsSidebar({
         </motion.div>
       )}
 
-      {/* Tags / topics widget — clickable, links to filtered topic page */}
+      {/* Tags / topics widget â€” clickable, links to filtered topic page */}
       {tags && tags.length > 0 && (
         <motion.div
           variants={fadeUp}

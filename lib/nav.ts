@@ -4,12 +4,13 @@ export type NavItem = {
 };
 
 export const primaryNav: NavItem[] = [
+  { label: "About", href: "/about" },
   { label: "Work", href: "/work" },
   { label: "Services", href: "/services" },
   { label: "Process", href: "/process" },
   { label: "Pricing", href: "/pricing" },
   { label: "Insights", href: "/insights" },
-  { label: "About", href: "/about" },
+  { label: "Creative Network", href: "/network" },
 ];
 
 export const ctaNav: NavItem = {

@@ -7,7 +7,6 @@ import { work, getCaseStudy } from "@/lib/content/work";
 import { PageHero } from "@/components/sections/page-hero";
 import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { ApproachSteps } from "@/components/sections/approach-steps";
-import { MetricsBand } from "@/components/sections/metrics-band";
 import { DeliverablesList } from "@/components/sections/deliverables-list";
 import {
   JsonLd,
@@ -41,7 +40,7 @@ export async function generateMetadata({
       title: `${study.client} · case study`,
       description: study.oneLiner,
       type: "article",
-      images: [{ url: study.cover, alt: `${study.client} case study cover` }],
+      images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
     },
   };
 }
@@ -89,7 +88,7 @@ export default async function CaseStudyPage({
         lead={study.oneLiner}
       />
 
-      {/* Meta — editorial dossier line */}
+      {/* Meta â€” editorial dossier line */}
       <section className="container-shell py-14 md:py-20">
         <div className="flex flex-col gap-12 border-b border-line pb-14 md:flex-row md:items-end md:justify-between md:gap-20">
           <dl className="grid grid-cols-2 gap-x-12 gap-y-10 sm:flex sm:flex-wrap sm:gap-x-20">
@@ -143,7 +142,7 @@ export default async function CaseStudyPage({
       <section className="container-shell py-12 md:py-20">
         <div className="grid gap-10 md:grid-cols-[1fr_2fr] md:gap-20">
           <p className="mono-label md:mt-2">The brief</p>
-          <p className="max-w-2xl text-2xl font-medium leading-snug tracking-tight md:text-3xl">
+          <p className="max-w-2xl text-2xl font-medium leading-[1.03] tracking-tight md:text-3xl">
             {study.brief}
           </p>
         </div>
@@ -174,18 +173,18 @@ export default async function CaseStudyPage({
         </div>
       </section>
 
-      {/* Approach — connected numbered sequence */}
+      {/* Approach â€” connected numbered sequence */}
       <section className="border-t border-line bg-surface-1/40 py-20 md:py-28">
         <div className="container-shell">
           <ApproachSteps steps={study.approach} />
         </div>
       </section>
 
-      {/* Deliverables — numbered readout */}
+      {/* Deliverables â€” numbered readout */}
       <section className="container-shell border-t border-line py-20 md:py-28">
         <div className="mb-12 max-w-2xl md:mb-16">
           <p className="mono-label mb-4">What was built</p>
-          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
+          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[0.98] tracking-tight md:leading-[0.96]">
             Deliverables that{" "}
             <span className="text-gradient">hold up daily</span>
           </h2>
@@ -193,22 +192,6 @@ export default async function CaseStudyPage({
         <DeliverablesList items={study.deliverables} />
       </section>
 
-      {/* Outcomes — bold metrics readout */}
-      {study.outcomes && study.outcomes.length > 0 && (
-        <section className="relative overflow-hidden border-t border-line bg-surface-1/40 py-20 md:py-28">
-          <div aria-hidden className="hairline-grid absolute inset-0 opacity-40" />
-          <div className="container-shell relative">
-            <div className="mb-12 max-w-2xl md:mb-16">
-              <p className="mono-label mb-4">Where it landed</p>
-              <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
-                Outcomes,{" "}
-                <span className="text-gradient">not vanity</span>
-              </h2>
-            </div>
-            <MetricsBand items={study.outcomes} />
-          </div>
-        </section>
-      )}
 
       {/* Testimonial (if present) */}
       {study.testimonial && (
@@ -220,7 +203,7 @@ export default async function CaseStudyPage({
             />
             <Quote size={40} aria-hidden className="text-accent/60" />
             <figure className="relative mt-6 max-w-3xl">
-              <blockquote className="text-2xl font-medium leading-snug tracking-tight md:text-4xl">
+              <blockquote className="text-2xl font-medium leading-[1.03] tracking-tight md:text-4xl">
                 {study.testimonial.quote}
               </blockquote>
               <figcaption className="mt-8 text-sm text-fg-muted">

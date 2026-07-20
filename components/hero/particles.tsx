@@ -28,7 +28,7 @@ export function HeroParticles() {
 
   useEffect(() => {
     if (reduced) return;
-    // No particles on mobile — the bloom shadows are the expensive part. Desktop only.
+    // No particles on mobile â€” the bloom shadows are the expensive part. Desktop only.
     if (window.innerWidth < 768) return;
     setParticles(
       Array.from({ length: 24 }, (_, i) => ({

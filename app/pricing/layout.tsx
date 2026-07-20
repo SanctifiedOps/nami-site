@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     "independent brand support cost",
   ],
   openGraph: {
+    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
     title: "Pricing · NAMI Creative",
     description:
       "Project (4-8 weeks), Partnership (monthly retainer), Systems + product (2-5 weeks). Sized to the work, never packaged.",

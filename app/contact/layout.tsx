@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     "brand consultation booking",
   ],
   openGraph: {
+    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
     title: "Contact · NAMI Creative",
     description:
       "Three questions on the form. Scope and budget on the call. Personal response within one working day.",

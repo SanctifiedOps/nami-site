@@ -154,7 +154,7 @@ export default function PricingPage() {
               Honest pricing
             </motion.p>
             <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
-              <p className="text-2xl font-medium leading-snug tracking-tight md:text-3xl">
+              <p className="text-2xl font-medium leading-[1.03] tracking-tight md:text-3xl">
                 How I{" "}
                 <span className="text-gradient">scope work</span>
               </p>

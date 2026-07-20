@@ -24,7 +24,7 @@ export function ApproachSteps({
     <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
       <div className="lg:sticky lg:top-28 lg:self-start">
         <p className="mono-label">{label}</p>
-        <h2 className="mt-5 text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
+        <h2 className="mt-5 text-[clamp(2rem,4vw,3rem)] font-medium leading-[0.98] tracking-tight md:leading-[0.96]">
           <LetterReveal stagger={0.014} duration={0.65}>
             {heading ?? (
               <>

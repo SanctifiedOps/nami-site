@@ -32,8 +32,8 @@ const SITE_URL = "https://namicreative.co.uk";
 const STUDIO_NAME = "NAMI Creative";
 const FOUNDER_NAME = "Joe Wilson";
 const STUDIO_EMAIL = "hello@namicreative.co.uk";
-const STUDIO_LOGO = `${SITE_URL}/assets/images/nami-fav.png`;
-const STUDIO_OG = `${SITE_URL}/assets/images/Nami-OG-v2.png`;
+const STUDIO_LOGO = `${SITE_URL}/Nami%20Favicon.png`;
+const STUDIO_OG = `${SITE_URL}/nami-og%20%281%29.png`;
 const STUDIO_LINKEDIN = "https://www.linkedin.com/in/brandingbyjoewilson/";
 
 /**
@@ -141,7 +141,7 @@ export const founderPersonSchema: JsonLdSchema = {
 
 /**
  * Build a FAQPage schema from a list of Q&A pairs. Used on any page that
- * surfaces NAMI's FAQ accordion — homepage, services, each service detail.
+ * surfaces NAMI's FAQ accordion â€” homepage, services, each service detail.
  */
 export function buildFaqPageSchema(
   qa: { question: string; answer: string }[],

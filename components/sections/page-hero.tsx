@@ -21,7 +21,7 @@ export function PageHero({ title, lead, className, children }: Props) {
   return (
     <section
       className={cn(
-        "relative overflow-hidden border-b border-line",
+        "relative flex min-h-[calc(100svh-5rem)] items-center overflow-hidden border-b border-line",
         className,
       )}
     >
@@ -35,24 +35,24 @@ export function PageHero({ title, lead, className, children }: Props) {
       />
 
       <motion.div
-        className="container-shell relative z-10 pt-36 pb-16 md:pt-48 md:pb-24 text-center"
+        className="container-shell relative z-10 pt-28 pb-20 text-center md:pt-32 md:pb-24"
         initial="hidden"
         animate="show"
         variants={stage}
       >
-        <h1 className="mx-auto max-w-[20ch] text-4xl font-semibold leading-[1.06] tracking-tight md:text-6xl md:leading-[1.03]">
+        <h1 className="mx-auto max-w-4xl text-balance text-[clamp(1.8rem,3.7vw,3.15rem)] font-semibold leading-[1.03] tracking-tight md:leading-[1]">
           <LetterReveal>{title}</LetterReveal>
         </h1>
         {lead && (
           <motion.p
-            className="mx-auto mt-8 max-w-2xl text-lg text-fg-muted md:text-xl leading-relaxed"
+            className="mx-auto mt-7 max-w-2xl text-base leading-[1.35] text-fg-muted md:mt-8 md:text-lg"
             variants={fadeUp}
           >
             {lead}
           </motion.p>
         )}
         {children && (
-          <motion.div className="mt-10 flex justify-center" variants={fadeUp}>
+          <motion.div className="mt-9 flex justify-center" variants={fadeUp}>
             {children}
           </motion.div>
         )}

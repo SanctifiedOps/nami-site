@@ -67,7 +67,7 @@ export default function ServicesPage() {
         <ServicesGrid />
       </section>
 
-      {/* The model — integrated vs fragmented */}
+      {/* The model â€” integrated vs fragmented */}
       <CommonStartingPoints />
 
       <section className="relative overflow-hidden border-t border-line bg-surface-1/40 py-24 md:py-32">
@@ -89,7 +89,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* FAQ — sticky two-column */}
+      {/* FAQ â€” sticky two-column */}
       <section className="container-shell border-t border-line py-24 md:py-32">
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">

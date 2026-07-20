@@ -34,7 +34,7 @@ function ServicesCtaCard() {
         glow={0.26}
         className="glass-refractive h-full rounded-2xl border-accent/30"
       >
-        {/* Always-on ambient glow — this is the conversion cell, so it reads warmer */}
+        {/* Always-on ambient glow â€” this is the conversion cell, so it reads warmer */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-70"

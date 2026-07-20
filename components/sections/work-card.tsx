@@ -68,7 +68,7 @@ export function WorkCard({ study, className }: Props) {
               <span className="text-fg-subtle">{study.sector}</span>
             </div>
 
-            <h3 className="text-2xl font-medium leading-snug tracking-tight md:text-[1.6rem]">
+            <h3 className="text-2xl font-medium leading-[1.03] tracking-tight md:text-[1.6rem]">
               <span className="text-gradient">{study.tagline}</span>
             </h3>
 

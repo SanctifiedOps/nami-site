@@ -60,7 +60,7 @@ export function LetterReveal({
 /* ------------------------------------------------------------------ helpers */
 
 function countChars(node: ReactNode): number {
-  // Counts only non-whitespace characters — whitespace renders as bare
+  // Counts only non-whitespace characters â€” whitespace renders as bare
   // text (no animated span) and shouldn't consume a delay slot.
   let n = 0;
   Children.forEach(node, (child) => {
@@ -77,7 +77,7 @@ function countChars(node: ReactNode): number {
 /**
  * Returns delays[i] = the staggered delay for character index i, after
  * shuffling positions deterministically. Same input always produces the
- * same output — safe across SSR + client hydration.
+ * same output â€” safe across SSR + client hydration.
  */
 function computeDelays(n: number, stagger: number): number[] {
   const positions = Array.from({ length: n }, (_, i) => i);
@@ -89,7 +89,7 @@ function computeDelays(n: number, stagger: number): number[] {
   return delays;
 }
 
-/** xorshift-flavoured deterministic hash — no Math.random anywhere */
+/** xorshift-flavoured deterministic hash â€” no Math.random anywhere */
 function hash(i: number): number {
   let x = (i + 1) * 2654435761;
   x ^= x >>> 13;

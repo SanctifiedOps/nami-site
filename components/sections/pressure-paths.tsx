@@ -23,7 +23,7 @@ export function PressurePaths({
       <div className="container-shell">
         <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
           <div className="max-w-xl">
-            <h2 className="text-4xl font-semibold leading-[1.06] tracking-tight md:text-5xl md:leading-[1.03]">
+            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
               {title}
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-fg-muted">

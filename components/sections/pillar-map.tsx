@@ -51,7 +51,7 @@ export function PillarMap({ currentSlug }: { currentSlug: string }) {
             </div>
             <p
               className={cn(
-                "text-sm font-medium leading-snug tracking-tight",
+                "text-sm font-medium leading-[1.03] tracking-tight",
                 active ? "text-fg" : "text-fg-muted",
               )}
             >

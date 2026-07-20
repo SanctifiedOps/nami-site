@@ -41,6 +41,7 @@ export async function generateMetadata({
       `${service.title.toLowerCase()} Newcastle`,
     ],
     openGraph: {
+    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
       title: `${service.title} - NAMI Creative`,
       description: service.tagline,
     },
@@ -112,7 +113,7 @@ export default async function ServiceDetailPage({
             <Icon size={36} className="text-accent" aria-hidden />
           </div>
           <div className="max-w-3xl">
-            <p className="text-[clamp(1.6rem,3vw,2.5rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
+            <p className="text-[clamp(1.6rem,3vw,2.5rem)] font-medium leading-[0.98] tracking-tight md:leading-[0.96]">
               {service.description}
             </p>
             <div className="glass-refractive mt-10 rounded-2xl p-6 md:p-8">
@@ -125,7 +126,7 @@ export default async function ServiceDetailPage({
         </div>
       </section>
 
-      {/* Deliverables — numbered readout */}
+      {/* Deliverables â€” numbered readout */}
       <section className="border-t border-line bg-surface-1/40 py-20 md:py-28">
         <div className="container-shell">
           <SectionIntro
@@ -142,11 +143,11 @@ export default async function ServiceDetailPage({
         </div>
       </section>
 
-      {/* Where it fits — the five-pillar map */}
+      {/* Where it fits â€” the five-pillar map */}
       <section className="container-shell border-t border-line py-20 md:py-28">
         <div className="mb-12 max-w-2xl">
           <p className="mono-label mb-4">Where it fits</p>
-          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
+          <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[0.98] tracking-tight md:leading-[0.96]">
             One of five pillars.{" "}
             <span className="text-gradient">Stronger together</span>
           </h2>
@@ -158,12 +159,12 @@ export default async function ServiceDetailPage({
         <PillarMap currentSlug={service.slug} />
       </section>
 
-      {/* FAQ — sticky two-column */}
+      {/* FAQ â€” sticky two-column */}
       <section className="container-shell border-t border-line py-20 md:py-28">
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="mono-label mb-4">Common questions</p>
-            <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.06] tracking-tight md:leading-[1.03]">
+            <h2 className="text-[clamp(2rem,4vw,3rem)] font-medium leading-[0.98] tracking-tight md:leading-[0.96]">
               Before we <span className="text-gradient">get started</span>
             </h2>
           </div>

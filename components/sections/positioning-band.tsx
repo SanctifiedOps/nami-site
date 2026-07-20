@@ -22,15 +22,13 @@ export function PositioningBand() {
           className="mx-auto max-w-3xl text-center text-[clamp(1.4rem,3vw,2.25rem)] font-medium leading-tight tracking-tight text-fg"
           variants={blurUp}
         >
-          The content says one thing. The site says another. Leads land in three
-          different places. And somehow it still all comes back to you.
+          Get seen by the right people, then give yourself the time and systems to keep creating.
         </motion.p>
         <motion.p
           className="mx-auto mt-6 max-w-xl text-center text-fg-muted md:text-lg"
           variants={fadeUp}
         >
-          I tidy up the brand, website, content, and automation so the business
-          has something proper to lean on week to week.
+          NAMI helps businesses make their marketing clearer, and helps creatives find more places to be seen, supported, and hired. Less chasing, less explaining, more time for the work.
         </motion.p>
       </motion.div>
     </section>

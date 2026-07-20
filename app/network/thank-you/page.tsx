@@ -1,20 +1,47 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Check, MessageCircle, Users } from "lucide-react";
+import {
+  ArrowUpRight,
+  Check,
+  AtSign,
+  Mail,
+  MessageCircle,
+  Share2,
+  Users,
+} from "lucide-react";
 import { HeroLights } from "@/components/hero/hero-lights";
 import { VideoBackground } from "@/components/hero/video-background";
 
 const facebookUrl = "https://www.facebook.com/groups/1033572522893615";
 const whatsappUrl = "https://chat.whatsapp.com/Fq8MpjoXZTo7FFGM9KUiOr";
+const instagramUrl = "https://www.instagram.com/namicreativeuk/";
 
 export const metadata: Metadata = {
-  title: "Submission received - NAMI Creative Network",
+  title: "You are in - NAMI Creative Network",
   description:
-    "Thanks for submitting to NAMI Creative Network. Join the WhatsApp community or explore the main NAMI Creative website.",
+    "Thanks for joining NAMI Creative Network. Share your work, join the community spaces, and tag NAMI in your latest projects.",
   alternates: {
     canonical: "/network/thank-you",
   },
 };
+
+const nextSteps = [
+  {
+    icon: Users,
+    title: "Show the group what you are making",
+    body: "Use the Facebook group to post new projects, recent work, launches, offers, events, and anything you want more local people to see.",
+  },
+  {
+    icon: MessageCircle,
+    title: "Get into the conversation",
+    body: "Use the WhatsApp community for ideas, questions, support, useful links, and the day-to-day chat around building creative work up here.",
+  },
+  {
+    icon: Share2,
+    title: "Tag NAMI in your latest posts",
+    body: "When you post new work on Instagram, tag @namicreativeuk so I can keep up with it and share the right things with the wider audience.",
+  },
+];
 
 export default function NetworkThankYouPage() {
   return (
@@ -23,65 +50,93 @@ export default function NetworkThankYouPage() {
       <HeroLights />
 
       <div className="container-shell relative z-10 pt-20 pb-8 md:pt-24 md:pb-10">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto max-w-4xl text-center">
           <div className="mx-auto inline-grid size-16 place-items-center rounded-full border border-accent/40 bg-accent/10 backdrop-blur-md">
             <Check size={28} className="text-accent" aria-hidden />
           </div>
 
-          <p className="mono-label mt-8">Submission received</p>
-          <h1 className="mt-5 text-[clamp(2.6rem,7vw,6rem)] font-medium leading-[0.94] tracking-tight md:leading-[0.9]">
-            Nice one. You put your work forward
+          <p className="mono-label mt-8">You are in</p>
+          <h1 className="mt-5 text-[clamp(1.8rem,3.7vw,3.15rem)] font-semibold leading-[1.03] tracking-tight md:leading-[1]">
+            Nice one. Welcome to the network
           </h1>
 
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-fg-muted md:text-xl">
-            That takes a bit of graft. Whether the work is finished, still
-            finding its feet, or just ready for more people to see it, putting
-            creative work into the world is something to be proud of.
+            Putting creative work into the world takes nerve, graft, and a lot
+            of care. NAMI exists to help more people across the North East see
+            that work and back the people behind it.
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-fg-subtle md:text-lg">
-            I will take a look and keep an eye on what you are building. NAMI is
-            here to support North East creatives, artists, businesses, and
-            brands doing proper work.
+            I will keep an eye on what you are building and use the network for
+            future features, roundups, referrals, events, and showcase
+            opportunities. Here is what to do next.
           </p>
+        </div>
 
-          <div className="mx-auto mt-9 max-w-2xl rounded-2xl border border-line bg-surface-1/55 p-5 text-center backdrop-blur-md md:p-6">
-            <p className="text-base font-bold leading-relaxed text-accent md:text-lg">
-              I am building the region's largest community of creatives,
-              artists, musicians, and small businesses, so people have one
-              central place to discover your work and hire you for what you do.
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-fg-muted md:text-base">
-              Join the communities below to be part of the journey. Showcase
-              your work in the Facebook group, then share experiences, ideas,
-              and best practice in the WhatsApp creative community.
-            </p>
-          </div>
+        <div className="mx-auto mt-10 grid max-w-6xl gap-5 md:grid-cols-3">
+          {nextSteps.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.title}
+                className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md md:p-7"
+              >
+                <Icon size={22} className="text-accent" aria-hidden />
+                <h2 className="mt-5 text-xl font-semibold tracking-tight text-fg">
+                  {step.title}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-fg-muted md:text-base">
+                  {step.body}
+                </p>
+              </div>
+            );
+          })}
+        </div>
 
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={facebookUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
-            >
-              Join our Facebook group
-              <Users size={16} aria-hidden />
-            </a>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
-            >
-              Join the WhatsApp community
-              <MessageCircle size={16} aria-hidden />
-            </a>
-          </div>
+        <div className="mx-auto mt-8 max-w-4xl rounded-2xl border border-line bg-surface-1/55 p-6 text-center backdrop-blur-md md:p-8">
+          <Mail size={22} className="mx-auto text-accent" aria-hidden />
+          <p className="mt-4 text-lg font-bold leading-relaxed text-accent md:text-xl">
+            NAMI will send a weekly Creative Network roundup.
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-fg-muted md:text-base">
+            Expect featured creators, spotlights, local creative news, events,
+            opportunities, and useful bits from across the North East. It gives
+            NAMI another way to keep your work moving through the network.
+          </p>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={facebookUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+          >
+            Join the Facebook group
+            <Users size={16} aria-hidden />
+          </a>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
+          >
+            Join the WhatsApp community
+            <MessageCircle size={16} aria-hidden />
+          </a>
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
+          >
+            Follow and tag NAMI
+            <AtSign size={16} aria-hidden />
+          </a>
         </div>
 
         <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-line bg-surface-1/55 p-6 text-center backdrop-blur-md md:p-7">
           <p className="text-lg font-medium leading-relaxed text-fg md:text-xl">
-Want more people to understand what you do and buy from you?
+            Want more people to understand what you do and buy from you?
           </p>
           <p className="mx-auto mt-3 max-w-2xl leading-relaxed text-fg-muted">
             If people like what you do but still need too much explaining,

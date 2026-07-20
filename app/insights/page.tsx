@@ -6,7 +6,7 @@ import { PostCard } from "@/components/insights/post-card";
 import { getAllPosts, getAllTags } from "@/lib/content/insights";
 
 export const metadata: Metadata = {
-  title: "Creative Waves Â· Studio notes from NAMI Creative",
+  title: "Creative Waves · Studio notes from NAMI Creative",
   description:
     "Notes, frameworks, and breakdowns from inside the work. Brand, content, automation, and the decisions behind them.",
 };
@@ -53,10 +53,10 @@ export default async function InsightsPage() {
           <div className="grid gap-12 lg:grid-cols-[1fr_360px] lg:gap-16">
             {/* Main column */}
             <div>
-              {/* Featured post â€” full-width prominent card */}
+              {/* Featured post Ã¢â‚¬â€ full-width prominent card */}
               {featured && <PostCard post={featured} variant="featured" />}
 
-              {/* Rest of posts â€” single column when there's only one
+              {/* Rest of posts Ã¢â‚¬â€ single column when there's only one
                   non-featured post so it sits at full width below the
                   featured hero instead of orphaning in a half-width grid
                   cell. 2-col grid returns automatically with 2+ posts. */}

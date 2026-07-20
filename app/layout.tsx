@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s - NAMI Creative",
   },
   description:
-    "Marketing and creative work for founder-led businesses, handled by Joe Wilson from the North East. Brand, websites, content, visual direction, and automation done properly.",
+    "Marketing and creative work for North East businesses, brands, and creators. Brand, websites, content, automation, and the NAMI Creative Network, handled by Joe Wilson.",
   keywords: [
     "marketing and creative support",
     "brand website content support",
@@ -42,12 +42,12 @@ export const metadata: Metadata = {
     locale: "en_GB",
     title: "NAMI Creative - Brand, Content, Automation",
     description:
-      "Marketing and creative work done properly for founder-led businesses. Brand, websites, content, visual direction, and automation handled by Joe Wilson.",
-    images: [
+      "Marketing and creative work for North East businesses, brands, and creators. Brand, websites, content, automation, and the NAMI Creative Network, handled by Joe Wilson.",
+        images: [
       {
-        url: "/assets/images/Nami-OG-v2.png",
-        width: 1600,
-        height: 1000,
+        url: "/nami-og%20%281%29.png",
+        width: 2800,
+        height: 1750,
         alt: "NAMI Creative - Marketing and creative work done properly",
       },
     ],
@@ -56,15 +56,15 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NAMI Creative - Brand, Content, Automation",
     description:
-      "Marketing and creative work done properly for founder-led businesses. Brand, websites, content, visual direction, and automation handled by Joe Wilson.",
-    images: ["/assets/images/Nami-OG-v2.png"],
+      "Marketing and creative work for North East businesses, brands, and creators. Brand, websites, content, automation, and the NAMI Creative Network, handled by Joe Wilson.",
+    images: ["/nami-og%20%281%29.png"],
   },
   icons: {
     icon: [
-      { url: "/assets/images/nami-fav.png", type: "image/png" },
+      { url: "/Nami%20Favicon.png", type: "image/png" },
     ],
-    shortcut: "/assets/images/nami-fav.png",
-    apple: "/assets/images/nami-fav.png",
+    shortcut: "/Nami%20Favicon.png",
+    apple: "/Nami%20Favicon.png",
   },
 };
 

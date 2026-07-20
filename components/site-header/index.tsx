@@ -73,7 +73,7 @@ export function SiteHeader() {
                 )}
               >
                 {item.label}
-                {/* Hover hairline — grows from centre on non-active items */}
+                {/* Hover hairline â€” grows from centre on non-active items */}
                 {!active && (
                   <span
                     aria-hidden

@@ -18,7 +18,7 @@ type Props = {
 /**
  * Reusable reactive hero atmosphere: magenta + cyan light fields that lean
  * toward the cursor (additive over a dark/video backdrop) plus the drifting
- * particle motes. Self-contained — drop it into any hero section as an
+ * particle motes. Self-contained â€” drop it into any hero section as an
  * absolute layer. No-ops under reduced motion (particles self-disable too).
  */
 export function HeroLights({ particles = true }: Props) {

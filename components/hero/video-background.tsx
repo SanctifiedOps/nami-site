@@ -16,7 +16,7 @@ type Props = {
 };
 
 /**
- * Hero background. The poster image is the base layer — optimised, preloaded,
+ * Hero background. The poster image is the base layer â€” optimised, preloaded,
  * and the LCP element, so it paints instantly on every device while the video
  * streams in over it. The video plays on mobile too; it is skipped only for
  * explicit user preferences (reduced motion, save-data) and very slow (2G)
@@ -72,7 +72,7 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
       aria-hidden
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
-      {/* Poster base layer — optimised, preloaded, the LCP element */}
+      {/* Poster base layer â€” optimised, preloaded, the LCP element */}
       <Image
         src={posterSrc}
         alt=""
@@ -82,7 +82,7 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
         className="object-cover"
       />
 
-      {/* Video enhancement — capable clients only, fades in over the poster */}
+      {/* Video enhancement â€” capable clients only, fades in over the poster */}
       {showVideo && (
         <video
           ref={ref}
@@ -98,7 +98,7 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
         </video>
       )}
 
-      {/* Darken overlay — single layer, tunable */}
+      {/* Darken overlay â€” single layer, tunable */}
       <div
         className="absolute inset-0"
         style={{ background: `rgba(0,0,0,${overlay})` }}
@@ -113,7 +113,7 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
         }}
       />
 
-      {/* Brand accent wash — very low alpha so the layers read through */}
+      {/* Brand accent wash â€” very low alpha so the layers read through */}
       <div
         className="absolute inset-0 mix-blend-soft-light opacity-60"
         style={{

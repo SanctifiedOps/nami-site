@@ -9,7 +9,7 @@ import { stage, fadeUp } from "@/lib/motion";
 
 /**
  * Cinematic closing moment. Instrument grid + an accent light bloom behind a
- * centred statement and a magnetic CTA — the last thing a visitor sees before
+ * centred statement and a magnetic CTA: the last thing a visitor sees before
  * the sitemap.
  */
 export function FooterCta() {
@@ -31,7 +31,7 @@ export function FooterCta() {
           Build with us
         </motion.p>
         <motion.h2
-          className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[1.06] tracking-tight md:text-6xl md:leading-[1.03] lg:text-7xl"
+          className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl md:leading-[0.96] lg:text-7xl"
           variants={fadeUp}
         >
           Need the marketing side{" "}
