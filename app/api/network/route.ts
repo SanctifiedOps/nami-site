@@ -229,7 +229,6 @@ async function notifyMake(d: Cleaned): Promise<void> {
       },
       sendCreativeEmail: true,
       confirmationEmail: confirmationEmailFor(d),
-      tags: tagsFor(d),
       submittedAt,
       source: NETWORK_SOURCE,
       sourceRef: NETWORK_SOURCE,
@@ -315,12 +314,6 @@ export async function POST(req: Request) {
   if (!d.location) {
     return NextResponse.json(
       { error: "Please add a North East location." },
-      { status: 400 },
-    );
-  }
-  if (!d.note || d.note.length < 10) {
-    return NextResponse.json(
-      { error: "Tell me a little more about the work." },
       { status: 400 },
     );
   }

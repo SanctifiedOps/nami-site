@@ -160,12 +160,11 @@ export function NetworkForm() {
 
       <div className="mt-5">
         <TextArea
-          label="What are you putting forward?"
+          label="What are you putting forward? (optional)"
           name="note"
           placeholder="Tell me who you are, what you are making, who it is for, and what people should know about the work."
           rows={6}
           maxLength={1600}
-          required
         />
       </div>
 
