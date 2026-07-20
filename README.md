@@ -28,6 +28,7 @@ npm run dev                   # http://localhost:3000
 | `MAILCHIMP_API_KEY` | Mailchimp Marketing API key. Suffix after the dash is the data-center (e.g. `…-us8`) and is required. |
 | `MAILCHIMP_AUDIENCE_ID` | Audience (list) ID the newsletter + contact form upsert into. |
 | `CONTACT_WEBHOOK_URL` | Make.com custom webhook fired on every successful contact form submission. Powers notification email + Notion/CRM sync. |
+| `CREATIVE_NETWORK_WEBHOOK_URL` | Optional dedicated Make.com webhook for `/network` submissions. Falls back to `CONTACT_WEBHOOK_URL` when unset. |
 
 `.env.local` is gitignored. The same three are set in Netlify → Site → Environment variables.
 

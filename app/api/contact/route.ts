@@ -111,6 +111,15 @@ async function notifyMake(d: Cleaned): Promise<void> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...d,
+      subject: d.projectType
+        ? `New brief: ${d.firstName} ${d.lastName} - ${d.company || d.projectType}`
+        : `New brief: ${d.firstName} ${d.lastName}`,
+      emailSubject: d.projectType
+        ? `New brief: ${d.firstName} ${d.lastName} - ${d.company || d.projectType}`
+        : `New brief: ${d.firstName} ${d.lastName}`,
+      heading: "New brief from the website",
+      enquiryType: "Project brief",
+      notificationType: "contact-form-brief",
       tags: tagsFor(d),
       submittedAt: new Date().toISOString(),
       source: "namicreative.co.uk/contact",

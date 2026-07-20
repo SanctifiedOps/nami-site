@@ -6,6 +6,7 @@ const NETWORK_SOURCE = "namicreative.co.uk/network";
 const WHATSAPP_URL = "https://chat.whatsapp.com/Fq8MpjoXZTo7FFGM9KUiOr";
 const THANK_YOU_URL = "https://namicreative.co.uk/network/thank-you";
 const MAIN_SITE_URL = "https://namicreative.co.uk";
+const FACEBOOK_URL = "https://www.facebook.com/groups/1033572522893615";
 
 type NetworkPayload = {
   name?: unknown;
@@ -54,12 +55,14 @@ function firstAndLast(name: string): { firstName: string; lastName: string } {
 
 function tagsFor(d: Cleaned): string[] {
   const tags = [
+    "Creative Network",
+    "NAMI Creative Network",
     "Community",
     "Feature submission",
     "source:instagram-network",
     "type:feature-submission",
   ];
-  if (d.category) tags.push(`category:${d.category}`);
+  if (d.category) tags.push(`category:${d.category}`, `network-category:${d.category}`);
   return tags;
 }
 
@@ -78,33 +81,47 @@ function enrichedMessage(d: Cleaned): string {
 function confirmationEmailFor(d: Cleaned) {
   const { firstName } = firstAndLast(d.name);
   const greeting = firstName ? `Hi ${firstName},` : "Hi,";
+  const subject = "Nice one - your NAMI Creative Network submission landed";
+  const body = [
+    greeting,
+    "",
+    "Nice one for putting your work forward for NAMI Creative Network.",
+    "",
+    "Putting creative work out into the world takes graft, and it is something to be proud of. Thanks for trusting NAMI with what you are building.",
+    "",
+    "I will keep an eye on your work, support however I can, and feature you in relevant posts or spotlights in the future when it feels like a good fit.",
+    "",
+    "I am building a stronger North East creative network so artists, freelancers, small businesses, musicians, makers, and independent brands have more places to be seen, discovered, and hired.",
+    "",
+    `Join the WhatsApp creative community: ${WHATSAPP_URL}`,
+    `Join the Facebook group to showcase your work: ${FACEBOOK_URL}`,
+    "",
+    "A quick note from me: if you need help making your content, website, or buyer journey clearer, I can help you give customers a cleaner path to purchase, from what they see first to how they enquire and follow up.",
+    "",
+    `You can see the main NAMI site here: ${MAIN_SITE_URL}`,
+    "",
+    "Cheers,",
+    "Joe at NAMI Creative",
+  ].join("\n");
 
   return {
+    channel: "outlook",
+    sendFrom: "outlook-default-account",
+    useOutlookSignature: true,
+    signatureInstruction:
+      "Send from Joe's Outlook account and append the default Outlook signature stored on the account. If the automation module cannot append stored signatures automatically, append the saved NAMI signature in Make after this body.",
     to: d.email,
     recipientEmail: d.email,
-    subject: "Nice one - your NAMI Creative Network submission landed",
+    recipientName: d.name,
+    subject,
     heading: "Nice one. Your submission landed.",
     previewText:
-      "Putting creative work into the world takes graft. Thanks for sharing it with NAMI.",
-    body: [
-      greeting,
-      "",
-      "Nice one for putting your work forward for NAMI Creative Network.",
-      "",
-      "Putting creative work out into the world takes graft. Whether it is finished, still finding its feet, or just ready for more people to see it, sharing it is something worth backing.",
-      "",
-      "I will take a look and keep an eye on what you are building. NAMI is here to support North East creatives, artists, businesses, and brands doing proper work.",
-      "",
-      `You can join the WhatsApp community here: ${WHATSAPP_URL}`,
-      "",
-      "Need help with your content, website, or buyer journey? I help businesses sort the brand, content, website, and automation behind the scenes, so the work feels clearer and easier to keep on top of.",
-      "",
-      `View the main website: ${MAIN_SITE_URL}`,
-      "",
-      "Cheers,",
-      "Joe at NAMI Creative",
-    ].join("\n"),
+      "Thanks for putting your work forward for NAMI Creative Network.",
+    body,
+    text: body,
+    outlookText: body,
     whatsappUrl: WHATSAPP_URL,
+    facebookUrl: FACEBOOK_URL,
     thankYouUrl: THANK_YOU_URL,
     mainSiteUrl: MAIN_SITE_URL,
   };
@@ -144,7 +161,7 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
           FNAME: firstName,
           LNAME: lastName,
           COMPANY: d.instagram,
-          PTYPE: "feature-submission",
+          PTYPE: "Creative Network",
           MESSAGE: enrichedMessage(d).slice(0, 500),
         },
         tags: tagsFor(d),
@@ -159,9 +176,12 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
 }
 
 async function notifyMake(d: Cleaned): Promise<void> {
-  const url = process.env.CONTACT_WEBHOOK_URL;
+  const url =
+    process.env.CREATIVE_NETWORK_WEBHOOK_URL ?? process.env.CONTACT_WEBHOOK_URL;
   if (!url) {
-    console.warn("CONTACT_WEBHOOK_URL not set - skipping network notification.");
+    console.warn(
+      "CREATIVE_NETWORK_WEBHOOK_URL or CONTACT_WEBHOOK_URL not set - skipping network notification.",
+    );
     return;
   }
 
@@ -182,15 +202,31 @@ async function notifyMake(d: Cleaned): Promise<void> {
       location: d.location,
       link: d.link,
       note: d.note,
-      projectType: "Creative Network enquiry",
+      projectType: "Creative Network submission",
       budget: "",
       brief: message,
       message,
-      subject: "Creative Network enquiry",
-      emailSubject: "Creative Network enquiry from NAMI Creative Network",
-      heading: "Creative Network enquiry",
-      enquiryType: "Creative Network enquiry",
-      notificationType: "creative-network-internal",
+      subject: "Creative Network submission",
+      emailSubject: "Creative Network submission from NAMI Creative Network",
+      heading: "Creative Network submission",
+      enquiryType: "Creative Network submission",
+      notificationType: "creative-network-submission",
+      internalNotification: {
+        subject: "Creative Network submission",
+        heading: "Creative Network submission",
+        label: "Creative Network",
+        template: "creative-network-submission",
+      },
+      mailchimp: {
+        action: "upsert-subscriber",
+        segment: "Creative Network",
+        tags: tagsFor(d),
+      },
+      outlook: {
+        action: "send-confirmation-email",
+        from: "outlook-default-account",
+        useDefaultSignature: true,
+      },
       sendCreativeEmail: true,
       confirmationEmail: confirmationEmailFor(d),
       tags: tagsFor(d),
@@ -227,7 +263,7 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
       email: d.email,
       company: d.instagram,
       message: enrichedMessage(d),
-      subject: `Creative Network enquiry - ${d.category}`,
+      subject: `Creative Network submission - ${d.category}`,
       source: "instagram-network",
       sourceRef: NETWORK_SOURCE,
     }),
