@@ -169,7 +169,6 @@ export default function ContactPage() {
                 placeholder="A few sentences about the business, what you've tried, and what would success look like in 6 months."
                 rows={6}
                 maxLength={2000}
-                required
               />
             </motion.div>
             <motion.p

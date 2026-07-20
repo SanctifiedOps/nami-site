@@ -87,7 +87,7 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
           COMPANY: d.company,
           PTYPE: d.projectType,
           BUDGET: d.budget,
-          MESSAGE: d.message.slice(0, 500),
+          MESSAGE: d.message ? d.message.slice(0, 500) : "No message provided.",
         },
         tags: tagsFor(d),
       }),
@@ -163,7 +163,7 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
       name: fullName,
       email: d.email,
       company: d.company || undefined,
-      message: enrichedMessage,
+      message: enrichedMessage || "No message provided.",
       subject: d.projectType
         ? `Contact form — ${d.projectType}`
         : "Contact form submission",
@@ -201,12 +201,6 @@ export async function POST(req: Request) {
   if (!d.email || !EMAIL_RE.test(d.email)) {
     return NextResponse.json(
       { error: "Please enter a valid email address." },
-      { status: 400 },
-    );
-  }
-  if (!d.message || d.message.length < 10) {
-    return NextResponse.json(
-      { error: "Tell us a little more about what you're working on." },
       { status: 400 },
     );
   }
