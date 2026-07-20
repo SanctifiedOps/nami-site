@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 type Status = "idle" | "submitting" | "error";
 
@@ -22,7 +23,18 @@ export function NetworkForm() {
   const router = useRouter();
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
+
+  const onFormFocus = () => {
+    if (hasStarted) return;
+    setHasStarted(true);
+    trackEvent("network_form_started", {
+      form_name: "creative_network_join",
+      page_path: "/network",
+      source_context: "nami_creative_network",
+    });
+  };
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (status === "submitting") return;
@@ -43,6 +55,14 @@ export function NetworkForm() {
       website: String(fd.get("website") ?? ""),
     };
 
+    trackEvent("network_form_submit_attempted", {
+      form_name: "creative_network_join",
+      category: payload.category || "unknown",
+      link_provided: Boolean(payload.link),
+      note_provided: Boolean(payload.note),
+      source_context: "nami_creative_network",
+    });
+
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 15000);
@@ -60,6 +80,13 @@ export function NetworkForm() {
         if (!res.ok || !data.ok) {
           throw new Error(data.error ?? "We couldn't send this right now.");
         }
+        trackEvent("network_form_submitted", {
+          form_name: "creative_network_join",
+          category: payload.category || "unknown",
+          link_provided: Boolean(payload.link),
+          note_provided: Boolean(payload.note),
+          source_context: "nami_creative_network",
+        });
         form.reset();
         router.push("/network/thank-you");
       } finally {
@@ -67,6 +94,15 @@ export function NetworkForm() {
       }
     } catch (err) {
       setStatus("error");
+      trackEvent("network_form_error", {
+        form_name: "creative_network_join",
+        category: payload.category || "unknown",
+        error_type:
+          err instanceof DOMException && err.name === "AbortError"
+            ? "timeout"
+            : "submission_error",
+        source_context: "nami_creative_network",
+      });
       setErrorMsg(
         err instanceof DOMException && err.name === "AbortError"
           ? "That took too long to send. Check your connection and try again."
@@ -80,6 +116,7 @@ export function NetworkForm() {
   return (
     <form
       onSubmit={onSubmit}
+      onFocusCapture={onFormFocus}
       className="glass-refractive rounded-2xl p-6 md:p-8"
       noValidate
     >

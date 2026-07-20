@@ -6,6 +6,7 @@ import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { CustomCursor } from "@/components/providers/custom-cursor";
 import { MotionProvider } from "@/components/providers/motion-config";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { NetworkAnalytics } from "@/components/analytics/network-analytics";
 import {
   JsonLd,
   organizationSchema,
@@ -89,6 +90,7 @@ export default function RootLayout({
           <SiteFooter />
         </MotionProvider>
         <GoogleAnalytics />
+        <NetworkAnalytics />
       </body>
     </html>
   );
