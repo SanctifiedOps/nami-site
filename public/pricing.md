@@ -11,7 +11,7 @@ Website: https://namicreative.co.uk/pricing
 ## Project work
 
 - Price: Scoped to the work
-- Typical range: £4,000 to £25,000
+- Typical range: ï¿½4,000 to ï¿½25,000
 - Timeline: 4 to 8 weeks
 - Best for: businesses that need a clear marketing, brand, website, content, or buyer journey project completed properly
 - Includes: positioning, messaging, website strategy, design, development, content direction, launch support, and practical workflow setup where needed
@@ -20,7 +20,7 @@ Website: https://namicreative.co.uk/pricing
 ## Ongoing partnership
 
 - Price: Scoped monthly retainer
-- Typical range: £3,000 to £8,000 per month
+- Typical range: ï¿½3,000 to ï¿½8,000 per month
 - Best for: founder-led businesses or small teams that need senior creative and marketing support without hiring a full in-house team
 - Includes: marketing direction, content planning, website improvement, campaign support, automation, CRM or reporting work, and ongoing creative execution
 - URL: https://namicreative.co.uk/pricing
@@ -28,7 +28,7 @@ Website: https://namicreative.co.uk/pricing
 ## Systems, automation, and workflow support
 
 - Price: Scoped to the work
-- Typical range: £6,000 to £20,000
+- Typical range: ï¿½6,000 to ï¿½20,000
 - Timeline: 2 to 5 weeks
 - Best for: businesses with messy lead flow, manual follow-up, scattered tools, or unclear buyer journeys
 - Includes: lead capture, CRM setup, email follow-up, reporting dashboards, workflow automation, and handover

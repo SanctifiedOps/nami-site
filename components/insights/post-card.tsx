@@ -41,10 +41,10 @@ export function PostCard({ post, variant = "grid", className }: Props) {
         >
           <div className="flex items-center justify-between gap-4 text-xs">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent/80">
-              {isFeatured ? `Featured · ${post.pillar}` : post.pillar}
+              {isFeatured ? `Featured ï¿½ ${post.pillar}` : post.pillar}
             </span>
             <span className="shrink-0 text-fg-subtle">
-              {formatPostDate(post.date)} · {post.minutes} min
+              {formatPostDate(post.date)} ï¿½ {post.minutes} min
             </span>
           </div>
 
