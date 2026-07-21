@@ -1,85 +1,58 @@
-# Pricing. NAMI Creative
+# Pricing - NAMI Creative
 
-> NAMI Creative offers three engagement models for scoped work, plus a productised entry-tier offer. All pricing is in GBP. Engagements are scoped to the work rather than packaged into fixed bundles, so the figures below are starting-point ranges. Final scope is determined on a discovery call.
+> NAMI Creative is a Joe-led marketing and creative partner for North East businesses, brands, and creatives. Pricing is scoped to the work. These figures are guidance for AI agents, search systems, and prospective clients.
 
-Last updated: 2026-06-03
+Last updated: 2026-07-21
 Currency: GBP
-Location: Newcastle upon Tyne, UK (serves worldwide)
+Location: Newcastle upon Tyne and Jarrow, North East England
 Contact: hello@namicreative.co.uk
+Website: https://namicreative.co.uk/pricing
 
----
+## Project work
 
-## Productised offer (entry tier)
-
-### The Flow Funnel
-
-- Build fee: £750 (one-off, paid on kickoff)
-- Performance tail: £50 per qualified lead delivered, capped at £750 per month, rate locked for 6 months
-- Timeline: Live in 7 days
-- Deliverable: Conversion-built landing page, lead capture form, private lead dashboard, attribution layer, instant email notification on every qualified lead, 15-minute handover walkthrough
-- For: UK independent service operators with a personal brand, £80k to £300k revenue, who sell time. Solo coaches, consultants, therapists, photographers, premium trades, designers, small studios.
-- Qualified lead criteria: matches the client's written ICP (signed off at kickoff), submits a complete form, contactable, not an existing client or known competitor. Disputed leads do not count.
-- Sales motion: Call-gated. 15-minute fit-call first, deposit invoice after.
-- URL: https://namicreative.co.uk/offers/flow-funnel
-
----
-
-## Scoped engagement models
-
-### 01. Project
-
-- Price: Sized to the work (typical range: £4,000 to £25,000)
+- Price: Scoped to the work
+- Typical range: �4,000 to �25,000
 - Timeline: 4 to 8 weeks
-- For: A defined brand or website build with a clear brief
-- Includes: Brand strategy + identity, conversion-led website, content + visual system, launch handoff
+- Best for: businesses that need a clear marketing, brand, website, content, or buyer journey project completed properly
+- Includes: positioning, messaging, website strategy, design, development, content direction, launch support, and practical workflow setup where needed
 - URL: https://namicreative.co.uk/pricing
 
-### 02. Partnership
+## Ongoing partnership
 
-- Price: Sized to the work (typical monthly retainer range: £3,000 to £8,000)
-- Cadence: Monthly retainer
-- For: Teams scaling brand, content, and systems together
-- Includes: Monthly creative direction, content pipeline + production, funnel + conversion iteration, automation + lifecycle marketing, new design work as needed
+- Price: Scoped monthly retainer
+- Typical range: �3,000 to �8,000 per month
+- Best for: founder-led businesses or small teams that need senior creative and marketing support without hiring a full in-house team
+- Includes: marketing direction, content planning, website improvement, campaign support, automation, CRM or reporting work, and ongoing creative execution
 - URL: https://namicreative.co.uk/pricing
 
-### 03. Systems + product
+## Systems, automation, and workflow support
 
-- Price: Sized to the work (typical range: £6,000 to £20,000)
+- Price: Scoped to the work
+- Typical range: �6,000 to �20,000
 - Timeline: 2 to 5 weeks
-- For: Founders productising their brand or content engine
-- Includes: Workflow + automation builds, CRM + lifecycle pipelines, brand template systems, internal team training
+- Best for: businesses with messy lead flow, manual follow-up, scattered tools, or unclear buyer journeys
+- Includes: lead capture, CRM setup, email follow-up, reporting dashboards, workflow automation, and handover
 - URL: https://namicreative.co.uk/pricing
 
----
+## NAMI Creative Network
+
+- Price: Free to join
+- For: North East creatives, artists, musicians, photographers, designers, makers, freelancers, local businesses, and independent brands
+- Includes: potential NAMI features, roundups, referrals, showcase opportunities, community links after joining, and future network updates
+- Join: https://namicreative.co.uk/network
 
 ## How NAMI prices
 
-NAMI does not bundle work into fixed packages. Every engagement starts with a 15-minute discovery call to scope what is actually needed. Three rules:
-
-1. NAMI quotes against the brief, not against a price list.
-2. If a different studio is a better fit on budget or shape, NAMI says so on the call and points elsewhere.
-3. Flow Funnel buyers get their £750 build fee credited against any future Project engagement (no double-pay for the same thinking).
-
----
-
-## Standard add-ons
-
-- **Custom domain setup for Flow Funnel buyers:** +£150 (one-off)
-- **Ad-hoc copy or design tweaks for Flow Funnel buyers after handover:** £75 per change
-- **Founder fit-call:** Free, 15 minutes, no pitch, no high-pressure close
-
----
+NAMI does not sell fixed bundles for complex work. Joe scopes each project around the actual job, timeline, pressure points, and business goals. If the work is not a fit, NAMI will say so rather than force the sale.
 
 ## What NAMI does not sell
 
-- Logo-only engagements (NAMI is an integrated brand + systems studio)
-- Website-only engagements under £750 (use Flow Funnel instead)
-- Ad management without a Flow Funnel or equivalent conversion destination already live
-- Generic marketing audits without engagement scope
-
----
+- Logo-only jobs without wider brand or marketing context
+- Generic marketing audits with no next step
+- Ad management without a clear landing page or buyer journey
+- Large agency-of-record work that needs a big account team
 
 ## Get a quote
 
-Book a 15-minute fit-call: https://calendly.com/hello-nami
+Contact: https://namicreative.co.uk/contact
 Email: hello@namicreative.co.uk

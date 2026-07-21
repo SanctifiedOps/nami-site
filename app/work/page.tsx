@@ -5,9 +5,9 @@ import { PageHero } from "@/components/sections/page-hero";
 import { WorkGrid } from "@/components/sections/work-grid";
 
 export const metadata: Metadata = {
-  title: "Selected work · Brand, content, and conversion case studies",
+  title: "Work | Newcastle Marketing, Websites & Creative Projects",
   description:
-    "Six projects where the public face and the working parts line up. On-chain intelligence, UK members clubs, community brands, DTC conversion funnels, property, and a national trade body.",
+    "Selected NAMI Creative work across North East property, community brands, websites, content, funnels, and marketing systems.",
   keywords: [
     "creative partner case studies",
     "brand strategy case studies UK",
@@ -61,3 +61,5 @@ export default function WorkPage() {
     </>
   );
 }
+
+

@@ -32,8 +32,8 @@ export async function generateMetadata({
   const service = getService(slug);
   if (!service) return { title: "Not found" };
   return {
-    title: `${service.title} - ${service.pillar} support`,
-    description: `${service.tagline} ${service.description}`,
+    title: `${service.title} | Newcastle marketing support`,
+    description: `${service.tagline} ${service.description} Marketing support for North East businesses, brands, and creatives.`,
     keywords: [
       `${service.title.toLowerCase()} support`,
       `${service.pillar.toLowerCase()} agency UK`,
@@ -43,7 +43,7 @@ export async function generateMetadata({
     openGraph: {
     images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
       title: `${service.title} - NAMI Creative`,
-      description: service.tagline,
+      description: `${service.tagline} Marketing support for North East businesses, brands, and creatives.`,
     },
   };
 }
@@ -201,3 +201,5 @@ export default async function ServiceDetailPage({
     </>
   );
 }
+
+

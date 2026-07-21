@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/network/thank-you",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 const nextSteps = [
@@ -160,3 +164,6 @@ export default function NetworkThankYouPage() {
     </section>
   );
 }
+
+
+

@@ -3,10 +3,8 @@ import { Fragment } from "react";
 export type JsonLdSchema = Record<string, unknown>;
 
 /**
- * Renders one or more JSON-LD schema blocks. Use in any server component
- * (layout, page, route segment). Each schema is emitted as its own
- * `<script type="application/ld+json">` so search engines and AI parsers
- * can validate independently.
+ * Renders one or more JSON-LD schema blocks. Each schema is emitted as its own
+ * script so validators, search engines, and AI parsers can read them cleanly.
  */
 export function JsonLd({
   schema,
@@ -35,16 +33,50 @@ const STUDIO_EMAIL = "hello@namicreative.co.uk";
 const STUDIO_LOGO = `${SITE_URL}/Nami%20Favicon.png`;
 const STUDIO_OG = `${SITE_URL}/nami-og%20%281%29.png`;
 const STUDIO_LINKEDIN = "https://www.linkedin.com/in/brandingbyjoewilson/";
+const STUDIO_INSTAGRAM = "https://www.instagram.com/namicreativeuk/";
 
-/**
- * The Organization is the root identity. Everything else (Person,
- * LocalBusiness, Service, Article) references it via @id.
- */
+const sameAs = [STUDIO_LINKEDIN, STUDIO_INSTAGRAM];
+
+const areaServed = [
+  { "@type": "City", name: "Newcastle upon Tyne" },
+  { "@type": "City", name: "Jarrow" },
+  { "@type": "City", name: "Gateshead" },
+  { "@type": "City", name: "Sunderland" },
+  { "@type": "City", name: "Durham" },
+  { "@type": "AdministrativeArea", name: "Northumberland" },
+  { "@type": "AdministrativeArea", name: "Tyne and Wear" },
+  { "@type": "AdministrativeArea", name: "North East England" },
+  { "@type": "Country", name: "United Kingdom" },
+  { "@type": "Place", name: "Worldwide" },
+];
+
+const knowsAbout = [
+  "Newcastle creatives",
+  "North East creatives",
+  "creative community building",
+  "marketing strategy",
+  "content strategy",
+  "website design",
+  "buyer journey automation",
+  "brand positioning",
+  "small business marketing",
+];
+
+const postalAddress = {
+  "@type": "PostalAddress",
+  streetAddress: "Regent Road",
+  addressLocality: "Jarrow",
+  addressRegion: "Tyne and Wear",
+  postalCode: "NE32 5XQ",
+  addressCountry: "GB",
+};
+
 export const organizationSchema: JsonLdSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${SITE_URL}/#organization`,
   name: STUDIO_NAME,
+  alternateName: ["NAMI Creative UK", "NAMI Creative Network"],
   url: SITE_URL,
   logo: {
     "@type": "ImageObject",
@@ -54,35 +86,22 @@ export const organizationSchema: JsonLdSchema = {
   },
   image: STUDIO_OG,
   description:
-    "Marketing and creative work for founder-led businesses. Brand strategy, content, websites, visual direction, and automation handled by one creative partner.",
+    "NAMI Creative helps North East businesses, brands, and creatives get seen through marketing, websites, content, automation, and the NAMI Creative Network.",
   founder: { "@id": `${SITE_URL}/about#joe-wilson` },
   email: STUDIO_EMAIL,
-  sameAs: [STUDIO_LINKEDIN],
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Regent Road",
-    addressLocality: "Jarrow",
-    addressRegion: "Tyne and Wear",
-    postalCode: "NE32 5XQ",
-    addressCountry: "GB",
+  sameAs,
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: STUDIO_EMAIL,
+    contactType: "customer enquiries",
+    areaServed: "GB",
+    availableLanguage: "en-GB",
   },
-  areaServed: [
-    { "@type": "City", name: "Newcastle upon Tyne" },
-    { "@type": "City", name: "Jarrow" },
-    { "@type": "City", name: "Gateshead" },
-    { "@type": "City", name: "Sunderland" },
-    { "@type": "AdministrativeArea", name: "Tyne and Wear" },
-    { "@type": "AdministrativeArea", name: "North East England" },
-    { "@type": "Country", name: "United Kingdom" },
-    { "@type": "Place", name: "Worldwide" },
-  ],
+  address: postalAddress,
+  areaServed,
+  knowsAbout,
 };
 
-/**
- * LocalBusiness for local discovery (Google Business Profile, AI overview
- * local intent). Same NAP as Organization but typed for local schema
- * parsers. ProfessionalService is the closest fit for this creative service.
- */
 export const localBusinessSchema: JsonLdSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
@@ -92,27 +111,13 @@ export const localBusinessSchema: JsonLdSchema = {
   image: STUDIO_OG,
   email: STUDIO_EMAIL,
   description:
-    "North East England creative partner based in Jarrow, Tyne and Wear. Brand, content, websites, and automation for founder-led businesses. Serving Newcastle, Tyneside, and clients worldwide.",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Regent Road",
-    addressLocality: "Jarrow",
-    addressRegion: "Tyne and Wear",
-    postalCode: "NE32 5XQ",
-    addressCountry: "GB",
-  },
-  areaServed: [
-    { "@type": "City", name: "Newcastle upon Tyne" },
-    { "@type": "City", name: "Jarrow" },
-    { "@type": "City", name: "Gateshead" },
-    { "@type": "City", name: "Sunderland" },
-    { "@type": "AdministrativeArea", name: "Tyne and Wear" },
-    { "@type": "AdministrativeArea", name: "North East England" },
-    { "@type": "Country", name: "United Kingdom" },
-    { "@type": "Place", name: "Worldwide" },
-  ],
-  priceRange: "££££",
-  sameAs: [STUDIO_LINKEDIN],
+    "Newcastle and North East creative partner based in Jarrow, Tyne and Wear. Marketing, content, websites, automation, and community support for local businesses, brands, and creatives.",
+  address: postalAddress,
+  areaServed,
+  serviceArea: { "@type": "AdministrativeArea", name: "North East England" },
+  priceRange: "GBP",
+  sameAs,
+  knowsAbout,
 };
 
 export const websiteSchema: JsonLdSchema = {
@@ -121,8 +126,15 @@ export const websiteSchema: JsonLdSchema = {
   "@id": `${SITE_URL}/#website`,
   url: SITE_URL,
   name: STUDIO_NAME,
+  alternateName: "NAMI Creative Network",
   description:
-    "NAMI Creative. Marketing and creative work done properly for founder-led businesses.",
+    "NAMI Creative is a Newcastle and North East marketing partner and Creative Network for businesses, brands, freelancers, artists, and local creatives.",
+  about: [
+    "Newcastle creatives",
+    "North East creatives",
+    "marketing services Newcastle",
+    "NAMI Creative Network",
+  ],
   publisher: { "@id": `${SITE_URL}/#organization` },
   inLanguage: "en-GB",
 };
@@ -136,13 +148,11 @@ export const founderPersonSchema: JsonLdSchema = {
   image: `${SITE_URL}/assets/images/bb.jpg`,
   jobTitle: "Founder, NAMI Creative",
   worksFor: { "@id": `${SITE_URL}/#organization` },
-  sameAs: [STUDIO_LINKEDIN],
+  homeLocation: { "@type": "Place", name: "Newcastle upon Tyne" },
+  sameAs,
+  knowsAbout,
 };
 
-/**
- * Build a FAQPage schema from a list of Q&A pairs. Used on any page that
- * surfaces NAMI's FAQ accordion â€” homepage, services, each service detail.
- */
 export function buildFaqPageSchema(
   qa: { question: string; answer: string }[],
 ): JsonLdSchema {
@@ -160,9 +170,6 @@ export function buildFaqPageSchema(
   };
 }
 
-/**
- * Service schema for each /services/[slug] page.
- */
 export function buildServiceSchema(args: {
   slug: string;
   name: string;
@@ -177,17 +184,15 @@ export function buildServiceSchema(args: {
     description: args.description,
     serviceType: args.pillar,
     provider: { "@id": `${SITE_URL}/#organization` },
-    areaServed: [
-      { "@type": "Country", name: "United Kingdom" },
-      { "@type": "Place", name: "Worldwide" },
-    ],
+    areaServed,
+    availableChannel: {
+      "@type": "ServiceChannel",
+      serviceUrl: `${SITE_URL}/services/${args.slug}`,
+    },
     url: `${SITE_URL}/services/${args.slug}`,
   };
 }
 
-/**
- * CreativeWork schema for each case study /work/[slug].
- */
 export function buildCaseStudySchema(args: {
   slug: string;
   client: string;
@@ -199,7 +204,7 @@ export function buildCaseStudySchema(args: {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     "@id": `${SITE_URL}/work/${args.slug}#case-study`,
-    name: `${args.client} · case study`,
+    name: `${args.client} case study`,
     headline: args.client,
     description: args.oneLiner,
     about: args.sector,
@@ -209,14 +214,6 @@ export function buildCaseStudySchema(args: {
   };
 }
 
-/**
- * BreadcrumbList schema for nested routes. Improves SERP appearance
- * (path crumbs in Google results) and helps AI systems understand
- * site hierarchy.
- *
- * Usage: pass an ordered list of [name, url] tuples starting with the
- * site root. Each entry becomes a ListItem at position N+1.
- */
 export function buildBreadcrumbSchema(
   trail: { name: string; url: string }[],
 ): JsonLdSchema {
@@ -232,13 +229,6 @@ export function buildBreadcrumbSchema(
   };
 }
 
-/**
- * Article schema for each /insights/[slug]. Inlines author + publisher
- * with full ImageObject for the article image and publisher logo so the
- * page qualifies as a Google Article rich result. The @id references on
- * Person and Organization preserve entity coherence with the root
- * schemas.
- */
 export function buildArticleSchema(args: {
   slug: string;
   title: string;

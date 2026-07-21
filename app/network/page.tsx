@@ -9,21 +9,32 @@ import {
   Heart,
   MapPin,
   Sparkles,
+  CheckCircle2,
   Users,
 } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { NetworkForm } from "./network-form";
 
 export const metadata: Metadata = {
-  title: "NAMI Creative Network - North East creators and businesses",
+  title: "NAMI Creative Network | North East Creatives",
   description:
-    "Join NAMI Creative Network, a growing home for North East creators, artists, freelancers, local businesses, and brands doing proper work.",
+    "Join NAMI Creative Network, a growing home for North East creatives, Newcastle artists, freelancers, local businesses, and independent brands.",
   openGraph: {
-    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
-    title: "NAMI Creative Network",
+    images: [
+      {
+        url: "/nami-og%20%281%29.png",
+        width: 2800,
+        height: 1750,
+        alt: "NAMI Creative Network for North East creatives",
+      },
+    ],
+    title: "NAMI Creative Network | North East Creatives",
     description:
-      "A growing network for North East creators, artists, freelancers, local businesses, and brands doing proper work.",
+      "A growing network for North East creatives, Newcastle artists, freelancers, local businesses, and independent brands.",
     url: "https://namicreative.co.uk/network",
+  },
+  alternates: {
+    canonical: "/network",
   },
 };
 
@@ -56,6 +67,14 @@ const reasons = [
   },
 ];
 
+
+const joinSteps = [
+  "You will be added to the NAMI Creative Network",
+  "I will keep an eye on your work and where you are based",
+  "You will receive Creative Network roundups with people, events, and opportunities",
+  "You will get the community links after joining",
+  "I will use the network to feature, recommend, and connect people when there is a good fit",
+];
 const futureAccess = [
   {
     icon: Sparkles,
@@ -98,7 +117,8 @@ function FormAnchor({ children = "Join the network" }: { children?: string }) {
 export default function NetworkPage() {
   return (
     <>
-      <PageHero
+      <div data-network-section="hero">
+        <PageHero
         eyebrow="NAMI Creative Network"
         title={
           <>
@@ -112,8 +132,9 @@ export default function NetworkPage() {
           <FormAnchor>Join the network</FormAnchor>
         </div>
       </PageHero>
+      </div>
 
-      <section className="container-shell py-20 md:py-28">
+      <section data-network-section="why_this_exists" className="container-shell py-20 md:py-28">
         <div className="grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:gap-20">
           <p className="mono-label md:mt-2">01 / Why this exists</p>
           <div className="max-w-2xl space-y-6">
@@ -140,7 +161,7 @@ export default function NetworkPage() {
         </div>
       </section>
 
-      <section className="border-y border-line bg-surface-1/35 py-20 md:py-28">
+      <section data-network-section="why_join" className="border-y border-line bg-surface-1/35 py-20 md:py-28">
         <div className="container-shell">
           <div className="mx-auto mb-12 max-w-4xl text-center">
             <p className="mono-label mb-5">02 / Why join</p>
@@ -180,7 +201,7 @@ export default function NetworkPage() {
         </div>
       </section>
 
-      <section className="container-shell py-20 md:py-28">
+      <section data-network-section="who_belongs" className="container-shell py-20 md:py-28">
         <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
           <div>
             <p className="mono-label mb-5">03 / Who belongs here</p>
@@ -209,7 +230,7 @@ export default function NetworkPage() {
         </div>
       </section>
 
-      <section className="border-y border-line py-20 md:py-28">
+      <section data-network-section="opportunities" className="border-y border-line py-20 md:py-28">
         <div className="container-shell">
           <div className="mx-auto max-w-4xl text-center">
             <p className="mono-label mb-5">04 / What it can open up</p>
@@ -260,6 +281,7 @@ export default function NetworkPage() {
       </section>
 
       <section
+        data-network-section="join_form"
         id="join-network"
         className="border-t border-line bg-surface-1/30 py-20 md:py-28"
       >
@@ -267,20 +289,36 @@ export default function NetworkPage() {
           <div>
             <p className="mono-label mb-5">05 / Join the network</p>
             <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
-              Put your work in front of NAMI
+              Join the network so NAMI knows what you are building
             </h2>
             <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
-              Use this for your own work, a business you love, or someone more
-              people should know about. I will review each submission and keep
-              the details in the network for relevant features, referrals, and
-              future opportunities.
+              Tell me what you are building so I know who you are, where you
+              are based, and when NAMI can put your work forward through
+              features, roundups, referrals, events, and local opportunities.
             </p>
             <div className="mt-8 rounded-2xl border border-line bg-surface-0/60 p-6">
-              <Sparkles size={20} className="text-accent" aria-hidden />
-              <p className="mt-4 text-sm leading-relaxed text-fg-muted">
-                There is no cost to join. The form helps me understand who you
-                are, where you are based, what you do, and how NAMI can point
-                people towards your work.
+              <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-accent">
+                What happens after you join
+              </p>
+              <ul className="mt-5 space-y-3">
+                {joinSteps.map((step) => (
+                  <li
+                    key={step}
+                    className="flex gap-3 text-sm leading-relaxed text-fg-muted"
+                  >
+                    <CheckCircle2
+                      size={16}
+                      className="mt-0.5 shrink-0 text-accent"
+                      aria-hidden
+                    />
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-sm leading-relaxed text-fg-subtle">
+                There is no cost to join. The form just gives me enough context
+                to remember what you do and point people towards your work in a
+                useful way.
               </p>
             </div>
           </div>
@@ -289,7 +327,7 @@ export default function NetworkPage() {
         </div>
       </section>
 
-      <section className="container-shell py-20 text-center md:py-28">
+      <section data-network-section="business_cta" className="container-shell py-20 text-center md:py-28">
         <p className="mx-auto max-w-2xl text-xl font-medium leading-relaxed tracking-tight text-fg md:text-2xl">
           I also help businesses get their brand, content, website, and
           automation sorted properly.
@@ -309,3 +347,5 @@ export default function NetworkPage() {
     </>
   );
 }
+
+

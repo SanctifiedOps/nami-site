@@ -1,21 +1,32 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pricing · Project, partnership, and systems engagements",
+  title: "Pricing | Marketing, Website & Creative Support",
   description:
-    "Three ways to work with NAMI Creative: scoped projects (4-8 weeks), ongoing partnerships (monthly retainer), and systems + product builds (2-5 weeks). Engagements sized to the work, not packaged into fixed bundles. Honest scoping on every call.",
+    "Pricing guidance for NAMI Creative projects and partnerships across marketing, websites, content, automation, and buyer journey work.",
   keywords: [
     "creative marketing pricing UK",
-    "brand engagement pricing",
+    "marketing support pricing Newcastle",
+    "website project pricing North East",
+    "content strategy pricing",
     "creative retainer pricing",
-    "independent brand support cost",
   ],
   openGraph: {
-    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
-    title: "Pricing · NAMI Creative",
+    images: [
+      {
+        url: "/nami-og%20%281%29.png",
+        width: 2800,
+        height: 1750,
+        alt: "NAMI Creative - marketing and creative support pricing",
+      },
+    ],
+    title: "Pricing | NAMI Creative",
     description:
-      "Project (4-8 weeks), Partnership (monthly retainer), Systems + product (2-5 weeks). Sized to the work, never packaged.",
+      "Project and partnership pricing for marketing, websites, content, automation, and buyer journey work.",
     url: "https://namicreative.co.uk/pricing",
+  },
+  alternates: {
+    canonical: "/pricing",
   },
 };
 

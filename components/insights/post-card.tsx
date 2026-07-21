@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { InsightPost } from "@/lib/content/insights-utils";
@@ -34,48 +33,18 @@ export function PostCard({ post, variant = "grid", className }: Props) {
           !isFeatured && "h-full",
         )}
       >
-        {/* Cover image (or gradient fallback) */}
-        <div
-          className={cn(
-            "relative w-full overflow-hidden bg-surface-2",
-            isFeatured ? "aspect-[16/9]" : "aspect-[16/10]",
-          )}
-        >
-          {post.cover ? (
-            <Image
-              src={post.cover}
-              alt={post.title}
-              fill
-              sizes={
-                isFeatured
-                  ? "(min-width: 1024px) 65vw, 100vw"
-                  : "(min-width: 1024px) 32vw, (min-width: 768px) 45vw, 100vw"
-              }
-              priority={isFeatured}
-              className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-[1.04]"
-            />
-          ) : (
-            <CoverFallback pillar={post.pillar} />
-          )}
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-linear-to-t from-surface-0/30 to-transparent"
-          />
-        </div>
-
-        {/* Body */}
         <div
           className={cn(
             "flex flex-1 flex-col",
             isFeatured ? "p-7 md:p-12" : "p-6 md:p-8",
           )}
         >
-          <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center justify-between gap-4 text-xs">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent/80">
-              {isFeatured ? `Featured Â· ${post.pillar}` : post.pillar}
+              {isFeatured ? `Featured · ${post.pillar}` : post.pillar}
             </span>
-            <span className="text-fg-subtle">
-              {formatPostDate(post.date)} Â· {post.minutes} min
+            <span className="shrink-0 text-fg-subtle">
+              {formatPostDate(post.date)} · {post.minutes} min
             </span>
           </div>
 
@@ -121,19 +90,5 @@ export function PostCard({ post, variant = "grid", className }: Props) {
         </div>
       </Link>
     </SpotlightCard>
-  );
-}
-
-/** Soft gradient placeholder shown when a post has no cover image set. */
-function CoverFallback({ pillar }: { pillar: string }) {
-  return (
-    <div
-      aria-hidden
-      className="absolute inset-0 flex items-end justify-end bg-linear-to-br from-accent/25 via-accent/10 to-transparent p-6 md:p-8"
-    >
-      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-fg/60">
-        {pillar}
-      </span>
-    </div>
   );
 }

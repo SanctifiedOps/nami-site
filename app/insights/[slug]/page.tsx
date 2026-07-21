@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, ArrowLeft, Clock, Calendar } from "lucide-react";
@@ -113,20 +112,7 @@ export default async function InsightPostPage({
       {/* Article body + sidebar */}
       <section className="container-shell py-12 md:py-16">
         <div className="grid gap-12 lg:grid-cols-[1fr_320px] lg:gap-16">
-          <article className="prose-insights">
-            {post.cover && (
-              <div className="not-prose relative mb-10 aspect-[16/9] overflow-hidden rounded-3xl border border-line bg-surface-1 md:mb-14">
-                <Image
-                  src={post.cover}
-                  alt={post.title}
-                  fill
-                  sizes="(min-width: 1024px) 65vw, 100vw"
-                  priority
-                  className="object-cover"
-                />
-              </div>
-            )}
-            <MDXRemote source={post.body} />
+          <article className="prose-insights">            <MDXRemote source={post.body} />
             <SocialShare slug={post.slug} title={post.title} />
           </article>
 
@@ -166,3 +152,5 @@ export default async function InsightPostPage({
     </>
   );
 }
+
+

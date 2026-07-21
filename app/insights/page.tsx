@@ -6,9 +6,32 @@ import { PostCard } from "@/components/insights/post-card";
 import { getAllPosts, getAllTags } from "@/lib/content/insights";
 
 export const metadata: Metadata = {
-  title: "Creative Waves · Studio notes from NAMI Creative",
+  title: "Insights | Marketing Notes for North East Creatives",
   description:
-    "Notes, frameworks, and breakdowns from inside the work. Brand, content, automation, and the decisions behind them.",
+    "Notes from NAMI Creative on marketing, content, websites, creativity, buyer journeys, and the work behind North East businesses and creatives.",
+  keywords: [
+    "North East creative insights",
+    "Newcastle marketing notes",
+    "content strategy notes",
+    "creative business advice",
+  ],
+  openGraph: {
+    images: [
+      {
+        url: "/nami-og%20%281%29.png",
+        width: 2800,
+        height: 1750,
+        alt: "NAMI Creative insights",
+      },
+    ],
+    title: "Insights | NAMI Creative",
+    description:
+      "Marketing, content, website, and creative notes for North East businesses and creatives.",
+    url: "https://namicreative.co.uk/insights",
+  },
+  alternates: {
+    canonical: "/insights",
+  },
 };
 
 export default async function InsightsPage() {
@@ -88,3 +111,6 @@ export default async function InsightsPage() {
     </>
   );
 }
+
+
+

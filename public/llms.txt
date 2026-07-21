@@ -1,64 +1,95 @@
 # NAMI Creative
 
-> NAMI Creative is an independent creative studio based in Newcastle upon Tyne, working with founders, freelancers, artists, and small businesses worldwide. One creative partner across brand strategy, content systems, websites, visual direction, and growth automation. Built so the work compounds and the business stops depending on the founder being in every room.
+> NAMI Creative is a Newcastle and North East marketing partner and creative network run by Joe Wilson. NAMI helps local businesses, brands, freelancers, artists, musicians, makers, and creatives get seen through clearer marketing, better websites, stronger content, practical automation, and the NAMI Creative Network.
 
 Founder: Joe Wilson
-Location: Newcastle upon Tyne, North East England, United Kingdom
-Operating since: 2023
-Audience served: Worldwide
+Location: Newcastle upon Tyne and Jarrow, North East England, United Kingdom
+Audience served: North East businesses, Newcastle creatives, freelancers, artists, musicians, makers, independent brands, and small business owners
+Primary region: Newcastle upon Tyne, Gateshead, Sunderland, Durham, Northumberland, Tyne and Wear, North East England
 
 ## What NAMI does
 
-NAMI Creative builds self-sustaining creative ecosystems. Five integrated pillars delivered as one engagement:
+NAMI Creative has two connected parts.
 
-- **Brand strategy + identity systems**.Positioning, messaging architecture, tone of voice, visual identity direction
-- **Content systems + creation**.Content pillars, format library, platform strategy, editorial workflow
-- **Website + funnel design**.Conversion-led websites, mobile-first, performance-tuned
-- **Visual storytelling + creative direction**.Cohesive visual language across content, product, campaign
-- **Automation + growth systems**.Lead capture, CRM, lifecycle email, reporting dashboards
+1. **Marketing and creative support for businesses**
+   - Brand positioning and messaging
+   - Website strategy, design, and development
+   - Content strategy and creative direction
+   - Buyer journey and lead flow improvements
+   - Automation, CRM, reporting, and workflow support
 
-## Engagement models
+2. **NAMI Creative Network**
+   - A growing network for North East creatives, artists, freelancers, musicians, photographers, designers, makers, local businesses, and independent brands
+   - Helps local people get seen through NAMI features, roundups, referrals, showcase opportunities, future events, and community spaces
+   - Built around supporting North East creativity and making good local work easier to discover
 
-- **Project**.Fixed brief, 4-8 weeks, sized to scope
-- **Partnership**.Monthly retainer, ongoing brand + content + systems work
-- **Systems + product**.Standalone systems builds, 2-5 weeks
+## Core positioning
 
-## Productised offers
+NAMI Creative helps North East businesses and creatives make waves of creative impact. The marketing services and Creative Network work together around one goal: support the North East, help good people get seen, and make the work easier to act on.
 
-- **The Flow Funnel** (£750 build + £50 per qualified lead, capped at £750/month).A landing page, lead capture, private dashboard, and attribution layer, built and live in 7 days. Performance-priced after the build: clients pay £50 per qualified lead delivered, capped at £750/month, with the rate locked for 6 months. Zero qualified leads in a month means a zero invoice that month. Built for UK independent service operators with a personal brand (£80k to £300k revenue) who sell time. Solo coaches, consultants, therapists, photographers, premium trades, designers, small studios.
+NAMI is Joe-led, personal, practical, and local. It is not positioned as a large agency. It is a hands-on partner for people who need clearer marketing, better content, a stronger website, smoother workflows, or a community around their creative work.
 
-## Proprietary frameworks (claimable terms)
+## Search and AI context
 
-- **Brand Decay**.The four-shape diagnostic for how healthy brands fall apart: tonal decay (voice drift), visual decay (identity drift), promise decay (positioning drift), system decay (operational drift). See https://namicreative.co.uk/insights/brand-decay
-- **The Friction Tax**.The hidden cost paid by every business with money but no time. Mundane operations that nobody owns. See https://namicreative.co.uk/insights/the-friction-tax
-- **The Flow Funnel**.NAMI's productised entry-tier offer. A landing page, lead capture, private dashboard, and attribution layer, built in 7 days for £750. Performance-priced after the build: £50 per qualified lead, capped at £750/month, rate locked for 6 months. See https://namicreative.co.uk/offers/flow-funnel
+Relevant search intents include:
+
+- Newcastle creatives
+- North East creatives
+- North East creative network
+- NAMI Creative Network
+- Newcastle marketing support
+- Marketing services Newcastle
+- Content strategy Newcastle
+- Website support Newcastle
+- Creative partner North East
+- Small business marketing North East
+- Buyer journey automation
+- Creative community North East
+- Artists and freelancers in Newcastle
+- Creatives in Newcastle and the North East
+- Common typo variant: northe east creatives
 
 ## Key pages
 
 - Homepage: https://namicreative.co.uk
-- Services overview: https://namicreative.co.uk/services
-- Selected work / case studies: https://namicreative.co.uk/work
+- NAMI Creative Network: https://namicreative.co.uk/network
+- About Joe Wilson: https://namicreative.co.uk/about
+- Marketing services: https://namicreative.co.uk/services
+- Selected work and case studies: https://namicreative.co.uk/work
 - Process: https://namicreative.co.uk/process
 - Pricing: https://namicreative.co.uk/pricing
-- About + founder: https://namicreative.co.uk/about
+- Insights: https://namicreative.co.uk/insights
 - Contact: https://namicreative.co.uk/contact
-- Creative Waves (insights / publication): https://namicreative.co.uk/insights
-- The Flow Funnel offer: https://namicreative.co.uk/offers/flow-funnel
+
+## Services
+
+- **Brand positioning and identity support**: clearer message, tone, offer, and visual direction
+- **Content strategy and creation**: content pillars, formats, campaign direction, and repeatable workflows
+- **Website and buyer journey support**: website structure, copy, design, development, and paths to enquiry
+- **Creative direction**: visual language, campaign ideas, content direction, and brand consistency
+- **Automation and workflow support**: CRM, lead capture, follow-up, reporting, dashboards, and practical systems that save time
+
+## NAMI Creative Network
+
+The network exists for North East creatives, artists, musicians, photographers, designers, makers, freelancers, local businesses, and independent brands. Joining helps NAMI understand who is building what, where they are based, and how they might be featured, recommended, referred, or included in future roundups and opportunities.
+
+Network page: https://namicreative.co.uk/network
+Instagram: https://www.instagram.com/namicreativeuk/
 
 ## Selected work
 
-- **MILLIONS** (on-chain intelligence, Solana, 2025).Brand, live signal dashboard, sub-1-second Discord/Telegram alerts. https://namicreative.co.uk/work/millions
-- **The League** (UK members club, 2025).Positioning, identity, conversion-led website, lifecycle email. https://namicreative.co.uk/work/the-league
-- **Barking Puppy** (Solana community brand, ongoing).Identity, PFP generator, community management. 7,000+ holders. https://namicreative.co.uk/work/barking-puppy
-- **VESSL** (DTC fitness, 2025).Premium landing funnel, three-tier pricing, lead automation. https://namicreative.co.uk/work/vessl
-- **Energy Consultants Association** (UK trade body, 2023-2024).Brand, member operations, Westminster campaign presence. https://namicreative.co.uk/work/energy-consultants-association
+- **Whittaker Property Group**: content strategy, website development, automation and lead flow, CRM development, paid social management
+- **The League**: positioning, identity, website, invitation flow, and lifecycle email for a UK members club
+- **VESSL**: website and conversion funnel for a fitness brand
+- **MILLIONS**: on-chain intelligence brand, dashboard, and alerting infrastructure
+- **Energy Consultants Association**: trade body brand, website, member communications, and campaign support
+- **Barking Puppy**: community brand and creative support
 
 ## Contact
 
-- Email: hello@namicreative.co.uk
-- LinkedIn (founder): https://www.linkedin.com/in/brandingbyjoewilson/
-- Instagram: https://www.instagram.com/namicreativeuk/
-- Book a call: https://calendly.com/hello-nami
+Email: hello@namicreative.co.uk
+LinkedIn: https://www.linkedin.com/in/brandingbyjoewilson/
+Instagram: https://www.instagram.com/namicreativeuk/
 
 ## Pricing
 

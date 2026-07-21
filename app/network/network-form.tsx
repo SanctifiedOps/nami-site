@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 
 type Status = "idle" | "submitting" | "error";
+
+const SUBMISSION_ID_KEY = "nami_network_submission_id";
 
 const categories = [
   "Creative",
@@ -25,6 +27,8 @@ export function NetworkForm() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const hasTrackedRequiredFields = useRef(false);
+  const hasTrackedOtherCategory = useRef(false);
 
 
   const onFormFocus = () => {
@@ -33,6 +37,61 @@ export function NetworkForm() {
     trackEvent("network_form_started", {
       form_name: "creative_network_join",
       page_path: "/network",
+      source_context: "nami_creative_network",
+    });
+  };
+
+  const getSubmissionId = () => {
+    if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+      return crypto.randomUUID();
+    }
+
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  };
+
+  const onCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const category = event.currentTarget.value;
+    setSelectedCategory(category);
+
+    if (!category) return;
+
+    trackEvent("category_selected", {
+      form_name: "creative_network_join",
+      category,
+      category_is_custom: category === "Other",
+      source_context: "nami_creative_network",
+    });
+
+    if (category === "Other" && !hasTrackedOtherCategory.current) {
+      hasTrackedOtherCategory.current = true;
+      trackEvent("other_category_used", {
+        form_name: "creative_network_join",
+        source_context: "nami_creative_network",
+      });
+    }
+  };
+
+  const onFormChange = (event: FormEvent<HTMLFormElement>) => {
+    if (hasTrackedRequiredFields.current) return;
+
+    const fd = new FormData(event.currentTarget);
+    const category = String(fd.get("category") ?? "");
+    const hasRequiredFields = Boolean(
+      String(fd.get("name") ?? "").trim() &&
+        String(fd.get("email") ?? "").trim() &&
+        String(fd.get("instagram") ?? "").trim() &&
+        category &&
+        (category !== "Other" || String(fd.get("otherCategory") ?? "").trim()) &&
+        String(fd.get("location") ?? "").trim(),
+    );
+
+    if (!hasRequiredFields) return;
+
+    hasTrackedRequiredFields.current = true;
+    trackEvent("network_form_required_fields_completed", {
+      form_name: "creative_network_join",
+      category: category === "Other" ? "custom" : category,
+      category_is_custom: category === "Other",
       source_context: "nami_creative_network",
     });
   };
@@ -47,6 +106,7 @@ export function NetworkForm() {
     const fd = new FormData(form);
     const category = String(fd.get("category") ?? "");
     const otherCategory = String(fd.get("otherCategory") ?? "").trim();
+    const submissionId = getSubmissionId();
     const payload = {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
@@ -66,6 +126,7 @@ export function NetworkForm() {
         category: "other_empty",
         error_type: "missing_other_category",
         source_context: "nami_creative_network",
+        submission_id: submissionId,
       });
       return;
     }
@@ -76,6 +137,7 @@ export function NetworkForm() {
       link_provided: Boolean(payload.link),
       note_provided: Boolean(payload.note),
       source_context: "nami_creative_network",
+      submission_id: submissionId,
     });
 
     try {
@@ -101,7 +163,9 @@ export function NetworkForm() {
           link_provided: Boolean(payload.link),
           note_provided: Boolean(payload.note),
           source_context: "nami_creative_network",
+          submission_id: submissionId,
         });
+        sessionStorage.setItem(SUBMISSION_ID_KEY, submissionId);
         form.reset();
         setSelectedCategory("");
         router.push("/network/thank-you");
@@ -118,6 +182,7 @@ export function NetworkForm() {
             ? "timeout"
             : "submission_error",
         source_context: "nami_creative_network",
+        submission_id: submissionId,
       });
       setErrorMsg(
         err instanceof DOMException && err.name === "AbortError"
@@ -133,6 +198,7 @@ export function NetworkForm() {
     <form
       onSubmit={onSubmit}
       onFocusCapture={onFormFocus}
+      onChange={onFormChange}
       className="glass-refractive rounded-2xl p-6 md:p-8"
       noValidate
     >
@@ -189,7 +255,7 @@ export function NetworkForm() {
           name="category"
           required
           value={selectedCategory}
-          onChange={(event) => setSelectedCategory(event.currentTarget.value)}
+          onChange={onCategoryChange}
         >
           <option value="">Choose one</option>
           {categories.map((category) => (
@@ -239,19 +305,6 @@ export function NetworkForm() {
         />
       </div>
 
-      <p className="mt-4 text-xs leading-relaxed text-fg-subtle">
-        By joining, you consent to NAMI holding these details so I can review
-        the submission, keep you in mind for relevant opportunities, send
-        Creative Network updates, and reply if it feels useful. See the{" "}
-        <a
-          href="/privacy"
-          className="underline underline-offset-4 transition-colors hover:text-fg-muted"
-        >
-          privacy notice
-        </a>
-        .
-      </p>
-
       <div className="mt-7 space-y-4">
         <button
           type="submit"
@@ -261,7 +314,7 @@ export function NetworkForm() {
             "group relative inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)] disabled:opacity-60",
           )}
         >
-          {status === "submitting" ? "Sending..." : "Join the network"}
+          {status === "submitting" ? "Sending..." : "Join the Creative Network"}
           <ArrowUpRight
             size={16}
             aria-hidden
@@ -269,6 +322,19 @@ export function NetworkForm() {
           />
         </button>
 
+        <p className="max-w-xl text-xs leading-relaxed text-fg-subtle">
+          No cost. No spam. By joining, you consent to NAMI holding these
+          details so I can review your work, keep you in mind for relevant
+          opportunities, send Creative Network updates, and reply if it feels
+          useful. See the{" "}
+          <a
+            href="/privacy"
+            className="underline underline-offset-4 transition-colors hover:text-fg-muted"
+          >
+            privacy notice
+          </a>
+          .
+        </p>
 
         {status === "error" && errorMsg && (
           <p role="alert" className="text-sm leading-relaxed text-accent">

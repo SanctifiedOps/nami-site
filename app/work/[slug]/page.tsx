@@ -29,18 +29,31 @@ export async function generateMetadata({
   const study = getCaseStudy(slug);
   if (!study) return { title: "Not found" };
   return {
-    title: `${study.client} · ${study.sector} case study`,
-    description: `${study.oneLiner} A ${study.status.toLowerCase()} engagement from NAMI Creative spanning ${study.pillars.join(", ").toLowerCase()}.`,
+    title: `${study.client} case study | NAMI Creative`,
+    description: `${study.oneLiner} A ${study.status.toLowerCase()} NAMI Creative case study across ${study.pillars.join(", ").toLowerCase()}.`,
     keywords: [
       ...study.pillars.map((p) => `${p.toLowerCase()} case study`),
-      `${study.sector.toLowerCase()} agency`,
+      `${study.sector.toLowerCase()} marketing case study`,
+      "Newcastle marketing case study",
+      "North East creative work",
       `${study.client} case study`,
     ],
     openGraph: {
-      title: `${study.client} · case study`,
+      title: `${study.client} case study | NAMI Creative`,
       description: study.oneLiner,
       type: "article",
-      images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
+      url: `https://namicreative.co.uk/work/${study.slug}`,
+      images: [
+        {
+          url: study.cover ?? "/nami-og%20%281%29.png",
+          width: 2800,
+          height: 1750,
+          alt: `${study.client} case study by NAMI Creative`,
+        },
+      ],
+    },
+    alternates: {
+      canonical: `/work/${study.slug}`,
     },
   };
 }
@@ -248,3 +261,7 @@ export default async function CaseStudyPage({
     </>
   );
 }
+
+
+
+

@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/thank-you",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function ThankYouPage() {
@@ -118,3 +122,5 @@ export default function ThankYouPage() {
     </section>
   );
 }
+
+

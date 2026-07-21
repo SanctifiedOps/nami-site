@@ -4,15 +4,18 @@ import { ProcessScroll } from "@/components/sections/process-scroll";
 import { SectionHeading } from "@/components/sections/section-heading";
 
 export const metadata: Metadata = {
-  title: "Process · Discovery, design, launch, partnership",
+  title: "Process | How NAMI Creative Works",
   description:
-    "Four phases inside a NAMI engagement. Understand the job, build the brand, website, and content, launch cleanly, then keep improving the work.",
+    "How NAMI Creative works with North East businesses: understand the job, sort the brand, website, content, and automation, then keep improving it.",
   keywords: [
-    "creative agency process",
-    "brand engagement process",
-    "design and build process UK",
-    "founder brand engagement",
+    "NAMI Creative process",
+    "marketing project process",
+    "website project process Newcastle",
+    "North East creative partner",
   ],
+  alternates: {
+    canonical: "/process",
+  },
 };
 
 export default function ProcessPage() {
@@ -67,3 +70,6 @@ export default function ProcessPage() {
     </>
   );
 }
+
+
+

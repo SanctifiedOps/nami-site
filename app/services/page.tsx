@@ -10,9 +10,9 @@ import { faq } from "@/lib/content/faq";
 import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Services · Brand strategy, content, websites, visual direction, automation",
+  title: "Marketing Services Newcastle | Brand, Websites & Content",
   description:
-    "Five integrated pillars for founders and growing brands: brand strategy and identity, content systems, conversion websites, visual direction, and growth automation. Designed against each other from day one, not stitched at handoff.",
+    "Marketing services for North East businesses that need their brand, content, website, and buyer journey sorted properly by one creative partner.",
   keywords: [
     "brand strategy UK",
     "content systems agency",
@@ -109,3 +109,5 @@ export default function ServicesPage() {
     </>
   );
 }
+
+
