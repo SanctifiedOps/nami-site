@@ -25,6 +25,69 @@ export default async function Home() {
 
       <PositioningBand />
       <PressurePaths />
+
+
+      {/* SERVICES */}
+      <section className="container-shell py-28 md:py-40">
+        <SectionIntro
+          index="01 / What we build"
+          title={
+            <>
+              One person for the marketing jobs{" "}
+              <span className="text-gradient sm:block">
+                you keep carrying yourself
+              </span>
+            </>
+          }
+          lead="Your brand, website, content, and automation should feel like the same business. I help get those parts sorted, then leave you with a setup you can use."
+        />
+        <div className="mt-16 md:mt-20">
+          <ServicesGrid />
+        </div>
+      </section>
+
+      {/* PROCESS */}
+      <section className="border-t border-line bg-surface-1/30 py-28 md:py-40">
+        <div className="container-shell">
+          <ProcessScroll />
+        </div>
+      </section>
+
+      {/* SELECTED WORK */}
+      <section className="container-shell border-t border-line py-28 md:py-40">
+        <SectionIntro
+          align="center"
+          index="03 / Selected work"
+          title={
+            <>
+              Work where the public face{" "}
+              <span className="text-gradient sm:block">and the working parts lined up</span>
+            </>
+          }
+          lead="Six projects across on-chain intelligence, members clubs, community brands, conversion funnels, property, and a national trade body. Different sectors, same job: make the message, content, website, and systems feel like one joined-up business."
+          className="mb-16 md:mb-20"
+        />
+
+        <WorkGrid />
+
+        <div className="mt-16 flex items-center justify-center md:mt-20">
+          <Link
+            href="/work"
+            className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
+          >
+            See every case study
+            <ArrowUpRight
+              size={14}
+              aria-hidden
+              className="transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <Testimonials />
+
       <section className="border-y border-line bg-surface-1/35 py-24 md:py-32">
         <div className="container-shell">
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
@@ -100,67 +163,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* SERVICES */}
-      <section className="container-shell py-28 md:py-40">
-        <SectionIntro
-          index="01 / What we build"
-          title={
-            <>
-              One person for the marketing jobs{" "}
-              <span className="text-gradient sm:block">
-                you keep carrying yourself
-              </span>
-            </>
-          }
-          lead="Your brand, website, content, and automation should feel like the same business. I help get those parts sorted, then leave you with a setup you can use."
-        />
-        <div className="mt-16 md:mt-20">
-          <ServicesGrid />
-        </div>
-      </section>
-
-      {/* PROCESS */}
-      <section className="border-t border-line bg-surface-1/30 py-28 md:py-40">
-        <div className="container-shell">
-          <ProcessScroll />
-        </div>
-      </section>
-
-      {/* SELECTED WORK */}
-      <section className="container-shell border-t border-line py-28 md:py-40">
-        <SectionIntro
-          align="center"
-          index="03 / Selected work"
-          title={
-            <>
-              Work where the public face{" "}
-              <span className="text-gradient sm:block">and the working parts lined up</span>
-            </>
-          }
-          lead="Six projects across on-chain intelligence, members clubs, community brands, conversion funnels, property, and a national trade body. Different sectors, same job: make the message, content, website, and systems feel like one joined-up business."
-          className="mb-16 md:mb-20"
-        />
-
-        <WorkGrid />
-
-        <div className="mt-16 flex items-center justify-center md:mt-20">
-          <Link
-            href="/work"
-            className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
-          >
-            See every case study
-            <ArrowUpRight
-              size={14}
-              aria-hidden
-              className="transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </Link>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <Testimonials />
 
       {/* CREATIVE WAVES */}
       <RecentInsights posts={recent} />

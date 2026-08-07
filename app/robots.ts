@@ -11,7 +11,7 @@ const SITE = "https://namicreative.co.uk";
  * relevant bot being allowed.
  */
 export default function robots(): MetadataRoute.Robots {
-  const disallow = ["/api/", "/thank-you", "/network/thank-you"];
+  const disallow = ["/api/", "/thank-you", "/network/thank-you", "/offers/creator-wave-workshop/thank-you"];
 
   return {
     rules: [

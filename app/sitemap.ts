@@ -20,6 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE}/insights`, lastModified: LAST_SEO_UPDATE, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE}/process`, lastModified: LAST_SEO_UPDATE, changeFrequency: "monthly", priority: 0.65 },
     { url: `${SITE}/pricing`, lastModified: LAST_SEO_UPDATE, changeFrequency: "monthly", priority: 0.65 },
+    { url: `${SITE}/offers/creator-wave-workshop`, lastModified: new Date("2026-08-06"), changeFrequency: "monthly", priority: 0.65 },
     { url: `${SITE}/privacy`, lastModified: LAST_SEO_UPDATE, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE}/terms`, lastModified: LAST_SEO_UPDATE, changeFrequency: "yearly", priority: 0.3 },
   ];

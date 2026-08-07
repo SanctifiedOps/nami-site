@@ -43,6 +43,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
     items: [
       { label: "Insights", href: "/insights" },
       { label: "Selected work", href: "/work" },
+      { label: "Creative Network", href: "/network" },
     ],
   },
 ];

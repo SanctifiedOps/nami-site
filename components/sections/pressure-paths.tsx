@@ -15,36 +15,34 @@ export function PressurePaths({
       <span className="text-gradient sm:block">that keeps dragging</span>
     </>
   ),
-  lead = "Buyers rarely arrive thinking in service pillars. They arrive with one part of the business making the rest harder to run.",
+  lead = "Clients rarely arrive thinking in service pillars. They arrive with one part of the business making the rest harder to run.",
   className = "",
 }: Props) {
   return (
     <section className={`border-y border-line bg-surface-1/35 py-24 md:py-32 ${className}`}>
       <div className="container-shell">
-        <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
-          <div className="max-w-xl">
-            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
-              {title}
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-fg-muted">
-              {lead}
-            </p>
-          </div>
+        <div className="mx-auto max-w-5xl text-center">
+          <h2 className="mx-auto max-w-3xl text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
+            {title}
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
+            {lead}
+          </p>
 
-          <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2">
+          <div className="mx-auto mt-14 grid max-w-4xl gap-10 md:grid-cols-2 md:gap-x-12 md:gap-y-14">
             {pressurePaths.map((path) => (
               <Link
                 key={path.problem}
                 href={path.href}
-                className="group flex min-h-64 flex-col bg-surface-1 p-7 transition-colors duration-300 hover:bg-surface-2 md:p-8"
+                className="group block text-center"
               >
-                <h3 className="text-xl font-medium leading-tight tracking-tight text-fg">
+                <h3 className="text-xl font-medium leading-tight tracking-tight text-fg transition-colors group-hover:text-accent">
                   {path.problem}
                 </h3>
-                <p className="mt-4 text-sm leading-relaxed text-fg-muted">
+                <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-fg-muted">
                   {path.detail}
                 </p>
-                <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-medium text-fg transition-colors group-hover:text-accent">
+                <span className="mt-6 inline-flex items-center justify-center gap-2 text-sm font-medium text-fg transition-colors group-hover:text-accent">
                   {path.cta}
                   <ArrowUpRight
                     size={14}

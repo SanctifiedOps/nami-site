@@ -7,7 +7,7 @@ export type PressurePath = {
 
 export const pressurePaths: PressurePath[] = [
   {
-    problem: "The brand feels patched together",
+    problem: "The brand feels chucked together",
     detail:
       "The deck, website, and content all describe the business slightly differently. You need the centre rebuilt before more output makes the drift worse.",
     href: "/services/brand-strategy",

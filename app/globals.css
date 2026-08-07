@@ -464,14 +464,20 @@
   /* These thank-you pages already have their own CTAs, so pull the global
      footer CTA up instead of leaving a dead transition band before it. */
   body:has([data-compact-footer="network-thank-you"]) footer,
-  body:has([data-compact-footer="compact-thank-you"]) footer {
+  body:has([data-compact-footer="compact-thank-you"]) footer,
+  body:has([data-compact-footer="creator-wave-thank-you"]) footer {
     margin-top: 0 !important;
   }
 
   body:has([data-compact-footer="network-thank-you"]) footer > section:first-child > .container-shell,
-  body:has([data-compact-footer="compact-thank-you"]) footer > section:first-child > .container-shell {
+  body:has([data-compact-footer="compact-thank-you"]) footer > section:first-child > .container-shell,
+  body:has([data-compact-footer="creator-wave-thank-you"]) footer > section:first-child > .container-shell {
     padding-top: 4rem !important;
     padding-bottom: 4rem !important;
+  }
+
+  body:has([data-compact-footer="creator-wave-thank-you"]) footer > section:first-child > .container-shell {
+    padding-top: 2rem !important;
   }
 
   @media (min-width: 768px) {
@@ -479,6 +485,11 @@
     body:has([data-compact-footer="compact-thank-you"]) footer > section:first-child > .container-shell {
       padding-top: 5rem !important;
       padding-bottom: 5rem !important;
+    }
+
+    body:has([data-compact-footer="creator-wave-thank-you"]) footer > section:first-child > .container-shell {
+      padding-top: 2.5rem !important;
+      padding-bottom: 4rem !important;
     }
   }
   .grain {
