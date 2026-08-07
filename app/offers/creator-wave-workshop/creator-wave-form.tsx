@@ -351,7 +351,7 @@ export function CreatorWaveForm() {
           aria-busy={status === "submitting"}
           className="group relative inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)] disabled:opacity-60"
         >
-          {status === "submitting" ? "Sending..." : "Ask Joe to take a look"}
+          {status === "submitting" ? "Sending..." : "Book a call (free)"}
           <ArrowUpRight
             size={16}
             aria-hidden

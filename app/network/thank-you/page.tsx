@@ -61,7 +61,7 @@ export default function NetworkThankYouPage() {
 
           <p className="mono-label mt-8">You are in</p>
           <h1 className="mt-5 text-[clamp(1.8rem,3.7vw,3.15rem)] font-semibold leading-[1.03] tracking-tight md:leading-[1]">
-            Nice one. Welcome to the network
+            Welcome to the network
           </h1>
 
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-fg-muted md:text-xl">
@@ -69,42 +69,10 @@ export default function NetworkThankYouPage() {
             of care. NAMI exists to help more people across the North East see
             that work and back the people behind it.
           </p>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-fg-subtle md:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-accent md:text-lg">
             I will keep an eye on what you are building and use the network for
             future features, roundups, referrals, events, and showcase
             opportunities. Here is what to do next.
-          </p>
-        </div>
-
-        <div className="mx-auto mt-10 grid max-w-6xl gap-5 md:grid-cols-3">
-          {nextSteps.map((step) => {
-            const Icon = step.icon;
-            return (
-              <div
-                key={step.title}
-                className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md md:p-7"
-              >
-                <Icon size={22} className="text-accent" aria-hidden />
-                <h2 className="mt-5 text-xl font-semibold tracking-tight text-fg">
-                  {step.title}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-fg-muted md:text-base">
-                  {step.body}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="mx-auto mt-8 max-w-4xl rounded-2xl border border-line bg-surface-1/55 p-6 text-center backdrop-blur-md md:p-8">
-          <Mail size={22} className="mx-auto text-accent" aria-hidden />
-          <p className="mt-4 text-lg font-bold leading-relaxed text-accent md:text-xl">
-            NAMI will send a weekly Creative Network roundup.
-          </p>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-fg-muted md:text-base">
-            Expect featured creators, spotlights, local creative news, events,
-            opportunities, and useful bits from across the North East. It gives
-            NAMI another way to keep your work moving through the network.
           </p>
         </div>
 
@@ -138,21 +106,54 @@ export default function NetworkThankYouPage() {
           </a>
         </div>
 
-        <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-line bg-surface-1/55 p-6 text-center backdrop-blur-md md:p-7">
-          <p className="text-lg font-medium leading-relaxed text-fg md:text-xl">
-            Want more people to understand what you do and buy from you?
+        <div className="mx-auto mt-10 grid max-w-6xl gap-5 md:grid-cols-3">
+          {nextSteps.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.title}
+                className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md md:p-7"
+              >
+                <Icon size={22} className="text-accent" aria-hidden />
+                <h2 className="mt-5 text-xl font-semibold tracking-tight text-fg">
+                  {step.title}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-fg-muted md:text-base">
+                  {step.body}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mx-auto mt-10 max-w-3xl text-center">
+          <Mail size={22} className="mx-auto text-accent" aria-hidden />
+          <p className="mt-4 text-lg font-bold leading-relaxed text-accent md:text-xl">
+            NAMI will send a weekly Creative Network roundup.
           </p>
-          <p className="mx-auto mt-3 max-w-2xl leading-relaxed text-fg-muted">
-            If people like what you do but still need too much explaining,
-            your content, website, and follow-up are probably making the sale
-            harder than it needs to be. I help you give customers a clearer
-            path to purchase, so more of the right people know what to do next.
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-fg-muted md:text-base">
+            Expect featured creators, spotlights, local creative news, events,
+            opportunities, and useful bits from across the North East. It gives
+            NAMI another way to keep your work moving through the network.
+          </p>
+        </div>
+
+        <div className="mx-auto mt-10 max-w-3xl rounded-2xl bg-accent p-6 text-center text-white shadow-[0_16px_60px_rgb(255_0_188/0.24)] md:p-8">
+          <p className="text-xl font-semibold leading-tight md:text-2xl">
+            Want your work to turn into more paid enquiries?
+          </p>
+          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-white/88">
+            If people like what you do but still need too much explaining, your
+            content, website, shop, booking page, or follow-up might be making
+            the buyer journey harder than it needs to be. Creator Wave Workshop
+            is a simple check of that path, so more of the right people know
+            what to do next.
           </p>
           <Link
-            href="/contact"
-            className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
+            href="/offers/creator-wave-workshop"
+            className="group mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-black transition-transform duration-300 hover:scale-[1.02]"
           >
-            Talk to NAMI about the work
+            View Creator Wave Workshop
             <ArrowUpRight
               size={14}
               aria-hidden
@@ -164,6 +165,3 @@ export default function NetworkThankYouPage() {
     </section>
   );
 }
-
-
-

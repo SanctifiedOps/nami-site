@@ -47,7 +47,7 @@ const reviewAreas = [
   },
 ];
 
-function PrimaryCta({ children = "Ask Joe to take a look" }: { children?: string }) {
+function PrimaryCta({ children = "Book a call (free)" }: { children?: string }) {
   return (
     <Link
       href="#workshop-form"
@@ -105,7 +105,7 @@ export default function CreatorWaveWorkshopPage() {
       >
         <div className="flex flex-col items-center gap-7">
           <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
-            <PrimaryCta>Ask Joe to take a look</PrimaryCta>
+            <PrimaryCta>Book a call (free)</PrimaryCta>
             <Link
               href="#offer"
               className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
@@ -212,9 +212,9 @@ export default function CreatorWaveWorkshopPage() {
             Want a quick outside view before you decide what to do?
           </p>
           <p className="max-w-2xl leading-relaxed text-fg-muted md:text-lg">
-            Book a free call with Joe. We will look at where people are finding you, where they might be dropping off, and whether the report or build makes sense.
+            Book a free call with me. We will look at where people are finding you, where they might be dropping off, and whether the report or build makes sense.
           </p>
-          <PrimaryCta>Book a call with Joe</PrimaryCta>
+          <PrimaryCta>Book a call with me</PrimaryCta>
         </div>
       </section>
 

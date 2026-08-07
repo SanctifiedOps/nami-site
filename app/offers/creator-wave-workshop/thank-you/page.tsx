@@ -11,7 +11,7 @@ const instagramUrl = "https://www.instagram.com/namicreativeuk/";
 export const metadata: Metadata = {
   title: "Creator Wave enquiry received - NAMI Creative",
   description:
-    "Thanks for asking Joe to look at your buyer journey. Your Creator Wave Workshop enquiry has been received.",
+    "Thanks for asking me to look at your buyer journey. Your Creator Wave Workshop enquiry has been received.",
   alternates: {
     canonical: "/offers/creator-wave-workshop/thank-you",
   },
