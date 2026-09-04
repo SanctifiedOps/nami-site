@@ -130,6 +130,17 @@ export default function NetworkPage() {
       >
         <div className="flex flex-wrap items-center justify-center gap-3">
           <FormAnchor>Join the network</FormAnchor>
+          <Link
+            href="/network/directory"
+            className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
+          >
+            Explore the directory
+            <ArrowUpRight
+              size={14}
+              aria-hidden
+              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
         </div>
       </PageHero>
       </div>

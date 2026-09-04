@@ -80,7 +80,7 @@ export function NetworkAnalytics() {
       });
     }
 
-    if (pathname === "/network/thank-you") {
+    if (pathname === "/network/thank-you" && submissionId) {
       trackEvent("network_join_completed", {
         ...sharedParams,
         event_category: "conversion",
@@ -90,11 +90,18 @@ export function NetworkAnalytics() {
         ...sharedParams,
         event_category: "conversion",
         lead_type: "creative_network_join",
+        lead_quality: "qualified",
         method: "network_thank_you_page",
       });
-      if (submissionId) {
-        sessionStorage.removeItem(SUBMISSION_ID_KEY);
-      }
+      trackEvent("qualified_lead", {
+        ...sharedParams,
+        event_category: "conversion",
+        lead_type: "creative_network_join",
+        lead_quality: "qualified",
+        qualification_basis: "network_form_submitted_and_thank_you_landed",
+        method: "network_thank_you_page",
+      });
+      sessionStorage.removeItem(SUBMISSION_ID_KEY);
     }
   }, [pathname]);
 

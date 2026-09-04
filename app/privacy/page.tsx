@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const UPDATED = "6 May 2026";
+const UPDATED = "3 September 2026";
 
 export default function PrivacyPage() {
   return (
@@ -62,6 +62,15 @@ export default function PrivacyPage() {
                 signup, confirmed via double opt-in.
               </li>
               <li>
+                <strong className="text-fg">Creative Network members.</strong>{" "}
+                When you join the Network: your name, email, Instagram handle,
+                category, city or area, submitted link, and anything you tell
+                us about your work. With your consent, we publish your name,
+                category, city or area, Instagram, submitted link, and a short
+                NAMI-written description in the public directory. Your email
+                and full submission are never included in the directory.
+              </li>
+              <li>
                 <strong className="text-fg">Site analytics.</strong> We use
                 Google Analytics 4 to understand how the site is used (page
                 views, traffic sources, device class, country). Google
@@ -81,6 +90,11 @@ export default function PrivacyPage() {
           <Block title="How we use it">
             <ul className="list-disc space-y-2 pl-5">
               <li>To respond to enquiries and plan work with you.</li>
+              <li>
+                To run the Creative Network, maintain its public directory,
+                share relevant opportunities, and consider members for
+                features or introductions.
+              </li>
               <li>
                 To send newsletter emails you have explicitly subscribed to,
                 until you unsubscribe.
@@ -141,6 +155,11 @@ export default function PrivacyPage() {
               <li>
                 <strong className="text-fg">Newsletter:</strong> until you
                 unsubscribe (one click, link in every email).
+              </li>
+              <li>
+                <strong className="text-fg">Creative Network:</strong> while
+                you remain a member, or until you ask us to remove your record
+                or public listing.
               </li>
               <li>
                 <strong className="text-fg">Server logs:</strong> 30 days.

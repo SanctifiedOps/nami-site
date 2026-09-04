@@ -1,14 +1,46 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { ArrowUpRight, ImagePlus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 
 type Status = "idle" | "submitting" | "error";
 
 const SUBMISSION_ID_KEY = "nami_network_submission_id";
+const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
+const OUTPUT_SIZE = 800;
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 120);
+}
+
+async function prepareImage(file: File, memberId: string) {
+  const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+  const side = Math.min(bitmap.width, bitmap.height);
+  const sourceX = Math.max(0, (bitmap.width - side) / 2);
+  const sourceY = Math.max(0, (bitmap.height - side) / 2);
+  const canvas = document.createElement("canvas");
+  canvas.width = OUTPUT_SIZE;
+  canvas.height = OUTPUT_SIZE;
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("This browser could not prepare your picture.");
+  context.drawImage(bitmap, sourceX, sourceY, side, side, 0, 0, OUTPUT_SIZE, OUTPUT_SIZE);
+  bitmap.close();
+
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, "image/webp", 0.86),
+  );
+  if (!blob) throw new Error("This browser could not prepare your picture.");
+  return new File([blob], memberId, { type: "image/webp" });
+}
 
 const categories = [
   "Creative",
@@ -27,8 +59,45 @@ export function NetworkForm() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [profilePreview, setProfilePreview] = useState<string>();
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const isSubmittingRef = useRef(false);
   const hasTrackedRequiredFields = useRef(false);
   const hasTrackedOtherCategory = useRef(false);
+
+  useEffect(() => {
+    return () => {
+      if (profilePreview) URL.revokeObjectURL(profilePreview);
+    };
+  }, [profilePreview]);
+
+  const chooseProfilePicture = (event: ChangeEvent<HTMLInputElement>) => {
+    const nextFile = event.currentTarget.files?.[0] ?? null;
+    setErrorMsg(null);
+    if (!nextFile) return;
+    if (!nextFile.type.startsWith("image/")) {
+      setStatus("error");
+      setErrorMsg("Choose a JPG, PNG or WebP image.");
+      return;
+    }
+    if (nextFile.size > MAX_SOURCE_BYTES) {
+      setStatus("error");
+      setErrorMsg("Choose an image smaller than 10 MB.");
+      return;
+    }
+    if (profilePreview) URL.revokeObjectURL(profilePreview);
+    setProfilePicture(nextFile);
+    setProfilePreview(URL.createObjectURL(nextFile));
+    setStatus("idle");
+  };
+
+  const clearProfilePicture = () => {
+    if (profilePreview) URL.revokeObjectURL(profilePreview);
+    setProfilePicture(null);
+    setProfilePreview(undefined);
+    if (imageInputRef.current) imageInputRef.current.value = "";
+  };
 
 
   const onFormFocus = () => {
@@ -82,7 +151,9 @@ export function NetworkForm() {
         String(fd.get("instagram") ?? "").trim() &&
         category &&
         (category !== "Other" || String(fd.get("otherCategory") ?? "").trim()) &&
-        String(fd.get("location") ?? "").trim(),
+        String(fd.get("location") ?? "").trim() &&
+        fd.get("directoryConsent") === "yes" &&
+        Boolean(profilePicture),
     );
 
     if (!hasRequiredFields) return;
@@ -97,8 +168,9 @@ export function NetworkForm() {
   };
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (status === "submitting") return;
+    if (isSubmittingRef.current) return;
 
+    isSubmittingRef.current = true;
     setStatus("submitting");
     setErrorMsg(null);
 
@@ -107,24 +179,49 @@ export function NetworkForm() {
     const category = String(fd.get("category") ?? "");
     const otherCategory = String(fd.get("otherCategory") ?? "").trim();
     const submissionId = getSubmissionId();
+    const submittedName = String(fd.get("name") ?? "");
+    const memberId = `${slugify(submittedName) || "network-member"}-${submissionId.slice(0, 8)}`;
     const payload = {
-      name: String(fd.get("name") ?? ""),
+      memberId,
+      name: submittedName,
       email: String(fd.get("email") ?? ""),
       instagram: String(fd.get("instagram") ?? ""),
       category: category === "Other" ? otherCategory : category,
       location: String(fd.get("location") ?? ""),
       note: String(fd.get("note") ?? ""),
       link: String(fd.get("link") ?? ""),
+      directoryConsent: fd.get("directoryConsent") === "yes",
       website: String(fd.get("website") ?? ""),
     };
 
+    if (!profilePicture) {
+      isSubmittingRef.current = false;
+      setStatus("error");
+      setErrorMsg("Please add a profile picture for your directory card.");
+      return;
+    }
+
     if (category === "Other" && !otherCategory) {
+      isSubmittingRef.current = false;
       setStatus("error");
       setErrorMsg("Please type your category.");
       trackEvent("network_form_error", {
         form_name: "creative_network_join",
         category: "other_empty",
         error_type: "missing_other_category",
+        source_context: "nami_creative_network",
+        submission_id: submissionId,
+      });
+      return;
+    }
+
+    if (!payload.directoryConsent) {
+      isSubmittingRef.current = false;
+      setStatus("error");
+      setErrorMsg("Please confirm that we can include you in the public directory.");
+      trackEvent("network_form_error", {
+        form_name: "creative_network_join",
+        error_type: "missing_directory_consent",
         source_context: "nami_creative_network",
         submission_id: submissionId,
       });
@@ -141,14 +238,14 @@ export function NetworkForm() {
     });
 
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 15000);
+      const detailsController = new AbortController();
+      const detailsTimeout = setTimeout(() => detailsController.abort(), 25000);
       try {
         const res = await fetch("/api/network", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
-          signal: controller.signal,
+          signal: detailsController.signal,
         });
         const data = (await res.json().catch(() => ({}))) as {
           ok?: boolean;
@@ -157,6 +254,43 @@ export function NetworkForm() {
         if (!res.ok || !data.ok) {
           throw new Error(data.error ?? "We couldn't send this right now.");
         }
+      } finally {
+        clearTimeout(detailsTimeout);
+      }
+
+      // The member workflow writes the directory rows before the separate
+      // image workflow looks them up. A short pause avoids Google Sheets
+      // propagation delays without holding either request timeout open.
+      await new Promise((resolve) => window.setTimeout(resolve, 2000));
+
+      const imageController = new AbortController();
+      const imageTimeout = setTimeout(() => imageController.abort(), 30000);
+      try {
+        const preparedImage = await prepareImage(profilePicture, memberId);
+        const imageBody = new FormData();
+        imageBody.set("memberId", memberId);
+        imageBody.set("memberName", payload.name);
+        imageBody.set("lookupName", payload.name);
+        imageBody.set("instagram", payload.instagram);
+        imageBody.set("altText", `${payload.name} profile picture`);
+        imageBody.set("newMember", "true");
+        imageBody.set("image", preparedImage);
+
+        const imageResponse = await fetch("/api/network/profile-picture", {
+          method: "POST",
+          body: imageBody,
+          signal: imageController.signal,
+        });
+        const imageResult = (await imageResponse.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        if (!imageResponse.ok) {
+          throw new Error(
+            imageResult.error ??
+              "Your details landed, but your picture did not. Please try the picture again.",
+          );
+        }
+
         trackEvent("network_form_submitted", {
           form_name: "creative_network_join",
           category: payload.category || "unknown",
@@ -167,10 +301,11 @@ export function NetworkForm() {
         });
         sessionStorage.setItem(SUBMISSION_ID_KEY, submissionId);
         form.reset();
+        clearProfilePicture();
         setSelectedCategory("");
         router.push("/network/thank-you");
       } finally {
-        clearTimeout(timeout);
+        clearTimeout(imageTimeout);
       }
     } catch (err) {
       setStatus("error");
@@ -191,6 +326,8 @@ export function NetworkForm() {
             ? err.message
             : "Something went wrong.",
       );
+    } finally {
+      isSubmittingRef.current = false;
     }
   };
 
@@ -297,15 +434,83 @@ export function NetworkForm() {
 
       <div className="mt-5">
         <TextArea
-          label="What are you putting forward? (optional)"
+          label="Tell us about your work"
           name="note"
-          placeholder="Tell me who you are, what you are making, who it is for, and what people should know about the work."
+          placeholder="Tell us what you make or do, who it is for, and what you would like people to know. We will use this to write the short bio on your directory card."
           rows={6}
           maxLength={1600}
+          required
         />
+        <p className="mt-2 text-xs leading-relaxed text-fg-subtle">
+          Write naturally. NAMI will tidy this into a short third-person bio that keeps your meaning and sounds consistent across the directory.
+        </p>
+      </div>
+
+      <div className="mt-5">
+        <p className="mb-2 text-xs uppercase tracking-widest text-fg-subtle">
+          Profile picture <span className="text-accent">*</span>
+        </p>
+        <input
+          ref={imageInputRef}
+          type="file"
+          name="profilePicture"
+          accept="image/jpeg,image/png,image/webp"
+          required
+          onChange={chooseProfilePicture}
+          className="sr-only"
+        />
+        {profilePreview ? (
+          <div className="flex items-center gap-5 rounded-2xl border border-accent/30 bg-accent/5 p-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={profilePreview}
+              alt="Selected profile preview"
+              className="size-24 rounded-full object-cover"
+            />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold text-fg">{profilePicture?.name}</p>
+              <p className="mt-1 text-xs leading-relaxed text-fg-subtle">
+                We will centre-crop this into a square image for your directory card.
+              </p>
+              <button
+                type="button"
+                onClick={clearProfilePicture}
+                className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-accent hover:text-accent-soft"
+              >
+                <X size={14} aria-hidden /> Choose another
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => imageInputRef.current?.click()}
+            className="flex w-full flex-col items-center rounded-2xl border border-dashed border-line bg-surface-1/45 px-6 py-10 text-center transition-colors hover:border-accent/55 hover:bg-accent/5"
+          >
+            <ImagePlus size={28} aria-hidden className="text-accent" />
+            <span className="mt-3 font-semibold text-fg">Add your profile picture</span>
+            <span className="mt-2 text-sm text-fg-subtle">JPG, PNG or WebP. Up to 10 MB.</span>
+          </button>
+        )}
       </div>
 
       <div className="mt-7 space-y-4">
+        <label className="flex items-start gap-3 rounded-xl border border-line bg-surface-1/45 p-4 text-sm leading-relaxed text-fg-muted">
+          <input
+            type="checkbox"
+            name="directoryConsent"
+            value="yes"
+            required
+            className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]"
+          />
+          <span>
+            I agree to NAMI publishing my name, category, city or area,
+            Instagram, submitted link, and a short NAMI-written description in
+            the public Creative Network directory. I can ask for my listing to
+            be updated or removed at any time.
+          </span>
+        </label>
+
         <button
           type="submit"
           disabled={status === "submitting"}
@@ -323,10 +528,10 @@ export function NetworkForm() {
         </button>
 
         <p className="max-w-xl text-xs leading-relaxed text-fg-subtle">
-          No cost. No spam. By joining, you consent to NAMI holding these
+          No cost. No spam. By joining, you also consent to NAMI holding these
           details so I can review your work, keep you in mind for relevant
-          opportunities, send Creative Network updates, and reply if it feels
-          useful. See the{" "}
+          opportunities, send Creative Network updates, and reply when useful.
+          See the{" "}
           <a
             href="/privacy"
             className="underline underline-offset-4 transition-colors hover:text-fg-muted"

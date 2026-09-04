@@ -8,6 +8,7 @@ import {
   MessageCircle,
   Share2,
   Users,
+  Search,
 } from "lucide-react";
 import { HeroLights } from "@/components/hero/hero-lights";
 import { VideoBackground } from "@/components/hero/video-background";
@@ -77,11 +78,18 @@ export default function NetworkThankYouPage() {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/network/directory"
+            className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+          >
+            View the Creative Directory
+            <Search size={16} aria-hidden />
+          </Link>
           <a
             href={facebookUrl}
             target="_blank"
             rel="noreferrer"
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+            className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
           >
             Join the Facebook group
             <Users size={16} aria-hidden />

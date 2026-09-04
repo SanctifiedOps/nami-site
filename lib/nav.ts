@@ -44,6 +44,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
       { label: "Insights", href: "/insights" },
       { label: "Selected work", href: "/work" },
       { label: "Creative Network", href: "/network" },
+      { label: "Creative directory", href: "/network/directory" },
     ],
   },
 ];
