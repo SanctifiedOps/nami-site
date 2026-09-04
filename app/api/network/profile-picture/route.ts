@@ -32,11 +32,8 @@ export async function POST(request: Request) {
 
   const memberId = safeMemberId(text(formData.get("memberId"), 160));
   const member = networkDirectoryMembers.find((item) => item.id === memberId);
-  const isNewMember = text(formData.get("newMember"), 10) === "true";
-  const submittedName = text(formData.get("memberName"), 120);
-  const submittedInstagram = text(formData.get("instagram"), 120);
   const image = formData.get("image");
-  if (!member && !(isNewMember && memberId && submittedName && submittedInstagram)) {
+  if (!member) {
     return NextResponse.json({ error: "Choose a valid directory listing." }, { status: 400 });
   }
   if (!(image instanceof File) || image.size === 0) {
@@ -66,8 +63,8 @@ export async function POST(request: Request) {
   }
 
   const outgoing = new FormData();
-  const memberName = member?.name ?? submittedName;
-  const instagram = member?.instagram ?? submittedInstagram;
+  const memberName = member.name;
+  const instagram = member.instagram;
   outgoing.set("memberId", memberId);
   outgoing.set("memberName", memberName);
   outgoing.set("lookupName", text(formData.get("lookupName"), 120) || memberName.split(" / ")[0].trim());
