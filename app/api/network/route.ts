@@ -9,6 +9,8 @@ const MAIN_SITE_URL = "https://namicreative.co.uk";
 const CREATOR_WAVE_URL = "https://namicreative.co.uk/offers/creator-wave-workshop";
 const FACEBOOK_URL = "https://www.facebook.com/groups/1033572522893615";
 const DIRECTORY_URL = "https://namicreative.co.uk/network/directory";
+const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 type NetworkPayload = {
   memberId?: unknown;
@@ -252,7 +254,7 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
   }
 }
 
-async function notifyMake(d: Cleaned): Promise<void> {
+async function notifyMake(d: Cleaned, image: File): Promise<void> {
   const url =
     process.env.CREATIVE_NETWORK_WEBHOOK_URL ?? process.env.CONTACT_WEBHOOK_URL;
   if (!url) {
@@ -265,57 +267,36 @@ async function notifyMake(d: Cleaned): Promise<void> {
   const { firstName, lastName } = firstAndLast(d.name);
   const message = enrichedMessage(d);
   const submittedAt = new Date().toISOString();
+  const confirmationEmail = confirmationEmailFor(d);
+  const outgoing = new FormData();
+  outgoing.set("memberId", d.memberId);
+  outgoing.set("name", d.name);
+  outgoing.set("firstName", firstName);
+  outgoing.set("lastName", lastName);
+  outgoing.set("email", d.email);
+  outgoing.set("instagram", d.instagram);
+  outgoing.set("company", d.instagram);
+  outgoing.set("category", d.category);
+  outgoing.set("location", d.location);
+  outgoing.set("link", d.link);
+  outgoing.set("note", d.note);
+  outgoing.set("brief", message);
+  outgoing.set("message", message);
+  outgoing.set("submittedAt", submittedAt);
+  outgoing.set("source", NETWORK_SOURCE);
+  outgoing.set("sourceRef", NETWORK_SOURCE);
+  outgoing.set("type", "feature-submission");
+  outgoing.set("tagsText", tagsFor(d).join(", "));
+  outgoing.set("mailchimpSegment", "Creative Network");
+  outgoing.set("confirmationEmailSubject", confirmationEmail.subject);
+  outgoing.set("confirmationEmailHtml", confirmationEmail.html);
+  outgoing.set("imageAltText", `${d.name} profile picture`);
+  outgoing.set("imageStatus", "Ready");
+  outgoing.set("image", image, d.memberId);
+
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      memberId: d.memberId,
-      name: d.name,
-      firstName,
-      lastName,
-      email: d.email,
-      instagram: d.instagram,
-      company: d.instagram,
-      category: d.category,
-      location: d.location,
-      link: d.link,
-      note: d.note,
-      directoryConsent: d.directoryConsent,
-      directoryConsentText:
-        "Member agreed to public listing of their name, category, city or area, Instagram, submitted link, and a NAMI-written description.",
-      directoryConsentAt: submittedAt,
-      projectType: "Creative Network submission",
-      budget: "",
-      brief: message,
-      message,
-      subject: "Creative Network submission",
-      emailSubject: "Creative Network submission from NAMI Creative Network",
-      heading: "Creative Network submission",
-      enquiryType: "Creative Network submission",
-      notificationType: "creative-network-submission",
-      internalNotification: {
-        subject: "Creative Network submission",
-        heading: "Creative Network submission",
-        label: "Creative Network",
-        template: "creative-network-submission",
-      },
-      mailchimp: {
-        action: "upsert-subscriber",
-        segment: "Creative Network",
-        tags: tagsFor(d),
-      },
-      outlook: {
-        action: "send-confirmation-email",
-        from: "outlook-default-account",
-        useDefaultSignature: true,
-      },
-      sendCreativeEmail: true,
-      confirmationEmail: confirmationEmailFor(d),
-      submittedAt,
-      source: NETWORK_SOURCE,
-      sourceRef: NETWORK_SOURCE,
-      type: "feature-submission",
-    }),
+    body: outgoing,
   });
   if (!res.ok) {
     const body = await res.text().catch(() => "");
@@ -357,8 +338,28 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
 
 export async function POST(req: Request) {
   let payload: NetworkPayload;
+  let image: File | null = null;
   try {
-    payload = (await req.json()) as NetworkPayload;
+    const contentType = req.headers.get("content-type") ?? "";
+    if (contentType.includes("multipart/form-data")) {
+      const formData = await req.formData();
+      payload = {
+        memberId: formData.get("memberId"),
+        name: formData.get("name"),
+        email: formData.get("email"),
+        instagram: formData.get("instagram"),
+        category: formData.get("category"),
+        location: formData.get("location"),
+        note: formData.get("note"),
+        link: formData.get("link"),
+        directoryConsent: formData.get("directoryConsent") === "true",
+        website: formData.get("website"),
+      };
+      const uploadedImage = formData.get("image");
+      image = uploadedImage instanceof File ? uploadedImage : null;
+    } else {
+      payload = (await req.json()) as NetworkPayload;
+    }
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
@@ -417,6 +418,18 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
+  if (!image || image.size === 0) {
+    return NextResponse.json(
+      { error: "Please add a profile picture for your directory card." },
+      { status: 400 },
+    );
+  }
+  if (!ALLOWED_IMAGE_TYPES.has(image.type) || image.size > MAX_IMAGE_BYTES) {
+    return NextResponse.json(
+      { error: "Send a JPG, PNG or WebP image smaller than 3 MB." },
+      { status: 400 },
+    );
+  }
   if (!d.directoryConsent) {
     return NextResponse.json(
       { error: "Please confirm that we can include you in the public directory." },
@@ -425,7 +438,7 @@ export async function POST(req: Request) {
   }
 
   const [makeRes, mcRes, dashRes] = await Promise.allSettled([
-    notifyMake(d),
+    notifyMake(d, image),
     upsertMailchimp(d),
     notifyDashboard(d),
   ]);

@@ -238,13 +238,26 @@ export function NetworkForm() {
     });
 
     try {
+      const preparedImage = await prepareImage(profilePicture, memberId);
+      const submissionBody = new FormData();
+      submissionBody.set("memberId", payload.memberId);
+      submissionBody.set("name", payload.name);
+      submissionBody.set("email", payload.email);
+      submissionBody.set("instagram", payload.instagram);
+      submissionBody.set("category", payload.category);
+      submissionBody.set("location", payload.location);
+      submissionBody.set("note", payload.note);
+      submissionBody.set("link", payload.link);
+      submissionBody.set("directoryConsent", String(payload.directoryConsent));
+      submissionBody.set("website", payload.website);
+      submissionBody.set("image", preparedImage, memberId);
+
       const detailsController = new AbortController();
-      const detailsTimeout = setTimeout(() => detailsController.abort(), 25000);
+      const detailsTimeout = setTimeout(() => detailsController.abort(), 30000);
       try {
         const res = await fetch("/api/network", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          body: submissionBody,
           signal: detailsController.signal,
         });
         const data = (await res.json().catch(() => ({}))) as {
@@ -258,55 +271,19 @@ export function NetworkForm() {
         clearTimeout(detailsTimeout);
       }
 
-      // The member workflow writes the directory rows before the separate
-      // image workflow looks them up. A short pause avoids Google Sheets
-      // propagation delays without holding either request timeout open.
-      await new Promise((resolve) => window.setTimeout(resolve, 2000));
-
-      const imageController = new AbortController();
-      const imageTimeout = setTimeout(() => imageController.abort(), 30000);
-      try {
-        const preparedImage = await prepareImage(profilePicture, memberId);
-        const imageBody = new FormData();
-        imageBody.set("memberId", memberId);
-        imageBody.set("memberName", payload.name);
-        imageBody.set("lookupName", payload.name);
-        imageBody.set("instagram", payload.instagram);
-        imageBody.set("altText", `${payload.name} profile picture`);
-        imageBody.set("newMember", "true");
-        imageBody.set("image", preparedImage);
-
-        const imageResponse = await fetch("/api/network/profile-picture", {
-          method: "POST",
-          body: imageBody,
-          signal: imageController.signal,
-        });
-        const imageResult = (await imageResponse.json().catch(() => ({}))) as {
-          error?: string;
-        };
-        if (!imageResponse.ok) {
-          throw new Error(
-            imageResult.error ??
-              "Your details landed, but your picture did not. Please try the picture again.",
-          );
-        }
-
-        trackEvent("network_form_submitted", {
-          form_name: "creative_network_join",
-          category: payload.category || "unknown",
-          link_provided: Boolean(payload.link),
-          note_provided: Boolean(payload.note),
-          source_context: "nami_creative_network",
-          submission_id: submissionId,
-        });
-        sessionStorage.setItem(SUBMISSION_ID_KEY, submissionId);
-        form.reset();
-        clearProfilePicture();
-        setSelectedCategory("");
-        router.push("/network/thank-you");
-      } finally {
-        clearTimeout(imageTimeout);
-      }
+      trackEvent("network_form_submitted", {
+        form_name: "creative_network_join",
+        category: payload.category || "unknown",
+        link_provided: Boolean(payload.link),
+        note_provided: Boolean(payload.note),
+        source_context: "nami_creative_network",
+        submission_id: submissionId,
+      });
+      sessionStorage.setItem(SUBMISSION_ID_KEY, submissionId);
+      form.reset();
+      clearProfilePicture();
+      setSelectedCategory("");
+      router.push("/network/thank-you");
     } catch (err) {
       setStatus("error");
       trackEvent("network_form_error", {
