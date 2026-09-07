@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { networkDirectoryMembers } from "@/lib/content/network-directory";
+import { readProfileUpdateToken } from "@/lib/network/profile-update-token";
 
 export const runtime = "nodejs";
 
@@ -31,10 +32,23 @@ export async function POST(request: Request) {
   }
 
   const memberId = safeMemberId(text(formData.get("memberId"), 160));
+  const token = text(formData.get("token"), 500);
+  let tokenMemberId: string | null = null;
+  try {
+    tokenMemberId = readProfileUpdateToken(token);
+  } catch {
+    return NextResponse.json(
+      { error: "The upload connection is unavailable right now. Please try again shortly." },
+      { status: 503 },
+    );
+  }
   const member = networkDirectoryMembers.find((item) => item.id === memberId);
   const image = formData.get("image");
-  if (!member) {
-    return NextResponse.json({ error: "Choose a valid directory listing." }, { status: 400 });
+  if (!member || tokenMemberId !== memberId) {
+    return NextResponse.json(
+      { error: "This upload link isn't working. Please open the latest link NAMI sent you." },
+      { status: 403 },
+    );
   }
   if (!(image instanceof File) || image.size === 0) {
     return NextResponse.json({ error: "Choose a profile picture." }, { status: 400 });
@@ -70,6 +84,7 @@ export async function POST(request: Request) {
   outgoing.set("lookupName", text(formData.get("lookupName"), 120) || memberName.split(" / ")[0].trim());
   outgoing.set("instagram", instagram);
   outgoing.set("altText", text(formData.get("altText"), 200) || `${memberName} profile picture`);
+  outgoing.set("bioUpdate", text(formData.get("bioUpdate"), 800));
   outgoing.set("driveFolderId", DRIVE_FOLDER_ID);
   outgoing.set("sheetName", "Creative Network");
   outgoing.set("imageStatus", "Ready");

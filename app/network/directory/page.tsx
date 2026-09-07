@@ -42,13 +42,10 @@ export default async function NetworkDirectoryPage() {
   return (
     <>
       <PageHero
+        networkBackground
         eyebrow="NAMI Creative Network"
-        title={
-          <>
-            Find the people making proper work <span className="text-gradient sm:block">across the North East</span>
-          </>
-        }
-        lead="Artists, photographers, designers, musicians, makers, freelancers and independent businesses. Search the Network and find someone worth knowing about."
+        title="NAMI Creative Network Directory"
+        lead="Artists, photographers, designers, musicians, makers, freelancers and independent businesses across the North East. Search the Network and find someone worth knowing about."
       >
         <Link
           href="#directory"

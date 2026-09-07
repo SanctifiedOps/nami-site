@@ -5,12 +5,12 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "r
 import { ArrowUpRight, ImagePlus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
+import { friendlyUploadError, prepareProfileImage } from "@/lib/network/prepare-profile-image";
 
 type Status = "idle" | "submitting" | "error";
 
 const SUBMISSION_ID_KEY = "nami_network_submission_id";
 const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
-const OUTPUT_SIZE = 800;
 
 function slugify(value: string) {
   return value
@@ -20,26 +20,6 @@ function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 120);
-}
-
-async function prepareImage(file: File, memberId: string) {
-  const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
-  const side = Math.min(bitmap.width, bitmap.height);
-  const sourceX = Math.max(0, (bitmap.width - side) / 2);
-  const sourceY = Math.max(0, (bitmap.height - side) / 2);
-  const canvas = document.createElement("canvas");
-  canvas.width = OUTPUT_SIZE;
-  canvas.height = OUTPUT_SIZE;
-  const context = canvas.getContext("2d");
-  if (!context) throw new Error("This browser could not prepare your picture.");
-  context.drawImage(bitmap, sourceX, sourceY, side, side, 0, 0, OUTPUT_SIZE, OUTPUT_SIZE);
-  bitmap.close();
-
-  const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, "image/webp", 0.86),
-  );
-  if (!blob) throw new Error("This browser could not prepare your picture.");
-  return new File([blob], memberId, { type: "image/webp" });
 }
 
 const categories = [
@@ -238,7 +218,7 @@ export function NetworkForm() {
     });
 
     try {
-      const preparedImage = await prepareImage(profilePicture, memberId);
+      const preparedImage = await prepareProfileImage(profilePicture, memberId);
       const submissionBody = new FormData();
       submissionBody.set("memberId", payload.memberId);
       submissionBody.set("name", payload.name);
@@ -296,13 +276,7 @@ export function NetworkForm() {
         source_context: "nami_creative_network",
         submission_id: submissionId,
       });
-      setErrorMsg(
-        err instanceof DOMException && err.name === "AbortError"
-          ? "That took too long to send. Check your connection and try again."
-          : err instanceof Error
-            ? err.message
-            : "Something went wrong.",
-      );
+      setErrorMsg(friendlyUploadError(err));
     } finally {
       isSubmittingRef.current = false;
     }

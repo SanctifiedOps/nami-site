@@ -5,6 +5,7 @@ import { stage, fadeUp } from "@/lib/motion";
 import { LetterReveal } from "@/components/motion/letter-reveal";
 import { VideoBackground } from "@/components/hero/video-background";
 import { HeroLights } from "@/components/hero/hero-lights";
+import { NetworkHeroBackground } from "@/components/hero/network-hero-background";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -12,12 +13,13 @@ type Props = {
   title: React.ReactNode;
   lead?: string;
   className?: string;
+  networkBackground?: boolean;
   /** Optional content rendered below the lead, inside the hero stack */
   children?: React.ReactNode;
 };
 
 /** Inner-page hero: video background + letter-reveal title */
-export function PageHero({ title, lead, className, children }: Props) {
+export function PageHero({ title, lead, className, networkBackground = false, children }: Props) {
   return (
     <section
       className={cn(
@@ -25,7 +27,11 @@ export function PageHero({ title, lead, className, children }: Props) {
         className,
       )}
     >
-      <VideoBackground src="wave-3.mp4" overlay={0.78} />
+      {networkBackground ? (
+        <NetworkHeroBackground />
+      ) : (
+        <VideoBackground src="wave-3.mp4" overlay={0.78} />
+      )}
       <HeroLights />
 
       {/* Blend hero into the section below */}

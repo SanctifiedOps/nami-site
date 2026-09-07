@@ -255,7 +255,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "instagramUrl": "https://www.instagram.com/twenty_minus_two/",
     "websiteUrl": "https://www.twentyminustwo.wordpress.com",
     "description": "TwentyMinusTwo is the creative identity of Dale Binney, a multimedia artist based in North East England.",
-    "featured": true
+    "featured": false
   },
   {
     "id": "danielle-cosgrove",
@@ -686,7 +686,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "description": "A freelance creative consultant helping North East creatives, brands and businesses make waves, get their work seen and create a stronger impact.",
     "profileImage": "/images/network/members/joe-wilson-nami-creative.webp",
     "imageAlt": "Joe Wilson of NAMI Creative",
-    "featured": false
+    "featured": true
   },
   {
     "id": "jolene-lowe",
@@ -976,7 +976,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
   },
   {
     "id": "mark-ingram",
-    "name": "Mark Ingram",
+    "name": "Marko Ingram",
     "category": "Artist",
     "location": "Newcastle",
     "instagram": "@markoingram_art",

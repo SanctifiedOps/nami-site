@@ -11,7 +11,7 @@ import {
   Search,
 } from "lucide-react";
 import { HeroLights } from "@/components/hero/hero-lights";
-import { VideoBackground } from "@/components/hero/video-background";
+import { NetworkHeroBackground } from "@/components/hero/network-hero-background";
 
 const facebookUrl = "https://www.facebook.com/groups/1033572522893615";
 const whatsappUrl = "https://chat.whatsapp.com/Fq8MpjoXZTo7FFGM9KUiOr";
@@ -51,7 +51,7 @@ const nextSteps = [
 export default function NetworkThankYouPage() {
   return (
     <section data-compact-footer="network-thank-you" className="relative overflow-hidden">
-      <VideoBackground src="wave-3.mp4" overlay={0.78} />
+      <NetworkHeroBackground />
       <HeroLights />
 
       <div className="container-shell relative z-10 pt-20 pb-8 md:pt-24 md:pb-10">

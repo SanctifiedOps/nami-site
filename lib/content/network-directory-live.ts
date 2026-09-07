@@ -12,12 +12,22 @@ function clean(value: unknown, max = 500) {
 }
 
 function instagramUrl(value: string) {
-  const first = value.split(/[\s,]+/).find(Boolean) ?? "";
-  const handle = first
+  const trimmed = value.trim();
+  const candidate = /[\s,]/.test(trimmed)
+    ? trimmed.split(/[\s,]+/).find((part) =>
+        part.startsWith("@") || /^https?:\/\/(www\.)?instagram\.com\//i.test(part),
+      ) ?? ""
+    : trimmed;
+  const handle = candidate
     .replace(/^https?:\/\/(www\.)?instagram\.com\//i, "")
     .replace(/^@/, "")
     .split(/[/?#]/)[0];
-  return handle ? `https://www.instagram.com/${handle}/` : "";
+
+  // A display name such as "Axe & Grain Bespoke Works" is not an Instagram
+  // handle. Multiple submitted @handles remain supported by using the first.
+  return /^[a-z0-9._]+$/i.test(handle)
+    ? `https://www.instagram.com/${handle}/`
+    : "";
 }
 
 function validMember(value: unknown): NetworkDirectoryMember | null {
@@ -86,6 +96,7 @@ export async function getNetworkDirectoryMembers() {
         ...member,
         profileImage: member.profileImage ?? existing?.profileImage,
         imageAlt: member.imageAlt ?? existing?.imageAlt,
+        featured: existing?.featured ?? member.featured,
       });
     }
     return [...members.values()];

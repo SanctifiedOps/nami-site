@@ -119,6 +119,7 @@ export default function NetworkPage() {
     <>
       <div data-network-section="hero">
         <PageHero
+        networkBackground
         eyebrow="NAMI Creative Network"
         title={
           <>
