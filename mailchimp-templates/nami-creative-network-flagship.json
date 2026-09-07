@@ -1,0 +1,9 @@
+﻿{
+    "name":  "NAMI Network Flagship",
+    "notes":  "Reusable flagship layout for NAMI Creative Network newsletters. Cards use rounded backgrounds with no borders and normalized 170x130 spotlight image frames.",
+    "saved_at":  "2026-08-07T10:00:38.1235735Z",
+    "source_campaign_title":  "Nami Creative Network - 001",
+    "source_campaign_id":  "1b393f35e6",
+    "template_id":  10001234,
+    "local_source":  "mailchimp-templates/nami-creative-network-flagship-archive.html"
+}
