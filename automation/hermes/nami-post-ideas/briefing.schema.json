@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NAMI morning post ideas",
+  "type": "object",
+  "required": ["runId", "date", "subject", "leadIdea", "reels", "showcaseCarousels", "textCarousel", "localRadar", "productionPlan"],
+  "properties": {
+    "runId": { "type": "string" },
+    "date": { "type": "string", "format": "date" },
+    "subject": { "type": "string" },
+    "leadIdea": { "$ref": "#/$defs/idea" },
+    "reels": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/idea" } },
+    "showcaseCarousels": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["ideaId", "title", "hook", "angle", "members", "finalSlide", "score"],
+        "properties": {
+          "ideaId": { "type": "string" },
+          "title": { "type": "string" },
+          "hook": { "type": "string" },
+          "angle": { "type": "string" },
+          "members": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "required": ["directoryId", "name", "category", "city", "instagram", "reason"],
+              "properties": {
+                "directoryId": { "type": "string" },
+                "name": { "type": "string" },
+                "category": { "type": "string" },
+                "city": { "type": "string" },
+                "instagram": { "type": "string" },
+                "reason": { "type": "string" }
+              }
+            }
+          },
+          "finalSlide": { "type": "string" },
+          "score": { "type": "number", "minimum": 0, "maximum": 100 }
+        }
+      }
+    },
+    "textCarousel": {
+      "type": "object",
+      "required": ["ideaId", "hook", "slides", "captionAngle", "score"],
+      "properties": {
+        "ideaId": { "type": "string" },
+        "hook": { "type": "string" },
+        "slides": { "type": "array", "minItems": 5, "maxItems": 10, "items": { "type": "string" } },
+        "captionAngle": { "type": "string" },
+        "score": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "localRadar": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["title", "kind", "date", "location", "sourceUrl", "namiAngle", "verification"],
+        "properties": {
+          "title": { "type": "string" },
+          "kind": { "enum": ["event", "news", "open_call", "funding"] },
+          "date": { "type": "string" },
+          "location": { "type": "string" },
+          "sourceUrl": { "type": "string", "format": "uri" },
+          "namiAngle": { "type": "string" },
+          "verification": { "enum": ["Verified", "Needs checking"] }
+        }
+      }
+    },
+    "productionPlan": {
+      "type": "object",
+      "required": ["ideaId", "estimatedMinutes", "steps"],
+      "properties": {
+        "ideaId": { "type": "string" },
+        "estimatedMinutes": { "type": "integer", "minimum": 1 },
+        "steps": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    }
+  },
+  "$defs": {
+    "idea": {
+      "type": "object",
+      "required": ["ideaId", "title", "hook", "format", "beats", "captionAngle", "goal", "score"],
+      "properties": {
+        "ideaId": { "type": "string" },
+        "title": { "type": "string" },
+        "hook": { "type": "string" },
+        "format": { "type": "string" },
+        "beats": { "type": "array", "minItems": 3, "items": { "type": "string" } },
+        "captionAngle": { "type": "string" },
+        "goal": { "enum": ["shares", "saves", "comments", "directory_visits", "network_joins"] },
+        "score": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    }
+  }
+}
+
