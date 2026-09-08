@@ -46,6 +46,21 @@ Return valid JSON matching `briefing.schema.json`. Include:
 - Five verified North East radar items.
 - A short production plan for the strongest idea.
 
+## Reel direction
+
+Reels should usually be simple talking-head videos that Joe can film alone with his phone. Write them for small-business owners, artists, creatives and freelancers trying to build a name, find clients, make a living and keep creating when progress feels slow.
+
+For every Reel:
+
+1. Write the exact first sentence Joe should say within the opening three seconds.
+2. Add a short on-screen hook that works without sound.
+3. Give him a concise spoken script or line-by-line talking points.
+4. Base the idea on practical help, a useful list, a relatable problem, an honest lesson or a mistake worth avoiding.
+5. Aim for 20 to 45 seconds unless the subject needs longer.
+6. Include simple filming notes and one natural CTA.
+
+Rotate useful themes such as finding clients, pricing, visibility, promotion, confidence, limited time or money, freelance realities, creative blocks and keeping momentum. Avoid fake controversy, guaranteed results, empty motivation, lip-sync ideas, elaborate sketches, faceless stock footage and concepts that depend on trending audio.
+
 ## NAMI voice
 
 - Direct, warm and grounded in the North East.
@@ -64,4 +79,3 @@ Return valid JSON matching `briefing.schema.json`. Include:
 - No member is inside the configured cooldown.
 - No carousel angle is inside the configured cooldown.
 - The email contains enough detail to produce at least one post immediately.
-

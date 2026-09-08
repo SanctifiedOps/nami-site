@@ -45,11 +45,24 @@ Research current North East creative news and events using web search. Treat the
 
 Use only supplied Network member data for showcase suggestions. Choose five distinct, genuinely relevant members per feature carousel. Do not repeat a person within the same bulletin. Give each carousel a clear angle such as photographers, makers, musicians, designers, freelancers or independent businesses. If there are not five suitable members for an angle, choose a better angle.
 
+Make the Reel section primarily talking-head videos that Joe can film alone, directly to camera, with a phone and minimal setup. The audience is small-business owners, artists, creatives and freelancers who are trying to build a name, find customers, make a living and keep going when progress feels slow.
+
+Every Reel must:
+- Open with the exact words Joe should say in the first one to three seconds.
+- Use a specific, attention-grabbing hook based on a recognisable problem, useful promise, honest opinion or curiosity gap. Do not use fake controversy, vague clickbait or guaranteed results.
+- Give Joe a short spoken script or clear line-by-line talking points, not a loose topic.
+- Deliver practical help, a useful list, a relatable observation, an honest lesson or a clear mistake to avoid.
+- Be designed for roughly 20 to 45 seconds unless the idea genuinely needs longer.
+- Include a short on-screen title, simple filming direction and one natural CTA aimed at saves, shares, comments, directory visits or Network joins.
+- Feel relevant to people building creative work in the North East without forcing dialect or mentioning the North East when it adds nothing.
+
+Use a healthy mix across the week: practical tips, numbered lists, mistakes, hard-earned lessons, relatable freelance moments, pricing and visibility problems, creative confidence, finding clients, promoting work and making progress with limited time or money. Avoid generic motivation, lip-sync concepts, elaborate sketches, faceless stock-footage Reels and trend ideas that depend on a particular audio track.
+
 Return a complete HTML email only. Do not return Markdown, JSON, a subject line, commentary or code fences. Use simple email-safe HTML with inline styles. Keep it easy to scan on mobile.
 
 The email must contain:
 1. A short morning introduction.
-2. Three Reel ideas. Each needs a hook, format, filming notes and a short caption direction.
+2. Three mostly talking-head Reel ideas. Each needs the exact opening line, an on-screen hook, a short spoken script or line-by-line beats, filming notes, approximate duration, CTA and caption direction.
 3. Two showcase carousel ideas. Each needs its angle, a cover hook, the five chosen members with category and location, a slide order and a CTA.
 4. One bold text-carousel idea with the cover hook followed by short, punchy copy for every slide.
 5. A North East radar with up to five timely events, exhibitions, opportunities or useful stories. Include date, place and a direct source link when verified.

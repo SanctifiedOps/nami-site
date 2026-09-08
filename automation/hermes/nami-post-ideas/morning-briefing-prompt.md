@@ -14,7 +14,8 @@ Score candidate ideas using:
 
 Only the strongest material should reach the email. A shorter verified briefing is better than filling a section with weak ideas.
 
+Prioritise talking-head Reels with opening lines Joe can say directly to camera. They should help small-business owners, artists, creatives and freelancers with real problems such as visibility, finding clients, pricing, confidence, promotion, limited resources and keeping momentum. Favour useful lists, clear tips, honest lessons and relatable observations over trends or elaborate production.
+
 After successful delivery, append the run to `Run Log`, append every suggestion to `Idea Archive`, and update `Last suggested`, `Last angle`, `Times suggested` and `Cooldown until` for selected members.
 
 While `Config!test_mode` is `TRUE`, deliver only to the configured test recipient. Do not update `Last published` or `Times published` until Joe marks an idea as used.
-
