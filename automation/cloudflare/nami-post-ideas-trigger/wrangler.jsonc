@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nami-post-ideas-trigger",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-08",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "triggers": {
+    // Cron runs in UTC. The Worker accepts only the trigger that resolves to
+    // 09:00 in Europe/London, covering GMT and BST without manual changes.
+    "crons": ["0 8 * * *", "0 9 * * *"]
+  },
+  "vars": {
+    "TIMEZONE": "Europe/London",
+    "RECIPIENT": "hello@namicreative.co.uk",
+    "TEST_MODE": "true"
+  },
+  "secrets": {
+    "required": ["MAKE_WEBHOOK_URL", "TRIGGER_SECRET"]
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    }
+  }
+}
