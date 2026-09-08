@@ -15,6 +15,12 @@
     "RECIPIENT": "hello@namicreative.co.uk",
     "TEST_MODE": "true"
   },
+  "kv_namespaces": [
+    {
+      "binding": "RUN_GUARD",
+      "id": "a32f3c6b03c849ed8aa32f5d16af8689"
+    }
+  ],
   "secrets": {
     "required": ["MAKE_WEBHOOK_URL", "TRIGGER_SECRET"]
   },

@@ -12,10 +12,12 @@ This directory contains the Hermes editorial instructions and the JSON contract 
 ## Delivery design
 
 1. Cloudflare starts the scheduled run while Joe's computer is off.
-2. Hermes researches, selects and writes the briefing using `SKILL.md`.
-3. The result must validate against `briefing.schema.json`.
-4. A Make webhook renders the JSON as a readable HTML email and sends it through the existing Outlook connection.
-5. The run and suggestions are written back to the content ledger.
+2. Make reads the Network member pool and approved source registry.
+3. Make's existing OpenAI connection researches and writes the briefing using the Hermes editorial instructions in this directory.
+4. Make sends the HTML bulletin through the existing Outlook connection.
+5. The completed run is written back to the content ledger.
+
+The installed Hermes runtime remains useful for developing and reviewing the editorial prompt locally. The cloud production run uses Make because the local Hermes process stops when Joe's computer is off.
 
 ## Release stages
 
@@ -25,4 +27,3 @@ This directory contains the Hermes editorial instructions and the JSON contract 
 4. Enable the permanent 09:00 schedule.
 
 No social content is published automatically.
-

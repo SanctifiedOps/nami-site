@@ -4,6 +4,7 @@ interface Env {
   TIMEZONE: string;
   RECIPIENT: string;
   TEST_MODE: string;
+  RUN_GUARD: KVNamespace;
 }
 
 type TriggerSource = "cron" | "manual";
@@ -50,28 +51,44 @@ async function sameSecret(provided: string, expected: string): Promise<boolean> 
 
 async function triggerBriefing(env: Env, now: Date, source: TriggerSource): Promise<Response> {
   const runDate = localDateKey(now, env.TIMEZONE);
-  const response = await fetch(env.MAKE_WEBHOOK_URL, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${env.TRIGGER_SECRET}`,
-      "Content-Type": "application/json",
-      "User-Agent": "nami-post-ideas-trigger/1.0",
-    },
-    body: JSON.stringify({
-      runId: `nami-post-ideas-${runDate}`,
-      runDate,
-      requestedAt: now.toISOString(),
-      source,
-      timezone: env.TIMEZONE,
-      recipient: env.RECIPIENT,
-      testMode: env.TEST_MODE.toLowerCase() === "true",
-    }),
-  });
+  const runId = `nami-post-ideas-${runDate}`;
+  if (await env.RUN_GUARD.get(runId)) {
+    console.log(JSON.stringify({ event: "duplicate_skipped", runId, source }));
+    return new Response("Already triggered", { status: 409 });
+  }
+
+  await env.RUN_GUARD.put(runId, "pending", { expirationTtl: 172800 });
+  let response: Response;
+  try {
+    response = await fetch(env.MAKE_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.TRIGGER_SECRET}`,
+        "Content-Type": "application/json",
+        "User-Agent": "nami-post-ideas-trigger/1.0",
+      },
+      body: JSON.stringify({
+        runId,
+        runDate,
+        requestedAt: now.toISOString(),
+        source,
+        timezone: env.TIMEZONE,
+        recipient: env.RECIPIENT,
+        testMode: env.TEST_MODE.toLowerCase() === "true",
+      }),
+    });
+  } catch (error) {
+    await env.RUN_GUARD.delete(runId);
+    throw error;
+  }
 
   if (!response.ok) {
     const detail = (await response.text()).slice(0, 500);
+    await env.RUN_GUARD.delete(runId);
     throw new Error(`Make webhook failed with ${response.status}: ${detail}`);
   }
+
+  await env.RUN_GUARD.put(runId, "accepted", { expirationTtl: 172800 });
 
   console.log(JSON.stringify({ event: "briefing_triggered", runDate, source, status: response.status }));
   return response;
