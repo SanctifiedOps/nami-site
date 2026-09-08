@@ -535,7 +535,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
   {
     "id": "jack-alberts---trigo-studio",
     "name": "Jack Alberts / Trigo Studio",
-    "category": "Creative",
+    "category": "Design and digital",
     "location": "Newcastle",
     "instagram": "@trigo.studio",
     "instagramUrl": "https://www.instagram.com/trigo.studio/",
@@ -1482,7 +1482,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
   },
   {
     "id": "thorn-woods",
-    "name": "Thorn Woods",
+    "name": "Thorn Faustus",
     "category": "Creative",
     "location": "Newcastle",
     "instagram": "@thorn_faustus @venom_promotions",
