@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowUpRight, MapPin, Search, X } from "lucide-react";
 import { InstagramIcon } from "@/components/icons/socials";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
+import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   members: NetworkDirectoryMember[];
@@ -98,6 +99,19 @@ export function DirectoryBrowser({ members }: Props) {
   }, [category, location, members, query]);
 
   const hasFilters = Boolean(query || category !== "All categories" || location !== "All areas");
+
+  useEffect(() => {
+    if (!hasFilters) return;
+    const timer = window.setTimeout(() => {
+      trackEvent("network_directory_searched", {
+        search_query: query.trim().slice(0, 80),
+        category_filter: category,
+        location_filter: location,
+        result_count: filtered.length,
+      });
+    }, 700);
+    return () => window.clearTimeout(timer);
+  }, [category, filtered.length, hasFilters, location, query]);
 
   const resetFilters = () => {
     setQuery("");
@@ -223,6 +237,7 @@ function MemberCard({ member }: { member: NetworkDirectoryMember }) {
             href={member.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "instagram", category: member.category })}
             className="inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
           >
             <InstagramIcon size={15} aria-hidden />
@@ -234,6 +249,7 @@ function MemberCard({ member }: { member: NetworkDirectoryMember }) {
             href={member.websiteUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "website", category: member.category })}
             className="inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
           >
             Visit their work
