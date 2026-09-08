@@ -43,6 +43,8 @@ Use clear British English and a warm North East voice. Sound like a switched-on 
 
 Research current North East creative news and events using web search. Treat the supplied source registry as the preferred starting list, but only include details you can verify today. Prefer official event and venue pages. Every news or event item must include a direct source link and a specific reason it matters to NAMI's audience.
 
+The input includes a RECENT IDEA ARCHIVE. Treat it as an exclusion list, not inspiration. Do not reuse a Reel premise, opening hook, text-carousel argument or showcase angle used in the previous 30 days. Do not feature a Network member named in the archive within 45 days. A broad subject may return only when the practical lesson and hook are materially different.
+
 Use only supplied Network member data for showcase suggestions. Choose five distinct, genuinely relevant members per feature carousel. Do not repeat a person within the same bulletin. Give each carousel a clear angle such as photographers, makers, musicians, designers, freelancers or independent businesses. If there are not five suitable members for an angle, choose a better angle.
 
 Make the Reel section primarily talking-head videos that Joe can film alone, directly to camera, with a phone and minimal setup. The audience is small-business owners, artists, creatives and freelancers who are trying to build a name, find customers, make a living and keep going when progress feels slow.
@@ -134,16 +136,37 @@ const blueprint = {
       metadata: { restore: { extra: { feeder: { label: "Read enabled North East sources [4]" }, target: { label: "Custom" } } }, designer: { x: 1200, y: 0, name: "Build source list" } },
     },
     {
+      id: 10,
+      module: "google-sheets:filterRows",
+      version: 2,
+      parameters: { __IMTCONN__: 14434905 },
+      mapper: {
+        from: "drive", limit: 30, filter: [[{ a: "K", b: "Delivered", o: "text:equal" }]],
+        orderBy: "C", sheetId: "Idea Archive", fieldType: "text", sortOrder: "desc",
+        spreadsheetId: contentSheet, tableFirstRow: "A1:K1", includesHeaders: true,
+        valueRenderOption: "FORMATTED_VALUE", dateTimeRenderOption: "FORMATTED_STRING",
+      },
+      metadata: { designer: { x: 1500, y: 0, name: "Read recent delivered ideas" } },
+    },
+    {
+      id: 11,
+      module: "builtin:BasicAggregator",
+      version: 1,
+      parameters: { feeder: 10 },
+      mapper: { properties: { suggestedAt: "{{10.`2`}}", title: "{{10.`4`}}", summary: "{{10.`5`}}" } },
+      metadata: { restore: { extra: { feeder: { label: "Read recent delivered ideas [10]" }, target: { label: "Custom" } } }, designer: { x: 1800, y: 0, name: "Build recent idea exclusions" } },
+    },
+    {
       id: 6,
       module: "openai-gpt-3:createModelResponse",
       version: 1,
       parameters: { __IMTCONN__: 8417474 },
       mapper: {
-        input: `Bulletin date: {{1.runDate}}\nRun ID: {{1.runId}}\n\nELIGIBLE NETWORK MEMBERS:\n{{3.array}}\n\nPREFERRED NORTH EAST SOURCES:\n{{5.array}}`,
+        input: `Bulletin date: {{1.runDate}}\nRun ID: {{1.runId}}\n\nELIGIBLE NETWORK MEMBERS:\n{{3.array}}\n\nPREFERRED NORTH EAST SOURCES:\n{{5.array}}\n\nRECENT IDEA ARCHIVE (avoid these ideas, angles, hooks and members):\n{{11.array}}`,
         model: "gpt-5-mini", store: false, instructions, inputContentType: "text", max_output_tokens: 12000,
         createConversation: false, tools: [{ type: "web_search_preview" }],
       },
-      metadata: { designer: { x: 1500, y: 0, name: "Write and research NAMI bulletin" }, parameters: [{ name: "__IMTCONN__", type: "account:openai-gpt-3", label: "Connection", required: true }] },
+      metadata: { designer: { x: 2100, y: 0, name: "Write and research NAMI bulletin" }, parameters: [{ name: "__IMTCONN__", type: "account:openai-gpt-3", label: "Connection", required: true }] },
     },
     {
       id: 7,
@@ -155,7 +178,41 @@ const blueprint = {
         subject: "NAMI Post Ideas | {{1.runDate}}", contentType: "html",
         toRecipients: [{ name: "Joe", address: "hello@namicreative.co.uk" }], singleValueExtendedProperties: {},
       },
-      metadata: { designer: { x: 1800, y: 0, name: "Send Joe-only Outlook briefing" } },
+      metadata: { designer: { x: 2400, y: 0, name: "Send Joe-only Outlook briefing" } },
+    },
+    {
+      id: 12,
+      module: "openai-gpt-3:createModelResponse",
+      version: 1,
+      parameters: { __IMTCONN__: 8417474 },
+      mapper: {
+        input: "{{6.result}}",
+        model: "gpt-5-mini",
+        store: false,
+        instructions: `Extract a compact reuse-prevention record from this NAMI Post Ideas HTML email. Return plain text only, no Markdown and no commentary. Use exactly these labels on separate lines:\nREELS: [each exact opening hook plus its core premise, separated by |]\nSHOWCASE ANGLES: [each carousel angle, separated by |]\nFEATURED MEMBERS: [every featured member name, separated by |]\nTEXT CAROUSEL: [cover hook plus the core argument]\nKeep the whole response below 1,800 characters. Preserve names and hooks accurately.`,
+        inputContentType: "text",
+        max_output_tokens: 900,
+        createConversation: false,
+      },
+      metadata: { designer: { x: 2700, y: 0, name: "Summarise ideas for reuse prevention" }, parameters: [{ name: "__IMTCONN__", type: "account:openai-gpt-3", label: "Connection", required: true }] },
+    },
+    {
+      id: 13,
+      module: "google-sheets:addRow",
+      version: 2,
+      parameters: { __IMTCONN__: 14434905 },
+      mapper: {
+        from: "drive", mode: "select", sheetId: "Idea Archive", spreadsheetId: `/${contentSheet}`,
+        includesHeaders: true, insertDataOption: "INSERT_ROWS", useColumnHeaders: true,
+        valueInputOption: "USER_ENTERED", insertUnformatted: false,
+        values: {
+          "Idea ID": "{{1.runId}}", "Run ID": "{{1.runId}}", "Suggested at": "{{now}}",
+          Format: "Daily bulletin", "Working title": "NAMI Post Ideas | {{1.runDate}}",
+          Hook: "{{12.result}}", Angle: "Reuse-prevention summary", "Members / subjects": "{{12.result}}",
+          "Source URLs": "", Score: "", Status: "Delivered",
+        },
+      },
+      metadata: { designer: { x: 3000, y: 0, name: "Archive delivered ideas" } },
     },
     {
       id: 8,
@@ -168,7 +225,7 @@ const blueprint = {
         valueInputOption: "USER_ENTERED", insertUnformatted: false,
         values: { "Run ID": "{{1.runId}}", "Started at": "{{1.requestedAt}}", "Completed at": "{{now}}", Status: "Delivered", "Sources checked": "13", "Ideas delivered": "6", "Email status": "Sent", "Error summary": "" },
       },
-      metadata: { designer: { x: 2100, y: 0, name: "Log successful briefing" } },
+      metadata: { designer: { x: 3300, y: 0, name: "Log successful briefing" } },
     },
   ],
   metadata: { instant: true, version: 1, designer: { orphans: [] }, scenario: { dlq: true, dataloss: false, maxErrors: 3, autoCommit: true, sequential: true } },
