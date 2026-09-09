@@ -4,17 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { primaryNav, ctaNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
 export function MobileDrawer() {
   const [open, setOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     setOpen(false);
+    setServicesOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -61,13 +63,13 @@ export function MobileDrawer() {
             />
 
             <motion.div
-              className="absolute inset-x-0 top-0 bg-surface-1 border-b border-line shadow-[0_24px_60px_rgb(0_0_0/0.4)]"
+              className="absolute inset-x-0 top-0 h-dvh overflow-y-auto overscroll-contain border-b border-line bg-surface-1 shadow-[0_24px_60px_rgb(0_0_0/0.4)]"
               initial={{ y: -32, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -32, opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="container-shell flex h-16 items-center justify-between md:h-20">
+              <div className="container-shell sticky top-0 z-10 flex h-16 items-center justify-between border-b border-line bg-surface-1/95 backdrop-blur-xl md:h-20">
                 <Link
                   href="/"
                   onClick={() => setOpen(false)}
@@ -114,19 +116,53 @@ export function MobileDrawer() {
                       >
                         {item.children ? (
                           <div className="border-y border-line py-2">
-                            <p className="px-4 py-2 text-sm font-medium text-fg-muted">
+                            <button
+                              type="button"
+                              onClick={() => setServicesOpen((value) => !value)}
+                              aria-expanded={servicesOpen}
+                              aria-controls="mobile-services-menu"
+                              className={cn(
+                                "flex w-full items-center justify-between rounded-md px-4 py-4 text-left text-2xl font-medium tracking-tight transition-colors",
+                                active
+                                  ? "bg-white/4 text-fg"
+                                  : "text-fg-muted hover:bg-white/3 hover:text-fg",
+                              )}
+                            >
                               {item.label}
-                            </p>
-                            {item.children.map((child) => (
-                              <Link
-                                key={child.href}
-                                href={child.href}
-                                className="flex items-center justify-between px-4 py-3 text-xl font-medium tracking-tight text-fg transition-colors hover:bg-white/3"
-                              >
-                                {child.label}
-                                <ArrowUpRight size={18} aria-hidden className="opacity-40" />
-                              </Link>
-                            ))}
+                              <ChevronDown
+                                size={20}
+                                aria-hidden
+                                className={cn(
+                                  "transition-transform duration-300",
+                                  servicesOpen && "rotate-180",
+                                )}
+                              />
+                            </button>
+                            <AnimatePresence initial={false}>
+                              {servicesOpen && (
+                                <motion.div
+                                  id="mobile-services-menu"
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="border-t border-line py-2">
+                                    {item.children.map((child) => (
+                                      <Link
+                                        key={child.href}
+                                        href={child.href}
+                                        className="flex items-center justify-between rounded-md px-6 py-3 text-lg font-medium tracking-tight text-fg-muted transition-colors hover:bg-white/3 hover:text-fg"
+                                      >
+                                        {child.label}
+                                        <ArrowUpRight size={17} aria-hidden className="opacity-40" />
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
                           </div>
                         ) : (
                           <Link
@@ -156,7 +192,7 @@ export function MobileDrawer() {
                     duration: 0.35,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="mt-6 border-t border-line pt-6"
+                className="mt-6 border-t border-line pt-6 pb-[max(2rem,env(safe-area-inset-bottom))]"
                 >
                   <Link
                     href={ctaNav.href}

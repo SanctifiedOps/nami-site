@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
-import { motion, useScroll, useSpring } from "motion/react";
+import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { Logo } from "./logo";
 import { MobileDrawer } from "./mobile-drawer";
 import { Magnetic } from "@/components/motion/magnetic";
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 export function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   // Gate pathname-driven active state behind mount so the server and first
   // client render are identical (no active link). Prevents a hydration
   // mismatch in this shared layout nav; the active underline animates in
@@ -29,6 +30,8 @@ export function SiteHeader() {
   });
 
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => setOpenMenu(null), [pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,7 +49,7 @@ export function SiteHeader() {
           : "border-b border-transparent bg-transparent",
       )}
     >
-      <div className="container-shell flex h-16 items-center justify-between md:h-20">
+      <div className="container-shell relative z-20 flex h-16 items-center justify-between md:h-20">
         <Magnetic strength={0.2} field={18}>
           <Logo />
         </Magnetic>
@@ -62,20 +65,42 @@ export function SiteHeader() {
                 (item.href !== "/" && pathname?.startsWith(item.href)));
             if (item.children) {
               return (
-                <div key={item.href} className="group/network relative">
+                <div
+                  key={item.href}
+                  className="relative"
+                  onMouseEnter={() => setOpenMenu(item.href)}
+                  onMouseLeave={() => setOpenMenu(null)}
+                  onBlur={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget)) {
+                      setOpenMenu(null);
+                    }
+                  }}
+                >
                   <button
                     type="button"
                     aria-haspopup="true"
+                    aria-expanded={openMenu === item.href}
+                    onClick={() =>
+                      setOpenMenu((current) =>
+                        current === item.href ? null : item.href,
+                      )
+                    }
+                    onFocus={() => setOpenMenu(item.href)}
                     className={cn(
                       "relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors duration-300",
-                      active ? "text-fg" : "text-fg-muted group-hover/network:text-fg",
+                      active || openMenu === item.href
+                        ? "text-fg"
+                        : "text-fg-muted hover:text-fg",
                     )}
                   >
                     {item.label}
                     <ChevronDown
                       size={14}
                       aria-hidden
-                      className="transition-transform duration-300 group-hover/network:rotate-180 group-focus-within/network:rotate-180"
+                      className={cn(
+                        "transition-transform duration-300",
+                        openMenu === item.href && "rotate-180",
+                      )}
                     />
                     {active && (
                       <motion.span
@@ -86,18 +111,29 @@ export function SiteHeader() {
                       />
                     )}
                   </button>
-                  <div className="pointer-events-none absolute left-1/2 top-full w-72 -translate-x-1/2 translate-y-2 border border-line bg-surface-0/95 p-2 opacity-0 shadow-[0_18px_45px_rgb(0_0_0/0.45)] backdrop-blur-xl transition-all duration-200 group-hover/network:pointer-events-auto group-hover/network:translate-y-0 group-hover/network:opacity-100 group-focus-within/network:pointer-events-auto group-focus-within/network:translate-y-0 group-focus-within/network:opacity-100">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="flex items-center justify-between border-b border-line px-4 py-3 text-sm text-fg-muted transition-colors last:border-b-0 hover:bg-white/5 hover:text-fg"
+                  <AnimatePresence>
+                    {openMenu === item.href && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 4 }}
+                        transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                        className="absolute left-1/2 top-full z-30 w-72 -translate-x-1/2 border border-line bg-surface-0/95 p-2 shadow-[0_18px_45px_rgb(0_0_0/0.45)] backdrop-blur-xl"
                       >
-                        {child.label}
-                        <ArrowUpRight size={14} aria-hidden className="opacity-50" />
-                      </Link>
-                    ))}
-                  </div>
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setOpenMenu(null)}
+                            className="flex items-center justify-between border-b border-line px-4 py-3 text-sm text-fg-muted transition-colors last:border-b-0 hover:bg-white/5 hover:text-fg"
+                          >
+                            {child.label}
+                            <ArrowUpRight size={14} aria-hidden className="opacity-50" />
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             }
@@ -157,7 +193,7 @@ export function SiteHeader() {
       <motion.div
         aria-hidden
         style={{ scaleX: progress }}
-        className="absolute inset-x-0 bottom-0 h-px origin-left bg-linear-to-r from-accent via-accent-soft to-accent-2"
+        className="absolute inset-x-0 bottom-0 z-0 h-px origin-left bg-linear-to-r from-accent via-accent-soft to-accent-2"
       />
     </header>
   );
