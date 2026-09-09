@@ -6,6 +6,7 @@ import { LetterReveal } from "@/components/motion/letter-reveal";
 import { VideoBackground } from "@/components/hero/video-background";
 import { HeroLights } from "@/components/hero/hero-lights";
 import { NetworkHeroBackground } from "@/components/hero/network-hero-background";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -14,21 +15,37 @@ type Props = {
   lead?: string;
   className?: string;
   networkBackground?: boolean;
+  backgroundImage?: string;
+  backgroundPosition?: string;
   /** Optional content rendered below the lead, inside the hero stack */
   children?: React.ReactNode;
 };
 
 /** Inner-page hero: video background + letter-reveal title */
-export function PageHero({ title, lead, className, networkBackground = false, children }: Props) {
+export function PageHero({
+  title,
+  lead,
+  className,
+  networkBackground = false,
+  backgroundImage,
+  backgroundPosition,
+  children,
+}: Props) {
   return (
     <section
       className={cn(
-        "relative flex min-h-[calc(100svh-5rem)] items-center overflow-hidden border-b border-line",
+        "relative isolate flex min-h-[calc(100svh-5rem)] items-center overflow-hidden border-b border-line",
         className,
       )}
     >
       {networkBackground ? (
         <NetworkHeroBackground />
+      ) : backgroundImage ? (
+        <ParallaxBackdrop
+          src={backgroundImage}
+          position={backgroundPosition}
+          overlay={0.72}
+        />
       ) : (
         <VideoBackground src="wave-3.mp4" overlay={0.78} />
       )}
@@ -46,12 +63,12 @@ export function PageHero({ title, lead, className, networkBackground = false, ch
         animate="show"
         variants={stage}
       >
-        <h1 className="mx-auto max-w-4xl text-balance text-[clamp(1.8rem,3.7vw,3.15rem)] font-semibold leading-[1.03] tracking-tight md:leading-[1]">
+        <h1 className="type-page-title mx-auto max-w-4xl text-balance">
           <LetterReveal>{title}</LetterReveal>
         </h1>
         {lead && (
           <motion.p
-            className="mx-auto mt-7 max-w-2xl text-base leading-[1.35] text-fg-muted md:mt-8 md:text-lg"
+            className="type-lead mx-auto mt-7 max-w-2xl md:mt-8"
             variants={fadeUp}
           >
             {lead}

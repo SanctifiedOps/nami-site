@@ -72,13 +72,6 @@ export default function CreatorWaveWorkshopThankYouPage() {
                 See selected work
                 <ArrowUpRight size={14} aria-hidden className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
-              <Link
-                href="/insights"
-                className="group inline-flex min-w-[12rem] items-center justify-center gap-2 rounded-full border border-line-strong px-6 py-3.5 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
-              >
-                Insights
-                <ArrowUpRight size={14} aria-hidden className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
             </div>
           </div>
         </div>

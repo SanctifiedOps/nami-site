@@ -5,15 +5,13 @@ import { stage, blurUp } from "@/lib/motion";
 import { LetterReveal } from "@/components/motion/letter-reveal";
 
 type Props = {
-  steps: string[];
+  steps: { title: string; body: string }[];
   label?: string;
   heading?: React.ReactNode;
 };
 
 /**
- * The approach as a connected numbered sequence: sticky heading on the left,
- * steps threaded onto a vertical accent rail on the right. Replaces the flat
- * stack of numbered paragraphs.
+ * A compact, readable account of how the work was approached.
  */
 export function ApproachSteps({
   steps,
@@ -21,10 +19,10 @@ export function ApproachSteps({
   heading,
 }: Props) {
   return (
-    <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-      <div className="lg:sticky lg:top-28 lg:self-start">
+    <div>
+      <div className="mx-auto max-w-3xl text-center">
         <p className="mono-label">{label}</p>
-        <h2 className="mt-5 text-[clamp(2rem,4vw,3rem)] font-medium leading-[0.98] tracking-tight md:leading-[0.96]">
+        <h2 className="mt-5 type-section-title">
           <LetterReveal stagger={0.014} duration={0.65}>
             {heading ?? (
               <>
@@ -35,29 +33,28 @@ export function ApproachSteps({
         </h2>
       </div>
 
-      <motion.ol
+      <motion.div
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.2 }}
         variants={stage}
-        className="relative space-y-10"
+        className="mt-12 grid gap-4 md:mt-16 md:grid-cols-3"
       >
-        <span
-          aria-hidden
-          className="absolute bottom-4 left-4 top-4 w-px bg-line"
-        />
         {steps.map((step, i) => (
-          <motion.li key={i} variants={blurUp} className="relative pl-14">
-            <span
-              aria-hidden
-              className="glass-refractive absolute left-0 top-0 grid size-8 place-items-center rounded-full font-mono text-xs text-accent"
-            >
-              0{i + 1}
-            </span>
-            <p className="leading-relaxed text-fg-muted md:text-lg">{step}</p>
-          </motion.li>
+          <motion.article
+            key={step.title}
+            variants={blurUp}
+            className={`border border-line bg-surface-1/55 p-6 transition-[transform,border-color,background-color,box-shadow] duration-700 ease-[var(--ease-out-expo)] hover:-translate-y-1.5 hover:border-accent/35 hover:shadow-[0_18px_48px_rgb(0_0_0/0.24)] motion-reduce:transform-none md:p-8 ${
+              i === 1
+                ? "bg-[linear-gradient(145deg,rgb(255_0_188/0.08),rgb(19_20_24/0.7)_58%)] md:-translate-y-3"
+                : ""
+            }`}
+          >
+            <h3 className="type-card-title">{step.title}</h3>
+            <p className="mt-4 leading-relaxed text-fg-muted">{step.body}</p>
+          </motion.article>
         ))}
-      </motion.ol>
+      </motion.div>
     </div>
   );
 }

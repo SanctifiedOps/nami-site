@@ -9,15 +9,11 @@ import { PositioningBand } from "@/components/sections/positioning-band";
 import { PressurePaths } from "@/components/sections/pressure-paths";
 import { WorkGrid } from "@/components/sections/work-grid";
 import { Testimonials } from "@/components/sections/testimonials";
-import { RecentInsights } from "@/components/sections/recent-insights";
-import { getAllPosts } from "@/lib/content/insights";
 import { faq } from "@/lib/content/faq";
 import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 
-export default async function Home() {
-  const posts = await getAllPosts();
-  const recent = posts.slice(0, 3);
-
+export default function Home() {
   return (
     <>
       <JsonLd schema={buildFaqPageSchema(faq)} />
@@ -28,21 +24,29 @@ export default async function Home() {
 
 
       {/* SERVICES */}
-      <section className="container-shell py-28 md:py-40">
-        <SectionIntro
-          index="01 / What we build"
-          title={
-            <>
-              One person for the marketing jobs{" "}
-              <span className="text-gradient sm:block">
-                you keep carrying yourself
-              </span>
-            </>
-          }
-          lead="Your brand, website, content, and automation should feel like the same business. I help get those parts sorted, then leave you with a setup you can use."
+      <section className="relative isolate overflow-hidden py-28 md:py-40">
+        <ParallaxBackdrop
+          src="/images/north-east/6.jpg"
+          position="center 52%"
+          overlay={0.84}
         />
-        <div className="mt-16 md:mt-20">
-          <ServicesGrid />
+        <div className="container-shell relative z-10">
+          <SectionIntro
+            align="center"
+            index="01 / What we build"
+            title={
+              <>
+                The jobs you know need sorting{" "}
+                <span className="text-gradient sm:block">
+                  but never get time to fix
+                </span>
+              </>
+            }
+            lead="Bring me one problem or the whole list. I can sort the brand, website, content and repetitive admin, then leave you with something you can actually use."
+          />
+          <div className="mt-16 md:mt-20">
+            <ServicesGrid />
+          </div>
         </div>
       </section>
 
@@ -60,11 +64,11 @@ export default async function Home() {
           index="03 / Selected work"
           title={
             <>
-              Work where the public face{" "}
-              <span className="text-gradient sm:block">and the working parts lined up</span>
+              What I helped{" "}
+              <span className="text-gradient sm:block">these businesses sort</span>
             </>
           }
-          lead="Six projects across on-chain intelligence, members clubs, community brands, conversion funnels, property, and a national trade body. Different sectors, same job: make the message, content, website, and systems feel like one joined-up business."
+          lead="Some needed a clearer brand or a better website. Others were losing time to content and admin. Have a look at what was getting in the way, what I changed and how the work turned out."
           className="mb-16 md:mb-20"
         />
 
@@ -88,15 +92,16 @@ export default async function Home() {
       {/* TESTIMONIALS */}
       <Testimonials />
 
-      <section className="border-y border-line bg-surface-1/35 py-24 md:py-32">
-        <div className="container-shell">
+      <section className="relative isolate overflow-hidden border-y border-line py-24 md:py-32">
+        <ParallaxBackdrop src="/images/north-east/1.jpg" position="center 52%" overlay={0.8} />
+        <div className="container-shell relative z-10">
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
             <div>
               <p className="mono-label mb-5">NAMI Creative Network</p>
-              <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl md:leading-[0.96]">
+              <h2 className="type-section-title">
                 The marketing work and the creator network have the same aim
               </h2>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted md:text-xl">
+              <p className="type-lead mt-6 max-w-2xl">
                 Support the North East. I help businesses get their brand,
                 website, content, and automation sorted properly. The network
                 gives creators, artists, freelancers, local businesses, and
@@ -163,9 +168,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* CREATIVE WAVES */}
-      <RecentInsights posts={recent} />
 
       {/* FAQ */}
       <section className="container-shell border-t border-line py-28 md:py-40">

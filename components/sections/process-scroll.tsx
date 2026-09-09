@@ -21,8 +21,8 @@ type Props = {
 
 const DEFAULT_TITLE = (
   <>
-    A straightforward way to get the{" "}
-    <span className="text-gradient sm:block">work sorted</span>
+    What happens when we{" "}
+    <span className="text-gradient sm:block">work together</span>
   </>
 );
 
@@ -37,7 +37,7 @@ const DEFAULT_TITLE = (
 export function ProcessScroll({
   index = "02 / How we work",
   title = DEFAULT_TITLE,
-  lead = "I start with what the business needs, then build the brand, site, content, and automation around that. Launch gets the work into the real world.",
+  lead = "We work out what is causing the problem, agree what needs doing and get it sorted. You will always know what is happening and what comes next.",
 }: Props = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -69,12 +69,12 @@ export function ProcessScroll({
       {/* Sticky left: heading + scroll-spy stepper */}
       <div className="lg:sticky lg:top-28 lg:self-start">
         {index && <span className="mono-label">{index}</span>}
-        <h2 className="mt-5 text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
+        <h2 className="type-section-title mt-5">
           <LetterReveal stagger={0.014} duration={0.65}>
             {title}
           </LetterReveal>
         </h2>
-        <p className="mt-6 max-w-md leading-relaxed text-fg-muted md:text-lg">
+        <p className="type-lead mt-6 max-w-md">
           {lead}
         </p>
 
@@ -131,16 +131,11 @@ export function ProcessScroll({
                 animate={{ opacity: reduced ? 1 : isActive ? 1 : 0.55 }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="flex items-baseline gap-4">
-                  <span className="font-mono text-sm text-accent">
-                    {step.number}
-                  </span>
-                  <div>
-                    <h3 className="text-2xl font-medium tracking-tight md:text-3xl">
-                      {step.title}
-                    </h3>
-                    <p className="mono-label mt-1">{step.duration}</p>
-                  </div>
+                <div>
+                  <h3 className="text-2xl font-medium tracking-tight md:text-3xl">
+                    {step.title}
+                  </h3>
+                  <p className="mono-label mt-1">{step.duration}</p>
                 </div>
                 <p className="mt-6 leading-relaxed text-fg-muted">
                   {step.summary}

@@ -112,23 +112,37 @@ export function MobileDrawer() {
                           ease: [0.16, 1, 0.3, 1],
                         }}
                       >
-                        <Link
-                          href={item.href}
-                          aria-current={active ? "page" : undefined}
-                          className={cn(
-                            "flex items-center justify-between rounded-md px-4 py-4 text-2xl font-medium tracking-tight transition-colors",
-                            active
-                              ? "text-fg bg-white/4"
-                              : "text-fg-muted hover:text-fg hover:bg-white/3",
-                          )}
-                        >
-                          {item.label}
-                          <ArrowUpRight
-                            size={20}
-                            aria-hidden
-                            className="opacity-40"
-                          />
-                        </Link>
+                        {item.children ? (
+                          <div className="border-y border-line py-2">
+                            <p className="px-4 py-2 text-sm font-medium text-fg-muted">
+                              {item.label}
+                            </p>
+                            {item.children.map((child) => (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                className="flex items-center justify-between px-4 py-3 text-xl font-medium tracking-tight text-fg transition-colors hover:bg-white/3"
+                              >
+                                {child.label}
+                                <ArrowUpRight size={18} aria-hidden className="opacity-40" />
+                              </Link>
+                            ))}
+                          </div>
+                        ) : (
+                          <Link
+                            href={item.href}
+                            aria-current={active ? "page" : undefined}
+                            className={cn(
+                              "flex items-center justify-between rounded-md px-4 py-4 text-2xl font-medium tracking-tight transition-colors",
+                              active
+                                ? "text-fg bg-white/4"
+                                : "text-fg-muted hover:text-fg hover:bg-white/3",
+                            )}
+                          >
+                            {item.label}
+                            <ArrowUpRight size={20} aria-hidden className="opacity-40" />
+                          </Link>
+                        )}
                       </motion.li>
                     );
                   })}

@@ -36,10 +36,7 @@ export function ServiceCard({ service, className }: Props) {
           </div>
 
           <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent/80">
-              {service.pillar}
-            </p>
-            <h3 className="text-2xl font-medium tracking-tight text-fg md:text-3xl">
+            <h3 className="type-card-title text-fg">
               {service.title}
             </h3>
             <p className="leading-relaxed text-fg-muted">{service.tagline}</p>

@@ -12,11 +12,11 @@ const FRAGMENTED = [
 ];
 
 const PILLARS = [
-  "Brand strategy + identity",
-  "Content systems",
-  "Website + funnel",
-  "Visual direction",
-  "Automation + growth",
+  "Your brand and wording",
+  "Your content",
+  "Your website",
+  "Your visual materials",
+  "Your admin and follow-ups",
 ];
 
 /**
@@ -38,10 +38,10 @@ export function IntegratedSystem() {
         variants={blurUp}
         className="rounded-3xl border border-line bg-surface-1/30 p-8 md:p-10"
       >
-        <p className="mono-label">Fragmented</p>
+        <p className="mono-label">When the work is split up</p>
         <h3 className="mt-4 text-2xl font-medium tracking-tight md:text-3xl">
-          Four specialists.{" "}
-          <span className="text-fg-subtle">Four different versions of the brief</span>
+          You end up{" "}
+          <span className="text-fg-subtle">managing everybody else</span>
         </h3>
         <ul className="mt-8 space-y-3">
           {FRAGMENTED.map((v) => (
@@ -55,9 +55,8 @@ export function IntegratedSystem() {
           ))}
         </ul>
         <p className="mt-6 text-sm leading-relaxed text-fg-subtle">
-          The drift usually starts in the handoff: one person owns the look,
-          another owns the words, another owns the site, and nobody owns the
-          full customer journey.
+          Each person only sees their part of the job. You have to repeat the
+          brief, answer the same questions and make sure the pieces still fit.
         </p>
       </motion.div>
 
@@ -70,10 +69,10 @@ export function IntegratedSystem() {
           aria-hidden
           className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgb(255_0_188/0.2),transparent_70%)] blur-2xl"
         />
-        <p className="mono-label text-accent/80">Connected</p>
+        <p className="mono-label text-accent/80">Working with me</p>
         <h3 className="mt-4 text-2xl font-medium tracking-tight md:text-3xl">
-          Five pieces.{" "}
-          <span className="text-gradient">One operating picture</span>
+          One person from{" "}
+          <span className="text-gradient">the first chat to launch</span>
         </h3>
         <ol className="relative mt-8 space-y-3 pl-7">
           <span
@@ -94,9 +93,9 @@ export function IntegratedSystem() {
           ))}
         </ol>
         <p className="mt-6 text-sm leading-relaxed text-fg-muted">
-          The positioning guides the content. The content guides the site. The
-          site guides the automation. I build the work in the order your
-          customer meets it.
+          I understand how the whole job fits together. The words match the
+          design, the website supports the offer and the follow-ups do not get
+          forgotten.
         </p>
       </motion.div>
     </motion.div>

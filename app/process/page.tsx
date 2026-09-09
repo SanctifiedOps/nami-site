@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/page-hero";
 import { ProcessScroll } from "@/components/sections/process-scroll";
-import { SectionHeading } from "@/components/sections/section-heading";
 
 export const metadata: Metadata = {
   title: "Process | How NAMI Creative Works",
@@ -22,6 +21,8 @@ export default function ProcessPage() {
   return (
     <>
       <PageHero
+        backgroundImage="/images/north-east/5.jpg"
+        backgroundPosition="center 45%"
         eyebrow="Process"
         title={
           <>
@@ -49,24 +50,6 @@ export default function ProcessPage() {
         />
       </section>
 
-      <section className="border-t border-line bg-surface-1/40 py-24 md:py-32">
-        <div className="container-shell">
-          <SectionHeading
-            align="center"
-            eyebrow="The principle"
-            title={
-              <>
-                We launch fast,{" "}
-                <span className="text-gradient sm:block">
-                  then stay close
-                </span>
-              </>
-            }
-            lead="Launch is when the assumptions meet real traffic, real content deadlines, real leads, and real team habits. That is where the system either holds or shows us what to improve next."
-            className="max-w-3xl"
-          />
-        </div>
-      </section>
     </>
   );
 }

@@ -13,6 +13,8 @@ import {
   Users,
 } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { NetworkForm } from "./network-form";
 
 export const metadata: Metadata = {
@@ -127,7 +129,7 @@ export default function NetworkPage() {
             <span className="text-gradient sm:block">creative network</span>
           </>
         }
-        lead="A place for creators, artists, freelancers, local businesses, and independent brands doing proper work across the region. Put your name in the network so NAMI can keep you in mind for features, showcases, referrals, and future opportunities."
+        lead="For creatives, artists and independent businesses doing proper work across the North East."
       >
         <div className="flex flex-wrap items-center justify-center gap-3">
           <FormAnchor>Join the network</FormAnchor>
@@ -147,20 +149,19 @@ export default function NetworkPage() {
       </div>
 
       <section data-network-section="why_this_exists" className="container-shell py-20 md:py-28">
-        <div className="grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:gap-20">
-          <p className="mono-label md:mt-2">01 / Why this exists</p>
-          <div className="max-w-2xl space-y-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="space-y-6">
             <p className="text-2xl font-medium leading-[0.98] tracking-tight md:text-3xl md:leading-[0.96]">
               The North East is full of people making good things, but too much
               of it sits in separate corners
             </p>
-            <p className="leading-relaxed text-fg-muted md:text-lg">
+            <p className="mx-auto max-w-2xl leading-relaxed text-fg-muted md:text-lg">
               NAMI started as NAMI Up North because I wanted to give local
               creativity more attention. Artists, musicians, photographers,
               makers, designers, freelancers, small businesses, and brands were
               doing work that deserved more credit.
             </p>
-            <p className="leading-relaxed text-fg-muted md:text-lg">
+            <p className="mx-auto max-w-2xl leading-relaxed text-fg-muted md:text-lg">
               NAMI Creative Network is the next step. I am building a proper
               list of people across the region so there is one place to find
               the work, share opportunities, make introductions, and back the
@@ -177,7 +178,7 @@ export default function NetworkPage() {
         <div className="container-shell">
           <div className="mx-auto mb-12 max-w-4xl text-center">
             <p className="mono-label mb-5">02 / Why join</p>
-            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl md:leading-[0.96]">
+            <h2 className="type-section-title">
               Be easier to find when the right people are looking
             </h2>
             <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-fg-muted md:text-lg">
@@ -196,7 +197,7 @@ export default function NetworkPage() {
                   className="glass-refractive rounded-2xl p-7 md:p-8"
                 >
                   <Icon size={22} className="text-accent" aria-hidden />
-                  <h3 className="mt-6 text-2xl font-medium tracking-tight">
+                  <h3 className="type-card-title mt-6">
                     {card.title}
                   </h3>
                   <p className="mt-4 leading-relaxed text-fg-muted">
@@ -213,11 +214,20 @@ export default function NetworkPage() {
         </div>
       </section>
 
-      <section data-network-section="who_belongs" className="container-shell py-20 md:py-28">
-        <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
-          <div>
+      <section
+        data-network-section="who_belongs"
+        className="relative isolate overflow-hidden border-y border-line py-20 md:py-28"
+      >
+        <ParallaxBackdrop
+          src="/images/north-east/7.jpg"
+          position="center 52%"
+          overlay={0.86}
+        />
+        <div className="container-shell relative z-10 grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-20">
+          <ScrollReveal>
+            <div>
             <p className="mono-label mb-5">03 / Who belongs here</p>
-            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
+            <h2 className="type-section-title">
               If your work adds something to the region, NAMI should know
               about it
             </h2>
@@ -227,16 +237,26 @@ export default function NetworkPage() {
               filming, playing, painting, running a place, or growing a brand
               up here, put it forward.
             </p>
-          </div>
+            </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
-            {audience.map((item) => (
-              <div
-                key={item}
-                className="rounded-xl border border-line bg-surface-1/45 px-5 py-4 text-sm font-medium text-fg"
-              >
-                {item}
-              </div>
+            {audience.map((item, index) => (
+              <ScrollReveal key={item} delay={(index % 4) * 0.055}>
+                <div
+                  className={`group relative min-h-20 overflow-hidden border border-line bg-surface-0/70 px-5 py-5 text-sm font-medium text-fg shadow-[0_12px_36px_rgb(0_0_0/0.16)] backdrop-blur-sm transition-[transform,border-color,background-color,box-shadow] duration-700 ease-[var(--ease-out-expo)] hover:-translate-y-1.5 hover:scale-[1.012] hover:border-accent/40 hover:bg-surface-1/90 hover:shadow-[0_20px_48px_rgb(0_0_0/0.3),0_0_28px_rgb(255_0_188/0.08)] motion-reduce:transform-none ${
+                    index === 0 || index === 5
+                      ? "bg-[linear-gradient(135deg,rgb(255_0_188/0.11),rgb(12_13_16/0.78)_62%)]"
+                      : ""
+                  }`}
+                >
+                  <span className="relative z-10">{item}</span>
+                  <span
+                    aria-hidden
+                    className="absolute -bottom-10 -right-8 h-24 w-24 rounded-full bg-accent/0 blur-2xl transition-colors duration-700 group-hover:bg-accent/15"
+                  />
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -246,7 +266,7 @@ export default function NetworkPage() {
         <div className="container-shell">
           <div className="mx-auto max-w-4xl text-center">
             <p className="mono-label mb-5">04 / What it can open up</p>
-            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl md:leading-[0.96]">
+            <h2 className="type-section-title">
               A network built for visibility, support, and proper opportunity
             </h2>
             <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-fg-muted md:text-lg">
@@ -266,7 +286,7 @@ export default function NetworkPage() {
                   className="rounded-2xl border border-line bg-surface-1/45 p-7 md:p-8"
                 >
                   <Icon size={22} className="text-accent" aria-hidden />
-                  <h3 className="mt-6 text-2xl font-medium tracking-tight">
+                  <h3 className="type-card-title mt-6">
                     {card.title}
                   </h3>
                   <p className="mt-4 leading-relaxed text-fg-muted">
@@ -300,7 +320,7 @@ export default function NetworkPage() {
         <div className="container-shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <div>
             <p className="mono-label mb-5">05 / Join the network</p>
-            <h2 className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
+            <h2 className="type-section-title">
               Join the network so NAMI knows what you are building
             </h2>
             <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">

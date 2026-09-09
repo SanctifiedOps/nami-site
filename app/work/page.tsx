@@ -7,7 +7,7 @@ import { WorkGrid } from "@/components/sections/work-grid";
 export const metadata: Metadata = {
   title: "Work | Newcastle Marketing, Websites & Creative Projects",
   description:
-    "Selected NAMI Creative work across North East property, community brands, websites, content, funnels, and marketing systems.",
+    "See how NAMI Creative has helped businesses improve their brand, website, content, enquiries and day-to-day systems.",
   keywords: [
     "creative partner case studies",
     "brand strategy case studies UK",
@@ -20,16 +20,18 @@ export default function WorkPage() {
   return (
     <>
       <PageHero
+        backgroundImage="/images/north-east/7.jpg"
+        backgroundPosition="center 48%"
         eyebrow="Selected work"
         title={
           <>
-            Brands where the public face and{" "}
+            Work that looks right{" "}
             <span className="text-gradient sm:block">
-              working parts line up
+              and works properly
             </span>
           </>
         }
-        lead="Six projects across on-chain intelligence, UK members clubs, community brands, conversion funnels, property, and a national trade body. The common thread is simple: the public face and the working parts line up."
+        lead="Each business came with something that was getting in the way. Here is what I helped them sort and what changed as a result."
       />
 
       <section className="container-shell py-24 md:py-32">
@@ -37,19 +39,22 @@ export default function WorkPage() {
 
         <div className="glass-refractive mt-20 flex flex-col items-start gap-6 rounded-3xl p-10 md:mt-28 md:flex-row md:items-center md:justify-between md:p-16">
           <div className="max-w-xl">
-            <p className="mono-label mb-3">Want to be next?</p>
+            <p className="mono-label mb-3">Work with me</p>
             <p className="text-2xl font-medium tracking-tight md:text-3xl">
-              I keep the calendar narrow{" "}
+              Got something{" "}
               <span className="text-gradient">
-                so the work gets the room it needs
+                that needs sorting?
               </span>
+            </p>
+            <p className="mt-4 max-w-lg leading-relaxed text-fg-muted">
+              Tell me what is getting in the way. I will tell you whether I can help.
             </p>
           </div>
           <Link
             href="/contact"
             className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
           >
-            Open a conversation
+            Tell me about the job
             <ArrowUpRight
               size={16}
               aria-hidden

@@ -8,11 +8,12 @@ import { PressurePaths } from "@/components/sections/pressure-paths";
 import { CommonStartingPoints } from "@/components/sections/common-starting-points";
 import { faq } from "@/lib/content/faq";
 import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 
 export const metadata: Metadata = {
   title: "Marketing Services Newcastle | Brand, Websites & Content",
   description:
-    "Marketing services for North East businesses that need their brand, content, website, and buyer journey sorted properly by one creative partner.",
+    "Branding, websites, content and automation for North East businesses that need their marketing working properly.",
   keywords: [
     "brand strategy UK",
     "content systems agency",
@@ -31,38 +32,38 @@ export default function ServicesPage() {
         eyebrow="Services"
         title={
           <>
-            Five parts of the same{" "}
-            <span className="text-gradient sm:block">working system</span>
+            Get the marketing{" "}
+            <span className="text-gradient sm:block">working properly</span>
           </>
         }
-        lead="Brand, content, website, visual direction, and automation all affect each other in the real world. I plan them together so the work still feels like one business once it goes live."
+        lead="I help small businesses sort the brand, website, content and repetitive admin that keep getting pushed down the list. Bring me one problem or ask me to look at the lot."
       />
 
       <PressurePaths
         title={
           <>
-            Which part is{" "}
-            <span className="text-gradient sm:block">costing you momentum?</span>
+            Tell me what is{" "}
+            <span className="text-gradient sm:block">not working</span>
           </>
         }
-        lead="You do not need to diagnose the whole setup before we talk. Start with the part that keeps creating drag, then I trace what is causing it."
+        lead="Your website might be quiet, your marketing might feel messy, or too much admin might keep falling back on you. Start there and I will help work out what needs fixing."
         className="border-t-0"
       />
 
-      {/* The five pillars */}
+      {/* Services */}
       <section className="container-shell py-24 md:py-32">
         <SectionIntro
-          index="01 / The five pillars"
+          align="center"
           title={
             <>
-              Start where the pressure is.{" "}
+              Help with the parts{" "}
               <span className="text-gradient sm:block">
-                Build toward the whole system
+                customers actually see
               </span>
             </>
           }
-          lead="Some clients need the website first. Some need the voice cleaned up before another campaign goes live. The point is to fix the part making the rest harder, then connect it properly."
-          className="mb-16 md:mb-20"
+          lead="Choose the job that needs attention now. I will make sure it works with everything you already have and is practical to keep using."
+          className="mx-auto mb-16 md:mb-20"
         />
         <ServicesGrid />
       </section>
@@ -70,19 +71,19 @@ export default function ServicesPage() {
       {/* The model â€” integrated vs fragmented */}
       <CommonStartingPoints />
 
-      <section className="relative overflow-hidden border-t border-line bg-surface-1/40 py-24 md:py-32">
-        <div aria-hidden className="hairline-grid absolute inset-0 opacity-40" />
-        <div className="container-shell relative">
+      <section className="relative isolate overflow-hidden border-t border-line py-24 md:py-32">
+        <ParallaxBackdrop src="/images/north-east/4.jpg" position="center 46%" overlay={0.82} />
+        <div className="container-shell relative z-10">
           <SectionIntro
             align="center"
             index="02 / The model"
             title={
               <>
-                One brief.{" "}
-                <span className="text-gradient sm:block">Fewer handoffs</span>
+                One person who{" "}
+                <span className="text-gradient sm:block">understands the whole job</span>
               </>
             }
-            lead="The costly part is rarely the deliverable itself. It is the translation between people who were never working from the same picture."
+            lead="You should not have to explain the business again every time the work moves from words to design, the website or the follow-up emails."
             className="mb-14 md:mb-16"
           />
           <IntegratedSystem />
@@ -96,11 +97,11 @@ export default function ServicesPage() {
             <SectionIntro
               title={
                 <>
-                  Questions,{" "}
-                  <span className="text-gradient sm:block">answered</span>
+                  A few things{" "}
+                  <span className="text-gradient sm:block">you might want to know</span>
                 </>
               }
-              lead="The things founders ask before we start. Anything else, send me a note."
+              lead="If your question is not here, send me a message and I will give you a straight answer."
             />
           </div>
           <FAQAccordion />

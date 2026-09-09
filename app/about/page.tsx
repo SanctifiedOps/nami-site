@@ -8,6 +8,7 @@ import { LinkedinIcon } from "@/components/icons/socials";
 import { PageHero } from "@/components/sections/page-hero";
 import { Testimonials } from "@/components/sections/testimonials";
 import { SpotlightCard } from "@/components/motion/spotlight-card";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { values } from "@/lib/content/values";
 import { stage, stageFast, fadeUp, cardIn } from "@/lib/motion";
 
@@ -15,14 +16,16 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
+        backgroundImage="/images/north-east/3.jpg"
+        backgroundPosition="center"
         eyebrow="About - NAMI Creative"
         title={
           <>
-            Built in Newcastle,{" "}
-            <span className="text-gradient sm:block">backing the North East</span>
+            Good work should not{" "}
+            <span className="text-gradient sm:block">go unnoticed</span>
           </>
         }
-        lead="I'm Joe Wilson. I help North East businesses, brands and creators get seen, understood, and backed through marketing work, websites, content, automation, and the NAMI Creative Network."
+        lead="I’m Joe Wilson. I help North East businesses explain what they do, look the part and make it easier for customers to choose them. I also run the NAMI Creative Network to help local creative people get found and hired."
       />
 
       {/* Story */}
@@ -32,66 +35,70 @@ export default function AboutPage() {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
           variants={stage}
-          className="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20"
+          className="mx-auto max-w-3xl text-center"
         >
           <motion.p className="mono-label md:mt-2" variants={fadeUp}>
             01 / The story
           </motion.p>
-          <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
-            <p className="text-2xl font-medium leading-[1.03] tracking-tight md:text-3xl">
-              Marketing services are one part of NAMI, but they are not the whole story.
+          <motion.div variants={fadeUp} className="space-y-6">
+            <p className="type-subsection-title">
+              NAMI started with a simple frustration: too much good work gets overlooked.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              The work starts with helping businesses figure out what they are
-              trying to say, who they are saying it to, and how the brand,
-              content, website, and working bits should fit around that.
+              I kept meeting people who were brilliant at what they did, but
+              their brand, website or content did not show it. Customers could
+              not quickly understand why they should choose them.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              I also care about the place the work comes from. NAMI grew out of
-              a love for the North East and the people here who keep making,
-              building, opening, posting, filming, designing, playing, and
-              putting themselves forward.
+              That is the part I help fix. I bring the words, design, website,
+              content and repetitive admin together so the business is easier
+              to understand and easier to run.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              That is the thread through all of it: clear thinking, good
-              execution, and more support for the people doing proper work up
-              here.
+              The Network grew from the same idea. There are talented people
+              across the North East who deserve a proper place to be found.
             </p>
           </motion.div>
         </motion.div>
       </section>
 
       {/* North East */}
-      <section className="border-t border-line bg-surface-1/30 py-24 md:py-32">
-        <div className="container-shell">
+      <section className="relative isolate overflow-hidden border-y border-line py-24 md:py-32">
+        <ParallaxBackdrop
+          src="/images/north-east/4.jpg"
+          position="center 48%"
+          overlay={0.84}
+        />
+        <div className="container-shell relative z-10">
           <motion.div
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
             variants={stage}
-            className="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20"
+            className="mx-auto max-w-3xl text-center"
           >
             <motion.p className="mono-label md:mt-2" variants={fadeUp}>
               02 / The North East
             </motion.p>
-            <motion.div variants={fadeUp} className="space-y-6 max-w-2xl">
-              <p className="text-2xl font-medium leading-[1.03] tracking-tight md:text-3xl">
-                I want more North East people to be seen, trusted, hired, and taken seriously.
+            <motion.div variants={fadeUp} className="space-y-6">
+              <p className="type-subsection-title">
+                I want more North East people to get the attention their work deserves.
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                I am a born and bred Newcastle lad, a proud dad, and I love
-                seeing people around here win. The region is full of artists,
-                musicians, makers, freelancers, local businesses, and
-                independent brands doing work with care behind it.
+                I was born and raised in Newcastle. I know how much talent is
+                here, from artists and makers to freelancers, shops and growing
+                businesses. Plenty of them are doing excellent work without
+                getting enough attention for it.
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                The marketing services help businesses get sorted properly: the
-                words, the website, the content, the automation, and the route
-                from interest to enquiry. The creator network gives local talent
-                more chances to be found, featured, referred, and backed.
+                My client work helps businesses present themselves clearly and
+                turn more interest into enquiries. The Network helps local
+                people get discovered, featured and recommended.
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                They work hand in hand. Better businesses make the region stronger. A stronger creative network gives those businesses more people to work with, champion, and recommend.
+                Both sides support each other. Local businesses need good people
+                to work with, and local creatives need more chances to be seen
+                and paid for what they do.
               </p>
             </motion.div>
           </motion.div>
@@ -111,20 +118,17 @@ export default function AboutPage() {
           >
             <motion.div variants={fadeUp} className="max-w-2xl">
               <p className="mono-label mb-5">03 / NAMI Creative Network</p>
-              <h2 className="text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-[0.98] tracking-tight md:leading-[0.96]">
-                A growing network for the people making the North East feel alive
+              <h2 className="type-section-title">
+                One place to find creative people across the North East
               </h2>
               <p className="mt-6 text-fg-muted md:text-lg leading-relaxed">
-                NAMI Creative Network is where I keep track of local creators,
-                artists, freelancers, small businesses, and independent brands.
-                It helps me spotlight the right work, send better roundups, make
-                useful introductions, and point opportunities towards the people
-                who should hear about them.
+                The NAMI Creative Network is a public directory of artists,
+                freelancers, makers and independent businesses. It gives people
+                a simple way to find local talent and see what they do.
               </p>
               <p className="mt-5 text-fg-muted md:text-lg leading-relaxed">
-                If the client work is about helping businesses show up better,
-                the network is about making sure more North East people have a
-                place to be seen when they do.
+                I also use it to share member work, send useful opportunities
+                and make introductions when somebody asks who I would recommend.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
@@ -142,7 +146,7 @@ export default function AboutPage() {
                   href="/contact"
                   className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
                 >
-                  Talk about the marketing work
+                  Work with me
                   <ArrowUpRight
                     size={14}
                     aria-hidden
@@ -155,26 +159,26 @@ export default function AboutPage() {
             <motion.div variants={fadeUp} className="grid gap-5 sm:grid-cols-3 lg:grid-cols-1">
               <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
                 <Users size={22} className="text-accent" aria-hidden />
-                <h3 className="mt-5 text-2xl font-medium tracking-tight">Visibility</h3>
+                <h3 className="type-card-title mt-5">Visibility</h3>
                 <p className="mt-3 leading-relaxed text-fg-muted">
-                  Features, reposts, roundups, and spotlights for people doing
-                  proper work across the region.
+                  Member features and posts that put more local work in front
+                  of the right people.
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
                 <Mail size={22} className="text-accent" aria-hidden />
-                <h3 className="mt-5 text-2xl font-medium tracking-tight">Roundups</h3>
+                <h3 className="type-card-title mt-5">Useful updates</h3>
                 <p className="mt-3 leading-relaxed text-fg-muted">
-                  A weekly email with featured creators, news, events, and
-                  opportunities from across the North East.
+                  Emails with local people to follow, events worth knowing
+                  about and opportunities for members.
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
                 <Handshake size={22} className="text-accent" aria-hidden />
-                <h3 className="mt-5 text-2xl font-medium tracking-tight">Referrals</h3>
+                <h3 className="type-card-title mt-5">Introductions</h3>
                 <p className="mt-3 leading-relaxed text-fg-muted">
-                  A clearer way for NAMI to remember who does what, where they
-                  are based, and who to recommend.
+                  A reliable way to find the right person when somebody needs
+                  a photographer, designer, maker or specialist.
                 </p>
               </div>
             </motion.div>
@@ -189,16 +193,16 @@ export default function AboutPage() {
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
             variants={stage}
-            className="mb-14 max-w-2xl"
+            className="mx-auto mb-14 max-w-3xl text-center"
           >
             <motion.span className="mono-label mb-5 block" variants={fadeUp}>
               How I think
             </motion.span>
             <motion.h2
-              className="text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-[0.98] tracking-tight md:leading-[0.96]"
+              className="type-section-title"
               variants={fadeUp}
             >
-              Three principles <span className="text-gradient">I work by</span>
+              What you can expect <span className="text-gradient">from me</span>
             </motion.h2>
           </motion.div>
 
@@ -209,17 +213,14 @@ export default function AboutPage() {
             variants={stageFast}
             className="grid gap-6 md:grid-cols-3 md:gap-8"
           >
-            {values.map((value, i) => (
+            {values.map((value) => (
               <motion.div key={value.title} variants={cardIn}>
                 <SpotlightCard
                   tilt={4}
                   className="glass-refractive glass-refractive--hover h-full rounded-2xl"
                 >
                   <div className="relative z-10 p-8 md:p-10">
-                    <span className="font-mono text-sm text-accent">
-                      0{i + 1}
-                    </span>
-                    <h3 className="mt-6 text-2xl font-medium tracking-tight md:text-3xl">
+                    <h3 className="type-card-title">
                       {value.title}
                     </h3>
                     <p className="mt-4 leading-relaxed text-fg-muted">
@@ -237,8 +238,14 @@ export default function AboutPage() {
       <Testimonials />
 
       {/* Founder note */}
-      <section className="container-shell py-24 md:py-32 border-t border-line">
-        <motion.div
+      <section className="relative isolate overflow-hidden border-t border-line py-24 md:py-32">
+        <ParallaxBackdrop
+          src="/images/north-east/2.jpg"
+          position="center 48%"
+          overlay={0.89}
+        />
+        <div className="container-shell relative z-10">
+          <motion.div
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
@@ -259,27 +266,25 @@ export default function AboutPage() {
           </motion.div>
           <motion.div variants={fadeUp} className="max-w-2xl space-y-6">
             <p className="mono-label">04 / The founder</p>
-            <p className="text-2xl font-medium leading-[1.03] tracking-tight md:text-3xl">
-              Hi, I'm <span className="text-gradient">Joe Wilson</span>
+            <p className="type-subsection-title">
+              I’m <span className="text-gradient">Joe Wilson</span>
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              I started NAMI Creative because I got tired of seeing good ideas
-              slowed down by messy processes, unclear words, or five different
-              tools that did not quite talk to each other. I like figuring out
-              the idea, then getting it live.
+              I started NAMI because I kept seeing good businesses held back by
+              unclear words, disjointed marketing and admin that took up too
+              much of the week. I like finding the problem, fixing it and
+              leaving people with something they can use.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              Twenty years in brand building and design sit behind that. I held
-              a head-of-department role at the UK&apos;s leading energy
-              consultants&apos; trade body, building a brand with enough weight
-              to earn a seat in Westminster, and I&apos;ve been featured on BBC
-              Radio for the Nami Up North project.
+              I have spent 20 years working in branding and design. I previously
+              led a department at the UK&apos;s leading trade body for energy
+              consultants, where I helped build a brand that was represented in
+              Westminster. BBC Radio has also featured my Nami Up North project.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              I am a proud dad, easy to get along with, and I love nothing more
-              than seeing people around me win. I am always open to good
-              conversations, interesting projects, and people doing things
-              properly.
+              I am a proud dad and a Newcastle lad. I care about doing the work
+              properly, being straightforward with people and helping good ideas
+              make it out into the world.
             </p>
             <dl className="grid gap-8 border-t border-line pt-6 sm:grid-cols-3">
               <div>
@@ -339,7 +344,8 @@ export default function AboutPage() {
               </Link>
             </div>
           </motion.div>
-        </motion.div>
+          </motion.div>
+        </div>
       </section>
     </>
   );

@@ -11,21 +11,21 @@ type Props = {
 export function PressurePaths({
   title = (
     <>
-      Start with the part{" "}
-      <span className="text-gradient sm:block">that keeps dragging</span>
+      What is getting{" "}
+      <span className="text-gradient sm:block">in the way?</span>
     </>
   ),
-  lead = "Clients rarely arrive thinking in service pillars. They arrive with one part of the business making the rest harder to run.",
+  lead = "You probably already know which part is causing trouble. Pick the one that sounds familiar and we can sort it from there.",
   className = "",
 }: Props) {
   return (
     <section className={`border-y border-line bg-surface-1/35 py-24 md:py-32 ${className}`}>
       <div className="container-shell">
         <div className="mx-auto max-w-5xl text-center">
-          <h2 className="mx-auto max-w-3xl text-4xl font-semibold leading-[0.98] tracking-tight md:text-5xl md:leading-[0.96]">
+          <h2 className="type-section-title mx-auto max-w-3xl">
             {title}
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
+          <p className="type-lead mx-auto mt-6 max-w-2xl">
             {lead}
           </p>
 

@@ -105,22 +105,22 @@ export function HomeHero() {
         className="container-shell relative z-10 pt-28 pb-20 text-center md:pt-32 md:pb-24"
       >
         <motion.div initial="hidden" animate="show" variants={stageHero}>
-          <h1 className="mx-auto max-w-4xl text-balance text-[clamp(1.8rem,3.7vw,3.15rem)] font-semibold leading-[1.03] tracking-tight md:leading-[1]">
+          <h1 className="type-page-title mx-auto max-w-4xl text-balance">
             <LetterReveal stagger={0.018} duration={0.8}>
-              Helping North East businesses, brands and creatives{" "}
-              <span className="text-gradient">
-                make waves of creative impact
+              Proper work deserves{" "}
+              <span className="text-gradient sm:block">
+                to be seen and chosen
               </span>
             </LetterReveal>
           </h1>
 
           <motion.p
-            className="mx-auto mt-7 max-w-2xl text-base leading-[1.35] text-fg-muted md:mt-8 md:text-lg"
+            className="type-lead mx-auto mt-7 max-w-2xl md:mt-8"
             variants={fadeUp}
           >
-            I sort the brand, website, content, and automation for local
-            businesses, while NAMI Creative Network helps creatives get seen,
-            supported, and hired.
+            I help North East businesses bring their brand, website, content
+            and automation together. The NAMI Creative Network helps local
+            creatives reach more people and find paid opportunities.
           </motion.p>
 
           <motion.div
@@ -133,7 +133,7 @@ export function HomeHero() {
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-shadow duration-500 hover:shadow-[0_8px_40px_rgb(255_0_188/0.55)]"
               >
                 <span className="absolute inset-0 -z-10 translate-y-full bg-accent-soft transition-transform duration-500 ease-out-expo group-hover:translate-y-0" />
-                Start a project
+                Work with me
                 <ArrowUpRight
                   size={16}
                   aria-hidden

@@ -18,7 +18,7 @@ export type CaseStudy = {
   heroTitle: { lead: string; accent: string };
   oneLiner: string;
   brief: string;
-  approach: string[];
+  approach: { title: string; body: string }[];
   deliverables: string[];
   outcomes?: { label: string; value: string }[];
   testimonial?: { quote: string; author: string; role: string };
@@ -35,14 +35,14 @@ export const work: CaseStudy[] = [
       sector: "Property · North East",
       year: "2026",
       status: "Ongoing",
-      liveUrl: "https://whittakerpropertygroup.co.uk",
+      liveUrl: "https://www.whittakerpropertygroup.co.uk/sell/flagship",
       cover: "/case-study/WPG%20Cover%20(1).png",
       pillars: [
-        "Content Strategy",
+        "Content",
         "Website",
         "Automation",
-        "CRM",
-        "Paid Social",
+        "Customer records",
+        "Paid advertising",
       ],
       tagline: "North East property, done properly",
       heroTitle: {
@@ -50,22 +50,22 @@ export const work: CaseStudy[] = [
         accent: "done properly",
       },
       oneLiner:
-        "Website, content, lead flow, CRM, and paid social support for a property group moving into its next phase.",
+        "Ongoing help with the website, content, enquiries, CRM and paid social as the property group grows.",
       brief:
-        "Whittaker Property Group needed more than a tidy website. The business was moving from a mainly investor-led model into a broader estate agency and property group, with vendor lead generation becoming the priority. The public face had to feel sharper, and the working parts behind it had to stop creating extra admin for the team.",
+        "Whittaker Property Group was growing from an investor-focused business into a wider estate agency and property group. Its website and marketing still reflected the old business, while vendor enquiries created too much admin for the team. The job was to explain the wider offer clearly and make new enquiries easier to handle.",
       approach: [
-        "The work started with the positioning: WPG as a North East property group that can speak to vendors, buyers, investors, and landlords without blurring the message. Content strategy gave each audience a clearer route through the business, while keeping the tone direct, local, and commercially useful.",
-        "The website and landing pages were built around the new supply-led priority. Core pages, campaign pages, and contact routes were shaped so different audiences could land in the right place: selling, buying, investment, portfolio work, or a more direct campaign-specific enquiry.",
-        "Behind the scenes, the lead flow was tightened through HubSpot, forms, CRM tagging, GA4 tracking, and campaign attribution. Paid social could then drive people into specific journeys, with the team getting cleaner context when a lead came in.",
+        { title: "Make the offer clear", body: "I positioned WPG as a North East property group with clear routes for vendors, buyers, investors and landlords. Each audience can quickly find the part of the business that applies to them." },
+        { title: "Build around enquiries", body: "The main website and campaign pages were rebuilt around the priority of winning more property instructions, with direct routes for selling, buying, investment and portfolio work." },
+        { title: "Sort what happens next", body: "Forms, customer records and campaign tracking were connected so the team receives useful information with every enquiry and spends less time moving details by hand." },
       ],
       deliverables: [
-        "Content strategy and positioning refresh",
-        "Website development for the main WPG site",
-        "Campaign landing pages for vendor lead generation",
-        "Automation and lead-flow wiring",
-        "HubSpot CRM development and contact tagging",
-        "GA4 conversion tracking and campaign attribution",
-        "Paid social management across WPG vendor campaigns",
+        "Clearer positioning and website wording",
+        "The main WPG website",
+        "Landing pages for vendor campaigns",
+        "Connected forms and follow-ups",
+        "Customer records and contact tagging",
+        "Enquiry and campaign tracking",
+        "Paid social campaigns for vendors",
       ],
       outcomes: [
         { label: "Campaign stack", value: "Meta · GA4 · HubSpot" },
@@ -92,19 +92,19 @@ export const work: CaseStudy[] = [
         lead: "Where Extraordinary",
         accent: "Humans Meet.",
       },
-      oneLiner: "A members club brand built around character, not status.",
+      oneLiner: "A members club brand and website built around the character of its members.",
       brief:
-        "The League is a private dining society for people who have defied the odds. The brand had to carry that level of selectivity without sliding into the usual luxury-club tropes, and the digital infrastructure had to run nationwide events, invite-only applications, and ongoing member communications.",
+        "The League is a private dining society for people who have defied the odds. It needed to feel selective without looking like every other private club. The team also needed a clear way to handle applications, nationwide events and regular member emails.",
       approach: [
-        "Positioning came first: 'we don't measure worth by wealth, title, or fame.' Voice, identity, and applied guidelines designed to read as confident and quietly elitist, never loud about it. Selection is by character, story, and achievement; the brand had to embody that.",
-        "The website was built as the application entry point. Every visitor is a potential member, every page nudges toward the invitation conversation. Conversion structure runs underneath an editorial-feeling experience.",
-        "Content and lifecycle email tie the brand into how members meet the club between events: gathering announcements, speaker reveals, post-event automations, and the steady-state communications that hold a private community together.",
+        { title: "Set the right tone", body: "The brand centres on character, story and achievement rather than wealth or status. Its voice and identity feel confident and selective without becoming loud or predictable." },
+        { title: "Make applying simple", body: "The website introduces the club, explains who it is for and gives prospective members one clear route into the invitation process." },
+        { title: "Keep members informed", body: "Event announcements, speaker news and follow-up emails give members a consistent experience between gatherings." },
       ],
       deliverables: [
-        "Positioning, voice, and identity system",
-        "Conversion-led website (jointheleague.uk)",
-        "Editorial content direction",
-        "Lifecycle email design + templates",
+        "Brand positioning, voice and identity",
+        "Website and application journey",
+        "Content direction",
+        "Member email templates",
       ],
       outcomes: [
         { label: "Members per gathering", value: "30" },
@@ -122,27 +122,27 @@ export const work: CaseStudy[] = [
       sector: "Fitness · Direct-to-consumer",
       year: "2026",
       status: "Complete",
-      liveUrl: "https://vessl-ltd.co.uk",
+      liveUrl: "https://vessl-ltd.co.uk/summer-shred",
       cover: "/case-study/vessl-cs.png",
-      pillars: ["Website", "Funnel", "Automation"],
+      pillars: ["Website", "Sign-up journey", "Follow-ups"],
       tagline: "Strength in Motion",
       heroTitle: {
         lead: "Strength in",
         accent: "Motion.",
       },
-      oneLiner: "A premium landing funnel for a movement-first fitness platform.",
+      oneLiner: "A mobile-first landing page that helps people understand the membership and choose a plan.",
       brief:
-        "VESSL needed a high-conversion landing page for a tiered fitness subscription, built mobile-first with iOS-grade polish, designed as a single conversion path from ad traffic to plan signup. Honest by design: no fake metrics, no inflated trust badges.",
+        "VESSL needed one mobile-friendly page that could explain three fitness memberships and turn advertising clicks into trial sign-ups. It had to feel polished without relying on fake figures, inflated claims or distracting sections.",
       approach: [
-        "One funnel, one ask. The page reads as a single corridor: hero, proof of system, three-tier pricing, signup. Every section earns its place against the conversion goal; nothing decorative, nothing detouring.",
-        "Premium feel without a heavy framework. Lightweight build, CSS-only styling, prefers-reduced-motion respected, motion used only where it carries information. iOS-feel typography and a restrained palette (Charcoal, Mist, Core Teal) so the brand reads premium on the smallest device first.",
-        "Automation wired behind the form: lead capture, qualification, and routing. Every signup gets handled the same way without manual triage.",
+        { title: "Keep the journey simple", body: "The page moves from the offer to the membership choices and then to sign-up. Every section helps someone decide whether VESSL is right for them." },
+        { title: "Make mobile the priority", body: "The design is lightweight, easy to read on a small screen and uses movement only where it helps someone understand the page." },
+        { title: "Handle every sign-up properly", body: "The form, qualification questions and follow-ups are connected so each new enquiry follows the same route without manual sorting." },
       ],
       deliverables: [
-        "Conversion-led landing page (mobile-first)",
-        "Three-tier pricing + signup flow",
-        "Form + lead automation pipeline",
-        "Brand-aligned design system (CSS-only)",
+        "Mobile-first landing page",
+        "Three membership choices and sign-up",
+        "Form and automatic follow-ups",
+        "Reusable website styles",
       ],
       outcomes: [
         {
@@ -164,26 +164,26 @@ export const work: CaseStudy[] = [
       status: "Complete",
       liveUrl: "https://thiswilldomillions.com",
       cover: "/case-study/millions-cs.png",
-      pillars: ["Brand", "Dashboard", "AI Systems", "Automation"],
+      pillars: ["Brand", "Dashboard", "Data", "Alerts"],
       tagline: "If you're checking Dexscreener, you're already late",
       heroTitle: {
         lead: "If you're checking Dexscreener,",
         accent: "you're already late.",
       },
-      oneLiner: "Brand and live infrastructure for an on-chain signal service.",
+      oneLiner: "A sharper brand, live dashboard and instant alerts for a Solana signal service.",
       brief:
-        "MILLIONS is a real-time signal service for Solana: wallet scoring, dev-pattern detection, cluster alerts, alpha-funding detection. The brand had to feel as sharp as the data underneath it, and the product had to launch as one piece: identity, dashboard, and automated alerting in lockstep.",
+        "MILLIONS tracks Solana wallets and sends trading signals in real time. The underlying data was serious, but the brand and customer experience needed to match it. The identity, dashboard and alerts all had to work together from launch.",
       approach: [
-        "Brand work set the tone: confident, technical, transparent. Identity leans into the precision side of on-chain rather than the speculation side, separating MILLIONS from the noise of generic alpha groups. The voice quotes the product's own logic: 'we follow the money.'",
-        "The live dashboard pulls four scoring engines into one place: smart-wallet tracking, dev-wallet scoring, cluster detection, alpha-funding detection. Re-ranking runs continuously, cold wallets auto-demote, hot ones rise. Methodology is published, not black-boxed.",
-        "Automation closes the loop. Signals fire to Discord and Telegram in under a second of the on-chain event, hitting subscribers where they already are instead of asking them to refresh another tab.",
+        { title: "Make the product feel credible", body: "The brand is confident, technical and open about how the service works. It focuses on the quality of the data rather than the noise common in trading groups." },
+        { title: "Put the signals in one place", body: "The dashboard brings wallet tracking, developer scoring, cluster detection and funding activity together. Rankings update continuously as wallet behaviour changes." },
+        { title: "Send alerts where people are", body: "Subscribers receive alerts through Discord and Telegram in under a second, so they do not need to keep refreshing another screen." },
       ],
       deliverables: [
-        "Identity system + brand voice",
-        "Live signal dashboard (web)",
-        "Wallet-scoring + dev-pattern intelligence pipeline",
-        "Discord + Telegram automated alerting (sub-1s latency)",
-        "Subscription + access infrastructure",
+        "Brand identity and voice",
+        "Live web dashboard",
+        "Wallet and developer scoring",
+        "Discord and Telegram alerts in under one second",
+        "Subscription and customer access",
       ],
       outcomes: [
         { label: "Smart wallets tracked", value: "583" },
@@ -204,28 +204,28 @@ export const work: CaseStudy[] = [
       status: "Complete",
       liveUrl: "https://energyconsultantsassociation.co.uk",
       cover: "/case-study/eca-cs.webp",
-      pillars: ["Brand", "Content", "Events", "Membership Ops"],
+      pillars: ["Brand", "Member communications", "Events", "Member admin"],
       tagline: "A trade body built to be heard",
       heroTitle: {
         lead: "A trade body",
         accent: "built to be heard.",
       },
       oneLiner:
-        "Brand, member operations, and a Westminster-ready presence for the UK's independent energy consultants.",
+        "A stronger brand, clearer member communications and practical support for a national trade body.",
       brief:
-        "The ECA is the independent, not-for-profit trade body for UK energy consultants. The brand had to carry weight with members, suppliers, regulators, and Westminster in the same breath, and the operations had to scale from a standing start into a recognised industry voice. Identity, member ops, content, and live presence built as one piece.",
+        "The Energy Consultants Association began as a new independent trade body for UK energy consultants. It needed to earn the confidence of members, suppliers, regulators and policymakers while building the practical systems needed to run memberships, events and communications from day one.",
       approach: [
-        "Positioning came first. Independent. Not-for-profit. Built by consultants, for consultants. Identity, voice, and applied guidelines designed to read as serious enough for regulators and policymakers while staying clearly owned by the members it represents. The brand had to sit on a Westminster briefing or an industry main stage without missing a beat.",
-        "Member operations wired end-to-end. Onboarding campaigns, membership billing, and the steady-state communications that hold a trade body together between events. A webinar programme built around the issues members care about: Commission Claims Defence, Ofgem Non-Domestic Reviews, Flexible Purchasing. Members hear from the association consistently, not just at renewal.",
-        "Visibility was the multiplier. AGMs and member events run in person, speaking spaces secured at Energy Live News (one of the largest utilities roadshows in the UK), and direct campaign work alongside Sarah Edwards MP that took the association inside Downing Street. Every appearance reinforced the same message: consultants deserve a seat at the table.",
+        { title: "Build a credible voice", body: "The identity and language made the association feel serious enough for regulators and policymakers while remaining clearly owned by the consultants it represents." },
+        { title: "Make membership easier to run", body: "Member onboarding, billing, regular emails and a programme of useful webinars gave the association a practical way to support members between renewals." },
+        { title: "Give the association a public presence", body: "Member events, industry speaking slots and campaign work with Sarah Edwards MP helped take the consultants' concerns into Westminster and Downing Street." },
       ],
       deliverables: [
-        "Brand identity, voice, and applied guidelines",
-        "Member onboarding campaigns",
-        "Membership onboarding + billing operations",
-        "Webinar programme (regulatory + commercial topics)",
-        "AGMs and in-person member events",
-        "Speaker placements + Westminster campaign presence",
+        "Brand identity, voice and guidelines",
+        "New-member email campaign",
+        "Membership sign-up and billing",
+        "Webinars on regulatory and commercial issues",
+        "AGMs and member events",
+        "Industry speaking and Westminster campaign support",
       ],
       outcomes: [
         { label: "Members onboarded", value: "75" },
@@ -252,21 +252,21 @@ export const work: CaseStudy[] = [
         lead: "Bark Louder.",
         accent: "Become Undeniable.",
       },
-      oneLiner: "A full-stack community brand. Identity, tooling, and 7,000+ holders.",
+      oneLiner: "Brand, content, tools and day-to-day support for a community of more than 7,000 holders.",
       brief:
-        "Barking Puppy needed every layer at once: brand identity, copy and content, on-chain tooling holders interact with daily, and the day-to-day community management that keeps a Solana memecoin community aligned over months, not just at launch.",
+        "Barking Puppy needed more than a launch campaign. The brand, content, holder tools and daily community support all had to feel connected so the project could keep people involved after the initial excitement passed.",
       approach: [
-        "Voice came first. 'Actions before words. Proof before promises.' / 'The blockchain doesn't lie.' / 'Stand with the underdog.' Applied everywhere holders touch the brand, from the website to Discord pinned posts to charity drop announcements.",
-        "Tooling layer: a PFP generator for holders to mint identity in the brand, a community game, and a live dashboard with automated Discord alerts on contract activity. The community has utility to point at, not just promises.",
-        "Community management runs in parallel: moderation, content cadence, holder communications, and the steady drumbeat that turns a launch crowd into a real community of 7,000+ holders.",
+        { title: "Give the community a clear voice", body: "The writing and identity were applied across the website, community channels and announcements so members met the same brand wherever they took part." },
+        { title: "Build things holders could use", body: "A profile-picture generator, community game, live dashboard and automated alerts gave holders practical reasons to stay involved." },
+        { title: "Keep the community moving", body: "Regular content, moderation and holder updates supported the community day to day as it grew beyond 7,000 holders." },
       ],
       deliverables: [
-        "Identity system, copy, and content direction",
-        "PFP generator (on-chain holder identity)",
-        "Live dashboard + automated Discord alerts",
+        "Brand identity, writing and content",
+        "Profile-picture generator for holders",
+        "Live dashboard and Discord alerts",
         "Community game design",
-        "Telegram bot infrastructure",
-        "Day-to-day community management",
+        "Telegram bot",
+        "Daily community management",
       ],
       outcomes: [
         { label: "Active holders", value: "7,000+" },

@@ -7,32 +7,32 @@ export const faq: FAQ[] = [
   {
     question: "How is NAMI different from a typical agency?",
     answer:
-      "Most agencies split the work into lanes. I keep the brand, website, content, and automation close together, so the business sounds and feels like one thing.",
+      "You work directly with me throughout the job. Because I can handle the brand, website, content and automation together, you do not have to manage several different people or keep repeating the brief.",
   },
   {
     question: "Who do you work with?",
     answer:
-      "Founder-led businesses, independent operators, and small teams that have something real behind the brand but need the front end and the operating layer to catch up. If the work matters and the current setup feels patched together, it is probably in range.",
+      "I mainly work with small businesses, founders and independent teams. They are usually good at what they do but need help explaining it, presenting it properly or taking repetitive marketing jobs off their plate.",
   },
   {
     question: "How long does a typical engagement run?",
     answer:
-      "A foundational brand and website project usually lands in 6-8 weeks. From there, some clients continue with monthly support for content, automation, and creative direction. I set the pace around the business.",
+      "A brand and website project usually takes six to eight weeks. Smaller jobs can be quicker. Some clients keep me involved each month for content, improvements and ongoing support. I will give you a realistic timescale before we agree the work.",
   },
   {
-    question: "Do you only do digital, or campaigns + print too?",
+    question: "Do you only work on websites and digital marketing?",
     answer:
-      "Both. Digital is the default home (sites, content, automation), but visual direction extends across whatever the brand needs. Photography, video, print, packaging. The brand has to hold everywhere it shows up.",
+      "No. I also work on printed materials, campaigns, photography, video and packaging when the job needs them. The aim is to make the business look and sound consistent wherever customers see it.",
   },
   {
     question: "What does it cost?",
     answer:
-      "It depends on what needs sorting. A landing page is a different job to a full brand, website, and automation reset. We talk first, I scope the work, then I quote against that. If the budget or brief is wrong for NAMI, I say so early.",
+      "It depends on what you need. A single landing page is a different job from a new brand and website. We talk first, then I give you a clear price for the agreed work. If I am not the right fit for your budget or the job, I will tell you early.",
   },
   {
     question: "Can you work with an existing brand?",
     answer:
-      "Yes, when the base is worth keeping. I look at the positioning, voice, visuals, site, and current workflow before recommending a reset. Sometimes the right move is to keep the identity and rebuild the way it is used.",
+      "Yes. I will look at what you already have and keep anything that is still doing its job. Sometimes the brand is fine and only needs to be used more consistently. I will not recommend starting again unless there is a good reason.",
   },
 ];
 
@@ -43,24 +43,24 @@ export const faq: FAQ[] = [
 export const serviceFaq: Record<string, FAQ[]> = {
   "brand-strategy": [
     {
-      question: "What do I get at the end of a brand engagement?",
+      question: "What will I receive at the end of a branding project?",
       answer:
-        "Positioning, messaging architecture, tone of voice, visual direction, identity rules, and applied examples your team can use the next time they write a page, brief a designer, or launch an offer.",
+        "You receive the agreed wording, logo and visual files, practical brand guidance and examples showing how everything should be used. The exact list depends on what your business needs, and it will be written clearly in your proposal.",
     },
     {
       question: "Do you do naming?",
       answer:
-        "Yes. Brand naming, product naming, sub-brand architecture. I only suggest a rename if the current name is holding you back; otherwise I work with what you have.",
+      "Yes. I can help name a business, service or product. I will only recommend changing an existing name when there is a clear reason to do it.",
     },
     {
       question: "We already have a logo and some assets. Do we start over?",
       answer:
-        "Not by default. If the current identity still has equity, I keep what works and tighten the setup around it. If the assets are causing the drift, I show you where before any redesign starts.",
+      "No. I review what you already have and keep anything that is still useful. A complete redesign only makes sense when the current identity is actively holding the business back.",
     },
     {
       question: "How long does a brand build take?",
       answer:
-        "Four to six weeks for a focused brand reset. Around eight when the website and content system are part of the work. If the timeline changes, it is usually because the brief changed.",
+      "A focused branding project usually takes four to six weeks. A larger job that also includes the website may take around eight weeks. I confirm the timescale before the work begins.",
     },
   ],
 
@@ -68,22 +68,22 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Do you only build the system, or also write the content?",
       answer:
-        "Both. I define the formats, then write and brief real pieces against them: posts, scripts, emails, page sections, or visual prompts. Your team can take over from the playbook, or I keep producing with you.",
+      "Both. I can create the plan and templates, then write real posts, scripts, emails or articles to get everything moving. You can take it over afterwards or keep me involved each month.",
     },
     {
       question: "Which platforms do you cover?",
       answer:
-        "LinkedIn, Instagram, YouTube, email, and long-form essays are the usual core. I pick platforms based on where your audience buys, not where the trend is loudest.",
+      "I regularly work with Instagram, LinkedIn, YouTube, email and articles. We choose the places your customers actually use instead of trying to post everywhere.",
     },
     {
       question: "How does AI fit in?",
       answer:
-        "Selectively. AI accelerates research, drafts, and asset variations. It does not replace voice, judgement, or strategy. Anything that goes live is human-checked.",
+      "I use AI where it saves useful time, such as organising research or developing early drafts. It does not replace your point of view, and I check anything intended for publication.",
     },
     {
       question: "Can you take over an existing content function?",
       answer:
-        "Yes. I start by looking at what has worked, what has only created extra work, and where the voice has drifted. Then I rebuild the formats and cadence around the pieces worth repeating.",
+      "Yes. I look at what has performed well, what has created unnecessary work and which ideas are worth repeating. We keep the useful parts and build a simpler routine around them.",
     },
   ],
 
@@ -91,45 +91,22 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "How do you decide what to build the site on?",
       answer:
-        "The stack follows the job. A simple funnel does not need the same build as a dashboard, portal, or integration-heavy site. You know the recommendation during scoping, before anything is designed.",
+      "I choose the platform based on what the website needs to do, who will update it and what it must connect to. I explain the recommendation before design or development begins.",
     },
     {
       question: "Do you handle hosting and ongoing maintenance?",
       answer:
-        "Hosting setup is part of every build, on a stack matched to the site. Ongoing maintenance is part of a partnership engagement; one-off fixes run on a small retainer.",
+      "Yes. I set up hosting as part of the build. Ongoing updates and maintenance can be included in monthly support or agreed separately after launch.",
     },
     {
       question: "Rebuild on top of our current site, or full restart?",
       answer:
-        "I check the structure first. If the routes, copy, and content model still make sense, I can redesign around them. If the site is fighting the business, a clean rebuild usually costs less than months of patching.",
+      "I check the current website before recommending a rebuild. If the foundations are sound, we can improve what is there. If the existing setup makes every change harder, rebuilding may be the more sensible option.",
     },
     {
       question: "Will the site be fast and SEO-ready?",
       answer:
-        "Yes. Semantic structure, performance, metadata, structured data, analytics, and sensible crawl paths are part of the build, not a cleanup job after launch.",
-    },
-  ],
-
-  "visual-direction": [
-    {
-      question: "Do you shoot photography and video, or only direct it?",
-      answer:
-        "Depends on the brief. Smaller shoots run in-house; larger productions are art-directed with trusted shooters and editors. You stay the one point of contact.",
-    },
-    {
-      question: "We already have visual assets. Can you direct from those?",
-      answer:
-        "Usually. I look for the assets that already feel like the brand, then build rules around them so the next shoot, deck, or campaign does not start from taste alone.",
-    },
-    {
-      question: "Is creative direction a one-off or ongoing?",
-      answer:
-        "Both work. A one-off engagement gives you the system and asset rules. Ongoing direction keeps that system honest when new campaigns, shoots, launches, and channels start adding pressure.",
-    },
-    {
-      question: "Do you deliver editable assets and templates?",
-      answer:
-        "You always get the editable layer: design libraries, source files, asset catalogues, and applied templates. Everything you need to keep producing on-brand without me in the room.",
+      "Yes. Clear page structure, speed, page titles, descriptions, structured data and visitor tracking are considered during the build. Search visibility still depends on competition, content and reputation, so I do not promise rankings.",
     },
   ],
 
@@ -137,22 +114,22 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "How do you decide what to build with?",
       answer:
-        "I start with the workflow, not the tool. If an existing platform can handle it cleanly, I use it. If the logic needs custom work, I build it. Either way, the handoff includes documentation your team can understand.",
+      "I first look at how the job works now and where time or information is being lost. I use your existing software when it can do the job reliably. If something new is needed, I explain why before building it.",
     },
     {
       question: "Will my team be able to maintain this after you leave?",
       answer:
-        "That is the point. Builds come with documentation, training, and a handoff session. If a workflow will need ongoing technical support, I say that during scoping rather than hiding it in the handover.",
+      "Yes. You receive instructions, training and a handover. If part of the setup will need ongoing technical support, I tell you before the work begins.",
     },
     {
       question: "Do you do custom integrations or only no-code?",
       answer:
-        "Both. Standard workflows should stay simple. Custom code only earns its place when the platforms cannot handle the logic, the data structure, or the level of control the business needs.",
+      "Both. I keep standard jobs as simple as possible and only use custom code when ordinary platforms cannot handle the work reliably.",
     },
     {
-      question: "How do you decide what's worth automating?",
-      answer:
-        "A workflow earns automation when it runs at least weekly, has a clear trigger, and the build pays back inside three months. Anything below that bar is usually faster left manual.",
+    question: "How do you decide what is worth automating?",
+    answer:
+      "The best candidates are repetitive jobs with a clear starting point and a predictable result. I also consider how often the job happens, how much time it takes and what could go wrong. Some tasks are safer and quicker to leave manual.",
     },
   ],
 };

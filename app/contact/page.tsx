@@ -3,8 +3,14 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
-import { ArrowUpRight, Mail, Calendar } from "lucide-react";
+import { ArrowUpRight, Mail, Calendar, Users } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  YoutubeIcon,
+} from "@/components/icons/socials";
 import { stage, fadeUp } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -71,16 +77,18 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
+        backgroundImage="/images/north-east/6.jpg"
+        backgroundPosition="center 55%"
         eyebrow="Contact"
         title={
           <>
-            Let's talk about{" "}
+            Tell me what{" "}
             <span className="text-gradient sm:block">
-              what you're building
+              needs sorting
             </span>
           </>
         }
-        lead="Tell me about your business, what's working, and what's stuck. I usually respond within a working day."
+        lead="Branding, content, a website or less admin. Tell me what is getting in the way and I will reply within one working day."
       />
 
       <section className="container-shell py-20 md:py-28">
@@ -93,7 +101,6 @@ export default function ContactPage() {
             viewport={{ once: true, amount: 0.2 }}
             variants={stage}
             className="space-y-6"
-            noValidate
           >
             {/* Honeypot â€” kept off-screen rather than display:none so bots
                 that skip hidden inputs still fill it. */}
@@ -137,7 +144,7 @@ export default function ContactPage() {
             </motion.div>
             <motion.div variants={fadeUp} className="grid gap-4 md:grid-cols-2 md:gap-6">
               <Field
-                label="Work email"
+                label="Email address"
                 type="email"
                 name="email"
                 autoComplete="email"
@@ -145,38 +152,38 @@ export default function ContactPage() {
                 required
               />
               <Field
-                label="Company"
+                label="Business name (optional)"
                 name="company"
                 autoComplete="organization"
                 maxLength={120}
               />
             </motion.div>
             <motion.div variants={fadeUp}>
-              <Select label="Project type" name="projectType">
-                <option value="">Choose one</option>
-                <option value="brand">Brand strategy + identity</option>
-                <option value="content">Content systems</option>
-                <option value="website">Website + funnel</option>
-                <option value="visual">Visual direction</option>
-                <option value="systems">Automation + growth</option>
-                <option value="multiple">Multiple / not sure</option>
+              <Select label="What do you need help with?" name="projectType" required>
+                <option value="">Choose the closest option</option>
+                <option value="branding">Branding</option>
+                <option value="content">Content</option>
+                <option value="website">Website</option>
+                <option value="automation">Automation</option>
+                <option value="multiple">More than one or not sure</option>
+                <option value="creative-network">Creative Network enquiry</option>
               </Select>
             </motion.div>
             <motion.div variants={fadeUp}>
               <TextArea
-                label="What are you working on?"
+                label="What needs sorting?"
                 name="message"
-                placeholder="A few sentences about the business, what you've tried, and what would success look like in 6 months."
+                placeholder="Tell me a little about the business, what is getting in the way and what you would like to change."
                 rows={6}
                 maxLength={2000}
+                required
               />
             </motion.div>
             <motion.p
               variants={fadeUp}
               className="text-xs text-fg-subtle leading-relaxed"
             >
-              I&apos;ll cover scope and budget on the call. The form is just
-              the way in.
+              You do not need a polished brief. A few useful details are enough.
             </motion.p>
             <motion.div variants={fadeUp} className="space-y-3">
               <button
@@ -187,7 +194,7 @@ export default function ContactPage() {
                   "group relative inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)] disabled:opacity-60",
                 )}
               >
-                {status === "submitting" ? "Sending..." : "Start the conversation"}
+                {status === "submitting" ? "Sending..." : "Send your enquiry"}
                 <ArrowUpRight
                   size={16}
                   aria-hidden
@@ -210,8 +217,8 @@ export default function ContactPage() {
                 </p>
               )}
               <p className="text-xs text-fg-subtle leading-relaxed">
-                By starting the conversation you consent to us holding the
-                details to respond. See our{" "}
+                By sending this form, you agree that I can use these details to
+                reply. Read the{" "}
                 <a
                   href="/privacy"
                   className="underline underline-offset-4 hover:text-fg-muted transition-colors"
@@ -240,7 +247,7 @@ export default function ContactPage() {
                 Prefer email
               </h3>
               <p className="mt-2 text-sm text-fg-muted leading-relaxed">
-                Direct route. Same response time, less form filling.
+                If forms are not your thing, email me directly. I reply just as quickly.
               </p>
               <a
                 href="mailto:hello@namicreative.co.uk"
@@ -261,11 +268,11 @@ export default function ContactPage() {
             >
               <Calendar size={20} className="text-accent" aria-hidden />
               <h3 className="mt-4 text-lg font-medium tracking-tight">
-                Book a discovery call
+                Book a 30-minute call
               </h3>
               <p className="mt-2 text-sm text-fg-muted leading-relaxed">
-                30 minutes to walk through what you're building and whether I
-                can help. No pitch deck.
+                Choose a time and tell me what you need help with. If I am not
+                the right fit, I will say so.
               </p>
               <a
                 href="https://calendly.com/hello-nami"
@@ -273,7 +280,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent transition-colors"
               >
-                Open calendar
+                Choose a time
                 <ArrowUpRight
                   size={12}
                   aria-hidden
@@ -282,13 +289,67 @@ export default function ContactPage() {
               </a>
             </motion.div>
 
+            <motion.div
+              variants={fadeUp}
+              className="glass-refractive rounded-2xl p-6 md:p-8"
+            >
+              <Users size={20} className="text-accent" aria-hidden />
+              <h3 className="mt-4 text-lg font-medium tracking-tight">
+                Here for the Creative Network?
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-fg-muted">
+                Put your work forward, join the network or find creative people
+                across the North East.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+                <a
+                  href="/network"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-fg transition-colors hover:text-accent"
+                >
+                  Join the network <ArrowUpRight size={12} aria-hidden />
+                </a>
+                <a
+                  href="/network/directory"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-fg transition-colors hover:text-accent"
+                >
+                  Browse the directory <ArrowUpRight size={12} aria-hidden />
+                </a>
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="border-t border-line pt-7">
+              <h3 className="text-lg font-medium tracking-tight">Find NAMI online</h3>
+              <div className="mt-4 flex flex-wrap gap-3">
+                {[
+                  { label: "LinkedIn", href: "https://www.linkedin.com/company/98101073", icon: LinkedinIcon },
+                  { label: "Instagram", href: "https://www.instagram.com/namicreativeuk/", icon: InstagramIcon },
+                  { label: "YouTube", href: "https://www.youtube.com/@namiupcreative", icon: YoutubeIcon },
+                  { label: "Facebook", href: "https://facebook.com/namicreativeuk", icon: FacebookIcon },
+                ].map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2.5 text-sm text-fg-muted transition-all duration-500 hover:-translate-y-0.5 hover:border-accent/50 hover:text-fg"
+                    >
+                      <Icon size={15} aria-hidden />
+                      {social.label}
+                    </a>
+                  );
+                })}
+              </div>
+            </motion.div>
+
             <motion.p
               variants={fadeUp}
               className="text-xs leading-relaxed text-fg-subtle"
             >
-              I usually respond within one working day. If a project doesn't
-              feel like the right fit on either side, I'll say so. Where useful,
-              I'll point you to people who might fit better.
+              I usually reply within one working day. If I cannot help, I will
+              tell you and point you towards someone suitable when I can.
             </motion.p>
           </motion.aside>
         </div>
@@ -333,18 +394,21 @@ function Select({
   label,
   name,
   children,
+  required,
 }: {
   label: string;
   name: string;
   children: React.ReactNode;
+  required?: boolean;
 }) {
   return (
     <label className="block">
       <span className="mb-2 block text-xs uppercase tracking-widest text-fg-subtle">
-        {label}
+        {label} {required && <span className="text-accent">*</span>}
       </span>
       <select
         name={name}
+        required={required}
         className="w-full rounded-xl border border-line bg-surface-1/60 px-5 py-4 text-fg backdrop-blur-md transition-all focus:border-accent focus:bg-surface-1 focus:outline-none focus:ring-4 focus:ring-accent/15"
       >
         {children}

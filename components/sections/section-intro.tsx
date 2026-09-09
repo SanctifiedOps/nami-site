@@ -34,7 +34,7 @@ export function SectionIntro({
       )}
     >
       <motion.h2
-        className="text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl md:leading-[0.96]"
+        className="type-section-title"
         variants={fadeUp}
       >
         <LetterReveal stagger={0.014} duration={0.65}>
@@ -43,7 +43,7 @@ export function SectionIntro({
       </motion.h2>
       {lead && (
         <motion.p
-          className="mt-6 text-lg leading-relaxed text-fg-muted md:text-xl"
+          className="type-lead mt-6"
           variants={fadeUp}
         >
           {lead}

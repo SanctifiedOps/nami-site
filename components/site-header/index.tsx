@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { motion, useScroll, useSpring } from "motion/react";
 import { Logo } from "./logo";
 import { MobileDrawer } from "./mobile-drawer";
@@ -60,6 +60,47 @@ export function SiteHeader() {
               mounted &&
               (pathname === item.href ||
                 (item.href !== "/" && pathname?.startsWith(item.href)));
+            if (item.children) {
+              return (
+                <div key={item.href} className="group/network relative">
+                  <button
+                    type="button"
+                    aria-haspopup="true"
+                    className={cn(
+                      "relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors duration-300",
+                      active ? "text-fg" : "text-fg-muted group-hover/network:text-fg",
+                    )}
+                  >
+                    {item.label}
+                    <ChevronDown
+                      size={14}
+                      aria-hidden
+                      className="transition-transform duration-300 group-hover/network:rotate-180 group-focus-within/network:rotate-180"
+                    />
+                    {active && (
+                      <motion.span
+                        layoutId="nav-active"
+                        aria-hidden
+                        className="absolute inset-x-3 -bottom-0.5 h-px bg-accent shadow-[0_0_10px_rgb(255_0_188/0.7)]"
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    )}
+                  </button>
+                  <div className="pointer-events-none absolute left-1/2 top-full w-72 -translate-x-1/2 translate-y-2 border border-line bg-surface-0/95 p-2 opacity-0 shadow-[0_18px_45px_rgb(0_0_0/0.45)] backdrop-blur-xl transition-all duration-200 group-hover/network:pointer-events-auto group-hover/network:translate-y-0 group-hover/network:opacity-100 group-focus-within/network:pointer-events-auto group-focus-within/network:translate-y-0 group-focus-within/network:opacity-100">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className="flex items-center justify-between border-b border-line px-4 py-3 text-sm text-fg-muted transition-colors last:border-b-0 hover:bg-white/5 hover:text-fg"
+                      >
+                        {child.label}
+                        <ArrowUpRight size={14} aria-hidden className="opacity-50" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
             return (
               <Link
                 key={item.href}

@@ -57,20 +57,17 @@ function ServicesCtaCard() {
           </div>
 
           <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent/80">
-              Start a project
-            </p>
-            <h3 className="text-2xl font-medium tracking-tight text-fg md:text-3xl">
-              Bring me <span className="text-gradient">your brief</span>
+            <h3 className="type-card-title text-fg">
+              Not sure <span className="text-gradient">where to start?</span>
             </h3>
             <p className="leading-relaxed text-fg-muted">
-              I take a small number of new engagements each quarter. Brand,
-              content, automation, or all of it together.
+              Tell me what feels messy, slow or unclear. I will help you work
+              out what needs fixing first.
             </p>
           </div>
 
           <div className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-shadow duration-500 group-hover:shadow-[0_8px_32px_rgb(255_0_188/0.5)]">
-            Open a conversation
+            Tell me what is not working
             <ArrowUpRight
               size={14}
               aria-hidden

@@ -21,7 +21,7 @@ export function FooterCta() {
         className="absolute -bottom-40 left-1/2 h-80 w-[72rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgb(255_0_188/0.16),transparent_70%)] blur-3xl"
       />
       <motion.div
-        className="container-shell relative py-24 text-center md:py-36"
+        className="container-shell relative py-16 text-center md:py-20"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.3 }}
@@ -31,14 +31,14 @@ export function FooterCta() {
           Build with us
         </motion.p>
         <motion.h2
-          className="mx-auto mt-6 max-w-4xl text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl md:leading-[0.96] lg:text-7xl"
+          className="type-section-title mx-auto mt-6 max-w-4xl"
           variants={fadeUp}
         >
           Need the marketing side{" "}
           <span className="text-gradient sm:block">properly sorted?</span>
         </motion.h2>
         <motion.p
-          className="mx-auto mt-8 max-w-xl leading-relaxed text-fg-muted md:text-lg"
+          className="type-lead mx-auto mt-8 max-w-xl"
           variants={fadeUp}
         >
           I can help with the brand, website, content, and automation, so the
@@ -51,7 +51,7 @@ export function FooterCta() {
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-9 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-shadow duration-500 hover:shadow-[0_8px_40px_rgb(255_0_188/0.55)]"
             >
               <span className="absolute inset-0 -z-10 translate-y-full bg-accent-soft transition-transform duration-500 ease-out-expo group-hover:translate-y-0" />
-              Start a project
+              Work with me
               <ArrowUpRight
                 size={16}
                 aria-hidden

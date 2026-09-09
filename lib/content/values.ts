@@ -5,15 +5,15 @@ export type Value = {
 
 export const values: Value[] = [
   {
-    title: "Make it feel sorted",
-    body: "The Instagram, website, content, and automation should feel like the same business. Nothing jars. Nothing feels rushed.",
+    title: "Straight answers",
+    body: "I will tell you what needs fixing, what can wait and whether I am the right person for the job.",
   },
   {
-    title: "Clear thinking first",
-    body: "Before more posts, pages, or campaigns, the business needs to know what it is saying and who it is for.",
+    title: "One person who knows the whole job",
+    body: "You deal directly with me from the first conversation through to the finished work.",
   },
   {
-    title: "Keep good ideas moving",
-    body: "Good ideas die when they stay in your head. I help turn them into something people can see, use, and build on.",
+    title: "Work you can keep using",
+    body: "I build things to work in the real business, then make sure you know how to use them when I am finished.",
   },
 ];
