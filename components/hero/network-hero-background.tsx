@@ -1,16 +1,19 @@
-import Image from "next/image";
-
 export function NetworkHeroBackground() {
   return (
     <>
-      <Image
-        src="/network-news/hero-background.png"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center opacity-[0.70] grayscale contrast-125"
-      />
+      <picture>
+        <source
+          media="(max-width: 767px)"
+          srcSet="/network-news/hero-background-mobile.webp"
+        />
+        <img
+          src="/network-news/hero-background.webp"
+          alt=""
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.70] grayscale contrast-125"
+        />
+      </picture>
       <div aria-hidden className="absolute inset-0 bg-surface-0/18" />
       <div
         aria-hidden

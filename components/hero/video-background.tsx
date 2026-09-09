@@ -33,9 +33,10 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
     poster ?? `/assets/videos/${src.replace(/\.mp4$/, "-poster.jpg")}`;
 
   useEffect(() => {
-    // Play the video everywhere, including mobile. Skip it only for explicit
-    // user preferences or a genuinely slow link; the poster keeps first paint
-    // instant either way.
+    // Keep the optimised poster as the only hero media on phones. Injecting a
+    // video after hydration delays LCP and adds download and decode work.
+    if (!window.matchMedia("(min-width: 768px)").matches) return;
+    // Desktop video remains an enhancement for capable connections.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const conn = (
       navigator as Navigator & {
@@ -44,10 +45,7 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
     ).connection;
     if (conn?.saveData) return;
     if (conn?.effectiveType && /(slow-2g|2g)/.test(conn.effectiveType)) return;
-    // Phones get a lighter (~720px) encode; larger screens get the full file.
-    const file =
-      window.innerWidth < 768 ? src.replace(/\.mp4$/, "-mobile.mp4") : src;
-    setVideoSrc(`/assets/videos/${file}`);
+    setVideoSrc(`/assets/videos/${src}`);
     setShowVideo(true);
   }, [src]);
 
@@ -90,8 +88,7 @@ export function VideoBackground({ src, overlay = 0.55, poster }: Props) {
           loop
           muted
           playsInline
-          preload="metadata"
-          poster={posterSrc}
+          preload="none"
           className="absolute inset-0 h-full w-full object-cover"
         >
           <source src={videoSrc} type="video/mp4" />
