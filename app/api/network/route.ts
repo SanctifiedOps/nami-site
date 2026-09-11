@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
+import { normalizeExternalUrl } from "@/lib/external-url";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const NETWORK_SOURCE = "namicreative.co.uk/network";
@@ -53,7 +54,7 @@ function clean(p: NetworkPayload): Cleaned {
     category: str(p.category, 80),
     location: str(p.location, 140),
     note: str(p.note, 2000),
-    link: str(p.link, 300),
+    link: normalizeExternalUrl(str(p.link, 300)),
     directoryConsent: p.directoryConsent === true,
   };
 }

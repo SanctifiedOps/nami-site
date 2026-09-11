@@ -66,7 +66,56 @@ function locationGroup(location: string): (typeof locationGroups)[number] {
 }
 
 function normalise(value: string) {
-  return value.toLowerCase().replace(/^@/, "").trim();
+  return value
+    .toLowerCase()
+    .replace(/^@/, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+const searchTermGroups = [
+  ["photo", "photos", "photograph", "photographer", "photographers", "photography", "photographic", "camera", "portrait", "portraits", "headshot", "headshots"],
+  ["film", "films", "filming", "filmmaker", "filmmakers", "videographer", "videographers", "videography", "video", "videos", "reel", "reels", "stopmotion"],
+  ["art", "arts", "artist", "artists", "artwork", "illustration", "illustrator", "illustrators", "drawing", "painter", "painters", "painting", "paintings", "mural", "murals"],
+  ["print", "prints", "printmaker", "printmakers", "printmaking", "screenprint", "linocut", "lino"],
+  ["maker", "makers", "making", "craft", "crafts", "crafted", "handmade", "ceramic", "ceramics", "pottery", "textile", "textiles", "jewellery", "jewelry", "sculpture", "sculptor"],
+  ["design", "designer", "designers", "graphic", "graphics", "branding", "brand", "identity", "digital", "web", "website", "websites", "ux", "ui"],
+  ["architect", "architects", "architecture", "interior", "interiors"],
+  ["animation", "animator", "animators", "3d", "cgi", "motion"],
+  ["music", "musician", "musicians", "singer", "singers", "songwriter", "songwriters", "band", "bands", "rapper", "composer", "composers", "audio", "recording", "producer", "producers", "dj"],
+  ["performance", "performer", "performers", "performing", "dance", "dancer", "dancers", "theatre", "theater", "actor", "actors", "aerial", "model", "models"],
+  ["writing", "writer", "writers", "copywriter", "copywriting", "content", "journalist", "journalism", "storyteller", "storytelling", "editor", "editing", "pr", "marketing", "socialmedia"],
+  ["business", "businesses", "independent", "shop", "shops", "retail", "retailer", "venue", "venues", "florist", "barber", "fitness"],
+  ["community", "communities", "event", "events", "workshop", "workshops", "facilitator", "education", "educator", "teacher", "gallery", "galleries"],
+  ["creative", "creatives", "freelance", "freelancer", "freelancers", "studio", "studios"],
+] as const;
+
+function memberMatchesQuery(member: NetworkDirectoryMember, query: string) {
+  const search = normalise(query);
+  if (!search) return true;
+
+  const compactSearch = search.replace(/\s+/g, "");
+  const searchableText = normalise([
+    member.name,
+    member.category,
+    categoryGroup(member.category),
+    member.location,
+    locationGroup(member.location),
+    member.instagram,
+    member.websiteUrl,
+    member.description,
+  ].join(" "));
+  const searchableTokens = new Set(searchableText.split(/\s+/).filter(Boolean));
+
+  return search.split(/\s+/).every((token) => {
+    const compactToken = token.replace(/\s+/g, "");
+    const relatedTerms = searchTermGroups.find((group) =>
+      group.some((term) => term === compactToken || term === compactSearch),
+    );
+
+    if (!relatedTerms) return searchableText.includes(token);
+    return relatedTerms.some((term) => searchableTokens.has(term));
+  });
 }
 
 export function DirectoryBrowser({ members }: Props) {
@@ -85,13 +134,8 @@ export function DirectoryBrowser({ members }: Props) {
   );
 
   const filtered = useMemo(() => {
-    const search = normalise(query);
     return members.filter((member) => {
-      const matchesQuery =
-        !search ||
-        [member.name, member.category, member.location, member.instagram, member.description]
-          .map(normalise)
-          .some((value) => value.includes(search));
+      const matchesQuery = memberMatchesQuery(member, query);
       const matchesCategory = category === "All categories" || categoryGroup(member.category) === category;
       const matchesLocation = location === "All areas" || locationGroup(member.location) === location;
       return matchesQuery && matchesCategory && matchesLocation;

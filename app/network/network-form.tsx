@@ -1,7 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+  type InputHTMLAttributes,
+} from "react";
 import { ArrowUpRight, ImagePlus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
@@ -377,8 +384,11 @@ export function NetworkForm() {
         <Field
           label="Project / website / portfolio link"
           name="link"
-          type="url"
-          placeholder="https://"
+          type="text"
+          inputMode="url"
+          autoCapitalize="none"
+          autoCorrect="off"
+          placeholder="yourwebsite.co.uk"
           maxLength={300}
         />
       </div>
@@ -516,6 +526,9 @@ function Field({
   placeholder,
   required,
   autoComplete,
+  inputMode,
+  autoCapitalize,
+  autoCorrect,
   maxLength,
 }: {
   label: string;
@@ -524,6 +537,9 @@ function Field({
   placeholder?: string;
   required?: boolean;
   autoComplete?: string;
+  inputMode?: InputHTMLAttributes<HTMLInputElement>["inputMode"];
+  autoCapitalize?: string;
+  autoCorrect?: string;
   maxLength?: number;
 }) {
   return (
@@ -536,6 +552,9 @@ function Field({
         type={type}
         required={required}
         autoComplete={autoComplete}
+        inputMode={inputMode}
+        autoCapitalize={autoCapitalize}
+        autoCorrect={autoCorrect}
         maxLength={maxLength}
         placeholder={placeholder}
         className="w-full rounded-xl border border-line bg-surface-1/60 px-5 py-4 text-fg placeholder:text-fg-subtle backdrop-blur-md transition-all focus:border-accent focus:bg-surface-1 focus:outline-none focus:ring-4 focus:ring-accent/15"

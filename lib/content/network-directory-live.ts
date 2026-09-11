@@ -2,6 +2,7 @@ import {
   networkDirectoryMembers,
   type NetworkDirectoryMember,
 } from "@/lib/content/network-directory";
+import { normalizeExternalUrl } from "@/lib/external-url";
 
 type DirectoryFeedMember = Partial<NetworkDirectoryMember> & {
   imageStatus?: string;
@@ -30,6 +31,14 @@ function instagramUrl(value: string) {
     : "";
 }
 
+function profileImageUrl(value: string) {
+  const trimmed = clean(value, 500);
+  if (!trimmed) return "";
+  const driveId = trimmed.match(/[?&]id=([a-zA-Z0-9_-]{10,100})/)?.[1]
+    ?? trimmed.match(/\/d\/([a-zA-Z0-9_-]{10,100})/)?.[1];
+  return driveId ? `/api/network/profile-image/${driveId}` : trimmed;
+}
+
 function validMember(value: unknown): NetworkDirectoryMember | null {
   if (!value || typeof value !== "object") return null;
   const wrapped = value as { properties?: unknown };
@@ -48,7 +57,7 @@ function validMember(value: unknown): NetworkDirectoryMember | null {
 
   const profileImage =
     clean(item.imageStatus, 40).toLowerCase() === "ready"
-      ? clean(item.profileImage, 500)
+      ? profileImageUrl(item.profileImage ?? "")
       : "";
 
   return {
@@ -58,7 +67,7 @@ function validMember(value: unknown): NetworkDirectoryMember | null {
     location,
     instagram,
     instagramUrl: instagramUrl(instagram),
-    websiteUrl: clean(item.websiteUrl, 500),
+    websiteUrl: normalizeExternalUrl(clean(item.websiteUrl, 500)),
     description,
     profileImage: profileImage || undefined,
     imageAlt: clean(item.imageAlt, 200) || `${name} profile picture`,
@@ -68,7 +77,11 @@ function validMember(value: unknown): NetworkDirectoryMember | null {
 
 export async function getNetworkDirectoryMembers() {
   const url = process.env.DIRECTORY_FEED_WEBHOOK_URL;
-  if (!url) return networkDirectoryMembers;
+  const fallbackMembers = networkDirectoryMembers.map((member) => ({
+    ...member,
+    websiteUrl: normalizeExternalUrl(member.websiteUrl),
+  }));
+  if (!url) return fallbackMembers;
 
   try {
     const response = await fetch(url, {
@@ -77,17 +90,17 @@ export async function getNetworkDirectoryMembers() {
       body: "{}",
       next: { revalidate: 60 },
     });
-    if (!response.ok) return networkDirectoryMembers;
+    if (!response.ok) return fallbackMembers;
 
     const text = await response.text();
     const data = JSON.parse(text) as unknown;
-    if (!Array.isArray(data)) return networkDirectoryMembers;
+    if (!Array.isArray(data)) return fallbackMembers;
 
     const liveMembers = data
       .map(validMember)
       .filter((member): member is NetworkDirectoryMember => Boolean(member));
     const members = new Map(
-      networkDirectoryMembers.map((member) => [member.id, member]),
+      fallbackMembers.map((member) => [member.id, member]),
     );
     for (const member of liveMembers) {
       const existing = members.get(member.id);
@@ -101,6 +114,6 @@ export async function getNetworkDirectoryMembers() {
     }
     return [...members.values()];
   } catch {
-    return networkDirectoryMembers;
+    return fallbackMembers;
   }
 }

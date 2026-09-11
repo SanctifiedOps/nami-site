@@ -225,17 +225,6 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "featured": false
   },
   {
-    "id": "chloe-watson",
-    "name": "Chloe Watson",
-    "category": "Musician",
-    "location": "Gateshead",
-    "instagram": "@annie_enclave",
-    "instagramUrl": "https://www.instagram.com/annie_enclave/",
-    "websiteUrl": "https://youtube.com/@annieenclave",
-    "description": "An intimate live music project built around performance, improvisation and playful audience participation.",
-    "featured": false
-  },
-  {
     "id": "chrissy",
     "name": "Chrissy",
     "category": "Creative",
@@ -253,7 +242,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "location": "Gateshead",
     "instagram": "@twenty_minus_two",
     "instagramUrl": "https://www.instagram.com/twenty_minus_two/",
-    "websiteUrl": "https://www.twentyminustwo.wordpress.com",
+    "websiteUrl": "https://twentyminustwo.wordpress.com",
     "description": "TwentyMinusTwo is the creative identity of Dale Binney, a multimedia artist based in North East England.",
     "featured": false
   },
@@ -1240,13 +1229,13 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
   },
   {
     "id": "robert",
-    "name": "Robert",
+    "name": "RFH",
     "category": "Creative",
     "location": "Newcastle upon Tyne",
     "instagram": "rfh_creative",
     "instagramUrl": "https://www.instagram.com/rfh_creative/",
     "websiteUrl": "",
-    "description": "A creative behind C.A.T.S., a completed limited-run project comprising 233 pieces.",
+    "description": "RFH is the creative behind C.A.T.S., a completed limited-run project comprising 233 pieces.",
     "featured": false
   },
   {

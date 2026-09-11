@@ -14,8 +14,14 @@ Score candidate ideas using:
 
 Only the strongest material should reach the email. A shorter verified briefing is better than filling a section with weak ideas.
 
-Prioritise talking-head Reels with opening lines Joe can say directly to camera. They should help small-business owners, artists, creatives and freelancers with real problems such as visibility, finding clients, pricing, confidence, promotion, limited resources and keeping momentum. Favour useful lists, clear tips, honest lessons and relatable observations over trends or elaborate production.
+Prioritise talking-head Reels for creatives, freelancers, makers, artists and small independent businesses. Open with the thought they have felt but rarely say aloud. Focus on the emotional reality of creative work: feeling invisible, comparison, rejection, confidence, content fatigue, isolation, burnout, inconsistent demand, protecting creative identity and keeping momentum. Pricing and finding clients can appear, but should not drive most daily ideas.
+
+Every Reel must follow the supplied HOOK, SUPER HOOK, OPEN LOOP, BODY 1, REHOOK, BODY 2, REHOOK, BODY 3 and PAYOFF / CTA framework. Move from recognition into a useful perspective or action, then finish with a grounded, inspirational, motivational or authoritative payoff.
+
+Read the existing `NAMI Reel Script Bank` before writing. Treat every previous theme, emotional truth, hook and payoff as a lifetime exclusion. A broad subject may return only when the emotional premise and practical lesson are materially different.
 
 After successful delivery, append the run to `Run Log`, append every suggestion to `Idea Archive`, and update `Last suggested`, `Last angle`, `Times suggested` and `Cooldown until` for selected members.
+
+Extract all three daily Reel scripts and append each one as a separate row in `NAMI Reel Script Bank`, preserving every structural field, the filming notes, duration and caption direction.
 
 While `Config!test_mode` is `TRUE`, deliver only to the configured test recipient. Do not update `Last published` or `Times published` until Joe marks an idea as used.

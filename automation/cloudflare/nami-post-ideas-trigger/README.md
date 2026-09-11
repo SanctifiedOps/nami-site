@@ -8,6 +8,7 @@ This Cloudflare Worker starts the morning briefing while Joe's computer is off.
 - The Worker checks `Europe/London` and continues only when the local time is 09:00. This handles GMT and BST automatically.
 - It sends a dated, idempotent run ID to Make.
 - Cloudflare KV suppresses retries for the same London calendar date.
+- Make checks the lifetime Reel Script Bank before writing, emails the daily bulletin, then appends all three complete scripts as separate rows.
 - `GET /health` provides a safe status check.
 - `POST /run` supports a protected manual test.
 - `TEST_MODE` remains `true` until the trial emails have been approved.
