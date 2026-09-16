@@ -252,6 +252,30 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     console.warn("Mailchimp network upsert non-2xx:", res.status, body.slice(0, 400));
+    return;
+  }
+
+  const member = (await res.json()) as { status?: string };
+  if (member.status !== "subscribed") {
+    console.warn("Mailchimp network contact is not subscribed - skipping welcome flow.");
+    return;
+  }
+
+  const triggerRes = await fetch(
+    `https://${dc}.api.mailchimp.com/3.0/customer-journeys/journeys/97/steps/411/actions/trigger`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `apikey ${apiKey}`,
+      },
+      body: JSON.stringify({ email_address: d.email }),
+    },
+  );
+
+  if (!triggerRes.ok) {
+    const body = await triggerRes.text().catch(() => "");
+    console.warn("Mailchimp network welcome trigger non-2xx:", triggerRes.status, body.slice(0, 400));
   }
 }
 
