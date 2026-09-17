@@ -1251,7 +1251,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
   },
   {
     "id": "rolo",
-    "name": "Rolo",
+    "name": "Studio Dariolina",
     "category": "Designer",
     "location": "Gateshead",
     "instagram": "@studiodariolina",
