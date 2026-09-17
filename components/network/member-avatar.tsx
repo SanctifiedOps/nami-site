@@ -39,7 +39,7 @@ export function MemberAvatar({
 }) {
   const [failed, setFailed] = useState(false);
   const size = featured
-    ? "aspect-square w-full rounded-2xl text-6xl"
+    ? "aspect-square w-full rounded-full text-6xl"
     : "size-12 rounded-full text-sm";
   const resolvedSrc = displaySrc(src);
   const showImage = Boolean(resolvedSrc && !failed);
