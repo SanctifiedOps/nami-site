@@ -72,7 +72,7 @@ export default async function NetworkDirectoryPage() {
                   />
                 </div>
                 <div>
-                  <p className="mono-label mb-5 text-accent">Featured member</p>
+                  <p className="mb-5 text-2xl font-semibold leading-tight tracking-tight text-accent md:text-3xl">Featured Member</p>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-fg-subtle">
                     <span className="rounded-full border border-line px-3 py-1.5">{featured.category}</span>
                     <span className="inline-flex items-center gap-2"><MapPin size={14} aria-hidden />{featured.location}</span>
