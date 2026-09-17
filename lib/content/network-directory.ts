@@ -1075,7 +1075,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
   },
   {
     "id": "nicola-hunter",
-    "name": "Nicola Hunter",
+    "name": "Nicola Jay",
     "category": "Photographer",
     "location": "Newcastle",
     "instagram": "nicolajay.photos",
