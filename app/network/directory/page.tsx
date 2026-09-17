@@ -62,19 +62,17 @@ export default async function NetworkDirectoryPage() {
             <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-surface-1 p-7 md:p-10">
               <div aria-hidden className="hairline-grid absolute inset-0 opacity-30" />
               <div aria-hidden className="absolute -right-20 -top-24 size-80 rounded-full bg-accent/15 blur-3xl" />
-              <div className="relative z-10 grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
-                <div>
-                  <p className="mono-label text-accent">Featured member</p>
-                  <div className="mt-6">
-                    <MemberAvatar
-                      name={featured.name}
-                      src={featured.profileImage}
-                      alt={featured.imageAlt}
-                      featured
-                    />
-                  </div>
+              <div className="relative z-10 grid gap-8 lg:grid-cols-[minmax(0,0.76fr)_minmax(0,1.24fr)] lg:items-center lg:gap-12">
+                <div className="mx-auto w-full max-w-sm lg:max-w-none">
+                  <MemberAvatar
+                    name={featured.name}
+                    src={featured.profileImage}
+                    alt={featured.imageAlt}
+                    featured
+                  />
                 </div>
                 <div>
+                  <p className="mono-label mb-5 text-accent">Featured member</p>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-fg-subtle">
                     <span className="rounded-full border border-line px-3 py-1.5">{featured.category}</span>
                     <span className="inline-flex items-center gap-2"><MapPin size={14} aria-hidden />{featured.location}</span>

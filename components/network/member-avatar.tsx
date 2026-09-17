@@ -38,7 +38,9 @@ export function MemberAvatar({
   featured?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
-  const size = featured ? "size-20 text-2xl" : "size-12 text-sm";
+  const size = featured
+    ? "aspect-square w-full rounded-2xl text-6xl"
+    : "size-12 rounded-full text-sm";
   const resolvedSrc = displaySrc(src);
   const showImage = Boolean(resolvedSrc && !failed);
   const isProxiedImage = resolvedSrc?.startsWith("/api/network/profile-image/") ?? false;
@@ -48,7 +50,7 @@ export function MemberAvatar({
   return (
     <span
       className={cn(
-        "relative grid shrink-0 place-items-center overflow-hidden rounded-full border border-accent/30 bg-accent/10 font-semibold tracking-wide text-accent",
+        "relative grid shrink-0 place-items-center overflow-hidden border border-accent/30 bg-accent/10 font-semibold tracking-wide text-accent",
         size,
       )}
     >
@@ -58,7 +60,7 @@ export function MemberAvatar({
           alt={alt || `${name} profile picture`}
           fill
           unoptimized={isProxiedImage}
-          sizes={featured ? "80px" : "48px"}
+          sizes={featured ? "(min-width: 1024px) 40vw, (min-width: 640px) 384px, calc(100vw - 96px)" : "48px"}
           className="object-cover"
           onError={() => setFailed(true)}
         />
