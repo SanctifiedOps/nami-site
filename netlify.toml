@@ -5,6 +5,7 @@
 [build.environment]
   NODE_VERSION = "20"
   NEXT_TELEMETRY_DISABLED = "1"
+  SECRETS_SCAN_OMIT_PATHS = "mailchimp-templates/nami-creative-network-flagship-archive.html"
 
 # The official Next.js plugin handles App Router routing,
 # server functions (/api/*), ISR, and image optimization.
