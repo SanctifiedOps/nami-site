@@ -83,7 +83,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
   },
   {
     "id": "amanda-mulholland",
-    "name": "Amanda Mulholland",
+    "name": "Amanda Mulholland / Tittle the Brick",
     "category": "Creative",
     "location": "Newcastle",
     "instagram": "@tittle_the_brick",
