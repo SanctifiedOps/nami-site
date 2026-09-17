@@ -28,7 +28,7 @@ export function FooterCta() {
         variants={stage}
       >
         <motion.p className="mono-label" variants={fadeUp}>
-          Build with us
+              Build with me
         </motion.p>
         <motion.h2
           className="type-section-title mx-auto mt-6 max-w-4xl"

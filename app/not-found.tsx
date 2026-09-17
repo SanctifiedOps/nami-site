@@ -47,7 +47,7 @@ export default function NotFound() {
             </span>
           </h1>
           <p className="mt-6 text-lg text-fg-muted md:text-xl leading-relaxed">
-            Wrong link, deleted page, or something we never built. Either way,
+            Wrong link, deleted page, or something I never built. Either way,
             here's the way back.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">

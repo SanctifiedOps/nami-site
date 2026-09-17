@@ -21,8 +21,8 @@ type Props = {
 
 const DEFAULT_TITLE = (
   <>
-    What happens when we{" "}
-    <span className="text-gradient sm:block">work together</span>
+    What happens when you{" "}
+    <span className="text-gradient sm:block">work with me</span>
   </>
 );
 
@@ -35,9 +35,9 @@ const DEFAULT_TITLE = (
  * the only motion, and both are informational rather than decorative).
  */
 export function ProcessScroll({
-  index = "02 / How we work",
+  index = "02 / How I work",
   title = DEFAULT_TITLE,
-  lead = "We work out what is causing the problem, agree what needs doing and get it sorted. You will always know what is happening and what comes next.",
+  lead = "I work out what is causing the problem, agree what needs doing with you and get it sorted. You will always know what is happening and what comes next.",
 }: Props = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();

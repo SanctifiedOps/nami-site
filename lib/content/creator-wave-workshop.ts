@@ -71,7 +71,7 @@ export const creatorWaveWorkshop = {
     {
       question: "What is the difference between the free call and the \u00a399 report?",
       answer:
-        "The free check-in is a quick outside view and a short call so we can work out the best next step. The \u00a399 report is a deeper review of your content, website, shop, booking route, offer, and follow-up with a written action plan you can work through yourself.",
+      "The free check-in is a quick outside view and a short call so I can recommend the best next step. The \u00a399 report is a deeper review of your content, website, shop, booking route, offer, and follow-up with a written action plan you can work through yourself.",
     },
     {
       question: "What does the \u00a3499 build include?",

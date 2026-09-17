@@ -226,7 +226,7 @@ export async function POST(req: Request) {
       dashRes.status === "rejected" ? dashRes.reason : null,
     );
     return NextResponse.json(
-      { error: "We couldn't send your message. Please email hello@namicreative.co.uk." },
+      { error: "I couldn't send your message. Please email hello@namicreative.co.uk." },
       { status: 500 },
     );
   }

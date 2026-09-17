@@ -174,7 +174,7 @@ export const flowFunnel: Offer = {
       accent: "The website is where it dies.",
     },
     subhead:
-      "We build the page, the capture, the dashboard, and the attribution in 7 days for £750. After that you only pay monthly if qualified leads actually land.",
+      "I build the page, the capture, the dashboard, and the attribution in 7 days for £750. After that you only pay monthly if qualified leads actually land.",
     chips: [
       "£750 build",
       "£50 / qualified lead",
@@ -221,8 +221,8 @@ export const flowFunnel: Offer = {
     notForYou: [
       "You don't have an audience or referral base yet. Build that first.",
       "You sell products at low margin. This is built for service operators who sell time.",
-      "You want a full multi-page corporate website. We build those too, just not for £750.",
-      "You're based outside the UK. We're optimised for UK service operators right now.",
+      "You want a full multi-page corporate website. I build those too, just not for £750.",
+      "You're based outside the UK. This offer is built for UK service operators right now.",
     ],
   },
   proof: [
@@ -236,11 +236,11 @@ export const flowFunnel: Offer = {
       slug: "millions",
       variant: "range",
       headline: {
-        lead: "We built live intelligence for MILLIONS.",
+        lead: "I built live intelligence for MILLIONS.",
         accent: "Sub-second alerts.",
       },
       body: "A real-time intelligence platform with a live dashboard, automated alerts that fire the moment something happens, and infrastructure that runs around the clock. Shipped as one piece, end to end.",
-      closing: "If we can ship that, your funnel is well within range.",
+      closing: "If I can ship that, your funnel is well within range.",
     },
   ],
   testimonial: {
@@ -263,7 +263,7 @@ export const flowFunnel: Offer = {
         icon: Inbox,
         title: "Lead capture into your dashboard",
         description:
-          "Every submission lands in a private lead dashboard we build for you. Live status, contact info, source data. You own it. Always.",
+          "Every submission lands in a private lead dashboard I build for you. Live status, contact info, source data. You own it. Always.",
       },
       {
         icon: Bell,
@@ -295,12 +295,12 @@ export const flowFunnel: Offer = {
     {
       day: "Day 0",
       title: "15-min fit-call",
-      body: "We confirm we're a fit, scope the brief, and answer your questions. No pitch deck, no high-pressure close. If we're not right for each other, we say so on the call.",
+      body: "I check that the job is a fit, scope the brief, and answer your questions. No pitch deck, no high-pressure close. If I am not the right person for it, I will say so on the call.",
     },
     {
       day: "Day 1",
       title: "Kickoff and brief",
-      body: "Deposit invoice sent. You fill in a 20-minute brief on your audience, your offer, and your ICP. We sign off the qualified-lead criteria together in writing. Work starts the same day.",
+      body: "Deposit invoice sent. You fill in a 20-minute brief on your audience, your offer, and your ICP. You and I agree the qualified-lead criteria in writing. Work starts the same day.",
     },
     {
       day: "Days 2 to 6",
@@ -316,7 +316,7 @@ export const flowFunnel: Offer = {
   riskReversal: {
     eyebrow: "The deal",
     headline: {
-      lead: "We build it.",
+      lead: "I build it.",
       accent: "If it doesn't bring leads, you don't pay past the build.",
     },
     subline:
@@ -326,7 +326,7 @@ export const flowFunnel: Offer = {
     eyebrow: "Priced on the outcome",
     headline: {
       lead: "One number you control.",
-      accent: "One we earn.",
+      accent: "One I earn.",
     },
     formula: {
       buildLabel: {
@@ -410,14 +410,14 @@ export const flowFunnel: Offer = {
       accent: "The next is yours.",
     },
     body:
-      "Fifteen minutes, no pitch. If we're not the right fit on the call, we say so honestly. Worst case you leave with clarity on what you actually need.",
+      "Fifteen minutes, no pitch. If I am not the right fit, I will say so on the call. Either way, you leave with a clearer idea of what you need.",
     button: { label: "Book the fit-call", href: CALENDLY_URL },
   },
   faq: [
     {
       question: "What counts as a 'qualified lead'?",
       answer:
-        "Anyone who matches your written ICP (signed off at kickoff), submits a complete form, is contactable, and isn't already a client, an employee, or a known competitor. Bots, spam, and half-fills don't count. Ambiguous cases we review together; if it stays ambiguous, it doesn't count.",
+        "Anyone who matches your written ICP (signed off at kickoff), submits a complete form, is contactable, and isn't already a client, an employee, or a known competitor. Bots, spam, and half-fills don't count. I review ambiguous cases with you; if it stays ambiguous, it doesn't count.",
     },
     {
       question: "What if no leads land in month 1?",
@@ -437,22 +437,22 @@ export const flowFunnel: Offer = {
     {
       question: "Do I own the page, the dashboard, and the lead data?",
       answer:
-        "Yes. Always. The page, the dashboard, the leads, the source files all ship to you on handover. You keep everything whether we continue working together or not. No lock-in, no hostage data.",
+        "Yes. Always. The page, the dashboard, the leads, the source files all ship to you on handover. You keep everything whether you continue working with me or not. No lock-in, no hostage data.",
     },
     {
       question: "What if I want to drive paid traffic too?",
       answer:
-        "Paid traffic is a separate project quoted off-page. We'll only suggest it once the funnel is live and converting organic, so we know what the page actually does before we spend on ads. Most clients run organic for 60 days before paid.",
+        "Paid traffic is a separate project quoted off-page. I'll only suggest it once the funnel is live and converting organically, so I can see what the page does before you spend on ads. Most clients run organic for 60 days before paid.",
     },
     {
       question: "What if I'm based outside the UK?",
       answer:
-        "Right now this is built for UK service operators. The ICP, the dispute-resolution process, and the contract are all UK-tuned. If you're international and the work still fits, talk to us on the fit-call. We'll be straight about whether it's a sensible match.",
+        "Right now this is built for UK service operators. The ICP, the dispute-resolution process, and the contract are all UK-tuned. If you're international and the work still fits, talk to me on the fit-call. I'll be straight about whether it's a sensible match.",
     },
     {
       question: "Do I need a brand or audience first?",
       answer:
-        "Brand: helpful, not required. We build into whatever visual language you have, or sharpen one as part of the work. Audience: yes. The Flow Funnel converts the audience you already have. If you're starting from zero traffic, you need content and reach first; we can talk about that on the call.",
+        "Brand: helpful, not required. I build into whatever visual language you have, or sharpen it as part of the work. Audience: yes. The Flow Funnel converts the audience you already have. If you're starting from zero traffic, you need content and reach first; I can talk that through with you on the call.",
     },
     {
       question: "Can I edit the page myself after launch?",
@@ -462,7 +462,7 @@ export const flowFunnel: Offer = {
     {
       question: "Can I see a live Flow Funnel in action?",
       answer:
-        "VESSL above is the closest reference build. We'll walk you through it on the fit-call and show you a few others off the record so you can see the dashboard, the attribution layer, and the lead-flow before you commit.",
+        "VESSL above is the closest reference build. I'll walk you through it on the fit-call and show you a few others off the record so you can see the dashboard, the attribution layer, and the lead-flow before you commit.",
     },
   ],
 };

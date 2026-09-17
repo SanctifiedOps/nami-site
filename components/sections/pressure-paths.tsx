@@ -15,7 +15,7 @@ export function PressurePaths({
       <span className="text-gradient sm:block">in the way?</span>
     </>
   ),
-  lead = "You probably already know which part is causing trouble. Pick the one that sounds familiar and we can sort it from there.",
+  lead = "You probably already know which part is causing trouble. Pick the one that sounds familiar and I can help you sort it from there.",
   className = "",
 }: Props) {
   return (

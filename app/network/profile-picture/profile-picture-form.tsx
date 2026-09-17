@@ -114,7 +114,7 @@ export function ProfilePictureForm({
           value={bio}
           onChange={(event) => setBio(event.target.value.slice(0, 800))}
           rows={5}
-          placeholder="Tell us what you do, who you help and what makes your work yours. We'll write it as a short NAMI bio."
+            placeholder="Tell me what you do, who you help and what makes your work yours. I'll write it as a short NAMI bio."
           className="mt-4 w-full rounded-2xl border border-line bg-surface-0/65 px-5 py-4 text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-accent focus:ring-4 focus:ring-accent/10"
         />
         <p className="mt-2 text-right text-xs text-fg-subtle">{bio.length}/800</p>
@@ -139,7 +139,7 @@ export function ProfilePictureForm({
             <img src={previewUrl} alt="Selected profile preview" className="size-24 rounded-full object-cover" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-fg">{file?.name}</p>
-              <p className="mt-1 text-xs leading-relaxed text-fg-subtle">We’ll centre-crop and prepare it as an 800px WebP.</p>
+          <p className="mt-1 text-xs leading-relaxed text-fg-subtle">I’ll centre-crop and prepare it as an 800px WebP.</p>
               <button type="button" onClick={clearFile} className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-accent hover:text-accent-soft">
                 <X size={14} aria-hidden /> Choose another
               </button>

@@ -20,7 +20,7 @@ export default function PricingPage() {
             <span className="text-gradient sm:block">of help for the job</span>
           </>
         }
-        lead="Some jobs need a focused fix. Others need regular support. We will agree what you need, what it costs and how long it should take before I begin."
+        lead="Some jobs need a focused fix. Others need regular support. I will agree the scope, cost and timescale with you before I begin."
       />
 
       {/* How I price the work */}
@@ -39,9 +39,9 @@ export default function PricingPage() {
                 A clear price for <span className="text-gradient">the job you need</span>
               </h2>
               <p className="mx-auto max-w-2xl text-fg-muted md:text-lg leading-relaxed">
-                We talk first because a request such as "I need a new website"
+                I talk with you first because a request such as "I need a new website"
                 can mean very different things. You might need clearer wording,
-                a few better pages or a complete rebuild. I quote once we know
+                a few better pages or a complete rebuild. I quote once I know
                 what will actually solve the problem.
               </p>
               <p className="mx-auto max-w-2xl text-fg-muted md:text-lg leading-relaxed">

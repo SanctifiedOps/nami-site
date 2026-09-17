@@ -49,7 +49,7 @@ export const services: Service[] = [
     help: [
       {
         title: "Make the offer easier to understand",
-        body: "We work out what customers need to know, what makes the business worth choosing and how to say it clearly.",
+    body: "I work out what customers need to know, what makes the business worth choosing and how to say it clearly.",
       },
       {
         title: "Give the business a recognisable look",
@@ -89,7 +89,7 @@ export const services: Service[] = [
     steps: [
       {
         title: "Understand the business",
-        body: "We talk through what you sell, who chooses you and where the current brand is causing problems.",
+    body: "I talk through what you sell, who chooses you and where the current brand is causing problems.",
       },
       {
         title: "Set the direction",
@@ -179,7 +179,7 @@ export const services: Service[] = [
       },
       {
         title: "Make it manageable",
-        body: "We agree a routine you can maintain, or I can stay involved and help produce the work with you.",
+        body: "I help you settle on a routine you can maintain, or I can stay involved and help produce the work with you.",
       },
     ],
     outcome:
@@ -253,7 +253,7 @@ export const services: Service[] = [
     steps: [
       {
         title: "Work out what the site needs to do",
-        body: "We agree who the site is for, what visitors need to understand and which actions matter to the business.",
+    body: "I work out who the site is for, what visitors need to understand and which actions matter to the business.",
       },
       {
         title: "Write, design and build it",
@@ -335,7 +335,7 @@ export const services: Service[] = [
     steps: [
       {
         title: "Find where the time is going",
-        body: "We walk through the job as it happens now and identify the repetitive parts worth fixing.",
+    body: "I walk through the job with you as it happens now and identify the repetitive parts worth fixing.",
       },
       {
         title: "Build and test the new process",

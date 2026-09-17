@@ -286,7 +286,7 @@ export default function FlowFunnelPage() {
             >
               <motion.p className="eyebrow mb-6" variants={fadeUp}>
                 {isPrimary
-                  ? "We've built this exact thing"
+                  ? "I've built this exact thing"
                   : "And when the stakes are higher"}
               </motion.p>
               <motion.h2
@@ -518,9 +518,9 @@ export default function FlowFunnelPage() {
             eyebrow="Common questions"
             title={
               <span className="text-balance">
-                Before we get on{" "}
+                Before your{" "}
                 <span className="text-gradient sm:block">
-                  a call together.
+                  call with me.
                 </span>
               </span>
             }
@@ -595,7 +595,7 @@ export default function FlowFunnelPage() {
                   <span className="text-gradient">Get notified.</span>
                 </span>
               }
-              lead="We open four Flow Funnel builds each month. Drop your email and we'll let you know when the next batch opens."
+              lead="I open four Flow Funnel builds each month. Drop your email and I'll let you know when the next batch opens."
             />
           </div>
         </div>

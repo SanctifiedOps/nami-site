@@ -12,7 +12,7 @@ export const processSteps: ProcessStep[] = [
     title: "Talk through what is not working",
     duration: "Weeks 1-2",
     summary:
-      "We start with the problem you are trying to solve, look at what you already have and agree what needs attention first.",
+      "I start with the problem you are trying to solve, look at what you already have and agree with you on what needs attention first.",
     detail: [
       "Talk through the business and its customers",
       "Review your brand, website and content",
@@ -25,7 +25,7 @@ export const processSteps: ProcessStep[] = [
     title: "Do the work",
     duration: "Weeks 3-6",
     summary:
-      "I write, design and build the parts we agreed, with regular check-ins so nothing disappears behind the scenes.",
+      "I write, design and build the agreed parts, with regular check-ins so nothing disappears behind the scenes.",
     detail: [
       "Write the wording",
       "Design the brand and materials",

@@ -53,7 +53,7 @@ export default function CreatorWaveWorkshopThankYouPage() {
               I will take a look through the links, your content, and the customer journey before the call, so I can give you the clearest read on where people might be getting stuck and what you can do to improve it.
             </p>
             <p className="mx-auto mt-5 max-w-2xl leading-relaxed text-fg-subtle">
-              You do not need to have everything polished before we talk. Send what you have, and I will come into the conversation with a proper view of the route people are taking.
+              You do not need to have everything polished before the call. Send what you have, and I will come into the conversation with a proper view of the route people are taking.
             </p>
           </div>
 

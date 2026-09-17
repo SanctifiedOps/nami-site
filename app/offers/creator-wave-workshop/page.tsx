@@ -212,7 +212,7 @@ export default function CreatorWaveWorkshopPage() {
             Want a quick outside view before you decide what to do?
           </p>
           <p className="max-w-2xl leading-relaxed text-fg-muted md:text-lg">
-            Book a free call with me. We will look at where people are finding you, where they might be dropping off, and whether the report or build makes sense.
+              Book a free call with me. I will look at where people are finding you, where they might be dropping off, and whether the report or build makes sense.
           </p>
           <PrimaryCta>Book a call with me</PrimaryCta>
         </div>

@@ -56,7 +56,7 @@ export default function ContactPage() {
           error?: string;
         };
         if (!res.ok || !data.ok) {
-          throw new Error(data.error ?? "We couldn't send your message.");
+        throw new Error(data.error ?? "I couldn't send your message.");
         }
         router.push("/thank-you");
       } finally {

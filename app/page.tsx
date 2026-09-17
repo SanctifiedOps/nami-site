@@ -33,7 +33,7 @@ export default function Home() {
         <div className="container-shell relative z-10">
           <SectionIntro
             align="center"
-            index="01 / What we build"
+            index="01 / What I build"
             title={
               <>
                 The jobs you know need sorting{" "}
@@ -176,9 +176,9 @@ export default function Home() {
             <SectionIntro
               title={
                 <>
-                  Before we talk{" "}
+                  Before you get in touch{" "}
                   <span className="text-gradient sm:block">
-                    properly
+                    with me
                   </span>
                 </>
               }

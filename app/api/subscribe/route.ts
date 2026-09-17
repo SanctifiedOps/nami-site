@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     // Forbidden / cleaned / unsubscribed cases
     if (data?.title === "Forgotten Email Not Subscribed") {
       return NextResponse.json(
-        { error: "We can't add this address right now. Try a different one." },
+      { error: "I can't add this address right now. Try a different one." },
         { status: 400 },
       );
     }

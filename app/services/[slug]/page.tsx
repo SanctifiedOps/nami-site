@@ -178,7 +178,7 @@ export default async function ServiceDetailPage({
               <span className="text-gradient sm:block">you put right</span>
             </>
           }
-          lead="The exact job depends on what you already have and what is causing the problem. We will agree that before any work starts."
+        lead="The exact job depends on what you already have and what is causing the problem. I will agree that with you before any work starts."
           className="mx-auto mb-14 md:mb-20"
         />
         <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-12">

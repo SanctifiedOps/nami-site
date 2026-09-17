@@ -32,7 +32,7 @@ export default async function ProfilePicturePage({
         networkBackground
         eyebrow="NAMI Creative Network"
         title={<>Put a face to <span className="text-gradient">your work</span></>}
-        lead="Choose your listing, add one square-friendly image and we’ll prepare it for your Creative Network card."
+        lead="Choose your listing, add one square-friendly image and I’ll prepare it for your NAMI network profile."
       >
         <Link
           href="/network/directory"
@@ -54,7 +54,7 @@ export default async function ProfilePicturePage({
             <div className="glass-refractive rounded-3xl p-7 md:p-9">
               <h2 className="text-2xl font-semibold text-fg">This link isn&apos;t valid</h2>
               <p className="mt-3 leading-relaxed text-fg-muted">
-                Use the personal link in your NAMI email. If it still doesn&apos;t work, reply to the email and we&apos;ll sort it.
+              Use the personal link in your NAMI email. If it still doesn&apos;t work, reply to the email and I&apos;ll sort it.
               </p>
             </div>
           )}

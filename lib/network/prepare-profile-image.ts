@@ -93,15 +93,15 @@ export function friendlyUploadError(error: unknown) {
   }
 
   const message = error instanceof Error ? error.message : "";
-  if (/^(Please|Choose|Send|We couldn't|The upload|This upload)/.test(message)) {
+  if (/^(Please|Choose|Send|I couldn't|The upload|This upload)/.test(message)) {
     return message;
   }
   if (/image|bitmap|decode|canvas|orientation|format/i.test(message)) {
-    return "We couldn't read that picture. Try saving it as a JPG or PNG, then upload it again.";
+    return "I couldn't read that picture. Try saving it as a JPG or PNG, then upload it again.";
   }
   if (/fetch|network|connection|offline/i.test(message)) {
-    return "We couldn't connect. Check your internet connection, then try again.";
+    return "I couldn't connect. Check your internet connection, then try again.";
   }
 
-  return "We couldn't upload your picture. Please try again or choose a different JPG or PNG.";
+  return "I couldn't upload your picture. Please try again or choose a different JPG or PNG.";
 }

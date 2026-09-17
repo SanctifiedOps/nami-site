@@ -20,7 +20,7 @@ import { NetworkForm } from "./network-form";
 export const metadata: Metadata = {
   title: "NAMI Creative Network | North East Creatives",
   description:
-    "Join NAMI Creative Network, a growing home for North East creatives, Newcastle artists, freelancers, local businesses, and independent brands.",
+    "Join NAMI Creative Network. Get your work seen, find other North East creatives and make a NAMI network profile people can find.",
   openGraph: {
     images: [
       {
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     ],
     title: "NAMI Creative Network | North East Creatives",
     description:
-      "A growing network for North East creatives, Newcastle artists, freelancers, local businesses, and independent brands.",
+      "Get your work seen, find your people and join the NAMI Creative Network.",
     url: "https://namicreative.co.uk/network",
   },
   alternates: {
@@ -54,49 +54,49 @@ const audience = [
 const reasons = [
   {
     icon: Heart,
-    title: "More eyes on the work",
-    body: "NAMI spotlights people building something with care. Features, reposts, stories, and recommendations all start with knowing who is out there.",
+    title: "Get your work seen",
+    body: "Your NAMI network profile shows what you do, where you're based and where people can find more of your work. It stays there after a post has disappeared down the feed.",
   },
   {
     icon: Users,
-    title: "A stronger circle around you",
-    body: "The network brings together people who understand the graft behind creative work and want to see more North East people win.",
+    title: "Find your people",
+    body: "Have a look around the directory. You might find someone to work with, learn from or simply have a coffee with.",
   },
   {
     icon: Handshake,
-    title: "More ways to be put forward",
-    body: "As the network grows, NAMI can point partner businesses, collaborators, and local opportunities towards the right people.",
+    title: "Be easier to recommend",
+    body: "When someone asks me for a photographer, designer, maker or local business, your NAMI network profile gives me somewhere useful to send them.",
   },
 ];
 
 
 const joinSteps = [
-  "You will be added to the NAMI Creative Network",
-  "I will keep an eye on your work and where you are based",
-  "You will receive Creative Network roundups with people, events, and opportunities",
-  "You will get the community links after joining",
-  "I will use the network to feature, recommend, and connect people when there is a good fit",
+  "What you send becomes your NAMI network profile in the live directory",
+  "People can find you in the directory by what you do and where you're based",
+  "Your profile can link to your Instagram and website or portfolio",
+  "You will get links to the WhatsApp community and Facebook group",
+  "I can keep you in mind for features and introductions when there's a good fit",
 ];
 const futureAccess = [
   {
     icon: Sparkles,
     title: "Showcase opportunities",
-    body: "Regular chances to get your work seen through NAMI posts, roundups, stories, and future creative features.",
+    body: "I feature and share members' work so it reaches people beyond the same old circle.",
   },
   {
     icon: Mail,
-    title: "Weekly roundups",
-    body: "A regular email with featured creators, spotlights, local creative news, events, and useful opportunities from across the North East.",
+    title: "Network roundups",
+    body: "Emails with people to follow, things happening locally and opportunities worth a look.",
   },
   {
     icon: CalendarDays,
     title: "Events and meetups",
-    body: "A route into future gatherings for people making, building, selling, and creating across the region.",
+    body: "A chance to meet the people behind the work, not just their Instagram handles.",
   },
   {
     icon: MapPin,
     title: "Local referrals",
-    body: "A cleaner way for NAMI to remember who does what, where you are based, and when to recommend you.",
+    body: "A NAMI network profile I can pass on when someone is looking for what you do.",
   },
 ];
 
@@ -125,11 +125,11 @@ export default function NetworkPage() {
         eyebrow="NAMI Creative Network"
         title={
           <>
-            Join the North East&apos;s growing{" "}
-            <span className="text-gradient sm:block">creative network</span>
+            Find your people.{" "}
+            <span className="text-gradient sm:block">Get your work seen.</span>
           </>
         }
-        lead="For creatives, artists and independent businesses doing proper work across the North East."
+        lead="Meet North East creatives. Give people a way to discover your work, hire you, buy from you or get in touch."
       >
         <div className="flex flex-wrap items-center justify-center gap-3">
           <FormAnchor>Join the network</FormAnchor>
@@ -152,23 +152,16 @@ export default function NetworkPage() {
         <div className="mx-auto max-w-3xl text-center">
           <div className="space-y-6">
             <p className="text-2xl font-medium leading-[0.98] tracking-tight md:text-3xl md:leading-[0.96]">
-              The North East is full of people making good things, but too much
-              of it sits in separate corners
+              There&apos;s so much good work being made up here. Too much of it stays in its own little corner.
             </p>
             <p className="mx-auto max-w-2xl leading-relaxed text-fg-muted md:text-lg">
-              NAMI started as NAMI Up North because I wanted to give local
-              creativity more attention. Artists, musicians, photographers,
-              makers, designers, freelancers, small businesses, and brands were
-              doing work that deserved more credit.
+              I started the NAMI Creative Network to help more people see the artists, musicians, photographers, makers and independent businesses working right on their doorstep.
             </p>
             <p className="mx-auto max-w-2xl leading-relaxed text-fg-muted md:text-lg">
-              NAMI Creative Network is the next step. I am building a proper
-              list of people across the region so there is one place to find
-              the work, share opportunities, make introductions, and back the
-              people who are putting themselves out there.
+              The directory gives that work a place to be found. The rest is about helping people meet, share opportunities and back each other.
             </p>
             <div className="pt-2">
-              <FormAnchor>Put your name in</FormAnchor>
+              <FormAnchor>Join the network</FormAnchor>
             </div>
           </div>
         </div>
@@ -179,12 +172,10 @@ export default function NetworkPage() {
           <div className="mx-auto mb-12 max-w-4xl text-center">
             <p className="mono-label mb-5">02 / Why join</p>
             <h2 className="type-section-title">
-              Be easier to find when the right people are looking
+              Good work deserves to travel further than your own feed
             </h2>
             <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-fg-muted md:text-lg">
-              NAMI can use this network to spotlight, recommend, connect, and
-              bring more attention to the people shaping the creative side of
-              the North East.
+              A post can vanish by lunchtime. Your profile stays in the directory, where someone looking for what you do can find you later.
             </p>
           </div>
 
@@ -209,7 +200,7 @@ export default function NetworkPage() {
           </div>
 
           <div className="mt-10 text-center">
-            <FormAnchor>Join NAMI Creative Network</FormAnchor>
+            <FormAnchor>Make your NAMI network profile</FormAnchor>
           </div>
         </div>
       </section>
@@ -228,14 +219,10 @@ export default function NetworkPage() {
             <div>
             <p className="mono-label mb-5">03 / Who belongs here</p>
             <h2 className="type-section-title">
-              If your work adds something to the region, NAMI should know
-              about it
+              If you&apos;re making something up here, you belong here
             </h2>
             <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
-              You do not need a huge following. You do not need everything
-              polished. If you are making, building, selling, designing,
-              filming, playing, painting, running a place, or growing a brand
-              up here, put it forward.
+              You don&apos;t need a huge following or a perfectly polished feed. If you&apos;re making, building, filming, playing, painting or running an independent business in the North East, I&apos;d like to know about it.
             </p>
             </div>
           </ScrollReveal>
@@ -267,13 +254,10 @@ export default function NetworkPage() {
           <div className="mx-auto max-w-4xl text-center">
             <p className="mono-label mb-5">04 / What it can open up</p>
             <h2 className="type-section-title">
-              A network built for visibility, support, and proper opportunity
+              Your NAMI network profile is where it starts
             </h2>
             <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-fg-muted md:text-lg">
-              The first job is simple: learn who is doing what across the North
-              East. From there, NAMI can build better spotlights, better
-              introductions, better events, and better reasons for people to
-              work with local talent.
+              Put your work somewhere people can find it. Then I can help with features, introductions, roundups and chances to meet the people behind the names.
             </p>
           </div>
 
@@ -299,14 +283,13 @@ export default function NetworkPage() {
 
           <div className="mx-auto mt-12 max-w-3xl rounded-2xl border border-line bg-surface-1/55 p-6 text-center backdrop-blur-md md:p-10">
             <p className="text-xl font-bold leading-relaxed text-accent md:text-2xl">
-              I am building the region&apos;s largest creator network, and this is how I know who to keep in mind.
+              The directory is live, and there&apos;s room for your work in it.
             </p>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-fg-muted md:text-lg">
-              Joining now means NAMI can keep track of your work while the
-              network grows around spotlights, weekly roundups, events, showcases, referrals, and community support.
+              Make a NAMI network profile people can find. From there, I can keep an eye on what you&apos;re doing and put you forward when the right thing comes up.
             </p>
             <div className="mt-8">
-              <FormAnchor>Join before the next round of features</FormAnchor>
+              <FormAnchor>Join the network</FormAnchor>
             </div>
           </div>
         </div>
@@ -321,12 +304,10 @@ export default function NetworkPage() {
           <div>
             <p className="mono-label mb-5">05 / Join the network</p>
             <h2 className="type-section-title">
-              Join the network so NAMI knows what you are building
+              Join the NAMI Creative Network today
             </h2>
             <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
-              Tell me what you are building so I know who you are, where you
-              are based, and when NAMI can put your work forward through
-              features, roundups, referrals, events, and local opportunities.
+              Tell me what you do, where you&apos;re based and how you want to appear in the directory. I&apos;ll turn that into a NAMI network profile people can find and share.
             </p>
             <div className="mt-8 rounded-2xl border border-line bg-surface-0/60 p-6">
               <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-accent">
@@ -348,9 +329,7 @@ export default function NetworkPage() {
                 ))}
               </ul>
               <p className="mt-5 text-sm leading-relaxed text-fg-subtle">
-                There is no cost to join. The form just gives me enough context
-                to remember what you do and point people towards your work in a
-                useful way.
+                It&apos;s free to join. Your NAMI network profile may take a little time to appear after you submit.
               </p>
             </div>
           </div>

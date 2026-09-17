@@ -16,6 +16,8 @@ const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 type NetworkPayload = {
   memberId?: unknown;
   name?: unknown;
+  firstName?: unknown;
+  displayName?: unknown;
   email?: unknown;
   instagram?: unknown;
   category?: unknown;
@@ -29,6 +31,8 @@ type NetworkPayload = {
 type Cleaned = {
   memberId: string;
   name: string;
+  firstName: string;
+  displayName: string;
   email: string;
   instagram: string;
   category: string;
@@ -43,12 +47,17 @@ function str(v: unknown, max = 1000): string {
 }
 
 function clean(p: NetworkPayload): Cleaned {
+  const legacyName = str(p.name, 120);
+  const firstName = str(p.firstName, 80) || firstAndLast(legacyName).firstName;
+  const displayName = str(p.displayName, 120) || legacyName;
   return {
     memberId: str(p.memberId, 160)
       .toLowerCase()
       .replace(/[^a-z0-9-]+/g, "-")
       .replace(/^-+|-+$/g, ""),
-    name: str(p.name, 120),
+    name: displayName,
+    firstName,
+    displayName,
     email: str(p.email, 200).toLowerCase(),
     instagram: str(p.instagram, 120),
     category: str(p.category, 80),
@@ -106,8 +115,7 @@ function enrichedMessage(d: Cleaned): string {
 }
 
 function confirmationEmailFor(d: Cleaned) {
-  const { firstName } = firstAndLast(d.name);
-  const greeting = firstName ? `Hiya ${firstName},` : "Hiya,";
+  const greeting = d.firstName ? `Hiya ${d.firstName},` : "Hiya,";
   const htmlGreeting = escapeHtml(greeting);
   const subject = "You're in. Welcome to NAMI Creative Network";
   const body = [
@@ -121,9 +129,9 @@ function confirmationEmailFor(d: Cleaned) {
     "",
     "The aim is to put this network in the spotlight and make it easier for people to find the creative talent already here.",
     "",
-    "I want businesses, councils and brands to come to us when they need someone for a project. By joining, your name and work are now part of that roster for future features, introductions and opportunities.",
+    "I want businesses, councils and brands to come to me when they need someone for a project. By joining, your name and work are now part of that roster for future features, introductions and opportunities.",
     "",
-    `Your name, location, creative category and submitted links will also be added to our live directory: ${DIRECTORY_URL}`,
+    `Your name, location, creative category and submitted links will also be added to the live directory: ${DIRECTORY_URL}`,
     "",
     "I've got plenty planned for the network, including:",
     "",
@@ -133,7 +141,7 @@ function confirmationEmailFor(d: Cleaned) {
     "• Funding opportunities, giveaways and competitions",
     "• A proper online directory for North East creatives",
     "",
-    "I'm currently working through the network for our feature carousels, so keep an eye out. I'll also share and repost as much of your work as I can.",
+    "I'm currently working through the network for NAMI feature carousels, so keep an eye out. I'll also share and repost as much of your work as I can.",
     "",
     "Please tag or DM NAMI when you post something you want me to see. Social media does a cracking job of hiding the good stuff.",
     "",
@@ -160,8 +168,8 @@ function confirmationEmailFor(d: Cleaned) {
   <p style="margin:0 0 22px">I just wanted to personally say thank you for joining.</p>
   <p style="margin:0 0 22px">You're now part of a growing network of creators, artists, musicians, freelancers, small businesses, brands and generally lush people from across the North East.</p>
   <p style="margin:0 0 22px">The aim is to put this network in the spotlight and make it easier for people to find the creative talent already here.</p>
-  <p style="margin:0 0 22px">I want businesses, councils and brands to come to us when they need someone for a project. By joining, your name and work are now part of that roster for future features, introductions and opportunities.</p>
-  <p style="margin:0 0 22px">Your name, location, creative category and submitted links will also be added to our <a href="${DIRECTORY_URL}" style="color:#d6009d;font-weight:600">live directory</a> on the NAMI Creative website, making it easier for people to discover your work and get in touch.</p>
+  <p style="margin:0 0 22px">I want businesses, councils and brands to come to me when they need someone for a project. By joining, your name and work are now part of that roster for future features, introductions and opportunities.</p>
+  <p style="margin:0 0 22px">Your name, location, creative category and submitted links will also be added to the <a href="${DIRECTORY_URL}" style="color:#d6009d;font-weight:600">live directory</a> on the NAMI Creative website, making it easier for people to discover your work and get in touch.</p>
   <p style="margin:0 0 12px">I've got plenty planned for the network, including:</p>
   <ul style="margin:0 0 22px;padding-left:22px">
     <li style="margin-bottom:5px">Meetups, coworking and events</li>
@@ -170,7 +178,7 @@ function confirmationEmailFor(d: Cleaned) {
     <li style="margin-bottom:5px">Funding opportunities, giveaways and competitions</li>
     <li>A proper online directory for North East creatives</li>
   </ul>
-  <p style="margin:0 0 22px">I'm currently working through the network for our feature carousels, so keep an eye out. I'll also share and repost as much of your work as I can.</p>
+  <p style="margin:0 0 22px">I'm currently working through the network for NAMI feature carousels, so keep an eye out. I'll also share and repost as much of your work as I can.</p>
   <p style="margin:0 0 22px">Please tag or DM NAMI when you post something you want me to see. Social media does a cracking job of hiding the good stuff.</p>
   <p style="margin:0 0 12px"><a href="${WHATSAPP_URL}" style="color:#d6009d;font-weight:600">Join the WhatsApp community</a> to meet other members, share your work and events, or simply join the conversation.</p>
   <p style="margin:0 0 22px"><a href="${FACEBOOK_URL}" style="color:#d6009d;font-weight:600">Join the Facebook group</a> to share your work, projects and upcoming events.</p>
@@ -193,7 +201,7 @@ function confirmationEmailFor(d: Cleaned) {
     subject,
     heading: "Nice one. Your submission landed.",
     previewText:
-      "Thanks for joining. Here's what we're building for North East creatives.",
+      "Thanks for joining. Here's what I'm building for North East creatives.",
     body,
     html,
     text: body,
@@ -220,7 +228,6 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
     return;
   }
 
-  const { firstName, lastName } = firstAndLast(d.name);
   const subscriberHash = crypto
     .createHash("md5")
     .update(d.email)
@@ -238,9 +245,7 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
         email_address: d.email,
         status_if_new: "subscribed",
         merge_fields: {
-          FNAME: firstName,
-          LNAME: lastName,
-          COMPANY: d.instagram,
+          FNAME: d.firstName,
           PTYPE: "Creative Network",
           MESSAGE: enrichedMessage(d).slice(0, 500),
         },
@@ -289,18 +294,18 @@ async function notifyMake(d: Cleaned, image: File): Promise<void> {
     return;
   }
 
-  const { firstName, lastName } = firstAndLast(d.name);
   const message = enrichedMessage(d);
   const submittedAt = new Date().toISOString();
   const confirmationEmail = confirmationEmailFor(d);
   const outgoing = new FormData();
   outgoing.set("memberId", d.memberId);
   outgoing.set("name", d.name);
-  outgoing.set("firstName", firstName);
-  outgoing.set("lastName", lastName);
+  outgoing.set("displayName", d.displayName);
+  outgoing.set("firstName", d.firstName);
+  outgoing.set("lastName", "");
   outgoing.set("email", d.email);
   outgoing.set("instagram", d.instagram);
-  outgoing.set("company", d.instagram);
+  outgoing.set("company", d.displayName);
   outgoing.set("category", d.category);
   outgoing.set("location", d.location);
   outgoing.set("link", d.link);
@@ -348,7 +353,7 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
     body: JSON.stringify({
       name: d.name,
       email: d.email,
-      company: d.instagram,
+      company: d.displayName,
       message: enrichedMessage(d),
       subject: `Creative Network submission - ${d.category}`,
       source: "instagram-network",
@@ -371,6 +376,8 @@ export async function POST(req: Request) {
       payload = {
         memberId: formData.get("memberId"),
         name: formData.get("name"),
+        firstName: formData.get("firstName"),
+        displayName: formData.get("displayName"),
         email: formData.get("email"),
         instagram: formData.get("instagram"),
         category: formData.get("category"),
@@ -397,13 +404,19 @@ export async function POST(req: Request) {
 
   if (!d.memberId) {
     return NextResponse.json(
-      { error: "We could not create a directory ID. Please refresh and try again." },
+      { error: "I could not create a directory ID. Please refresh and try again." },
       { status: 400 },
     );
   }
-  if (!d.name) {
+  if (!d.firstName) {
     return NextResponse.json(
-      { error: "Please share your name." },
+      { error: "Please add your first name." },
+      { status: 400 },
+    );
+  }
+  if (!d.displayName) {
+    return NextResponse.json(
+      { error: "Please add the name you want on your NAMI network profile." },
       { status: 400 },
     );
   }
@@ -439,13 +452,13 @@ export async function POST(req: Request) {
   }
   if (!d.note) {
     return NextResponse.json(
-      { error: "Please tell us a little about your work for your directory bio." },
+      { error: "Please tell me a little about your work for your profile bio." },
       { status: 400 },
     );
   }
   if (!image || image.size === 0) {
     return NextResponse.json(
-      { error: "Please add a profile picture for your directory card." },
+      { error: "Please add a profile picture for your NAMI network profile." },
       { status: 400 },
     );
   }
@@ -457,7 +470,7 @@ export async function POST(req: Request) {
   }
   if (!d.directoryConsent) {
     return NextResponse.json(
-      { error: "Please confirm that we can include you in the public directory." },
+      { error: "Please confirm that I can include you in the public directory." },
       { status: 400 },
     );
   }
@@ -478,7 +491,7 @@ export async function POST(req: Request) {
       makeRes.status === "rejected" ? makeRes.reason : null,
     );
     return NextResponse.json(
-      { error: "We couldn't send this. Please email hello@namicreative.co.uk." },
+      { error: "I couldn't send this. Please email hello@namicreative.co.uk." },
       { status: 500 },
     );
   }

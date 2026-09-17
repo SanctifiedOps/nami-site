@@ -133,7 +133,8 @@ export function NetworkForm() {
     const fd = new FormData(event.currentTarget);
     const category = String(fd.get("category") ?? "");
     const hasRequiredFields = Boolean(
-      String(fd.get("name") ?? "").trim() &&
+      String(fd.get("firstName") ?? "").trim() &&
+        String(fd.get("displayName") ?? "").trim() &&
         String(fd.get("email") ?? "").trim() &&
         String(fd.get("instagram") ?? "").trim() &&
         category &&
@@ -166,11 +167,13 @@ export function NetworkForm() {
     const category = String(fd.get("category") ?? "");
     const otherCategory = String(fd.get("otherCategory") ?? "").trim();
     const submissionId = getSubmissionId();
-    const submittedName = String(fd.get("name") ?? "");
-    const memberId = `${slugify(submittedName) || "network-member"}-${submissionId.slice(0, 8)}`;
+    const firstName = String(fd.get("firstName") ?? "").trim();
+    const displayName = String(fd.get("displayName") ?? "").trim();
+    const memberId = `${slugify(displayName) || "network-member"}-${submissionId.slice(0, 8)}`;
     const payload = {
       memberId,
-      name: submittedName,
+      firstName,
+      displayName,
       email: String(fd.get("email") ?? ""),
       instagram: String(fd.get("instagram") ?? ""),
       category: category === "Other" ? otherCategory : category,
@@ -184,7 +187,7 @@ export function NetworkForm() {
     if (!profilePicture) {
       isSubmittingRef.current = false;
       setStatus("error");
-      setErrorMsg("Please add a profile picture for your directory card.");
+      setErrorMsg("Please add a profile picture for your NAMI network profile.");
       return;
     }
 
@@ -205,7 +208,7 @@ export function NetworkForm() {
     if (!payload.directoryConsent) {
       isSubmittingRef.current = false;
       setStatus("error");
-      setErrorMsg("Please confirm that we can include you in the public directory.");
+      setErrorMsg("Please confirm that I can include you in the public directory.");
       trackEvent("network_form_error", {
         form_name: "creative_network_join",
         error_type: "missing_directory_consent",
@@ -228,7 +231,8 @@ export function NetworkForm() {
       const preparedImage = await prepareProfileImage(profilePicture, memberId);
       const submissionBody = new FormData();
       submissionBody.set("memberId", payload.memberId);
-      submissionBody.set("name", payload.name);
+      submissionBody.set("firstName", payload.firstName);
+      submissionBody.set("displayName", payload.displayName);
       submissionBody.set("email", payload.email);
       submissionBody.set("instagram", payload.instagram);
       submissionBody.set("category", payload.category);
@@ -252,7 +256,7 @@ export function NetworkForm() {
           error?: string;
         };
         if (!res.ok || !data.ok) {
-          throw new Error(data.error ?? "We couldn't send this right now.");
+          throw new Error(data.error ?? "I couldn't send this right now.");
         }
       } finally {
         clearTimeout(detailsTimeout);
@@ -321,12 +325,26 @@ export function NetworkForm() {
 
       <div className="grid gap-4 md:grid-cols-2 md:gap-5">
         <Field
-          label="Name"
-          name="name"
-          autoComplete="name"
+          label="First name"
+          name="firstName"
+          autoComplete="given-name"
+          maxLength={80}
+          required
+        />
+        <Field
+          label="Directory display name"
+          name="displayName"
+          placeholder="Your name, artist name or business name"
           maxLength={120}
           required
         />
+      </div>
+
+      <p className="mt-2 text-xs leading-relaxed text-fg-subtle">
+        This is exactly how your name will appear on your NAMI network profile. For example: Joe / Nami Creative.
+      </p>
+
+      <div className="mt-5">
         <Field
           label="Email"
           name="email"
@@ -395,15 +413,15 @@ export function NetworkForm() {
 
       <div className="mt-5">
         <TextArea
-          label="Tell us about your work"
+          label="What should people know about your work?"
           name="note"
-          placeholder="Tell us what you make or do, who it is for, and what you would like people to know. We will use this to write the short bio on your directory card."
+          placeholder="What do you make or do? Who is it for? What would you like people to know?"
           rows={6}
           maxLength={1600}
           required
         />
         <p className="mt-2 text-xs leading-relaxed text-fg-subtle">
-          Write naturally. NAMI will tidy this into a short third-person bio that keeps your meaning and sounds consistent across the directory.
+          This becomes a short bio on your NAMI network profile. Write it in your own words. I&apos;ll keep the meaning and tidy it up for the directory.
         </p>
       </div>
 
@@ -431,7 +449,7 @@ export function NetworkForm() {
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-fg">{profilePicture?.name}</p>
               <p className="mt-1 text-xs leading-relaxed text-fg-subtle">
-                We will centre-crop this into a square image for your directory card.
+                I will centre-crop this into a square image for your NAMI network profile.
               </p>
               <button
                 type="button"
@@ -465,9 +483,9 @@ export function NetworkForm() {
             className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]"
           />
           <span>
-            I agree to NAMI publishing my name, category, city or area,
+            I agree to NAMI publishing my directory display name, category, city or area,
             Instagram, submitted link, and a short NAMI-written description in
-            the public Creative Network directory. I can ask for my listing to
+            the public Creative Network directory. I can ask for my NAMI network profile to
             be updated or removed at any time.
           </span>
         </label>
@@ -480,7 +498,7 @@ export function NetworkForm() {
             "group relative inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)] disabled:opacity-60",
           )}
         >
-          {status === "submitting" ? "Sending..." : "Join the Creative Network"}
+          {status === "submitting" ? "Sending..." : "Join the network"}
           <ArrowUpRight
             size={16}
             aria-hidden

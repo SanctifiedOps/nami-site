@@ -26,7 +26,7 @@ export function ApproachSteps({
           <LetterReveal stagger={0.014} duration={0.65}>
             {heading ?? (
               <>
-                How we <span className="text-gradient">built it</span>
+          How I <span className="text-gradient">built it</span>
               </>
             )}
           </LetterReveal>

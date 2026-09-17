@@ -17,7 +17,7 @@ export const faq: FAQ[] = [
   {
     question: "How long does a typical engagement run?",
     answer:
-      "A brand and website project usually takes six to eight weeks. Smaller jobs can be quicker. Some clients keep me involved each month for content, improvements and ongoing support. I will give you a realistic timescale before we agree the work.",
+      "A brand and website project usually takes six to eight weeks. Smaller jobs can be quicker. Some clients keep me involved each month for content, improvements and ongoing support. I will give you a realistic timescale before you agree to the work.",
   },
   {
     question: "Do you only work on websites and digital marketing?",
@@ -27,7 +27,7 @@ export const faq: FAQ[] = [
   {
     question: "What does it cost?",
     answer:
-      "It depends on what you need. A single landing page is a different job from a new brand and website. We talk first, then I give you a clear price for the agreed work. If I am not the right fit for your budget or the job, I will tell you early.",
+      "It depends on what you need. A single landing page is a different job from a new brand and website. I talk through the job with you first, then give you a clear price for the agreed work. If I am not the right fit for your budget or the job, I will tell you early.",
   },
   {
     question: "Can you work with an existing brand?",
@@ -73,7 +73,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Which platforms do you cover?",
       answer:
-      "I regularly work with Instagram, LinkedIn, YouTube, email and articles. We choose the places your customers actually use instead of trying to post everywhere.",
+      "I regularly work with Instagram, LinkedIn, YouTube, email and articles. I help you choose the places your customers actually use instead of trying to post everywhere.",
     },
     {
       question: "How does AI fit in?",
@@ -83,7 +83,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Can you take over an existing content function?",
       answer:
-      "Yes. I look at what has performed well, what has created unnecessary work and which ideas are worth repeating. We keep the useful parts and build a simpler routine around them.",
+      "Yes. I look at what has performed well, what has created unnecessary work and which ideas are worth repeating. I keep the useful parts and build a simpler routine around them.",
     },
   ],
 
@@ -101,7 +101,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Rebuild on top of our current site, or full restart?",
       answer:
-      "I check the current website before recommending a rebuild. If the foundations are sound, we can improve what is there. If the existing setup makes every change harder, rebuilding may be the more sensible option.",
+      "I check the current website before recommending a rebuild. If the foundations are sound, I can improve what is there. If the existing setup makes every change harder, rebuilding may be the more sensible option.",
     },
     {
       question: "Will the site be fast and SEO-ready?",
