@@ -72,6 +72,8 @@ function validMember(value: unknown): NetworkDirectoryMember | null {
     profileImage: profileImage || undefined,
     imageAlt: clean(item.imageAlt, 200) || `${name} profile picture`,
     featured: false,
+    joinedAt: clean(item.joinedAt, 40) || undefined,
+    primaryGroup: clean(item.primaryGroup, 80) || undefined,
   };
 }
 

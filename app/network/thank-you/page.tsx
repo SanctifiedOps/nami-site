@@ -52,6 +52,8 @@ export default function NetworkThankYouPage() {
   return (
     <section data-compact-footer="network-thank-you" className="relative overflow-hidden">
       <NetworkHeroBackground />
+      <div aria-hidden className="absolute inset-0 bg-surface-0/55" />
+      <div aria-hidden className="absolute inset-0 bg-linear-to-b from-surface-0/35 via-surface-0/50 to-surface-0" />
       <HeroLights />
 
       <div className="container-shell relative z-10 pt-20 pb-8 md:pt-24 md:pb-10">
@@ -60,31 +62,35 @@ export default function NetworkThankYouPage() {
             <Check size={28} className="text-accent" aria-hidden />
           </div>
 
-          <p className="mono-label mt-8">You are in</p>
+          <p className="mono-label mt-8 text-accent">You are in the Network</p>
           <h1 className="mt-5 text-[clamp(1.8rem,3.7vw,3.15rem)] font-semibold leading-[1.03] tracking-tight md:leading-[1]">
-            Welcome to the network
+            Your welcome email is on its way
           </h1>
 
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-fg-muted md:text-xl">
-            Putting creative work into the world takes nerve, graft, and a lot
-            of care. NAMI exists to help more people across the North East see
-            that work and back the people behind it.
-          </p>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-accent md:text-lg">
-            I will keep an eye on what you are building and use the network for
-            future features, roundups, referrals, events, and showcase
-            opportunities. Here is what to do next.
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-fg md:text-xl">
+            Check your inbox for a message from NAMI Creative. If it is not
+            there, have a look in your spam or junk folder and move it to your
+            inbox. Add <strong className="font-semibold text-accent">hello@namicreative.co.uk</strong> to
+            your contacts so you do not miss future updates from me.
           </p>
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/network/directory"
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
-          >
-            View the Creative Directory
+        <div className="mx-auto mt-10 max-w-5xl rounded-3xl border border-accent/35 bg-surface-1/95 p-7 text-center shadow-[0_20px_70px_rgb(0_0_0/0.28)] md:p-10">
+          <p className="mono-label text-accent">Your place in the Network</p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">Your directory profile is next</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-fg-muted md:text-lg">
+            I will add your profile to the Creative Directory shortly. It is
+            where people across the North East can find your work, follow what
+            you are making and get in touch. Have a look around while I get
+            yours ready.
+          </p>
+          <Link href="/network/directory" className="group mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]">
+            Explore the Creative Directory
             <Search size={16} aria-hidden />
           </Link>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
             href={facebookUrl}
             target="_blank"
@@ -120,7 +126,7 @@ export default function NetworkThankYouPage() {
             return (
               <div
                 key={step.title}
-                className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md md:p-7"
+                className="rounded-2xl border border-line bg-surface-1/90 p-6 backdrop-blur-md md:p-7"
               >
                 <Icon size={22} className="text-accent" aria-hidden />
                 <h2 className="mt-5 text-xl font-semibold tracking-tight text-fg">

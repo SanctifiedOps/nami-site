@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { ArrowUpRight, MapPin, Search, X } from "lucide-react";
 import { InstagramIcon } from "@/components/icons/socials";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
+import { directoryGroups, memberGroupSlugs } from "@/lib/content/network-directory-groups";
 import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   members: NetworkDirectoryMember[];
+  previewOnly?: boolean;
+  hideCategoryFilter?: boolean;
+  initialLocation?: string;
 };
 
 const locationGroups = [
@@ -24,31 +29,6 @@ const locationGroups = [
   "Hartlepool",
   "Elsewhere",
 ] as const;
-
-const categoryGroups = [
-  "Artists and illustrators",
-  "Photography and film",
-  "Design and digital",
-  "Music and audio",
-  "Performance",
-  "Creative services",
-  "Independent businesses",
-  "Community and events",
-  "Other",
-] as const;
-
-function categoryGroup(category: string): (typeof categoryGroups)[number] {
-  const value = category.toLowerCase();
-  if (value.includes("artist") || value.includes("illustrat") || value.includes("calligraph") || value.includes("miniature")) return "Artists and illustrators";
-  if (value.includes("photograph") || value.includes("film") || value.includes("video")) return "Photography and film";
-  if (value.includes("design") || value.includes("architect") || value.includes("animation") || value.includes("digital")) return "Design and digital";
-  if (value.includes("music") || value.includes("recording") || value.includes("audio")) return "Music and audio";
-  if (value.includes("dance") || value.includes("perform")) return "Performance";
-  if (value.includes("content") || value.includes("journalist") || value.includes("storyteller") || value === "creative") return "Creative services";
-  if (value.includes("business") || value === "brand") return "Independent businesses";
-  if (value.includes("community") || value.includes("event")) return "Community and events";
-  return "Other";
-}
 
 function locationGroup(location: string): (typeof locationGroups)[number] {
   const value = location.toLowerCase();
@@ -98,7 +78,7 @@ function memberMatchesQuery(member: NetworkDirectoryMember, query: string) {
   const searchableText = normalise([
     member.name,
     member.category,
-    categoryGroup(member.category),
+    memberGroupSlugs(member).map((slug) => directoryGroups.find((group) => group.slug === slug)?.label).join(" "),
     member.location,
     locationGroup(member.location),
     member.instagram,
@@ -118,13 +98,13 @@ function memberMatchesQuery(member: NetworkDirectoryMember, query: string) {
   });
 }
 
-export function DirectoryBrowser({ members }: Props) {
+export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFilter = false, initialLocation = "All areas" }: Props) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All categories");
-  const [location, setLocation] = useState("All areas");
+  const [location, setLocation] = useState(locationGroups.includes(initialLocation as typeof locationGroups[number]) ? initialLocation : "All areas");
 
   const categories = useMemo(
-    () => categoryGroups.filter((group) => members.some((member) => categoryGroup(member.category) === group)),
+    () => directoryGroups.filter((group) => members.some((member) => memberGroupSlugs(member).includes(group.slug))),
     [members],
   );
 
@@ -136,7 +116,7 @@ export function DirectoryBrowser({ members }: Props) {
   const filtered = useMemo(() => {
     return members.filter((member) => {
       const matchesQuery = memberMatchesQuery(member, query);
-      const matchesCategory = category === "All categories" || categoryGroup(member.category) === category;
+      const matchesCategory = category === "All categories" || memberGroupSlugs(member).some((slug) => directoryGroups.find((group) => group.slug === slug)?.label === category);
       const matchesLocation = location === "All areas" || locationGroup(member.location) === location;
       return matchesQuery && matchesCategory && matchesLocation;
     });
@@ -166,7 +146,7 @@ export function DirectoryBrowser({ members }: Props) {
   return (
     <div>
       <div className="glass-refractive rounded-3xl p-5 md:p-7">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem_15rem]">
+        <div className={`grid gap-4 ${hideCategoryFilter ? "lg:grid-cols-[minmax(0,1fr)_15rem]" : "lg:grid-cols-[minmax(0,1fr)_15rem_15rem]"}`}>
           <label className="relative block">
             <span className="sr-only">Search the directory</span>
             <Search
@@ -183,10 +163,10 @@ export function DirectoryBrowser({ members }: Props) {
             />
           </label>
 
-          <FilterSelect label="Filter by category" value={category} onChange={setCategory}>
+          {!hideCategoryFilter && <FilterSelect label="Filter by category" value={category} onChange={setCategory}>
             <option>All categories</option>
-            {categories.map((item) => <option key={item}>{item}</option>)}
-          </FilterSelect>
+            {categories.map((item) => <option key={item.slug}>{item.label}</option>)}
+          </FilterSelect>}
 
           <FilterSelect label="Filter by area" value={location} onChange={setLocation}>
             <option>All areas</option>
@@ -195,7 +175,12 @@ export function DirectoryBrowser({ members }: Props) {
         </div>
       </div>
 
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+      {previewOnly && !hasFilters ? (
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 text-sm text-fg-muted">
+          <p>Search all {members.length} members by name, work or place.</p>
+          <Link href="/network/directory/all" className="font-semibold text-fg hover:text-accent">View all members <span aria-hidden>↗</span></Link>
+        </div>
+      ) : <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
         <p aria-live="polite" className="text-sm text-fg-muted">
           Showing <span className="font-semibold text-fg">{filtered.length}</span> {filtered.length === 1 ? "member" : "members"}
         </p>
@@ -209,11 +194,11 @@ export function DirectoryBrowser({ members }: Props) {
             Clear filters
           </button>
         )}
-      </div>
+      </div>}
 
-      {filtered.length > 0 ? (
+      {previewOnly && !hasFilters ? null : filtered.length > 0 ? (
         <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((member) => <MemberCard key={member.id} member={member} />)}
+          {filtered.map((member) => <DirectoryMemberCard key={member.id} member={member} />)}
         </div>
       ) : (
         <div className="mt-8 rounded-3xl border border-line bg-surface-1/40 px-6 py-16 text-center">
@@ -253,7 +238,7 @@ function FilterSelect({
   );
 }
 
-function MemberCard({ member }: { member: NetworkDirectoryMember }) {
+export function DirectoryMemberCard({ member }: { member: NetworkDirectoryMember }) {
   return (
     <article className="group relative flex min-h-72 flex-col overflow-hidden rounded-3xl border border-line bg-surface-1/55 p-6 transition-colors hover:border-accent/45 md:p-7">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent/70 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />

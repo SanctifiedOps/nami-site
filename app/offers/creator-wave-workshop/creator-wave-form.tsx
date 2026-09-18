@@ -9,7 +9,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 
 const packageOptions = [
   { value: "free-check-in", label: "Free Creator Check-in" },
-  { value: "99-report", label: "\u00a399 Funnel Report" },
+  { value: "29-report", label: "\u00a329 Funnel Report" },
   { value: "499-build", label: "\u00a3499 Website/Funnel Build" },
   { value: "not-sure", label: "Not sure yet" },
 ];
@@ -183,8 +183,8 @@ export function CreatorWaveForm() {
           value:
             payload.packageInterest === "free-check-in"
               ? 0
-              : payload.packageInterest === "99-report"
-                ? 99
+              : payload.packageInterest === "29-report"
+                ? 29
                 : payload.packageInterest === "499-build"
                   ? 499
                   : 0,

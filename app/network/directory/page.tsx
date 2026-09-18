@@ -3,9 +3,14 @@ import Link from "next/link";
 import { ArrowDown, ArrowUpRight, MapPin, Search, Users } from "lucide-react";
 import { InstagramIcon } from "@/components/icons/socials";
 import { MemberAvatar } from "@/components/network/member-avatar";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { PageHero } from "@/components/sections/page-hero";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
-import { DirectoryBrowser } from "./directory-browser";
+import { dailyMemberPreview, directoryGroups, londonDayNumber, membersInGroup } from "@/lib/content/network-directory-groups";
+import { DirectoryBrowser, DirectoryMemberCard } from "./directory-browser";
+import { MemberDiscovery } from "./member-discovery";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "North East Creative Directory | NAMI Creative Network",
@@ -38,6 +43,12 @@ export const metadata: Metadata = {
 export default async function NetworkDirectoryPage() {
   const members = await getNetworkDirectoryMembers();
   const featured = members.find((member) => member.featured) ?? members[0];
+  const day = londonDayNumber();
+  const newest = members.filter((member) => member.joinedAt && !Number.isNaN(Date.parse(member.joinedAt))).sort((a, b) => Date.parse(b.joinedAt!) - Date.parse(a.joinedAt!)).slice(0, 4);
+  const firstSectionMembers = newest.length === 4 ? newest : dailyMemberPreview(members, day, 4);
+  const previewSlugs = ["artists", "photographers", "designers", "makers", "music", "independent-businesses"] as const;
+  const previews = previewSlugs.map((slug) => ({ group: directoryGroups.find((group) => group.slug === slug)!, members: membersInGroup(members, slug) })).filter(({ members: groupMembers }) => groupMembers.length >= 4);
+  const otherGroups = directoryGroups.filter((group) => !previewSlugs.includes(group.slug as typeof previewSlugs[number]) && membersInGroup(members, group.slug).length > 0);
 
   return (
     <>
@@ -45,7 +56,7 @@ export default async function NetworkDirectoryPage() {
         networkBackground
         eyebrow="NAMI Creative Network"
         title="NAMI Creative Network Directory"
-        lead="Artists, photographers, designers, musicians, makers, freelancers and independent businesses across the North East. Search the Network and find someone worth knowing about."
+        lead="Meet the artists, photographers, makers and independent businesses in the Network. Find someone to follow, work with or support across the North East."
       >
         <Link
           href="#directory"
@@ -98,22 +109,94 @@ export default async function NetworkDirectoryPage() {
         </section>
       )}
 
-      <section id="directory" className="container-shell scroll-mt-24 py-20 md:py-28">
-        <div className="mb-10 grid gap-8 md:grid-cols-[0.8fr_1.2fr] md:items-end">
+      <section id="directory" className="container-shell scroll-mt-24 py-16 md:py-24">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
           <div>
-            <p className="mono-label text-accent">The directory</p>
-            <h2 className="mt-4 text-4xl font-semibold leading-[0.96] tracking-tight md:text-6xl">Find someone to know, follow or work with</h2>
+            <p className="mono-label text-accent">Explore the Network</p>
+            <h2 className="mt-4 text-4xl font-semibold leading-[0.96] tracking-tight md:text-6xl">Find your people</h2>
           </div>
-          <div className="flex gap-5 md:justify-end">
-            <div className="flex items-center gap-3 text-sm text-fg-muted"><Users size={18} className="text-accent" aria-hidden />{members.length} members</div>
-            <div className="flex items-center gap-3 text-sm text-fg-muted"><Search size={18} className="text-accent" aria-hidden />Searchable by work and place</div>
+          <div className="flex flex-wrap gap-5 text-sm text-fg-muted">
+            <span className="inline-flex items-center gap-2"><Users size={18} className="text-accent" aria-hidden />{members.length} members</span>
+            <span className="inline-flex items-center gap-2"><Search size={18} className="text-accent" aria-hidden />Search by work and place</span>
           </div>
         </div>
-        <DirectoryBrowser members={members} />
+        <DirectoryBrowser members={members} previewOnly />
       </section>
 
-      <section className="border-t border-line bg-surface-1/35 py-20 md:py-24">
-        <div className="container-shell text-center">
+      <section className="border-y border-line bg-surface-1/35 py-16 md:py-20">
+        <div className="container-shell">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="mono-label text-accent">People to meet</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">{newest.length === 4 ? "Newest members" : "Meet more members"}</h2>
+            </div>
+            <Link href="/network/directory/all" className="text-sm font-semibold text-fg hover:text-accent">View everyone <ArrowUpRight size={15} className="inline" aria-hidden /></Link>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {firstSectionMembers.map((member) => <DirectoryMemberCard key={member.id} member={member} />)}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative isolate overflow-hidden py-16 md:py-20">
+        <ParallaxBackdrop src="/images/north-east/1.jpg" overlay={0.72} />
+        <div className="container-shell relative">
+          <p className="mono-label text-accent">Browse by work</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">What are you looking for?</h2>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {directoryGroups.filter((group) => membersInGroup(members, group.slug).length > 0).map((group) => (
+              <Link key={group.slug} href={`/network/directory/${group.slug}`} className="group flex items-center justify-between gap-4 rounded-2xl border border-line bg-surface-1/90 px-5 py-6 transition-colors hover:border-accent/50 hover:bg-surface-1">
+                <span className="text-lg font-semibold">{group.label}<span className="ml-2 text-sm font-normal text-fg-subtle">{membersInGroup(members, group.slug).length}</span></span>
+                <ArrowUpRight size={19} aria-hidden className="shrink-0 text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {previews.map(({ group, members: groupMembers }, index) => (
+        <div key={group.slug}>
+        {index === 2 && <section className="relative isolate overflow-hidden py-16 md:py-20"><ParallaxBackdrop src="/images/north-east/5.jpg" overlay={0.72} /><div className="container-shell relative"><MemberDiscovery members={members} initialIndex={day % members.length} /></div></section>}
+        <section className={`border-t border-line py-16 md:py-20 ${index % 2 === 0 ? "bg-surface-1/35" : ""}`}>
+          <div className="container-shell">
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
+              <div>
+                <p className="mono-label text-accent">The Network</p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">{group.label}</h2>
+                <p className="mt-3 max-w-xl text-fg-muted">{group.description}</p>
+              </div>
+              <Link href={`/network/directory/${group.slug}`} className="text-sm font-semibold text-fg hover:text-accent">View all {groupMembers.length} <ArrowUpRight size={15} className="inline" aria-hidden /></Link>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {dailyMemberPreview(groupMembers, day, 4).map((member) => <DirectoryMemberCard key={member.id} member={member} />)}
+            </div>
+          </div>
+        </section>
+        </div>
+      ))}
+
+      <section className="border-t border-line bg-surface-1/35 py-16 md:py-20">
+        <div className="container-shell">
+          <p className="mono-label text-accent">Around the North East</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Find people near you</h2>
+          <div className="mt-7 flex flex-wrap gap-3">
+            {["Newcastle", "Gateshead", "Sunderland", "County Durham", "North Tyneside", "Northumberland"].map((area) => <Link key={area} href={`/network/directory/all?area=${encodeURIComponent(area)}`} className="rounded-full border border-line bg-surface-0 px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent">{area} <ArrowUpRight size={14} className="inline" aria-hidden /></Link>)}
+          </div>
+        </div>
+      </section>
+
+      {otherGroups.length > 0 && <section className="border-t border-line py-16 md:py-20">
+        <div className="container-shell">
+          <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">There’s more to explore</h2>
+          <div className="mt-7 flex flex-wrap gap-3">
+            {otherGroups.map((group) => <Link key={group.slug} href={`/network/directory/${group.slug}`} className="rounded-full border border-line px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent">{group.label} <ArrowUpRight size={14} className="inline" aria-hidden /></Link>)}
+          </div>
+        </div>
+      </section>}
+
+      <section className="relative isolate overflow-hidden py-20 md:py-24">
+        <ParallaxBackdrop src="/images/north-east/7.jpg" overlay={0.72} />
+        <div className="container-shell relative text-center">
           <p className="mono-label text-accent">NAMI Creative Network</p>
           <h2 className="mx-auto mt-5 max-w-4xl text-4xl font-semibold leading-[0.95] tracking-tight md:text-6xl">Making something up here?</h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">Put your name in the Network so more people can find the work you are building.</p>

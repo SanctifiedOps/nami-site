@@ -2,7 +2,7 @@ export const creatorWaveWorkshop = {
   slug: "creator-wave-workshop",
   name: "Creator Wave Workshop",
   url: "/offers/creator-wave-workshop",
-  priceLabel: "Free check-in, \u00a399 report, or \u00a3499 website and funnel build",
+  priceLabel: "Free check-in, \u00a329 report, or \u00a3499 website and funnel build",
   hero: {
     titleLead: "Get a clearer path from",
     titleAccent: "attention to paid work",
@@ -20,7 +20,7 @@ export const creatorWaveWorkshop = {
       note: "Best starting point for most people. Bring the links, I will help you work out what needs sorting first.",
     },
     {
-      label: "\u00a399",
+      label: "\u00a329",
       title: "Full Creator Funnel Report",
       body:
         "I go through your social profile, content, website, shop, booking route, offer, and follow-up. You get a clear report on what is working, what is putting people off, and what to sort first.",
@@ -69,9 +69,9 @@ export const creatorWaveWorkshop = {
         "Creative Network members, freelancers, artists, makers, photographers, musicians, small businesses, and independent brands who already have some attention, but need a clearer route from that attention to enquiries, bookings, sales, or commissions.",
     },
     {
-      question: "What is the difference between the free call and the \u00a399 report?",
+      question: "What is the difference between the free call and the \u00a329 report?",
       answer:
-      "The free check-in is a quick outside view and a short call so I can recommend the best next step. The \u00a399 report is a deeper review of your content, website, shop, booking route, offer, and follow-up with a written action plan you can work through yourself.",
+      "The free check-in is a quick outside view and a short call so I can recommend the best next step. The \u00a329 report is a deeper review of your content, website, shop, booking route, offer, and follow-up with a written action plan you can work through yourself.",
     },
     {
       question: "What does the \u00a3499 build include?",

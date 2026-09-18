@@ -316,7 +316,7 @@ export default function CreatorWaveWorkshopPage() {
               <span className="text-gradient">the free check-in</span>
             </p>
             <p className="max-w-2xl leading-relaxed text-fg-muted md:text-lg">
-              Start with a quick call. I can look at the links, ask the right questions, and help you decide whether you need a simple fix, the &pound;99 report, or the &pound;499 build.
+              Start with a quick call. I can look at the links, ask the right questions, and help you decide whether you need a simple fix, the &pound;29 report, or the &pound;499 build.
             </p>
             <PrimaryCta>Book the free check-in</PrimaryCta>
           </div>
@@ -393,7 +393,7 @@ export default function CreatorWaveWorkshopPage() {
             </p>
             <ul className="mt-8 space-y-4">
               <TickItem>Use the free call if you need a quick steer.</TickItem>
-              <TickItem>Use the &pound;99 report if you want the fixes written down.</TickItem>
+              <TickItem>Use the &pound;29 report if you want the fixes written down.</TickItem>
               <TickItem>Use the &pound;499 build if you want me to sort the route for you.</TickItem>
             </ul>
           </div>

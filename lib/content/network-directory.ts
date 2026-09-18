@@ -10,6 +10,8 @@ export type NetworkDirectoryMember = {
   profileImage?: string;
   imageAlt?: string;
   featured: boolean;
+  joinedAt?: string;
+  primaryGroup?: string;
 };
 
 // Public projection of the private Creative Network submissions sheet.

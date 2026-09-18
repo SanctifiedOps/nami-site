@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title:
     "Creator Wave Workshop | Creative Network Member Offer | NAMI Creative",
   description:
-    "A discounted Creative Network member offer for North East creatives, freelancers, makers, and small businesses. Free creator check-in, funnel report for \u00a399, or a simple website and funnel build from \u00a3499.",
+    "A discounted Creative Network member offer for North East creatives, freelancers, makers, and small businesses. Free creator check-in, funnel report for \u00a329, or a simple website and funnel build from \u00a3499.",
   keywords: [
     "creator funnel consultation",
     "North East creators marketing",
@@ -81,7 +81,7 @@ const offerServiceSchema: JsonLdSchema = {
     {
       "@type": "Offer",
       name: "Full Creator Funnel Report",
-      price: 99,
+      price: 29,
       priceCurrency: "GBP",
       availability: "https://schema.org/LimitedAvailability",
       url: OFFER_URL,
