@@ -345,7 +345,9 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "instagramUrl": "https://www.instagram.com/rindill.makes/",
     "websiteUrl": "https://www.rindillmakes.co.uk",
     "description": "Rindill Makes creates handmade stainless-steel jewellery inspired by history, nature, fantasy and folklore.",
-    "featured": false
+    "profileImage": "/api/network/profile-image/1JlKWdh8mYM-tS_Eo6WqF3yJrMhA83j0Y",
+    "imageAlt": "Ellie Grassick of Rindill Makes",
+    "featured": true
   },
   {
     "id": "elliott-mccann",
@@ -677,7 +679,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "description": "A freelance creative consultant helping North East creatives, brands and businesses make waves, get their work seen and create a stronger impact.",
     "profileImage": "/images/network/members/joe-wilson-nami-creative.webp",
     "imageAlt": "Joe Wilson of NAMI Creative",
-    "featured": true
+    "featured": false
   },
   {
     "id": "jolene-lowe",

@@ -6,6 +6,7 @@ import { normalizeExternalUrl } from "@/lib/external-url";
 
 type DirectoryFeedMember = Partial<NetworkDirectoryMember> & {
   imageStatus?: string;
+  featured?: boolean | string;
 };
 
 function clean(value: unknown, max = 500) {
@@ -71,7 +72,7 @@ function validMember(value: unknown): NetworkDirectoryMember | null {
     description,
     profileImage: profileImage || undefined,
     imageAlt: clean(item.imageAlt, 200) || `${name} profile picture`,
-    featured: false,
+    featured: item.featured === true || clean(item.featured, 10).toLowerCase() === "true",
     joinedAt: clean(item.joinedAt, 40) || undefined,
     primaryGroup: clean(item.primaryGroup, 80) || undefined,
   };
@@ -111,7 +112,7 @@ export async function getNetworkDirectoryMembers() {
         ...member,
         profileImage: member.profileImage ?? existing?.profileImage,
         imageAlt: member.imageAlt ?? existing?.imageAlt,
-        featured: existing?.featured ?? member.featured,
+        featured: member.featured,
       });
     }
     return [...members.values()];
