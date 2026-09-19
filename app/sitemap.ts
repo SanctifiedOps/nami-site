@@ -5,7 +5,7 @@ import { offers } from "@/lib/content/offers";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
 
 const SITE = "https://namicreative.co.uk";
-const LAST_SEO_UPDATE = new Date("2026-07-21");
+const LAST_SEO_UPDATE = new Date("2026-09-19");
 const HOMEPAGE_SEO_UPDATE = new Date("2026-09-19");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

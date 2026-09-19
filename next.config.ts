@@ -9,6 +9,21 @@ const nextConfig: NextConfig = {
         destination: "/services/brand-strategy",
         permanent: true,
       },
+      {
+        source: "/insights/brand-decay",
+        destination: "/services/brand-strategy",
+        permanent: true,
+      },
+      {
+        source: "/insights/the-friction-tax",
+        destination: "/services/automation-growth",
+        permanent: true,
+      },
+      {
+        source: "/insights/audience-without-architecture",
+        destination: "/services/content-systems",
+        permanent: true,
+      },
     ];
   },
   images: {
