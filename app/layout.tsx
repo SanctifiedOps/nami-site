@@ -23,7 +23,7 @@ const socialDescription =
 
 export const metadata: Metadata = {
   title: {
-    default: "NAMI Creative | Newcastle Marketing & Creative Network",
+    default: "NAMI Creative | North East Freelance Marketing & Creative Network",
     template: "%s | NAMI Creative",
   },
   description: siteDescription,
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
     siteName: "NAMI Creative",
-    title: "NAMI Creative | Newcastle Marketing & Creative Network",
+    title: "NAMI Creative | North East Freelance Marketing & Creative Network",
     description: socialDescription,
     url: "https://namicreative.co.uk",
     images: [
@@ -71,13 +71,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NAMI Creative | Newcastle Marketing & Creative Network",
+    title: "NAMI Creative | North East Freelance Marketing & Creative Network",
     description: socialDescription,
     images: ["/nami-og%20%281%29.png"],
   },
   icons: {
-    icon: [{ url: "/Nami%20Favicon.png", type: "image/png" }],
-    shortcut: "/Nami%20Favicon.png",
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "96x96" }],
+    shortcut: "/icon.png",
     apple: "/Nami%20Favicon.png",
   },
 };

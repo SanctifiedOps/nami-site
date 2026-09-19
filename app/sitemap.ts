@@ -6,10 +6,11 @@ import { directoryGroups } from "@/lib/content/network-directory-groups";
 
 const SITE = "https://namicreative.co.uk";
 const LAST_SEO_UPDATE = new Date("2026-07-21");
+const HOMEPAGE_SEO_UPDATE = new Date("2026-09-19");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${SITE}/`, lastModified: LAST_SEO_UPDATE, changeFrequency: "weekly", priority: 1 },
+    { url: `${SITE}/`, lastModified: HOMEPAGE_SEO_UPDATE, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE}/network`, lastModified: LAST_SEO_UPDATE, changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE}/network/directory`, lastModified: new Date("2026-09-03"), changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE}/network/directory/all`, lastModified: new Date("2026-09-18"), changeFrequency: "weekly", priority: 0.65 },

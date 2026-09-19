@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { JsonLd, founderPersonSchema } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "About Joe Wilson | NAMI Creative Newcastle",
+  title: "About Joe Wilson | North East Freelance Marketer",
   description:
-    "About Joe Wilson, founder of NAMI Creative. Newcastle-born marketing partner building the Creative Network and supporting North East businesses and creatives.",
+    "Meet Joe Wilson, the freelance marketer behind NAMI Creative and the NAMI Creative Network, supporting businesses and creatives across the North East.",
   keywords: [
     "Joe Wilson NAMI",
     "NAMI Creative founder",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         alt: "NAMI Creative - Newcastle marketing and North East creative network",
       },
     ],
-    title: "About Joe Wilson - NAMI Creative Newcastle",
+    title: "About Joe Wilson | North East Freelance Marketer",
     description:
       "Joe Wilson on NAMI Creative, the Creative Network, North East creativity, marketing services, websites, content, and helping good people get seen.",
     url: "https://namicreative.co.uk/about",

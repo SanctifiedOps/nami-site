@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact NAMI Creative | Newcastle Marketing Support",
+  title: "Contact Joe | Start a Marketing Project",
   description:
-    "Start a conversation with NAMI Creative about marketing, content, websites, automation, or a clearer buyer journey for your North East business.",
+    "Talk to Joe at NAMI Creative about freelance marketing, websites, content, brand support and automation for your North East business.",
   keywords: [
     "Newcastle marketing support",
     "North East marketing services",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
         alt: "NAMI Creative - Newcastle marketing support",
       },
     ],
-    title: "Contact NAMI Creative | Newcastle Marketing Support",
+    title: "Contact Joe | Start a Marketing Project",
     description:
       "Talk to Joe about your brand, content, website, automation, or buyer journey.",
     url: "https://namicreative.co.uk/contact",
