@@ -1,0 +1,373 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
+import { InstagramIcon } from "@/components/icons/socials";
+import { JsonLd, buildBreadcrumbSchema, type JsonLdSchema } from "@/components/seo/json-ld";
+import { MemberAvatar } from "@/components/network/member-avatar";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
+import { DirectoryMemberCard } from "../../directory-browser";
+import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
+import {
+  directoryGroups,
+  membersInGroup,
+  primaryMemberGroup,
+} from "@/lib/content/network-directory-groups";
+import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
+
+const SITE_URL = "https://namicreative.co.uk";
+
+export const revalidate = 60;
+
+function memberNames(name: string) {
+  const parts = name.split(/\s*\/\s*/).map((part) => part.trim()).filter(Boolean);
+  return {
+    personName: parts[0] || name,
+    brandName: parts.length > 1 ? parts.slice(1).join(" / ") : "",
+  };
+}
+
+function memberProfileCopy(member: NetworkDirectoryMember) {
+  const isEllie = member.id === "ellie-grassick";
+  const names = isEllie
+    ? { personName: "Ellie Grassick", brandName: "Rindill Makes" }
+    : memberNames(member.name);
+  return {
+    ...names,
+    role: isEllie ? "Jewellery maker" : member.category,
+    aboutEyebrow: isEllie ? "Meet the maker" : "About this member",
+    aboutTitle: isEllie
+      ? "Handmade in the North East, with history woven through it."
+      : `More about ${names.brandName || names.personName}`,
+    aboutBody: isEllie
+      ? "Rindill Makes creates handmade stainless-steel jewellery inspired by history, nature, fantasy and folklore. Ellie is based in Newcastle and makes chainmail jewellery, clothing and accessories."
+      : member.description,
+    galleryTitle: isEllie
+      ? "Made by Rindill"
+      : `Work by ${names.brandName || names.personName}`,
+  };
+}
+
+function schemaEntityType(member: NetworkDirectoryMember, groupSlug: string) {
+  const category = member.category.toLowerCase();
+  const hasBrandName = memberNames(member.name).brandName.length > 0;
+  return groupSlug === "independent-businesses"
+    || hasBrandName
+    || category.includes("business")
+    || category.includes("studio")
+    || category.includes("venue")
+    ? "Organization"
+    : "Person";
+}
+
+function absoluteUrl(value?: string) {
+  if (!value) return undefined;
+  return value.startsWith("http") ? value : `${SITE_URL}${value.startsWith("/") ? value : `/${value}`}`;
+}
+
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const members = await getNetworkDirectoryMembers();
+  const member = members.find((item) => item.id === slug);
+
+  if (!member) {
+    return {
+      title: "Member not found | NAMI Creative Network",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const profile = memberProfileCopy(member);
+  const displayName = profile.brandName
+    ? `${profile.personName} / ${profile.brandName}`
+    : profile.personName;
+  const title = `${displayName} | North East Creative Network member`;
+  const description = `${member.description} Find ${displayName} in the NAMI Creative Network directory.`;
+  const url = `/network/directory/member/${member.id}`;
+  const profileImage = absoluteUrl(member.profileImage);
+  const shareImage = profileImage ?? `${SITE_URL}/nami-og%20%281%29.png`;
+
+  return {
+    title,
+    description,
+    keywords: [
+      displayName,
+      member.category,
+      `${member.category} ${member.location}`,
+      `North East ${member.category}`,
+      "NAMI Creative Network member",
+    ],
+    alternates: { canonical: url },
+    robots: { index: true, follow: true },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}${url}`,
+      type: "profile",
+      siteName: "NAMI Creative",
+      locale: "en_GB",
+      images: [{
+        url: shareImage,
+        alt: profileImage ? member.imageAlt || `${member.name} profile picture` : "NAMI Creative Network",
+      }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [shareImage],
+    },
+  };
+}
+
+export default async function NetworkMemberProfilePage({ params }: PageProps) {
+  const { slug } = await params;
+  const members = await getNetworkDirectoryMembers();
+  const member = members.find((item) => item.id === slug);
+
+  if (!member) notFound();
+
+  const memberUrl = `${SITE_URL}/network/directory/member/${member.id}`;
+  const profileImage = absoluteUrl(member.profileImage);
+  const externalProfiles = [member.websiteUrl, member.instagramUrl].filter(Boolean);
+  const groupSlug = primaryMemberGroup(member);
+  const group = directoryGroups.find((item) => item.slug === groupSlug)!;
+  const profile = memberProfileCopy(member);
+  const entityType = schemaEntityType(member, groupSlug);
+  const relatedMembers = membersInGroup(members, groupSlug)
+    .filter((item) => item.id !== member.id)
+    .slice(0, 3);
+
+  const mainEntity: JsonLdSchema = {
+    "@type": entityType,
+    "@id": `${memberUrl}#member`,
+    name: entityType === "Organization" && profile.brandName ? profile.brandName : member.name,
+    url: memberUrl,
+    description: member.description,
+    image: profileImage,
+    knowsAbout: [member.category, group.label, "North East creative work"],
+    location: {
+      "@type": "Place",
+      name: member.location,
+    },
+    sameAs: externalProfiles,
+    memberOf: { "@id": `${SITE_URL}/#organization` },
+    ...(entityType === "Organization" && profile.brandName
+      ? { founder: { "@type": "Person", name: profile.personName } }
+      : {}),
+  };
+
+  const profileSchema: JsonLdSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${memberUrl}#profile`,
+    url: memberUrl,
+    name: `${member.name} on the NAMI Creative Network`,
+    description: member.description,
+    mainEntityOfPage: memberUrl,
+    mainEntity,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+  };
+
+  return (
+    <>
+      <JsonLd
+        schema={[
+          profileSchema,
+          buildBreadcrumbSchema([
+            { name: "Creative Network", url: "/network" },
+            { name: "Directory", url: "/network/directory" },
+            { name: member.name, url: `/network/directory/member/${member.id}` },
+          ]),
+        ]}
+      />
+
+      <main className="overflow-hidden pb-24">
+        <section className="relative isolate overflow-hidden pb-16 pt-28 md:pb-24 md:pt-36">
+          <ParallaxBackdrop
+            src="/images/north-east/4.jpg"
+            overlay={0.88}
+            imageClassName="brightness-[0.38]"
+            position="center 42%"
+          />
+          <div className="container-shell relative">
+          <Link
+            href="/network/directory"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-fg-muted transition-colors hover:text-accent"
+          >
+            <ArrowLeft size={16} aria-hidden />
+            Back to the directory
+          </Link>
+
+          <section className="relative mt-8 overflow-hidden rounded-[2rem] border border-accent/30 bg-surface-1 px-6 py-7 md:px-10 md:py-10 lg:px-14 lg:py-14">
+            <div aria-hidden className="hairline-grid absolute inset-0 opacity-30" />
+            <div aria-hidden className="absolute -right-24 -top-24 size-96 rounded-full bg-accent/20 blur-3xl" />
+
+            <div className="relative grid gap-10 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-16">
+              <div className="mx-auto w-full max-w-md">
+                <MemberAvatar
+                  name={member.name}
+                  src={member.profileImage}
+                  alt={member.imageAlt}
+                  featured
+                />
+              </div>
+
+              <div>
+                <p className="mono-label text-accent">NAMI Creative Network member</p>
+                <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-fg-subtle">
+                  <span className="rounded-full border border-line bg-surface-0/50 px-3 py-1.5">{profile.role}</span>
+                  <span className="inline-flex items-center gap-2">
+                    <MapPin size={15} className="text-accent" aria-hidden />
+                    {member.location}
+                  </span>
+                </div>
+
+                <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl">
+                  {profile.personName}
+                  {profile.brandName && <span className="mt-2 block text-accent">{profile.brandName}</span>}
+                </h1>
+
+                <p className="mt-7 max-w-2xl text-lg leading-relaxed text-fg-muted md:text-xl">
+                  {member.description}
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {member.websiteUrl && (
+                    <a
+                      href={member.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
+                    >
+                      Visit their work <ArrowUpRight size={15} aria-hidden />
+                    </a>
+                  )}
+                  {member.instagramUrl && (
+                    <a
+                      href={member.instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-0/40 px-6 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-accent/50 hover:text-accent"
+                    >
+                      <InstagramIcon size={16} aria-hidden /> Instagram
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+          </div>
+        </section>
+
+        <div className="container-shell">
+          <section className="grid gap-6 py-16 md:py-24 lg:grid-cols-[minmax(0,1.3fr)_minmax(18rem,0.7fr)] lg:gap-14">
+            <div>
+              <p className="mono-label text-accent">{profile.aboutEyebrow}</p>
+              <h2 className="mt-4 max-w-3xl text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl">
+                {profile.aboutTitle}
+              </h2>
+              <p className="mt-7 max-w-3xl text-lg leading-relaxed text-fg-muted">
+                {profile.aboutBody}
+              </p>
+            </div>
+
+            <aside className="rounded-3xl border border-line bg-surface-1/55 p-7 md:p-8">
+              <p className="mono-label text-accent">At a glance</p>
+              <dl className="mt-6 divide-y divide-line">
+                <div className="flex items-start justify-between gap-6 py-4 first:pt-0">
+                  <dt className="text-sm text-fg-subtle">Based in</dt>
+                  <dd className="text-right font-semibold text-fg">{member.location}</dd>
+                </div>
+                <div className="flex items-start justify-between gap-6 py-4">
+                  <dt className="text-sm text-fg-subtle">Category</dt>
+                  <dd className="text-right font-semibold text-fg">{member.category}</dd>
+                </div>
+                <div className="flex items-start justify-between gap-6 py-4">
+                  <dt className="text-sm text-fg-subtle">Part of</dt>
+                  <dd className="max-w-48 text-right font-semibold text-fg">{group.label}</dd>
+                </div>
+              </dl>
+            </aside>
+          </section>
+        </div>
+
+        <section className="border-y border-line bg-surface-1/35 py-16 md:py-24">
+          <div className="container-shell">
+            <div className="flex flex-wrap items-end justify-between gap-5">
+              <div>
+                <p className="mono-label text-accent">A look at the work</p>
+                <h2 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">{profile.galleryTitle}</h2>
+              </div>
+            </div>
+
+            <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+              {["Featured image", "Portfolio image", "Portfolio image", "Portfolio image"].map((label, index) => (
+                <div
+                  key={`${label}-${index}`}
+                  className="relative grid aspect-[3/5] place-items-center overflow-hidden rounded-3xl border border-dashed border-accent/35 bg-surface-0/65 p-5 text-center md:p-8"
+                >
+                  <div aria-hidden className="hairline-grid absolute inset-0 opacity-20" />
+                  <div className="relative">
+                    <span className="mx-auto grid size-12 place-items-center rounded-full border border-accent/30 bg-accent/10 text-2xl text-accent">+</span>
+                    <p className="mt-4 font-semibold text-fg">{label}</p>
+                    <p className="mt-2 text-sm text-fg-subtle">Profile images coming soon</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {relatedMembers.length > 0 && (
+          <section className="relative isolate overflow-hidden py-16 md:py-24">
+            <ParallaxBackdrop src="/images/north-east/6.jpg" overlay={0.78} />
+            <div className="container-shell relative">
+              <div className="flex flex-wrap items-end justify-between gap-5">
+                <div>
+                  <p className="mono-label text-accent">Keep looking</p>
+                  <h2 className="mt-4 text-4xl font-semibold tracking-tight md:text-5xl">More people to meet</h2>
+                </div>
+                <Link href={`/network/directory/${groupSlug}`} className="inline-flex items-center gap-2 text-sm font-semibold hover:text-accent">
+                  See all in {group.label.toLowerCase()} <ArrowUpRight size={15} aria-hidden />
+                </Link>
+              </div>
+              <div className="mt-9 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {relatedMembers.map((related) => (
+                  <DirectoryMemberCard key={related.id} member={related} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section className="container-shell pt-4">
+          <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-surface-1 p-8 md:p-12">
+            <div aria-hidden className="hairline-grid absolute inset-0 opacity-20" />
+            <div aria-hidden className="absolute right-0 top-0 size-72 rounded-full bg-accent/15 blur-3xl" />
+            <div className="relative flex flex-col justify-between gap-8 md:flex-row md:items-center">
+              <div className="max-w-2xl">
+                <Sparkles size={24} className="text-accent" aria-hidden />
+                <p className="mono-label mt-5 text-accent">NAMI Creative Network</p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Making something up here?</h2>
+                <p className="mt-4 text-lg leading-relaxed text-fg-muted">
+                  Join the Network, get your work seen and make it easier for people to find you, hire you, buy from you and connect with you.
+                </p>
+              </div>
+              <Link
+                href="/network#join-network"
+                className="inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
+              >
+                Join the Network <ArrowUpRight size={15} aria-hidden />
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}

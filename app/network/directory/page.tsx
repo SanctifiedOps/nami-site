@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight, MapPin, Search, Users } from "lucide-react";
-import { InstagramIcon } from "@/components/icons/socials";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { PageHero } from "@/components/sections/page-hero";
@@ -91,16 +90,9 @@ export default async function NetworkDirectoryPage() {
                   <h2 className="mt-5 text-4xl font-semibold leading-[0.96] tracking-tight md:text-6xl">{featured.name}</h2>
                   <p className="mt-5 max-w-2xl text-lg leading-relaxed text-fg-muted">{featured.description}</p>
                   <div className="mt-7 flex flex-wrap gap-4">
-                    {featured.instagramUrl && (
-                      <a href={featured.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-fg hover:text-accent">
-                        <InstagramIcon size={16} aria-hidden /> Instagram
-                      </a>
-                    )}
-                    {featured.websiteUrl && (
-                      <a href={featured.websiteUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-fg hover:text-accent">
-                        Visit their work <ArrowUpRight size={14} aria-hidden />
-                      </a>
-                    )}
+                    <Link href={`/network/directory/member/${featured.id}`} className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-soft">
+                      View member profile <ArrowUpRight size={14} aria-hidden />
+                    </Link>
                   </div>
                 </div>
               </div>

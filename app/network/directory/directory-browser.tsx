@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, MapPin, Search, X } from "lucide-react";
-import { InstagramIcon } from "@/components/icons/socials";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
 import { directoryGroups, memberGroupSlugs } from "@/lib/content/network-directory-groups";
@@ -253,7 +252,16 @@ export function DirectoryMemberCard({ member }: { member: NetworkDirectoryMember
         </span>
       </div>
 
-      <h2 className="mt-6 text-2xl font-semibold leading-[1.02] tracking-tight">{member.name}</h2>
+      <h2 className="mt-6 text-2xl font-semibold leading-[1.02] tracking-tight">
+        <Link
+          href={`/network/directory/member/${member.id}`}
+          onClick={() => trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "profile", category: member.category })}
+          className="transition-colors hover:text-accent"
+        >
+          <span aria-hidden className="absolute inset-0" />
+          {member.name}
+        </Link>
+      </h2>
       <p className="mt-3 inline-flex items-center gap-2 text-sm text-fg-subtle">
         <MapPin size={14} aria-hidden className="text-accent" />
         {member.location}
@@ -261,30 +269,14 @@ export function DirectoryMemberCard({ member }: { member: NetworkDirectoryMember
       <p className="mt-5 leading-relaxed text-fg-muted">{member.description}</p>
 
       <div className="mt-auto flex flex-wrap gap-x-5 gap-y-3 pt-7">
-        {member.instagramUrl && (
-          <a
-            href={member.instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "instagram", category: member.category })}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
-          >
-            <InstagramIcon size={15} aria-hidden />
-            Instagram
-          </a>
-        )}
-        {member.websiteUrl && (
-          <a
-            href={member.websiteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "website", category: member.category })}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
-          >
-            Visit their work
-            <ArrowUpRight size={14} aria-hidden />
-          </a>
-        )}
+        <Link
+          href={`/network/directory/member/${member.id}`}
+          onClick={() => trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "profile", category: member.category })}
+          className="relative z-10 inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
+        >
+          View profile
+          <ArrowUpRight size={14} aria-hidden />
+        </Link>
       </div>
     </article>
   );

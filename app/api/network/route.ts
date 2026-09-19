@@ -322,6 +322,7 @@ async function notifyMake(d: Cleaned, image: File): Promise<void> {
   outgoing.set("confirmationEmailHtml", confirmationEmail.html);
   outgoing.set("imageAltText", `${d.name} profile picture`);
   outgoing.set("imageStatus", "Ready");
+  outgoing.set("profileUrl", `${DIRECTORY_URL}/member/${d.memberId}`);
   outgoing.set("image", image, d.memberId);
 
   const res = await fetch(url, {
@@ -358,6 +359,7 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
       subject: `Creative Network submission - ${d.category}`,
       source: "instagram-network",
       sourceRef: NETWORK_SOURCE,
+      profileUrl: `${DIRECTORY_URL}/member/${d.memberId}`,
     }),
   });
   if (!res.ok) {

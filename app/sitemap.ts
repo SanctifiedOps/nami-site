@@ -3,12 +3,14 @@ import { services } from "@/lib/content/services";
 import { work } from "@/lib/content/work";
 import { offers } from "@/lib/content/offers";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
+import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 
 const SITE = "https://namicreative.co.uk";
 const LAST_SEO_UPDATE = new Date("2026-09-19");
 const HOMEPAGE_SEO_UPDATE = new Date("2026-09-19");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const directoryMembers = await getNetworkDirectoryMembers();
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE}/`, lastModified: HOMEPAGE_SEO_UPDATE, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE}/network`, lastModified: LAST_SEO_UPDATE, changeFrequency: "weekly", priority: 0.95 },
@@ -53,11 +55,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const memberRoutes: MetadataRoute.Sitemap = directoryMembers.map((member) => ({
+    url: `${SITE}/network/directory/member/${member.id}`,
+    lastModified: member.joinedAt && !Number.isNaN(Date.parse(member.joinedAt))
+      ? new Date(member.joinedAt)
+      : LAST_SEO_UPDATE,
+    changeFrequency: "monthly",
+    priority: 0.68,
+    images: member.profileImage ? [member.profileImage.startsWith("http") ? member.profileImage : `${SITE}${member.profileImage}`] : undefined,
+  }));
+
   return [
     ...staticRoutes,
     ...serviceRoutes,
     ...workRoutes,
     ...offerRoutes,
     ...directoryRoutes,
+    ...memberRoutes,
   ];
 }
