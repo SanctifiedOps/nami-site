@@ -27,6 +27,7 @@ export const primaryNav: NavItem[] = [
     children: [
       { label: "Join The Network", href: "/network" },
       { label: "Creative Network Directory", href: "/network/directory" },
+      { label: "Member login", href: "/network/login" },
     ],
   },
 ];

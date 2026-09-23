@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
-import { InstagramIcon } from "@/components/icons/socials";
 import { JsonLd, buildBreadcrumbSchema, type JsonLdSchema } from "@/components/seo/json-ld";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
@@ -133,7 +132,14 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
 
   const memberUrl = `${SITE_URL}/network/directory/member/${member.id}`;
   const profileImage = absoluteUrl(member.profileImage);
-  const externalProfiles = [member.websiteUrl, member.instagramUrl].filter(Boolean);
+  const socialLinks = [
+    { label: "Instagram", url: member.instagramUrl },
+    { label: "Facebook", url: member.facebookUrl },
+    { label: "LinkedIn", url: member.linkedinUrl },
+    { label: "TikTok", url: member.tiktokUrl },
+    { label: "YouTube", url: member.youtubeUrl },
+  ].filter((item): item is { label: string; url: string } => Boolean(item.url));
+  const externalProfiles = [member.websiteUrl, ...socialLinks.map((item) => item.url)].filter(Boolean);
   const groupSlug = primaryMemberGroup(member);
   const group = directoryGroups.find((item) => item.slug === groupSlug)!;
   const profile = memberProfileCopy(member);
@@ -247,14 +253,12 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                       Visit their work <ArrowUpRight size={15} aria-hidden />
                     </a>
                   )}
-                  {member.instagramUrl && (
+                  {socialLinks.length > 0 && (
                     <a
-                      href={member.instagramUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-0/40 px-6 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-accent/50 hover:text-accent"
+                      href="#member-socials"
+                      className="inline-flex items-center gap-2 rounded-full border border-accent bg-black/75 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_0_0_rgba(255,0,166,0)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:text-accent hover:shadow-[0_10px_30px_rgba(255,0,166,0.2)]"
                     >
-                      <InstagramIcon size={16} aria-hidden /> Instagram
+                      View socials <ArrowUpRight size={15} aria-hidden />
                     </a>
                   )}
                 </div>
@@ -276,7 +280,10 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
               </p>
             </div>
 
-            <aside className="rounded-3xl border border-line bg-surface-1/55 p-7 md:p-8">
+            <aside
+              id="member-socials"
+              className="group scroll-mt-28 rounded-3xl border border-accent/35 bg-[linear-gradient(145deg,rgba(255,0,166,0.20),rgba(18,18,22,0.96)_45%,rgba(255,0,166,0.08))] p-7 shadow-[0_18px_55px_rgba(255,0,166,0.10)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/65 hover:shadow-[0_24px_70px_rgba(255,0,166,0.20)] md:p-8"
+            >
               <p className="mono-label text-accent">At a glance</p>
               <dl className="mt-6 divide-y divide-line">
                 <div className="flex items-start justify-between gap-6 py-4 first:pt-0">
@@ -292,6 +299,24 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                   <dd className="max-w-48 text-right font-semibold text-fg">{group.label}</dd>
                 </div>
               </dl>
+              {socialLinks.length > 0 && (
+                <div className="mt-7 border-t border-accent/25 pt-6">
+                  <p className="text-sm font-semibold text-fg">Follow and connect</p>
+                  <div className="mt-4 flex flex-wrap gap-2.5">
+                    {socialLinks.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full border border-accent/60 bg-black/65 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:shadow-[0_10px_26px_rgba(255,0,166,0.28)]"
+                      >
+                        {link.label} <ArrowUpRight size={14} aria-hidden />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </aside>
           </section>
         </div>
@@ -306,16 +331,18 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
             </div>
 
             <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
-              {["Featured image", "Portfolio image", "Portfolio image", "Portfolio image"].map((label, index) => (
-                <div
-                  key={`${label}-${index}`}
-                  className="relative grid aspect-[3/5] place-items-center overflow-hidden rounded-3xl border border-dashed border-accent/35 bg-surface-0/65 p-5 text-center md:p-8"
-                >
+              {(member.portfolioImages ?? []).map((image, index) => (
+                <figure key={`${image.src}-${index}`} className="overflow-hidden rounded-3xl border border-line bg-surface-0/65">
+                  <img src={image.src} alt={image.alt || `Work by ${member.name}`} className="aspect-[3/5] h-full w-full object-cover" />
+                </figure>
+              ))}
+              {Array.from({ length: Math.max(0, 4 - (member.portfolioImages?.length ?? 0)) }, (_, index) => (
+                <div key={`portfolio-placeholder-${index}`} className="relative grid aspect-[3/5] place-items-center overflow-hidden rounded-3xl border border-dashed border-accent/35 bg-surface-0/65 p-5 text-center md:p-8">
                   <div aria-hidden className="hairline-grid absolute inset-0 opacity-20" />
                   <div className="relative">
                     <span className="mx-auto grid size-12 place-items-center rounded-full border border-accent/30 bg-accent/10 text-2xl text-accent">+</span>
-                    <p className="mt-4 font-semibold text-fg">{label}</p>
-                    <p className="mt-2 text-sm text-fg-subtle">Profile images coming soon</p>
+                    <p className="mt-4 font-semibold text-fg">Portfolio image</p>
+                    <p className="mt-2 text-sm text-fg-subtle">Portfolio image coming soon</p>
                   </div>
                 </div>
               ))}

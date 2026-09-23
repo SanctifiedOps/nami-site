@@ -1,0 +1,136 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nami-creative-site",
+  "main": "cloudflare-worker.ts",
+  "compatibility_date": "2026-09-19",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nami-network",
+      "database_id": "755fb14b-0e54-4bcf-91a1-ef3f5c520a6a",
+      "migrations_dir": "drizzle/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEMBER_MEDIA",
+      "bucket_name": "nami-creative"
+    }
+  ],
+  "triggers": {
+    "crons": ["*/10 * * * *", "0 7,8 * * 5"]
+  },
+  "vars": {
+    "APP_ENV": "production",
+    "OUTBOUND_EMAIL_MODE": "hold",
+    "MEMBER_INVITATIONS_MODE": "hold",
+    "OUTBOUND_EMAIL_RETRY_MODE": "hold",
+    "EXTERNAL_INTEGRATIONS_MODE": "hold",
+    "OWNER_NOTIFICATIONS_MODE": "live",
+    "OWNER_NOTIFICATION_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
+    "ACCOUNT_RECOVERY_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
+    "MS_GRAPH_MAILBOX_SCOPE_VERIFIED": "true",
+    "NETWORK_EVENTS_MODE": "hold",
+    "APP_URL": "https://namicreative.co.uk",
+    "NEXT_PUBLIC_APP_URL": "https://namicreative.co.uk",
+    "OWNER_EMAIL": "hello@namicreative.co.uk",
+    "MEMBER_MEDIA_BASE_URL": "https://media.namicreative.co.uk",
+    "NEXT_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAE-AOM369y7miOjr",
+    "GOOGLE_SERVICE_ACCOUNT_EMAIL": "nami-network-sheet-sync@nami-creative-network.iam.gserviceaccount.com",
+    "GA4_PROPERTY_ID": "387764936",
+    "GOOGLE_SHEET_ID": "1uyNibCoH2sVR_z6MTAtPzvQygdogaGrrhwdC7_KoIoY",
+    "GOOGLE_SHEET_NAME": "Creative Network"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "env": {
+    "preview": {
+      "name": "nami-creative-site-precutover",
+      "workers_dev": true,
+      "triggers": {
+        "crons": []
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "nami-network",
+          "database_id": "755fb14b-0e54-4bcf-91a1-ef3f5c520a6a",
+          "migrations_dir": "drizzle/migrations"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "MEMBER_MEDIA",
+          "bucket_name": "nami-creative"
+        }
+      ],
+      "vars": {
+        "APP_ENV": "preview",
+        "OUTBOUND_EMAIL_MODE": "hold",
+        "MEMBER_INVITATIONS_MODE": "hold",
+        "OUTBOUND_EMAIL_RETRY_MODE": "hold",
+        "EXTERNAL_INTEGRATIONS_MODE": "hold",
+        "OWNER_NOTIFICATIONS_MODE": "hold",
+        "OWNER_NOTIFICATION_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
+        "ACCOUNT_RECOVERY_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
+        "NETWORK_EVENTS_MODE": "hold",
+        "APP_URL": "https://namicreative.co.uk",
+        "NEXT_PUBLIC_APP_URL": "https://namicreative.co.uk",
+        "OWNER_EMAIL": "hello@namicreative.co.uk",
+        "MEMBER_MEDIA_BASE_URL": "https://media.namicreative.co.uk",
+        "GOOGLE_SERVICE_ACCOUNT_EMAIL": "nami-network-sheet-sync@nami-creative-network.iam.gserviceaccount.com",
+        "GA4_PROPERTY_ID": "387764936",
+        "GOOGLE_SHEET_ID": "1uyNibCoH2sVR_z6MTAtPzvQygdogaGrrhwdC7_KoIoY",
+        "GOOGLE_SHEET_NAME": "Creative Network"
+      }
+    },
+    "staging": {
+      "name": "nami-creative-site-staging",
+      "triggers": {
+        "crons": []
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "nami-network-staging",
+          "database_id": "578c0e88-12cd-4903-928b-e1e96acbb90b",
+          "migrations_dir": "drizzle/migrations"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "MEMBER_MEDIA",
+          "bucket_name": "nami-creative"
+        }
+      ],
+      "vars": {
+        "APP_ENV": "staging",
+        "OUTBOUND_EMAIL_MODE": "hold",
+        "MEMBER_INVITATIONS_MODE": "hold",
+        "OUTBOUND_EMAIL_RETRY_MODE": "hold",
+        "OUTBOUND_EMAIL_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
+        "EXTERNAL_INTEGRATIONS_MODE": "hold",
+        "OWNER_NOTIFICATIONS_MODE": "hold",
+        "OWNER_NOTIFICATION_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
+        "ACCOUNT_RECOVERY_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
+        "NETWORK_EVENTS_MODE": "hold",
+        "APP_URL": "https://nami-creative-site-staging.opsanctus.workers.dev",
+        "NEXT_PUBLIC_APP_URL": "https://nami-creative-site-staging.opsanctus.workers.dev",
+        "OWNER_EMAIL": "hello@namicreative.co.uk",
+        "MEMBER_MEDIA_BASE_URL": "https://media.namicreative.co.uk",
+        "NEXT_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAE-AOM369y7miOjr",
+        "GOOGLE_SERVICE_ACCOUNT_EMAIL": "nami-network-sheet-sync@nami-creative-network.iam.gserviceaccount.com",
+        "GA4_PROPERTY_ID": "387764936",
+        "GOOGLE_SHEET_ID": "1uyNibCoH2sVR_z6MTAtPzvQygdogaGrrhwdC7_KoIoY",
+        "GOOGLE_SHEET_NAME": "Creative Network Staging"
+      }
+    }
+  }
+}

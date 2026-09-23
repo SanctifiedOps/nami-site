@@ -3,120 +3,80 @@ import {
   type NetworkDirectoryMember,
 } from "@/lib/content/network-directory";
 import { normalizeExternalUrl } from "@/lib/external-url";
+import { normalizeInstagramProfileUrl, normalizeProfileUrl } from "@/lib/network-profile/links";
 
-type DirectoryFeedMember = Partial<NetworkDirectoryMember> & {
-  imageStatus?: string;
-  featured?: boolean | string;
-};
-
-function clean(value: unknown, max = 500) {
-  return typeof value === "string" ? value.trim().slice(0, max) : "";
-}
-
-function instagramUrl(value: string) {
-  const trimmed = value.trim();
-  const candidate = /[\s,]/.test(trimmed)
-    ? trimmed.split(/[\s,]+/).find((part) =>
-        part.startsWith("@") || /^https?:\/\/(www\.)?instagram\.com\//i.test(part),
-      ) ?? ""
-    : trimmed;
-  const handle = candidate
-    .replace(/^https?:\/\/(www\.)?instagram\.com\//i, "")
-    .replace(/^@/, "")
-    .split(/[/?#]/)[0];
-
-  // A display name such as "Axe & Grain Bespoke Works" is not an Instagram
-  // handle. Multiple submitted @handles remain supported by using the first.
-  return /^[a-z0-9._]+$/i.test(handle)
-    ? `https://www.instagram.com/${handle}/`
-    : "";
-}
-
-function profileImageUrl(value: string) {
-  const trimmed = clean(value, 500);
-  if (!trimmed) return "";
-  const driveId = trimmed.match(/[?&]id=([a-zA-Z0-9_-]{10,100})/)?.[1]
-    ?? trimmed.match(/\/d\/([a-zA-Z0-9_-]{10,100})/)?.[1];
-  return driveId ? `/api/network/profile-image/${driveId}` : trimmed;
-}
-
-function validMember(value: unknown): NetworkDirectoryMember | null {
-  if (!value || typeof value !== "object") return null;
-  const wrapped = value as { properties?: unknown };
-  const source =
-    wrapped.properties && typeof wrapped.properties === "object"
-      ? wrapped.properties
-      : value;
-  const item = source as DirectoryFeedMember;
-  const id = clean(item.id, 160);
-  const name = clean(item.name, 120);
-  const category = clean(item.category, 80);
-  const location = clean(item.location, 140);
-  const instagram = clean(item.instagram, 120);
-  const description = clean(item.description, 800);
-  if (!id || !name || !category || !location || !description) return null;
-
-  const profileImage =
-    clean(item.imageStatus, 40).toLowerCase() === "ready"
-      ? profileImageUrl(item.profileImage ?? "")
-      : "";
-
-  return {
-    id,
-    name,
-    category,
-    location,
-    instagram,
-    instagramUrl: instagramUrl(instagram),
-    websiteUrl: normalizeExternalUrl(clean(item.websiteUrl, 500)),
-    description,
-    profileImage: profileImage || undefined,
-    imageAlt: clean(item.imageAlt, 200) || `${name} profile picture`,
-    featured: item.featured === true || clean(item.featured, 10).toLowerCase() === "true",
-    joinedAt: clean(item.joinedAt, 40) || undefined,
-    primaryGroup: clean(item.primaryGroup, 80) || undefined,
-  };
+async function d1Members(): Promise<NetworkDirectoryMember[] | null> {
+  try {
+    const [{ getNetworkDb, schema }, { and, eq }] = await Promise.all([
+      import("@/lib/network-db"),
+      import("drizzle-orm"),
+    ]);
+    const db = await getNetworkDb();
+    const rows = await db
+      .select({ member: schema.members, profile: schema.memberProfiles })
+      .from(schema.memberProfiles)
+      .innerJoin(schema.members, eq(schema.members.id, schema.memberProfiles.memberId))
+      .where(and(eq(schema.memberProfiles.published, true), eq(schema.members.approvalStatus, "approved")));
+    if (!rows.length) return null;
+    const images = await db
+      .select()
+      .from(schema.profileImages)
+      .where(eq(schema.profileImages.status, "ready"))
+      .orderBy(schema.profileImages.memberId, schema.profileImages.position);
+    const imagesByMember = new Map<string, Array<{ src: string; alt: string }>>();
+    for (const image of images) {
+      const current = imagesByMember.get(image.memberId) ?? [];
+      current.push({
+        src: `/api/network/media/${image.r2Key.split("/").map(encodeURIComponent).join("/")}`,
+        alt: image.altText,
+      });
+      imagesByMember.set(image.memberId, current);
+    }
+    return rows.map(({ member, profile }) => ({
+      id: member.id,
+      name: profile.displayName,
+      category: profile.speciality,
+      location: profile.location,
+      instagram: profile.instagramUrl ?? "",
+      instagramUrl: normalizeInstagramProfileUrl(profile.instagramUrl),
+      websiteUrl: normalizeProfileUrl(profile.websiteUrl),
+      facebookUrl: normalizeProfileUrl(profile.facebookUrl),
+      linkedinUrl: normalizeProfileUrl(profile.linkedinUrl),
+      tiktokUrl: normalizeProfileUrl(profile.tiktokUrl),
+      youtubeUrl: normalizeProfileUrl(profile.youtubeUrl),
+      description: profile.bio,
+      profileImage: profile.profileImageKey
+        ? `/api/network/media/${profile.profileImageKey.split("/").map(encodeURIComponent).join("/")}`
+        : undefined,
+      imageAlt: `${profile.displayName} profile picture`,
+      featured: profile.featured,
+      joinedAt: member.joinedAt.toISOString(),
+      primaryGroup: profile.primaryGroup,
+      portfolioImages: imagesByMember.get(member.id) ?? [],
+    }));
+  } catch {
+    return null;
+  }
 }
 
 export async function getNetworkDirectoryMembers() {
-  const url = process.env.DIRECTORY_FEED_WEBHOOK_URL;
   const fallbackMembers = networkDirectoryMembers.map((member) => ({
     ...member,
     websiteUrl: normalizeExternalUrl(member.websiteUrl),
   }));
-  if (!url) return fallbackMembers;
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: "{}",
-      next: { revalidate: 60 },
-    });
-    if (!response.ok) return fallbackMembers;
-
-    const text = await response.text();
-    const data = JSON.parse(text) as unknown;
-    if (!Array.isArray(data)) return fallbackMembers;
-
-    const liveMembers = data
-      .map(validMember)
-      .filter((member): member is NetworkDirectoryMember => Boolean(member));
-    const members = new Map(
-      fallbackMembers.map((member) => [member.id, member]),
-    );
-    for (const member of liveMembers) {
-      const existing = members.get(member.id);
-      members.set(member.id, {
+  const databaseMembers = await d1Members();
+  if (databaseMembers) {
+    const merged = new Map(fallbackMembers.map((member) => [member.id, member]));
+    for (const member of databaseMembers) {
+      const existing = merged.get(member.id);
+      merged.set(member.id, {
         ...existing,
         ...member,
         profileImage: member.profileImage ?? existing?.profileImage,
         imageAlt: member.imageAlt ?? existing?.imageAlt,
-        featured: member.featured,
       });
     }
-    return [...members.values()];
-  } catch {
-    return fallbackMembers;
+    return [...merged.values()];
   }
+  return fallbackMembers;
 }

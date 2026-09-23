@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
+import { externalIntegrationsAllowed } from "@/lib/prelaunch-qa";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,8 +20,12 @@ export async function POST(req: Request) {
     );
   }
 
-  const apiKey = process.env.MAILCHIMP_API_KEY;
-  const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const env = await getRuntimeEnvironment();
+  if (!externalIntegrationsAllowed(env, req, email)) {
+    return NextResponse.json({ error: "Newsletter signup is unavailable in staging." }, { status: 503 });
+  }
+  const apiKey = env.MAILCHIMP_API_KEY;
+  const audienceId = env.MAILCHIMP_AUDIENCE_ID;
 
   if (!apiKey || !audienceId) {
     console.error(
@@ -57,7 +63,10 @@ export async function POST(req: Request) {
       },
     );
 
-    const data = await res.json().catch(() => ({}));
+    const data = (await res.json().catch(() => ({}))) as {
+      title?: string;
+      detail?: string;
+    };
 
     if (res.ok) {
       return NextResponse.json({

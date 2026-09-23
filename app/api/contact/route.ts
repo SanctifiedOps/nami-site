@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
+import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
+import { externalIntegrationsAllowed } from "@/lib/prelaunch-qa";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -51,16 +53,15 @@ function tagsFor(d: Cleaned): string[] {
 }
 
 async function upsertMailchimp(d: Cleaned): Promise<void> {
-  const apiKey = process.env.MAILCHIMP_API_KEY;
-  const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const env = await getRuntimeEnvironment();
+  const apiKey = env.MAILCHIMP_API_KEY;
+  const audienceId = env.MAILCHIMP_AUDIENCE_ID;
   if (!apiKey || !audienceId) {
-    console.warn("Mailchimp env vars missing — skipping upsert.");
-    return;
+    throw new Error("Mailchimp credentials are not configured.");
   }
   const dc = apiKey.split("-")[1];
   if (!dc) {
-    console.warn("Mailchimp API key malformed — skipping upsert.");
-    return;
+    throw new Error("Mailchimp API key is malformed.");
   }
 
   const subscriberHash = crypto
@@ -96,15 +97,14 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    console.warn("Mailchimp upsert non-2xx:", res.status, body.slice(0, 400));
+    throw new Error(`Mailchimp upsert failed: ${res.status} ${body.slice(0, 400)}`);
   }
 }
 
 async function notifyMake(d: Cleaned): Promise<void> {
-  const url = process.env.CONTACT_WEBHOOK_URL;
+  const url = (await getRuntimeEnvironment()).CONTACT_WEBHOOK_URL;
   if (!url) {
-    console.warn("CONTACT_WEBHOOK_URL not set — skipping Make notification.");
-    return;
+    throw new Error("Contact Make webhook is not configured.");
   }
   const res = await fetch(url, {
     method: "POST",
@@ -127,18 +127,16 @@ async function notifyMake(d: Cleaned): Promise<void> {
   });
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    console.warn("Make webhook non-2xx:", res.status, body.slice(0, 400));
+    throw new Error(`Make contact webhook failed: ${res.status} ${body.slice(0, 400)}`);
   }
 }
 
 async function notifyDashboard(d: Cleaned): Promise<void> {
-  const url = process.env.DASHBOARD_LEAD_WEBHOOK_URL;
-  const secret = process.env.DASHBOARD_LEAD_WEBHOOK_SECRET;
+  const env = await getRuntimeEnvironment();
+  const url = env.DASHBOARD_LEAD_WEBHOOK_URL;
+  const secret = env.DASHBOARD_LEAD_WEBHOOK_SECRET;
   if (!url || !secret) {
-    console.warn(
-      "DASHBOARD_LEAD_WEBHOOK_URL or DASHBOARD_LEAD_WEBHOOK_SECRET not set — skipping dashboard notify.",
-    );
-    return;
+    throw new Error("Owner dashboard lead webhook is not configured.");
   }
 
   // The dashboard wants a single `name` plus an enriched `message` so the
@@ -173,7 +171,7 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
   });
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    console.warn("Dashboard webhook non-2xx:", res.status, body.slice(0, 400));
+    throw new Error(`Owner dashboard lead webhook failed: ${res.status} ${body.slice(0, 400)}`);
   }
 }
 
@@ -205,9 +203,13 @@ export async function POST(req: Request) {
     );
   }
 
-  // Run all three pathways in parallel. Each is best-effort: as long as
-  // one captures the lead we return success. Failures are logged
-  // server-side for follow-up.
+  const env = await getRuntimeEnvironment();
+  if (!externalIntegrationsAllowed(env, req, d.email)) {
+    return NextResponse.json({ error: "This form is unavailable in staging." }, { status: 503 });
+  }
+
+  // Mailchimp is a secondary copy. A brief succeeds only if Make or the
+  // owner dashboard receives it, so Joe has an actionable lead.
   const [makeRes, mcRes, dashRes] = await Promise.allSettled([
     notifyMake(d),
     upsertMailchimp(d),
@@ -218,7 +220,9 @@ export async function POST(req: Request) {
   const mcOk = mcRes.status === "fulfilled";
   const dashOk = dashRes.status === "fulfilled";
 
-  if (!makeOk && !mcOk && !dashOk) {
+  if (!mcOk) console.warn("Contact Mailchimp copy failed:", mcRes.reason);
+
+  if (!makeOk && !dashOk) {
     console.error(
       "All contact pathways failed:",
       makeRes.status === "rejected" ? makeRes.reason : null,

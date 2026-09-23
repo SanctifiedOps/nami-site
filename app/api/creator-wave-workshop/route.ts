@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
+import { externalIntegrationsAllowed } from "@/lib/prelaunch-qa";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -50,10 +52,9 @@ function tagsFor(d: Cleaned): string[] {
 }
 
 async function notifyMake(d: Cleaned): Promise<void> {
-  const url = process.env.CONTACT_WEBHOOK_URL;
+  const url = (await getRuntimeEnvironment()).CONTACT_WEBHOOK_URL;
   if (!url) {
-    console.warn("CONTACT_WEBHOOK_URL not set - skipping Make notification.");
-    return;
+    throw new Error("Workshop Make webhook is not configured.");
   }
 
   const submittedAt = new Date().toISOString();
@@ -90,18 +91,16 @@ async function notifyMake(d: Cleaned): Promise<void> {
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    console.warn("Make webhook non-2xx:", res.status, body.slice(0, 400));
+    throw new Error(`Make workshop webhook failed: ${res.status} ${body.slice(0, 400)}`);
   }
 }
 
 async function notifyDashboard(d: Cleaned): Promise<void> {
-  const url = process.env.DASHBOARD_LEAD_WEBHOOK_URL;
-  const secret = process.env.DASHBOARD_LEAD_WEBHOOK_SECRET;
+  const env = await getRuntimeEnvironment();
+  const url = env.DASHBOARD_LEAD_WEBHOOK_URL;
+  const secret = env.DASHBOARD_LEAD_WEBHOOK_SECRET;
   if (!url || !secret) {
-    console.warn(
-      "DASHBOARD_LEAD_WEBHOOK_URL or DASHBOARD_LEAD_WEBHOOK_SECRET not set - skipping dashboard notify.",
-    );
-    return;
+    throw new Error("Owner dashboard lead webhook is not configured.");
   }
 
   const res = await fetch(url, {
@@ -131,7 +130,7 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    console.warn("Dashboard webhook non-2xx:", res.status, body.slice(0, 400));
+    throw new Error(`Owner dashboard lead webhook failed: ${res.status} ${body.slice(0, 400)}`);
   }
 }
 
@@ -165,6 +164,11 @@ export async function POST(req: Request) {
       { error: "Please choose what you want help with." },
       { status: 400 },
     );
+  }
+
+  const env = await getRuntimeEnvironment();
+  if (!externalIntegrationsAllowed(env, req, d.email)) {
+    return NextResponse.json({ error: "This form is unavailable in staging." }, { status: 503 });
   }
 
   const [makeRes, dashRes] = await Promise.allSettled([

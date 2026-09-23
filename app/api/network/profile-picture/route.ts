@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { networkDirectoryMembers } from "@/lib/content/network-directory";
 import { readProfileUpdateToken } from "@/lib/network/profile-update-token";
+import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
 
 export const runtime = "nodejs";
 
@@ -23,7 +24,11 @@ function safeMemberId(value: string) {
 }
 
 export async function POST(request: Request) {
-  const webhookUrl = process.env.PROFILE_IMAGE_WEBHOOK_URL;
+  const env = await getRuntimeEnvironment();
+  if (env.APP_ENV && env.EXTERNAL_INTEGRATIONS_MODE !== "live") {
+    return NextResponse.json({ error: "Profile-picture uploads are unavailable in staging." }, { status: 503 });
+  }
+  const webhookUrl = env.PROFILE_IMAGE_WEBHOOK_URL;
   let formData: FormData;
   try {
     formData = await request.formData();

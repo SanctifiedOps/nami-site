@@ -176,7 +176,7 @@
     width: 100%;
     max-width: var(--container-max);
     margin-inline: auto;
-    padding-inline: 1.5rem;
+    padding-inline: clamp(1.5rem, 8vw, 2rem);
   }
 
   @media (min-width: 768px) {

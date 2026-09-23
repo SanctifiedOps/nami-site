@@ -41,6 +41,7 @@ pnpm-debug.log*
 # local env
 .env
 .env*.local
+.dev.vars
 
 # typescript
 *.tsbuildinfo
@@ -58,6 +59,9 @@ pnpm-debug.log*
 # tooling
 .netlify
 .vercel
+.open-next/
+.wrangler/
+.wrangler-config/
 .claude/skills/
 
 # source video files — too large for git, compressed outputs live in /public/assets/videos

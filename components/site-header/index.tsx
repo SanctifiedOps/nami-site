@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { Logo } from "./logo";
@@ -11,10 +12,27 @@ import { Magnetic } from "@/components/motion/magnetic";
 import { primaryNav, ctaNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
+export type HeaderMember = {
+  displayName: string;
+  profileImageUrl: string;
+};
+
+function memberInitials(name: string) {
+  const words = name.split("/")[0]?.trim().split(/\s+/).filter(Boolean) ?? [];
+  if (!words.length) return "NC";
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return `${words[0][0]}${words.at(-1)?.[0] ?? ""}`.toUpperCase();
+}
+
+function mediaUrl(key: string) {
+  return key ? `/api/network/media/${key.split("/").map(encodeURIComponent).join("/")}` : "";
+}
+
 export function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [member, setMember] = useState<HeaderMember | null>(null);
   // Gate pathname-driven active state behind mount so the server and first
   // client render are identical (no active link). Prevents a hydration
   // mismatch in this shared layout nav; the active underline animates in
@@ -30,6 +48,35 @@ export function SiteHeader() {
   });
 
   useEffect(() => setMounted(true), []);
+
+  const loadMember = useCallback(async () => {
+    try {
+      const response = await fetch("/api/network/member-profile", { cache: "no-store" });
+      if (!response.ok) {
+        setMember(null);
+        return;
+      }
+      const result = await response.json() as { profile?: { displayName?: string; profileImageKey?: string | null } };
+      if (!result.profile?.displayName) {
+        setMember(null);
+        return;
+      }
+      setMember({
+        displayName: result.profile.displayName,
+        profileImageUrl: mediaUrl(result.profile.profileImageKey ?? ""),
+      });
+    } catch {
+      setMember(null);
+    }
+  }, []);
+
+  useEffect(() => { void loadMember(); }, [loadMember, pathname]);
+
+  useEffect(() => {
+    const refreshMember = () => { void loadMember(); };
+    window.addEventListener("nami-member-profile-updated", refreshMember);
+    return () => window.removeEventListener("nami-member-profile-updated", refreshMember);
+  }, [loadMember]);
 
   useEffect(() => setOpenMenu(null), [pathname]);
 
@@ -171,6 +218,22 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          {member && (
+            <Link
+              href="/network/dashboard"
+              aria-label={`Open member dashboard for ${member.displayName}`}
+              className="group/member inline-flex items-center gap-2 rounded-full border border-accent/40 bg-surface-1/90 p-1.5 text-sm font-semibold text-fg shadow-[0_4px_18px_rgb(0_0_0/0.25)] transition-all hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_8px_24px_rgb(255_0_188/0.2)] xl:pr-3"
+            >
+              <span className="relative grid size-8 shrink-0 place-items-center overflow-hidden rounded-full bg-accent/15 text-[0.7rem] font-bold text-accent">
+                {member.profileImageUrl ? (
+                  <Image src={member.profileImageUrl} alt="" fill unoptimized sizes="32px" className="object-cover" />
+                ) : (
+                  <span aria-hidden>{memberInitials(member.displayName)}</span>
+                )}
+              </span>
+              <span className="hidden xl:inline">My dashboard</span>
+            </Link>
+          )}
           <Magnetic strength={0.3} field={22} className="hidden md:inline-flex">
             <Link
               href={ctaNav.href}
@@ -185,7 +248,7 @@ export function SiteHeader() {
               />
             </Link>
           </Magnetic>
-          <MobileDrawer />
+          <MobileDrawer member={member} />
         </div>
       </div>
 

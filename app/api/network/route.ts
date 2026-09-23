@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
+import { eq } from "drizzle-orm";
 import { normalizeExternalUrl } from "@/lib/external-url";
+import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
+import { externalIntegrationsAllowed } from "@/lib/prelaunch-qa";
+import { queueOwnerAlert } from "@/lib/network-ops/owner-alerts";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const NETWORK_SOURCE = "namicreative.co.uk/network";
@@ -216,8 +220,9 @@ function confirmationEmailFor(d: Cleaned) {
 }
 
 async function upsertMailchimp(d: Cleaned): Promise<void> {
-  const apiKey = process.env.MAILCHIMP_API_KEY;
-  const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const env = await getRuntimeEnvironment();
+  const apiKey = env.MAILCHIMP_API_KEY;
+  const audienceId = env.MAILCHIMP_AUDIENCE_ID;
   if (!apiKey || !audienceId) {
     console.warn("Mailchimp env vars missing - skipping network upsert.");
     return;
@@ -285,8 +290,8 @@ async function upsertMailchimp(d: Cleaned): Promise<void> {
 }
 
 async function notifyMake(d: Cleaned, image: File): Promise<void> {
-  const url =
-    process.env.CREATIVE_NETWORK_WEBHOOK_URL ?? process.env.CONTACT_WEBHOOK_URL;
+  const env = await getRuntimeEnvironment();
+  const url = env.CREATIVE_NETWORK_WEBHOOK_URL ?? env.CONTACT_WEBHOOK_URL;
   if (!url) {
     console.warn(
       "CREATIVE_NETWORK_WEBHOOK_URL or CONTACT_WEBHOOK_URL not set - skipping network notification.",
@@ -336,8 +341,9 @@ async function notifyMake(d: Cleaned, image: File): Promise<void> {
 }
 
 async function notifyDashboard(d: Cleaned): Promise<void> {
-  const url = process.env.DASHBOARD_LEAD_WEBHOOK_URL;
-  const secret = process.env.DASHBOARD_LEAD_WEBHOOK_SECRET;
+  const env = await getRuntimeEnvironment();
+  const url = env.DASHBOARD_LEAD_WEBHOOK_URL;
+  const secret = env.DASHBOARD_LEAD_WEBHOOK_SECRET;
   if (!url || !secret) {
     console.warn(
       "DASHBOARD_LEAD_WEBHOOK_URL or DASHBOARD_LEAD_WEBHOOK_SECRET not set - skipping network dashboard notify.",
@@ -365,6 +371,64 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     console.warn("Dashboard network webhook non-2xx:", res.status, body.slice(0, 400));
+  }
+}
+
+async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
+  if (image.type !== "image/webp") throw new Error("The prepared profile image must be WebP.");
+  let uploadedKey: string | null = null;
+  let previousKey: string | null = null;
+  try {
+    const { getMemberMediaBucket, getNetworkDb, schema } = await import("@/lib/network-db");
+    const db = await getNetworkDb();
+    const [previous] = await db.select({ profileImageKey: schema.networkApplications.profileImageKey })
+      .from(schema.networkApplications).where(eq(schema.networkApplications.id, d.memberId)).limit(1);
+    previousKey = previous?.profileImageKey ?? null;
+    const bucket = await getMemberMediaBucket();
+    uploadedKey = `network-applications/${d.memberId}/profile/${crypto.randomUUID()}.webp`;
+    await bucket.put(uploadedKey, await image.arrayBuffer(), {
+      httpMetadata: { contentType: "image/webp", cacheControl: "private, no-store" },
+    });
+    await db.insert(schema.networkApplications).values({
+      id: d.memberId,
+      email: d.email.toLowerCase(),
+      firstName: d.firstName,
+      displayName: d.displayName,
+      location: d.location,
+      requestedCategory: d.category,
+      bio: d.note,
+      websiteUrl: d.link || null,
+      instagramUrl: d.instagram,
+      profileImageKey: uploadedKey,
+      status: "pending",
+      submittedAt: new Date(),
+    }).onConflictDoUpdate({
+      target: schema.networkApplications.id,
+      set: {
+        email: d.email.toLowerCase(),
+        firstName: d.firstName,
+        displayName: d.displayName,
+        location: d.location,
+        requestedCategory: d.category,
+        bio: d.note,
+        websiteUrl: d.link || null,
+        instagramUrl: d.instagram,
+        profileImageKey: uploadedKey,
+        status: "pending",
+      },
+    });
+    if (previousKey && previousKey !== uploadedKey) await bucket.delete(previousKey);
+  } catch (error) {
+    if (uploadedKey) {
+      try {
+        const { getMemberMediaBucket } = await import("@/lib/network-db");
+        await (await getMemberMediaBucket()).delete(uploadedKey);
+      } catch {}
+    }
+    // Netlify remains the live fallback during migration and has no D1 binding.
+    const env = await getRuntimeEnvironment();
+    if (env.APP_ENV === "staging" || env.APP_ENV === "production") throw error;
+    console.warn("D1 application mirror unavailable during migration:", error);
   }
 }
 
@@ -477,10 +541,38 @@ export async function POST(req: Request) {
     );
   }
 
+  const env = await getRuntimeEnvironment();
+  // Netlify has no APP_ENV binding and keeps its existing Make/Mailchimp flow.
+  // Cloudflare environments must opt in explicitly before external sends begin.
+  const integrationsLive = externalIntegrationsAllowed(env, req, d.email);
+  try {
+    await savePendingApplication(d, image);
+  } catch (error) {
+    console.error("Network application could not be saved:", error);
+    return NextResponse.json(
+      { error: "I couldn't save your application. Please try again or email hello@namicreative.co.uk." },
+      { status: 500 },
+    );
+  }
+
+  const appUrl = env.APP_URL || MAIN_SITE_URL;
+  try {
+    await queueOwnerAlert({
+      kind: "application",
+      recordId: d.memberId,
+      subject: `New NAMI Network application: ${d.displayName}`,
+      heading: "A new Network member is waiting for approval",
+      body: `${d.displayName} from ${d.location} has submitted a Network application.`,
+      actionUrl: `${appUrl.replace(/\/$/, "")}/network/admin#applications`,
+    });
+  } catch (error) {
+    console.error("Application saved but owner alert failed:", error);
+  }
+
   const [makeRes, mcRes, dashRes] = await Promise.allSettled([
-    notifyMake(d, image),
-    upsertMailchimp(d),
-    notifyDashboard(d),
+    integrationsLive ? notifyMake(d, image) : Promise.resolve(),
+    integrationsLive ? upsertMailchimp(d) : Promise.resolve(),
+    integrationsLive ? notifyDashboard(d) : Promise.resolve(),
   ]);
 
   const makeOk = makeRes.status === "fulfilled";

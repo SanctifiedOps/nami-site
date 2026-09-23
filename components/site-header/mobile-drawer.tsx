@@ -8,8 +8,16 @@ import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { primaryNav, ctaNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
+import type { HeaderMember } from "./index";
 
-export function MobileDrawer() {
+function memberInitials(name: string) {
+  const words = name.split("/")[0]?.trim().split(/\s+/).filter(Boolean) ?? [];
+  if (!words.length) return "NC";
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return `${words[0][0]}${words.at(-1)?.[0] ?? ""}`.toUpperCase();
+}
+
+export function MobileDrawer({ member }: { member: HeaderMember | null }) {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
@@ -98,6 +106,25 @@ export function MobileDrawer() {
                 aria-label="Mobile primary"
                 className="container-shell pb-10 pt-2"
               >
+                {member && (
+                  <Link
+                    href="/network/dashboard"
+                    className="mb-3 flex items-center gap-3 rounded-xl border border-accent/35 bg-accent/8 p-3 text-fg transition-colors hover:bg-accent/12"
+                  >
+                    <span className="relative grid size-11 shrink-0 place-items-center overflow-hidden rounded-full border border-accent/40 bg-surface-0 text-xs font-bold text-accent">
+                      {member.profileImageUrl ? (
+                        <Image src={member.profileImageUrl} alt="" fill unoptimized sizes="44px" className="object-cover" />
+                      ) : (
+                        <span aria-hidden>{memberInitials(member.displayName)}</span>
+                      )}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-xs font-semibold uppercase tracking-[0.12em] text-accent">Signed in</span>
+                      <span className="block truncate font-semibold">{member.displayName}</span>
+                    </span>
+                    <ArrowUpRight size={18} aria-hidden className="ml-auto text-accent" />
+                  </Link>
+                )}
                 <ul className="flex flex-col gap-1">
                   {primaryNav.map((item, i) => {
                     const active =

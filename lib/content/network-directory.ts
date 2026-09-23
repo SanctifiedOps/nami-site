@@ -6,12 +6,17 @@ export type NetworkDirectoryMember = {
   instagram: string;
   instagramUrl: string;
   websiteUrl: string;
+  facebookUrl?: string;
+  linkedinUrl?: string;
+  tiktokUrl?: string;
+  youtubeUrl?: string;
   description: string;
   profileImage?: string;
   imageAlt?: string;
   featured: boolean;
   joinedAt?: string;
   primaryGroup?: string;
+  portfolioImages?: Array<{ src: string; alt: string }>;
 };
 
 // Public projection of the private Creative Network submissions sheet.
@@ -676,6 +681,9 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "instagram": "@namicreativeuk",
     "instagramUrl": "https://www.instagram.com/namicreativeuk/",
     "websiteUrl": "https://namicreative.co.uk/",
+    "facebookUrl": "https://www.facebook.com/groups/1033572522893615",
+    "linkedinUrl": "https://www.linkedin.com/in/brandingbyjoewilson/",
+    "tiktokUrl": "https://www.tiktok.com/@namicreative",
     "description": "A freelance creative consultant helping North East creatives, brands and businesses make waves, get their work seen and create a stronger impact.",
     "profileImage": "/images/network/members/joe-wilson-nami-creative.webp",
     "imageAlt": "Joe Wilson of NAMI Creative",
