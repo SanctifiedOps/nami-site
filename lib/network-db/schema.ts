@@ -232,6 +232,31 @@ export const sheetSyncJobs = sqliteTable(
   (table) => [index("sheet_sync_pending_idx").on(table.status, table.nextAttemptAt)],
 );
 
+export const mailchimpSyncJobs = sqliteTable(
+  "mailchimp_sync_jobs",
+  {
+    id: text("id").primaryKey(),
+    applicationId: text("application_id")
+      .notNull()
+      .references(() => networkApplications.id, { onDelete: "cascade" }),
+    status: text("status", { enum: ["pending", "processing", "complete", "failed"] })
+      .notNull()
+      .default("pending"),
+    attempts: integer("attempts").notNull().default(0),
+    nextAttemptAt: now("next_attempt_at"),
+    lastError: text("last_error"),
+    audienceSyncedAt: optionalTime("audience_synced_at"),
+    welcomeTriggeredAt: optionalTime("welcome_triggered_at"),
+    completedAt: optionalTime("completed_at"),
+    createdAt: now("created_at"),
+    updatedAt: now("updated_at"),
+  },
+  (table) => [
+    uniqueIndex("mailchimp_sync_application_idx").on(table.applicationId),
+    index("mailchimp_sync_pending_idx").on(table.status, table.nextAttemptAt),
+  ],
+);
+
 export const emailJobs = sqliteTable(
   "email_jobs",
   {

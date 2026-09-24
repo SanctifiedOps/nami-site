@@ -424,7 +424,15 @@ async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
       nextAttemptAt: new Date(),
       createdAt: new Date(),
       updatedAt: new Date(),
-    })]);
+    }), db.insert(schema.mailchimpSyncJobs).values({
+      id: crypto.randomUUID(),
+      applicationId: d.memberId,
+      status: "pending",
+      attempts: 0,
+      nextAttemptAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }).onConflictDoNothing({ target: schema.mailchimpSyncJobs.applicationId })]);
     if (previousKey && previousKey !== uploadedKey) await bucket.delete(previousKey);
   } catch (error) {
     if (uploadedKey) {
@@ -577,14 +585,12 @@ export async function POST(req: Request) {
     console.error("Application saved but owner alert failed:", error);
   }
 
-  const [makeRes, mcRes, dashRes] = await Promise.allSettled([
+  const [makeRes, dashRes] = await Promise.allSettled([
     integrationsLive ? notifyMake(d, image) : Promise.resolve(),
-    integrationsLive ? upsertMailchimp(d) : Promise.resolve(),
     integrationsLive ? notifyDashboard(d) : Promise.resolve(),
   ]);
 
   const makeOk = makeRes.status === "fulfilled";
-  const mcOk = mcRes.status === "fulfilled";
   const dashOk = dashRes.status === "fulfilled";
 
   if (!makeOk) {
@@ -598,10 +604,9 @@ export async function POST(req: Request) {
     );
   }
 
-  if (!mcOk || !dashOk) {
+  if (!dashOk) {
     console.warn(
       "Network submission saved but secondary pathways had issues:",
-      mcRes.status === "rejected" ? mcRes.reason : null,
       dashRes.status === "rejected" ? dashRes.reason : null,
     );
   }
