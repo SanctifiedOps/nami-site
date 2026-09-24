@@ -69,7 +69,7 @@ export function CustomCursor() {
         ref={cursorRef}
         style={{ x, y }}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-100 -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none fixed left-0 top-0 z-[200] -translate-x-1/2 -translate-y-1/2"
       >
         <motion.div
           animate={{
@@ -84,7 +84,7 @@ export function CustomCursor() {
       <motion.div
         style={{ x: sx, y: sy }}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-100 -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none fixed left-0 top-0 z-[200] -translate-x-1/2 -translate-y-1/2"
       >
         <motion.div
           animate={{
