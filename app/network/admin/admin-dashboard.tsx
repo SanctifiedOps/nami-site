@@ -27,6 +27,7 @@ type Operations = { failedAlerts: number; pendingAlerts: number; failedEmails: n
 
 const panel = "rounded-[1.5rem] border border-line bg-surface-1/90 shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
 const button = "rounded-full border border-line-strong px-4 py-2 text-xs font-bold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
+const membersPerPage = 10;
 const disconnectedGa: GaSnapshot = { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, error: "GA4 connection needed" };
 const disconnectedInstagram: InstagramSnapshot = { connected: false, username: null, followers: null, mediaCount: null, error: "Instagram connection needed" };
 
@@ -46,16 +47,22 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const [busy, setBusy] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [applicationOptions, setApplicationOptions] = useState<Record<string, { primaryGroup: string; speciality: string }>>({});
+  const [memberCategory, setMemberCategory] = useState("all");
+  const [memberPage, setMemberPage] = useState(1);
 
   const pendingApplications = applications.filter((item) => item.status === "pending");
   const pendingEvents = events.filter((item) => item.status === "pending");
   const openTickets = tickets.filter((item) => item.status !== "resolved");
-  const activeMembers = members.filter((item) => item.accountStatus === "active" && item.published);
+  const activeMembers = members.filter((item) => item.published && item.accountStatus !== "disabled");
   const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
   const newThisMonth = members.filter((item) => new Date(item.joinedAt) >= monthStart).length;
   const missingImages = members.filter((item) => item.published && !item.profileImageKey).length;
   const linkIssues = members.filter((item) => item.links.some((link) => !validUrl(link))).length;
   const groupLabels = new Map<string, string>(directoryGroups.map((group) => [group.slug, group.label]));
+  const filteredMembers = memberCategory === "all" ? members : members.filter((member) => member.primaryGroup === memberCategory);
+  const memberPageCount = Math.max(1, Math.ceil(filteredMembers.length / membersPerPage));
+  const safeMemberPage = Math.min(memberPage, memberPageCount);
+  const visibleMembers = filteredMembers.slice((safeMemberPage - 1) * membersPerPage, safeMemberPage * membersPerPage);
 
   const categoryCounts = useMemo(() => Object.entries(members.reduce<Record<string, number>>((counts, member) => {
     if (member.primaryGroup) counts[member.primaryGroup] = (counts[member.primaryGroup] ?? 0) + 1;
@@ -103,10 +110,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
       <section id="overview" className="scroll-mt-28 pt-10">
         <div className="flex items-center justify-between"><h2 className="text-3xl">Membership</h2><span className="rounded-full border border-line px-3 py-1 text-xs text-fg-subtle">Connected to the site database</span></div>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <Metric icon={<Users size={20} />} label="Active members" value={activeMembers.length} note="Published directory profiles" tone="pink" />
-          <Metric icon={<CheckCircle2 size={20} />} label="New this month" value={newThisMonth} note="Based on member join dates" tone="blue" />
-          <Metric icon={<ImageOff size={20} />} label="Missing images" value={missingImages} note="Published profiles needing attention" tone="amber" />
-          <Metric icon={<Link2 size={20} />} label="Link issues" value={linkIssues} note="Malformed submitted links" tone="red" />
+          <Metric href="#members" icon={<Users size={20} />} label="Active members" value={activeMembers.length} note="Published directory profiles" tone="pink" />
+          <Metric href="#members" icon={<CheckCircle2 size={20} />} label="New this month" value={newThisMonth} note="Based on member join dates" tone="blue" />
+          <Metric href="#members" icon={<ImageOff size={20} />} label="Missing images" value={missingImages} note="Published profiles needing attention" tone="amber" />
+          <Metric href="#members" icon={<Link2 size={20} />} label="Link issues" value={linkIssues} note="Malformed submitted links" tone="red" />
         </div>
         <div className="mt-5 grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
           <Breakdown title="Largest categories" items={categoryCounts.map(([name, count]) => [groupLabels.get(name) ?? name, count])} />
@@ -122,10 +129,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
           <ExternalMetric icon={<MousePointerClick size={20} />} label="Profile clicks" value={ga.profileClicks} note="Directory profile visits" tone="pink" />
         </div>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <Metric icon={<Users size={20} />} label="Applications waiting" value={pendingApplications.length} note="Ready for your review" tone="pink" />
-          <Metric icon={<TicketCheck size={20} />} label="Open tickets" value={openTickets.length} note="Member support requests" tone="amber" />
-          <Metric icon={<CalendarDays size={20} />} label="Events waiting" value={pendingEvents.length} note="Approval queue" tone="blue" />
-          <Metric icon={<AlertTriangle size={20} />} label="Failed jobs" value={operations.failedAlerts + operations.failedEmails + operations.failedSyncs} note="Notifications, email and Sheet sync" tone="red" />
+          <Metric href="#applications" icon={<Users size={20} />} label="Applications waiting" value={pendingApplications.length} note="Ready for your review" tone="pink" />
+          <Metric href="#tickets" icon={<TicketCheck size={20} />} label="Open tickets" value={openTickets.length} note="Member support requests" tone="amber" />
+          <Metric href="#events" icon={<CalendarDays size={20} />} label="Events waiting" value={pendingEvents.length} note="Approval queue" tone="blue" />
+          <Metric href="#operations" icon={<AlertTriangle size={20} />} label="Failed jobs" value={operations.failedAlerts + operations.failedEmails + operations.failedSyncs} note="Notifications, email and Sheet sync" tone="red" />
         </div>
       </section>
 
@@ -151,15 +158,26 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
 
       <section id="members" className="scroll-mt-28 pt-14">
         <SectionHeading title="Members" count={members.length} note="Profile, account and sign-in status in one place." />
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <label className="text-xs font-bold text-fg-muted">Filter by category
+            <select value={memberCategory} onChange={(event) => { setMemberCategory(event.target.value); setMemberPage(1); }} className="mt-2 block min-w-64 rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5 text-sm text-fg">
+              <option value="all">All categories</option>
+              {directoryGroups.map((group) => <option key={group.slug} value={group.slug}>{group.label}</option>)}
+            </select>
+          </label>
+          <p className="text-sm text-fg-subtle">Showing {filteredMembers.length ? (safeMemberPage - 1) * membersPerPage + 1 : 0}–{Math.min(safeMemberPage * membersPerPage, filteredMembers.length)} of {filteredMembers.length}</p>
+        </div>
         <div className={`${panel} mt-5 overflow-hidden`}>
-          <div className="overflow-x-auto"><table className="w-full min-w-[780px] text-left text-sm"><thead className="border-b border-line bg-surface-0/70 text-xs uppercase tracking-[0.1em] text-fg-subtle"><tr><th className="p-4">Member</th><th className="p-4">Directory</th><th className="p-4">Account</th><th className="p-4">Last login</th><th className="p-4 text-right">Action</th></tr></thead><tbody>{members.map((member) => <tr key={member.id} className="border-b border-line/70 last:border-0"><td className="p-4"><Link href={`/network/directory/member/${member.id}`} className="font-bold hover:text-accent">{member.displayName}</Link><span className="mt-1 block text-xs text-fg-subtle">{member.email}{member.role === "admin" ? " · Admin" : ""}</span></td><td className="p-4"><span>{(groupLabels.get(member.primaryGroup) ?? member.primaryGroup) || "No profile"}</span><span className="mt-1 block text-xs text-fg-subtle">{member.location}</span></td><td className="p-4"><Status value={member.accountStatus} /></td><td className="p-4 text-fg-muted">{formatDate(member.lastLoginAt)}</td><td className="p-4 text-right">{member.role !== "admin" && <button disabled={busy !== null} onClick={() => runAction(`member-${member.id}`, { action: "member-status", memberId: member.id, status: member.accountStatus === "disabled" ? "active" : "disabled" })} className={button}>{busy === `member-${member.id}` ? "Saving..." : member.accountStatus === "disabled" ? "Enable" : "Disable"}</button>}</td></tr>)}</tbody></table></div>
+          <div className="overflow-x-auto"><table className="w-full min-w-[780px] text-left text-sm"><thead className="border-b border-line bg-surface-0/70 text-xs uppercase tracking-[0.1em] text-fg-subtle"><tr><th className="p-4">Member</th><th className="p-4">Directory</th><th className="p-4">Account</th><th className="p-4">Last login</th><th className="p-4 text-right">Action</th></tr></thead><tbody>{visibleMembers.map((member) => <tr key={member.id} className="border-b border-line/70 last:border-0"><td className="p-4"><Link href={`/network/directory/member/${member.id}`} className="font-bold hover:text-accent">{member.displayName}</Link><span className="mt-1 block text-xs text-fg-subtle">{member.email}{member.role === "admin" ? " · Admin" : ""}</span></td><td className="p-4"><span>{(groupLabels.get(member.primaryGroup) ?? member.primaryGroup) || "No profile"}</span><span className="mt-1 block text-xs text-fg-subtle">{member.location}</span></td><td className="p-4"><Status value={member.accountStatus} /></td><td className="p-4 text-fg-muted">{formatDate(member.lastLoginAt)}</td><td className="p-4 text-right">{member.role !== "admin" && <button disabled={busy !== null} onClick={() => runAction(`member-${member.id}`, { action: "member-status", memberId: member.id, status: member.accountStatus === "disabled" ? "active" : "disabled" })} className={button}>{busy === `member-${member.id}` ? "Saving..." : member.accountStatus === "disabled" ? "Enable" : "Disable"}</button>}</td></tr>)}</tbody></table></div>
+          {!visibleMembers.length && <div className="p-8 text-center text-sm text-fg-subtle">No members match this category.</div>}
+          {memberPageCount > 1 && <div className="flex items-center justify-between border-t border-line px-4 py-4"><button className={button} disabled={safeMemberPage === 1} onClick={() => setMemberPage((page) => Math.max(1, page - 1))}>Previous</button><span className="text-sm text-fg-muted">Page {safeMemberPage} of {memberPageCount}</span><button className={button} disabled={safeMemberPage === memberPageCount} onClick={() => setMemberPage((page) => Math.min(memberPageCount, page + 1))}>Next</button></div>}
         </div>
       </section>
 
       <section id="tickets" className="scroll-mt-28 pt-14">
         <SectionHeading title="Support tickets" count={openTickets.length} note="New tickets sent to you by email also appear here." />
         <div className="mt-5 grid gap-4">
-          {tickets.map((ticket) => <article key={ticket.id} className={`${panel} p-5 md:p-6`}><div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between"><div className="max-w-3xl"><div className="flex flex-wrap items-center gap-3"><h3 className="text-xl">{ticket.subject}</h3><Status value={ticket.status} />{ticket.priority === "urgent" && <span className="rounded-full bg-red-400/12 px-3 py-1 text-xs font-bold text-red-300">Urgent</span>}</div><p className="mt-2 text-xs text-fg-subtle">{ticket.id} · {ticket.name} · {ticket.email} · {formatDate(ticket.createdAt)}</p><p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-fg-muted">{ticket.description}</p>{ticket.pageUrl && <a href={ticket.pageUrl} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs font-bold text-accent">Open reported page ↗</a>}</div><div className="flex shrink-0 flex-wrap gap-2">{(['open','in_progress','resolved'] as const).map((status) => <button key={status} disabled={busy !== null || ticket.status === status} onClick={() => runAction(`ticket-${ticket.id}-${status}`, { action: "ticket-status", ticketId: ticket.id, status })} className={button}>{status === "in_progress" ? "In progress" : status[0].toUpperCase() + status.slice(1)}</button>)}</div></div></article>)}
+          {tickets.map((ticket) => <article key={ticket.id} className={`${panel} min-w-0 overflow-hidden p-5 md:p-6`}><div className="flex min-w-0 flex-col gap-5 lg:flex-row lg:items-start lg:justify-between"><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-3"><h3 className="text-xl">{ticket.subject}</h3><Status value={ticket.status} />{ticket.priority === "urgent" && <span className="rounded-full bg-red-400/12 px-3 py-1 text-xs font-bold text-red-300">Urgent</span>}</div><p className="mt-2 break-words text-xs text-fg-subtle [overflow-wrap:anywhere]">{ticket.id} · {ticket.name} · {ticket.email} · {formatDate(ticket.createdAt)}</p><p className="mt-4 whitespace-pre-wrap break-words text-sm leading-6 text-fg-muted [overflow-wrap:anywhere]">{ticket.description}</p>{ticket.pageUrl && <a href={ticket.pageUrl} target="_blank" rel="noreferrer" className="mt-3 inline-block max-w-full break-all text-xs font-bold text-accent">Open reported page ↗</a>}</div><div className="flex shrink-0 flex-wrap gap-2">{(['open','in_progress','resolved'] as const).map((status) => <button key={status} disabled={busy !== null || ticket.status === status} onClick={() => runAction(`ticket-${ticket.id}-${status}`, { action: "ticket-status", ticketId: ticket.id, status })} className={button}>{status === "in_progress" ? "In progress" : status[0].toUpperCase() + status.slice(1)}</button>)}</div></div></article>)}
           {!tickets.length && <Empty text="No support tickets have been logged." />}
         </div>
       </section>
@@ -185,9 +203,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   </main>;
 }
 
-function Metric({ icon, label, value, note, tone }: { icon: React.ReactNode; label: string; value: number; note: string; tone: "pink" | "blue" | "amber" | "red" }) {
+function Metric({ icon, label, value, note, tone, href }: { icon: React.ReactNode; label: string; value: number; note: string; tone: "pink" | "blue" | "amber" | "red"; href?: string }) {
   const tones = { pink: "bg-accent/12 text-accent", blue: "bg-sky-400/12 text-sky-300", amber: "bg-amber-400/12 text-amber-300", red: "bg-red-400/12 text-red-300" };
-  return <article className={`${panel} p-5`}><div className="flex items-center justify-between"><span className="text-sm text-fg-muted">{label}</span><span className={`rounded-xl p-2.5 ${tones[tone]}`}>{icon}</span></div><strong className="mt-5 block text-4xl">{value}</strong><p className="mt-5 text-xs text-fg-subtle">{note}</p></article>;
+  const content = <><div className="flex items-center justify-between"><span className="text-sm text-fg-muted">{label}</span><span className={`rounded-xl p-2.5 ${tones[tone]}`}>{icon}</span></div><strong className="mt-5 block text-4xl">{value}</strong><p className="mt-5 text-xs text-fg-subtle">{note}</p></>;
+  return href ? <a href={href} className={`${panel} block p-5 transition hover:-translate-y-0.5 hover:border-accent/60`}>{content}</a> : <article className={`${panel} p-5`}>{content}</article>;
 }
 
 function ExternalMetric({ icon, label, value, note, tone }: { icon: React.ReactNode; label: string; value: number | null; note: string; tone: "pink" | "blue" | "green" | "amber" }) {
