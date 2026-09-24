@@ -164,8 +164,8 @@ export function DashboardForm({
     try {
       const processed = await cropToWebp(
         source,
-        kind === "profile" ? 1000 : 900,
-        kind === "profile" ? 1000 : 1500,
+        kind === "profile" ? 1000 : 1080,
+        kind === "profile" ? 1000 : 1440,
       );
       const data = new FormData();
       data.set("image", processed);
@@ -581,7 +581,7 @@ export function DashboardForm({
                 <img
                   src={mediaUrl(image.r2Key)}
                   alt={image.altText || `Work by ${profile.displayName}`}
-                  className="aspect-[3/5] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  className="aspect-[3/4] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                 />
                 <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent opacity-70" />
                 <span className="absolute inset-x-0 bottom-0 p-4">
@@ -646,7 +646,7 @@ export function DashboardForm({
             {[1, 2, 3, 4].map((slot) => (
               <div
                 key={slot}
-                className="flex aspect-[3/5] items-center justify-center rounded-2xl border border-dashed border-accent/30 text-sm text-fg-subtle"
+                className="flex aspect-[3/4] items-center justify-center rounded-2xl border border-dashed border-accent/30 text-sm text-fg-subtle"
               >
                 Image {slot}
               </div>
@@ -666,7 +666,7 @@ export function DashboardForm({
         >
           <div className="relative grid w-full max-w-4xl overflow-hidden rounded-3xl border border-accent/35 bg-surface-1 shadow-[0_30px_100px_rgba(0,0,0,0.65)] md:grid-cols-[0.85fr_1.15fr]">
             <button type="button" onClick={() => setEditingImage(null)} className="absolute right-4 top-4 z-10 grid size-10 place-items-center rounded-full bg-black/70 text-white" aria-label="Close image editor"><X size={20} /></button>
-            <img src={mediaUrl(editingImage.r2Key)} alt={editingImage.altText || "Portfolio preview"} className="h-full min-h-72 w-full object-cover md:aspect-[3/5]" />
+            <img src={mediaUrl(editingImage.r2Key)} alt={editingImage.altText || "Portfolio preview"} className="h-full min-h-72 w-full object-cover md:aspect-[3/4]" />
             <div className="p-6 md:p-9">
               <p className="mono-label text-accent">Portfolio image</p>
               <h2 id="edit-image-title" className="mt-3 text-3xl">Edit image details</h2>

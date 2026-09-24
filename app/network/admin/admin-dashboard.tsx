@@ -254,7 +254,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
           <OperationCard icon={<Mail />} title="Member email queue" pending={operations.pendingEmails} failed={operations.failedEmails} locked />
           <OperationCard icon={<CheckCircle2 />} title="Google Sheet sync" pending={operations.pendingSyncs} failed={operations.failedSyncs} />
         </div>
-        <div className={`${panel} mt-5 p-6`}><h3 className="text-xl">Data connections</h3><p className="mt-2 max-w-3xl text-sm leading-6 text-fg-muted">Membership, applications, tickets, events and job health come directly from the NAMI database. GA4 and Instagram refresh from their APIs whenever this page loads. No Make scenario is used for this dashboard.</p></div>
+        <div className={`${panel} mt-5 flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between`}><div><h3 className="text-xl">Data connections</h3><p className="mt-2 max-w-3xl text-sm leading-6 text-fg-muted">Membership, applications, tickets, events and job health come directly from the NAMI database. GA4 and Instagram refresh from their APIs whenever this page loads. No Make scenario is used for this dashboard.</p></div><button disabled={busy !== null} onClick={() => runAction("sheet-sync", { action: "process-sheet-jobs" })} className="shrink-0 rounded-full border border-accent px-5 py-3 text-sm font-bold text-accent disabled:opacity-40">{busy === "sheet-sync" ? "Syncing..." : "Sync Google Sheet now"}</button></div>
       </section></>}
 
       {activeView === "more" && <section className="pt-2 md:pt-10">

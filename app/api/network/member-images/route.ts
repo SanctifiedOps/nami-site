@@ -34,8 +34,8 @@ export async function POST(request: Request) {
   if (kind === "profile" && Math.abs(ratio - 1) > 0.02) {
     return Response.json({ error: "Profile pictures must be square." }, { status: 400 });
   }
-  if (kind === "portfolio" && Math.abs(ratio - 0.6) > 0.02) {
-    return Response.json({ error: "Portfolio images must use a 3:5 crop." }, { status: 400 });
+  if (kind === "portfolio" && Math.abs(ratio - 0.75) > 0.02) {
+    return Response.json({ error: "Portfolio images must use a 3:4 crop." }, { status: 400 });
   }
 
   const db = await getNetworkDb();

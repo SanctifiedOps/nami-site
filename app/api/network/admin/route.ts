@@ -5,6 +5,7 @@ import { getNetworkAdminSession } from "@/lib/network-auth/session";
 import { getMemberMediaBucket, getNetworkDb, schema } from "@/lib/network-db";
 import { normalizeInstagramProfileUrl, normalizeProfileUrl } from "@/lib/network-profile/links";
 import { revalidateNetworkProfile } from "@/lib/network-profile/revalidate";
+import { processNetworkJobs } from "@/lib/network-sync/process-jobs";
 
 const groupSlugs = directoryGroups.map((group) => group.slug) as [string, ...string[]];
 const actionSchema = z.discriminatedUnion("action", [
@@ -13,6 +14,7 @@ const actionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("ticket-status"), ticketId: z.string().min(3), status: z.enum(["open", "in_progress", "resolved"]) }),
   z.object({ action: z.literal("event-status"), eventId: z.string().uuid(), status: z.enum(["approved", "rejected"]) }),
   z.object({ action: z.literal("member-status"), memberId: z.string().min(2), status: z.enum(["active", "disabled"]) }),
+  z.object({ action: z.literal("process-sheet-jobs") }),
 ]);
 
 export async function POST(request: Request) {
@@ -23,6 +25,10 @@ export async function POST(request: Request) {
 
   const db = await getNetworkDb();
   const now = new Date();
+
+  if (parsed.data.action === "process-sheet-jobs") {
+    return Response.json({ ok: true, ...(await processNetworkJobs(50, "sheet")) });
+  }
 
   if (parsed.data.action === "ticket-status") {
     await db.update(schema.supportTickets).set({
