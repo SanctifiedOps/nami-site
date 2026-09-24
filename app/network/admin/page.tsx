@@ -31,6 +31,14 @@ export default async function NetworkAdminPage() {
     getMailchimpSnapshot(),
   ]);
 
+  const failedJobs = [
+    ...alerts.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Owner notification", recordId: item.recordId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...emailJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Member email", recordId: item.memberId || item.recipient, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...syncJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Google Sheet sync", recordId: item.memberId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...mailchimpJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Mailchimp sync", recordId: item.applicationId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...bioJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "NAMI bio generation", recordId: item.applicationId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+  ].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+
   return <AdminDashboard
     adminName={admin.member.firstName || admin.session.user.name || "Admin"}
     applications={applications.map((item) => ({ ...item, submittedAt: iso(item.submittedAt)!, reviewedAt: iso(item.reviewedAt) }))}
@@ -64,6 +72,7 @@ export default async function NetworkAdminPage() {
       failedBios: bioJobs.filter((item) => item.status === "failed").length,
       pendingBios: bioJobs.filter((item) => item.status === "pending").length,
     }}
+    failedJobs={failedJobs}
     searchEvents={searchEvents.map((item) => ({ ...item, createdAt: iso(item.createdAt)! }))}
     ga={ga}
     instagram={instagram}

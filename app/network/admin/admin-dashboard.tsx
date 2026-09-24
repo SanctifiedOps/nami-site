@@ -25,6 +25,7 @@ type NetworkEvent = {
   bookingUrl: string | null; status: "pending" | "approved" | "rejected"; submittedAt: string; reviewedAt: string | null; publishedAt: string | null; updatedAt: string;
 };
 type Operations = { failedAlerts: number; pendingAlerts: number; failedEmails: number; pendingEmails: number; failedSyncs: number; pendingSyncs: number; failedMailchimp: number; pendingMailchimp: number; failedBios: number; pendingBios: number };
+type FailedJob = { id: string; type: string; recordId: string; status: string; attempts: number; error: string | null; nextAttemptAt: string | null; updatedAt: string };
 type SearchEvent = { id: string; eventType: "search" | "result_clicked"; anonymousSessionId: string; searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number; selectedMemberId: string | null; sourcePath: string; createdAt: string };
 
 const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35px_rgb(0_0_0/0.16)] md:rounded-[1.5rem] md:shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
@@ -44,8 +45,8 @@ function validUrl(value: string) {
   try { return ["http:", "https:"].includes(new URL(value).protocol); } catch { return false; }
 }
 
-export function AdminDashboard({ adminName, applications, members, tickets, events, operations, searchEvents = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
-  adminName: string; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; operations: Operations; searchEvents?: SearchEvent[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
+export function AdminDashboard({ adminName, applications, members, tickets, events, operations, failedJobs = [], searchEvents = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
+  adminName: string; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; operations: Operations; failedJobs?: FailedJob[]; searchEvents?: SearchEvent[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -110,11 +111,16 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
     } finally { setBusy(null); }
   }
 
+  function openSection(view: DashboardView, sectionId: string) {
+    setActiveView(view);
+    window.setTimeout(() => document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  }
+
   const navigation: { id: DashboardView; label: string; icon: React.ReactNode; badge?: number }[] = [
     { id: "home", label: "Home", icon: <Home size={20} /> },
     { id: "growth", label: "Growth", icon: <TrendingUp size={20} /> },
     { id: "members", label: "Members", icon: <Users size={20} /> },
-    { id: "tasks", label: "Tasks", icon: <TicketCheck size={20} />, badge: pendingApplications.length + openTickets.length + pendingEvents.length + operations.failedAlerts + operations.failedEmails + operations.failedSyncs },
+    { id: "tasks", label: "Tasks", icon: <TicketCheck size={20} />, badge: pendingApplications.length + openTickets.length + pendingEvents.length + failedJobs.length },
     { id: "more", label: "More", icon: <MoreHorizontal size={20} /> },
   ];
 
@@ -144,10 +150,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
       {activeView === "home" && <section id="overview" className="pt-2 md:pt-10">
         <div className="flex items-center justify-between"><h2 className="text-2xl md:text-3xl">At a glance</h2><span className="rounded-full border border-line px-2 py-1 text-[9px] text-fg-subtle md:px-3 md:text-xs">Live database</span></div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 [&>a]:!p-3 [&>a_p]:!mt-2 [&>a_p]:line-clamp-1 [&>a_strong]:!mt-2 [&>a_strong]:!text-3xl md:mt-5 md:gap-4 md:[&>a]:!p-5 md:[&>a_p]:!mt-5 md:[&>a_p]:line-clamp-none md:[&>a_strong]:!mt-5 md:[&>a_strong]:!text-4xl xl:grid-cols-4">
-          <Metric href="#members" icon={<Users size={20} />} label="Active members" value={activeMembers.length} note="Published directory profiles" tone="pink" />
-          <Metric href="#members" icon={<CheckCircle2 size={20} />} label="New this month" value={newThisMonth} note="Based on member join dates" tone="blue" />
-          <Metric href="#members" icon={<ImageOff size={20} />} label="Missing images" value={missingImages} note="Published profiles needing attention" tone="amber" />
-          <Metric href="#members" icon={<Link2 size={20} />} label="Link issues" value={linkIssues} note="Malformed submitted links" tone="red" />
+          <Metric onClick={() => openSection("members", "members")} icon={<Users size={20} />} label="Active members" value={activeMembers.length} note="Published directory profiles" tone="pink" />
+          <Metric onClick={() => openSection("members", "members")} icon={<CheckCircle2 size={20} />} label="New this month" value={newThisMonth} note="Based on member join dates" tone="blue" />
+          <Metric onClick={() => openSection("members", "members")} icon={<ImageOff size={20} />} label="Missing images" value={missingImages} note="Published profiles needing attention" tone="amber" />
+          <Metric onClick={() => openSection("members", "members")} icon={<Link2 size={20} />} label="Link issues" value={linkIssues} note="Malformed submitted links" tone="red" />
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 [&>article]:!p-3 md:mt-5 md:gap-4 md:[&>article]:!p-6 lg:grid-cols-2 xl:grid-cols-3">
           <Breakdown title="Largest categories" items={categoryCounts.map(([name, count]) => [groupLabels.get(name) ?? name, count])} />
@@ -163,10 +169,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
           <ExternalMetric icon={<MousePointerClick size={20} />} label="Profile clicks" value={ga.profileClicks} note="Directory profile visits" tone="pink" />
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 [&>a]:!p-3 [&>a_p]:!mt-2 [&>a_p]:line-clamp-1 [&>a_strong]:!mt-2 [&>a_strong]:!text-3xl md:mt-5 md:gap-4 md:[&>a]:!p-5 md:[&>a_p]:!mt-5 md:[&>a_p]:line-clamp-none md:[&>a_strong]:!mt-5 md:[&>a_strong]:!text-4xl xl:grid-cols-4">
-          <Metric href="#applications" icon={<Users size={20} />} label="Applications waiting" value={pendingApplications.length} note="Ready for your review" tone="pink" />
-          <Metric href="#tickets" icon={<TicketCheck size={20} />} label="Open tickets" value={openTickets.length} note="Member support requests" tone="amber" />
-          <Metric href="#events" icon={<CalendarDays size={20} />} label="Events waiting" value={pendingEvents.length} note="Approval queue" tone="blue" />
-          <Metric href="#operations" icon={<AlertTriangle size={20} />} label="Failed jobs" value={operations.failedAlerts + operations.failedEmails + operations.failedSyncs} note="Notifications, email and Sheet sync" tone="red" />
+          <Metric onClick={() => openSection("members", "applications")} icon={<Users size={20} />} label="Applications waiting" value={pendingApplications.length} note="Ready for your review" tone="pink" />
+          <Metric onClick={() => openSection("tasks", "tickets")} icon={<TicketCheck size={20} />} label="Open tickets" value={openTickets.length} note="Member support requests" tone="amber" />
+          <Metric onClick={() => openSection("tasks", "events")} icon={<CalendarDays size={20} />} label="Events waiting" value={pendingEvents.length} note="Approval queue" tone="blue" />
+          <Metric onClick={() => openSection("tasks", "failed-jobs")} icon={<AlertTriangle size={20} />} label="Failed jobs" value={failedJobs.length} note="Open the failure details" tone="red" />
         </div>
       </section>}
 
@@ -258,6 +264,17 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
           <OperationCard icon={<Activity />} title="NAMI bio generation" pending={operations.pendingBios} failed={operations.failedBios} />
         </div>
         <div className={`${panel} mt-5 flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between`}><div><h3 className="text-xl">Data connections</h3><p className="mt-2 max-w-3xl text-sm leading-6 text-fg-muted">Membership, applications, tickets, events and job health come directly from the NAMI database. GA4 and Instagram refresh from their APIs whenever this page loads. No Make scenario is used for this dashboard.</p></div><button disabled={busy !== null} onClick={() => runAction("sheet-sync", { action: "process-sheet-jobs" })} className="shrink-0 rounded-full border border-accent px-5 py-3 text-sm font-bold text-accent disabled:opacity-40">{busy === "sheet-sync" ? "Syncing..." : "Sync Google Sheet now"}</button></div>
+        <div id="failed-jobs" className="scroll-mt-28 pt-7 md:pt-10">
+          <SectionHeading title="Failed jobs" count={failedJobs.length} note="" />
+          <div className="mt-3 grid gap-2.5 md:mt-5 md:gap-4">
+            {failedJobs.map((job) => <article key={job.id} className={`${panel} min-w-0 p-4 md:p-5`}>
+              <div className="flex flex-wrap items-start justify-between gap-3"><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="text-sm md:text-lg">{job.type}</h3><Status value={job.status} /></div><p className="mt-1 break-all text-[10px] text-fg-subtle md:text-xs">Record: {job.recordId}</p></div><span className="text-[10px] text-fg-subtle md:text-xs">Updated {formatDate(job.updatedAt)}</span></div>
+              <p className="mt-3 whitespace-pre-wrap break-words rounded-xl border border-red-400/15 bg-red-400/5 p-3 text-xs leading-5 text-red-200 [overflow-wrap:anywhere]">{job.error || "No error message was recorded."}</p>
+              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[10px] text-fg-subtle md:text-xs"><span>Attempts: {job.attempts}</span><span>{job.nextAttemptAt ? `Next retry: ${formatDate(job.nextAttemptAt)}` : "No retry scheduled"}</span></div>
+            </article>)}
+            {!failedJobs.length && <Empty text="No failed jobs." />}
+          </div>
+        </div>
       </section></>}
 
       {activeView === "more" && <section className="pt-2 md:pt-10">
@@ -279,10 +296,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   </main>;
 }
 
-function Metric({ icon, label, value, note, tone, href }: { icon: React.ReactNode; label: string; value: number; note: string; tone: "pink" | "blue" | "amber" | "red"; href?: string }) {
+function Metric({ icon, label, value, note, tone, onClick }: { icon: React.ReactNode; label: string; value: number; note: string; tone: "pink" | "blue" | "amber" | "red"; onClick?: () => void }) {
   const tones = { pink: "bg-accent/12 text-accent", blue: "bg-sky-400/12 text-sky-300", amber: "bg-amber-400/12 text-amber-300", red: "bg-red-400/12 text-red-300" };
   const content = <><div className="flex items-start justify-between gap-2"><span className="text-xs text-fg-muted md:text-sm">{label}</span><span className={`rounded-xl p-2 md:p-2.5 ${tones[tone]}`}>{icon}</span></div><strong className="mt-3 block text-3xl tabular-nums md:mt-5 md:text-4xl">{value}</strong><p className="mt-3 text-[11px] leading-4 text-fg-subtle md:mt-5 md:text-xs">{note}</p></>;
-  return href ? <a href={href} className={`${panel} block p-4 transition hover:-translate-y-0.5 hover:border-accent/60 md:p-5`}>{content}</a> : <article className={`${panel} p-4 md:p-5`}>{content}</article>;
+  return onClick ? <button type="button" onClick={onClick} className={`${panel} block w-full p-4 text-left transition hover:-translate-y-0.5 hover:border-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:p-5`}>{content}</button> : <article className={`${panel} p-4 md:p-5`}>{content}</article>;
 }
 
 function ExternalMetric({ icon, label, value, note, tone }: { icon: React.ReactNode; label: string; value: number | null; note: string; tone: "pink" | "blue" | "green" | "amber" }) {
