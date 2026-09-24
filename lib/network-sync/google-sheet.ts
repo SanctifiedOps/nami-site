@@ -8,7 +8,7 @@ import { findMemberSheetRow } from "./find-sheet-row";
 
 const COLUMNS = [
   "Member ID", "First Name", "Email", "Directory Display Name", "Location", "Main Directory Group",
-  "Speciality", "Bio", "Website", "Instagram", "Facebook", "LinkedIn", "TikTok", "YouTube",
+  "Speciality", "Bio", "About", "Website", "Instagram", "Facebook", "LinkedIn", "TikTok", "YouTube",
   "Account Status", "Profile Image Key", "Portfolio Image 1", "Portfolio Image 1 Alt", "Portfolio Image 2",
   "Portfolio Image 2 Alt", "Portfolio Image 3", "Portfolio Image 3 Alt", "Portfolio Image 4",
   "Portfolio Image 4 Alt", "Last Member Update", "Last Successful Sync", "Sync Status",
@@ -91,7 +91,7 @@ export async function syncMemberToGoogleSheet(memberId: string) {
   const syncedAt = new Date().toISOString();
   set("Member ID", memberId); if (record.member.firstName) set("First Name", record.member.firstName); set("Email", record.member.email); set("Directory Display Name", record.profile.displayName);
   set("Location", record.profile.location); set("Main Directory Group", record.profile.primaryGroup); set("Speciality", record.profile.speciality);
-  set("Bio", record.profile.bio); set("Website", record.profile.websiteUrl ?? ""); set("Instagram", record.profile.instagramUrl ?? "");
+  set("Bio", record.profile.bio); set("About", record.profile.about); set("Website", record.profile.websiteUrl ?? ""); set("Instagram", record.profile.instagramUrl ?? "");
   set("Facebook", record.profile.facebookUrl ?? ""); set("LinkedIn", record.profile.linkedinUrl ?? ""); set("TikTok", record.profile.tiktokUrl ?? ""); set("YouTube", record.profile.youtubeUrl ?? "");
   set("Account Status", record.member.accountStatus); set("Profile Image Key", record.profile.profileImageKey ?? "");
   images.slice(0, 4).forEach((image, index) => { set(`Portfolio Image ${index + 1}` as typeof COLUMNS[number], image.r2Key); set(`Portfolio Image ${index + 1} Alt` as typeof COLUMNS[number], image.altText); });

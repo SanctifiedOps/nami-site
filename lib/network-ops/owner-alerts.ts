@@ -62,7 +62,15 @@ async function sendOwnerAlert(job: typeof schema.ownerAlertJobs.$inferSelect) {
 
   const sender = env.OWNER_EMAIL || "hello@namicreative.co.uk";
   const token = await graphToken(env);
-  const html = `<!doctype html><html><body style="margin:0;background:#0b0b0d;color:#f7f7f7;font-family:Arial,sans-serif"><div style="max-width:620px;margin:auto;padding:42px 24px"><p style="color:#ff00a8;font-weight:800">NAMI <span style="color:#fff;font-weight:400">CREATIVE</span></p><h1 style="font-size:32px;line-height:1.1">${encode(job.heading)}</h1><p style="font-size:17px;line-height:1.6;color:#d4d4d8">${encode(job.body)}</p><p style="margin:28px 0"><a href="${encode(job.actionUrl)}" style="display:inline-block;background:#ff00a8;color:#fff;text-decoration:none;padding:14px 22px;border-radius:999px;font-weight:700">Open in the owner dashboard</a></p><p style="color:#9ca3af;font-size:13px">Reference: ${encode(job.recordId)}</p></div></body></html>`;
+  const db = await getNetworkDb();
+  const [application] = job.kind === "application"
+    ? await db.select().from(schema.networkApplications).where(eq(schema.networkApplications.id, job.recordId)).limit(1)
+    : [];
+  const row = (label: string, value: string, href?: string) => `<tr><th style="width:145px;background:#55565a;border:1px solid #d6d6d6;padding:12px;text-align:left;vertical-align:top;color:#fff">${encode(label)}</th><td style="border:1px solid #d6d6d6;padding:12px;line-height:1.45;color:#f7f7f7">${href && value ? `<a href="${encode(href)}" style="color:#ff33b8">${encode(value)}</a>` : encode(value).replace(/\n/g, "<br>")}</td></tr>`;
+  const applicationDetails = application ? `<table role="presentation" style="width:100%;border-collapse:collapse;margin:20px 0 26px"><tbody>${row("Name", application.displayName)}${row("Email", application.email, `mailto:${application.email}`)}${row("Instagram", application.instagramUrl ?? "")}${row("Category", application.requestedCategory)}${row("Location", application.location)}${row("Project link", application.websiteUrl ?? "", application.websiteUrl ?? undefined)}${row("What NAMI should know", application.bio)}${row("Source", "namicreative.co.uk/network")}${row("Submitted", application.submittedAt.toISOString())}</tbody></table>` : `<p style="font-size:17px;line-height:1.6;color:#d4d4d8">${encode(job.body)}</p>`;
+  const heading = application ? "Creative Network submission" : encode(job.heading);
+  const actionLabel = application ? "Review and approve application" : "Open in the owner dashboard";
+  const html = `<!doctype html><html><body style="margin:0;background:#242426;color:#f7f7f7;font-family:Arial,sans-serif"><div style="max-width:700px;margin:auto;padding:42px 24px"><p style="color:#ff00a8;font-weight:800">NAMI <span style="color:#fff;font-weight:400">CREATIVE</span></p><h1 style="font-size:28px;line-height:1.1">${heading}</h1>${applicationDetails}<p style="margin:28px 0"><a href="${encode(job.actionUrl)}" style="display:inline-block;background:#ff00a8;color:#fff;text-decoration:none;padding:14px 22px;border-radius:999px;font-weight:700">${actionLabel}</a></p>${application ? `<p style="color:#b7b7bd;font-size:13px">Reply to this email to contact the submitter.</p>` : `<p style="color:#9ca3af;font-size:13px">Reference: ${encode(job.recordId)}</p>`}</div></body></html>`;
   const response = await fetch(`https://graph.microsoft.com/v1.0/users/${encodeURIComponent(sender)}/sendMail`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
@@ -71,7 +79,7 @@ async function sendOwnerAlert(job: typeof schema.ownerAlertJobs.$inferSelect) {
         subject: job.subject,
         body: { contentType: "HTML", content: html },
         toRecipients: [{ emailAddress: { address: recipient } }],
-        replyTo: [{ emailAddress: { address: sender } }],
+        replyTo: [{ emailAddress: { address: application?.email ?? sender } }],
       },
       saveToSentItems: true,
     }),

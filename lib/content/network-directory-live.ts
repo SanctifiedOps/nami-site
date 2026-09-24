@@ -23,12 +23,15 @@ async function d1Members(): Promise<NetworkDirectoryMember[] | null> {
       .from(schema.profileImages)
       .where(eq(schema.profileImages.status, "ready"))
       .orderBy(schema.profileImages.memberId, schema.profileImages.position);
-    const imagesByMember = new Map<string, Array<{ src: string; alt: string }>>();
+    const imagesByMember = new Map<string, Array<{ src: string; alt: string; title: string; description: string; linkUrl?: string }>>();
     for (const image of images) {
       const current = imagesByMember.get(image.memberId) ?? [];
       current.push({
         src: `/api/network/media/${image.r2Key.split("/").map(encodeURIComponent).join("/")}`,
         alt: image.altText,
+        title: image.title,
+        description: image.description,
+        linkUrl: normalizeProfileUrl(image.linkUrl) || undefined,
       });
       imagesByMember.set(image.memberId, current);
     }
@@ -45,6 +48,7 @@ async function d1Members(): Promise<NetworkDirectoryMember[] | null> {
       tiktokUrl: normalizeProfileUrl(profile.tiktokUrl),
       youtubeUrl: normalizeProfileUrl(profile.youtubeUrl),
       description: profile.bio,
+      about: profile.about || profile.bio,
       profileImage: profile.profileImageKey
         ? `/api/network/media/${profile.profileImageKey.split("/").map(encodeURIComponent).join("/")}`
         : undefined,

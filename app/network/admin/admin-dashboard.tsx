@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { Activity, AlertTriangle, ArrowLeft, BarChart3, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
 import type { GaSnapshot, InstagramSnapshot, MailchimpSnapshot } from "@/lib/network-admin/external-data";
+import { suggestDirectoryBio } from "@/lib/network-profile/directory-bio";
 
 type Application = {
   id: string; email: string; firstName: string; displayName: string; location: string; requestedCategory: string;
@@ -47,12 +48,14 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   adminName: string; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; operations: Operations; searchEvents?: SearchEvent[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [busy, setBusy] = useState<string | null>(null);
   const [message, setMessage] = useState("");
-  const [applicationOptions, setApplicationOptions] = useState<Record<string, { primaryGroup: string; speciality: string }>>({});
+  const [applicationOptions, setApplicationOptions] = useState<Record<string, { primaryGroup: string; speciality: string; bio: string }>>({});
   const [memberCategory, setMemberCategory] = useState("all");
   const [memberPage, setMemberPage] = useState(1);
-  const [activeView, setActiveView] = useState<DashboardView>("home");
+  const requestedView = searchParams.get("view");
+  const [activeView, setActiveView] = useState<DashboardView>(requestedView === "members" || requestedView === "tasks" || requestedView === "growth" || requestedView === "more" ? requestedView : "home");
   const [moreDetail, setMoreDetail] = useState<"integrations" | "health" | null>(null);
 
   const pendingApplications = applications.filter((item) => item.status === "pending");
@@ -192,14 +195,15 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
         <SectionHeading title="Applications" count={pendingApplications.length} note="" />
         <div className="mt-3 grid gap-2.5 md:mt-5 md:gap-4 [&>article]:!p-4 md:[&>article]:!p-6">
           {pendingApplications.map((item) => {
-            const option = applicationOptions[item.id] ?? { primaryGroup: directoryGroups.find((group) => group.slug === item.requestedCategory)?.slug ?? directoryGroups[0].slug, speciality: item.requestedCategory };
+            const option = applicationOptions[item.id] ?? { primaryGroup: directoryGroups.find((group) => group.slug === item.requestedCategory)?.slug ?? directoryGroups[0].slug, speciality: item.requestedCategory, bio: suggestDirectoryBio({ displayName: item.displayName, category: item.requestedCategory, location: item.location, submittedBio: item.bio }) };
             return <article key={item.id} className={`${panel} p-5 md:p-6`}>
               <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
                 <div><div className="flex flex-wrap items-center gap-3"><h3 className="text-2xl">{item.displayName}</h3><Status value="pending" /></div><p className="mt-2 text-sm text-fg-muted">{item.firstName} · {item.email} · {item.location}</p><p className="mt-4 max-w-3xl text-sm leading-6 text-fg-muted">{item.bio}</p><p className="mt-4 text-xs text-fg-subtle">Submitted {formatDate(item.submittedAt)}</p></div>
                 <div className="grid gap-3 rounded-2xl border border-line bg-surface-0 p-4">
                   <label className="text-xs font-bold">Directory group<select value={option.primaryGroup} onChange={(event) => setApplicationOptions((current) => ({ ...current, [item.id]: { ...option, primaryGroup: event.target.value } }))} className="mt-2 w-full rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5">{directoryGroups.map((group) => <option key={group.slug} value={group.slug}>{group.label}</option>)}</select></label>
                   <label className="text-xs font-bold">Speciality<input value={option.speciality} onChange={(event) => setApplicationOptions((current) => ({ ...current, [item.id]: { ...option, speciality: event.target.value } }))} className="mt-2 w-full rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5" /></label>
-                  <div className="mt-1 flex gap-2"><button disabled={busy !== null || option.speciality.trim().length < 2} onClick={() => runAction(`application-${item.id}`, { action: "approve-application", applicationId: item.id, ...option })} className="flex-1 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white disabled:opacity-40">{busy === `application-${item.id}` ? "Approving..." : "Approve profile"}</button><button disabled={busy !== null} onClick={() => runAction(`application-reject-${item.id}`, { action: "reject-application", applicationId: item.id })} className={button}>Reject</button></div>
+                  <label className="text-xs font-bold">Directory card bio<textarea value={option.bio} onChange={(event) => setApplicationOptions((current) => ({ ...current, [item.id]: { ...option, bio: event.target.value } }))} maxLength={320} rows={5} className="mt-2 w-full rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5 leading-5" /><span className="mt-1 block text-right font-normal text-fg-subtle">{option.bio.length}/320</span></label>
+                  <div className="mt-1 flex gap-2"><button disabled={busy !== null || option.speciality.trim().length < 2 || option.bio.trim().length < 20} onClick={() => runAction(`application-${item.id}`, { action: "approve-application", applicationId: item.id, ...option })} className="flex-1 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white disabled:opacity-40">{busy === `application-${item.id}` ? "Approving..." : "Approve profile"}</button><button disabled={busy !== null} onClick={() => runAction(`application-reject-${item.id}`, { action: "reject-application", applicationId: item.id })} className={button}>Reject</button></div>
                 </div>
               </div>
             </article>;

@@ -11,12 +11,13 @@ export type NetworkDirectoryMember = {
   tiktokUrl?: string;
   youtubeUrl?: string;
   description: string;
+  about?: string;
   profileImage?: string;
   imageAlt?: string;
   featured: boolean;
   joinedAt?: string;
   primaryGroup?: string;
-  portfolioImages?: Array<{ src: string; alt: string }>;
+  portfolioImages?: Array<{ src: string; alt: string; title?: string; description?: string; linkUrl?: string }>;
 };
 
 // Public projection of the private Creative Network submissions sheet.

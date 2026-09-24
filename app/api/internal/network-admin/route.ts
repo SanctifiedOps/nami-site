@@ -11,7 +11,7 @@ import { normalizeInstagramProfileUrl, normalizeProfileUrl } from "@/lib/network
 
 const groupSlugs = directoryGroups.map((group) => group.slug) as [string, ...string[]];
 const actionSchema = z.discriminatedUnion("action", [
-  z.object({ action: z.literal("approve"), applicationId: z.string().min(2), primaryGroup: z.enum(groupSlugs), speciality: z.string().trim().min(2).max(80) }),
+  z.object({ action: z.literal("approve"), applicationId: z.string().min(2), primaryGroup: z.enum(groupSlugs), speciality: z.string().trim().min(2).max(80), bio: z.string().trim().min(20).max(320) }),
   z.object({ action: z.literal("resend-invite"), memberId: z.string().min(2) }),
   z.object({ action: z.literal("disable"), memberId: z.string().min(2) }),
   z.object({ action: z.literal("enable"), memberId: z.string().min(2) }),
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     try {
       await db.batch([
       db.insert(schema.members).values({ id: application.id, firstName: application.firstName, email: application.email, emailNormalized: application.email.toLowerCase(), approvalStatus: "approved", accountStatus: "unclaimed", joinedAt: now, createdAt: now, updatedAt: now }),
-      db.insert(schema.memberProfiles).values({ memberId: application.id, displayName: application.displayName, location: application.location, primaryGroup: parsed.data.primaryGroup, speciality: parsed.data.speciality, bio: application.bio, websiteUrl: normalizeProfileUrl(application.websiteUrl), instagramUrl: normalizeInstagramProfileUrl(application.instagramUrl), profileImageKey: approvedImageKey, published: true, updatedAt: now }),
+      db.insert(schema.memberProfiles).values({ memberId: application.id, displayName: application.displayName, location: application.location, primaryGroup: parsed.data.primaryGroup, speciality: parsed.data.speciality, bio: parsed.data.bio, about: application.bio, websiteUrl: normalizeProfileUrl(application.websiteUrl), instagramUrl: normalizeInstagramProfileUrl(application.instagramUrl), profileImageKey: approvedImageKey, published: true, updatedAt: now }),
       db.update(schema.networkApplications).set({ status: "approved", reviewedAt: now }).where(eq(schema.networkApplications.id, application.id)),
       db.insert(schema.sheetSyncJobs).values({ id: crypto.randomUUID(), memberId: application.id, status: "pending", attempts: 0, nextAttemptAt: now, createdAt: now, updatedAt: now }),
       ]);

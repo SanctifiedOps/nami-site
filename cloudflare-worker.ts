@@ -18,15 +18,12 @@ export default {
       EXTERNAL_INTEGRATIONS_MODE?: string;
       NETWORK_ADMIN_SECRET: string;
     };
-    // Production previews must not rotate the featured member or write to the
-    // live Sheet before external integrations are explicitly enabled.
-    if (env.APP_ENV === "production" && runtimeEnv.EXTERNAL_INTEGRATIONS_MODE !== "live") return;
     const londonHour = new Intl.DateTimeFormat("en-GB", {
       timeZone: "Europe/London",
       hour: "2-digit",
       hourCycle: "h23",
     }).format(new Date(event.scheduledTime));
-    const rotateFeatured = event.cron !== "*/10 * * * *" && londonHour === "08";
+    const rotateFeatured = runtimeEnv.EXTERNAL_INTEGRATIONS_MODE === "live" && event.cron !== "*/10 * * * *" && londonHour === "08";
     const url = new URL("/api/internal/network-jobs", env.APP_URL);
     if (rotateFeatured) url.searchParams.set("rotateFeatured", "1");
     const request = new Request(url, {

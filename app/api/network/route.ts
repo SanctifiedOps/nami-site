@@ -563,7 +563,7 @@ export async function POST(req: Request) {
       subject: `New NAMI Network application: ${d.displayName}`,
       heading: "A new Network member is waiting for approval",
       body: `${d.displayName} from ${d.location} has submitted a Network application.`,
-      actionUrl: `${appUrl.replace(/\/$/, "")}/network/admin#applications`,
+      actionUrl: `${appUrl.replace(/\/$/, "")}/network/admin?view=members#applications`,
     });
   } catch (error) {
     console.error("Application saved but owner alert failed:", error);

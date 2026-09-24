@@ -12,7 +12,9 @@ export async function getNetworkAuth() {
   const env = await getRuntimeEnvironment();
   return betterAuth({
     appName: "NAMI Creative Network",
-    baseURL: env.BETTER_AUTH_URL || env.APP_URL || "http://localhost:3000",
+    baseURL: process.env.NODE_ENV === "development"
+      ? `http://localhost:${process.env.PORT || "3000"}`
+      : env.BETTER_AUTH_URL || env.APP_URL || "https://namicreative.co.uk",
     basePath: "/api/network/auth",
     secret: env.BETTER_AUTH_SECRET,
     database: drizzleAdapter(db, { provider: "sqlite", schema }),
@@ -22,10 +24,11 @@ export async function getNetworkAuth() {
       "https://nami-creative-site-staging.workers.dev",
       "https://nami-creative-site-staging.opsanctus.workers.dev",
       "http://localhost:3000",
+      "http://localhost:3001",
     ],
     emailAndPassword: {
       enabled: true,
-      disableSignUp: true,
+      disableSignUp: process.env.NODE_ENV !== "development",
       minPasswordLength: 10,
       maxPasswordLength: 128,
       revokeSessionsOnPasswordReset: true,

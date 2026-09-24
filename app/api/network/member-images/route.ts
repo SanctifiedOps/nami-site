@@ -4,6 +4,7 @@ import { getMemberSession } from "@/lib/network-auth/session";
 import { getMemberMediaBucket, getNetworkDb, schema } from "@/lib/network-db";
 import { webpDimensions } from "@/lib/network-profile/webp";
 import { revalidateNetworkProfile } from "@/lib/network-profile/revalidate";
+import { normalizeProfileUrl } from "@/lib/network-profile/links";
 
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 
@@ -88,6 +89,9 @@ const orderSchema = z.object({
     id: z.string().uuid(),
     position: z.number().int().min(0).max(3),
     altText: z.string().trim().max(180).refine((value) => !value || value.length >= 4, "Use at least four characters or leave the description blank."),
+    title: z.string().trim().max(80),
+    description: z.string().trim().max(180),
+    linkUrl: z.string().trim().max(500),
   })).max(4),
 });
 
@@ -104,7 +108,9 @@ export async function PUT(request: Request) {
   if (parsed.data.images.some((image) => !owned.has(image.id))) return Response.json({ error: "Invalid image." }, { status: 403 });
   const now = new Date();
   for (const image of parsed.data.images) {
-    await db.update(schema.profileImages).set({ position: image.position + 10, altText: image.altText, updatedAt: now }).where(and(eq(schema.profileImages.id, image.id), eq(schema.profileImages.memberId, auth.member.id)));
+    const linkUrl = image.linkUrl ? normalizeProfileUrl(image.linkUrl) : "";
+    if (image.linkUrl && !linkUrl) return Response.json({ error: "Enter a valid link for your image." }, { status: 400 });
+    await db.update(schema.profileImages).set({ position: image.position + 10, altText: image.altText, title: image.title, description: image.description, linkUrl: linkUrl || null, updatedAt: now }).where(and(eq(schema.profileImages.id, image.id), eq(schema.profileImages.memberId, auth.member.id)));
   }
   for (const image of parsed.data.images) {
     await db.update(schema.profileImages).set({ position: image.position, updatedAt: now }).where(and(eq(schema.profileImages.id, image.id), eq(schema.profileImages.memberId, auth.member.id)));

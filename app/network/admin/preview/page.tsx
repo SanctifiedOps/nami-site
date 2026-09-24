@@ -15,7 +15,11 @@ export default function NetworkAdminPreviewPage() {
 
   return <AdminDashboard
     adminName="Joe"
-    applications={[]}
+    applications={[{
+      id: "preview-application", email: "hello@thirditeration.com", firstName: "Third", displayName: "Third Iteration", location: "Hexham", requestedCategory: "Publisher",
+      bio: "Third Iteration is an independent publisher based in Hexham, making memoirs by people whose lives are more interesting than their public image. First titles include DJ Hurricane's memoir of life with the Beastie Boys and books from Matt Lewis and Jon Shield. I'm always keen to meet writers, designers, and photographers, and to connect on socials.",
+      websiteUrl: "https://thirditeration.com/", instagramUrl: "@third_iteration", status: "pending", submittedAt: iso(0), reviewedAt: null,
+    }]}
     members={[
       member("preview-1", "Northern Cave", "artists", "Newcastle", 2),
       member("preview-2", "Aniseed Creative", "designers", "Gateshead", 8),

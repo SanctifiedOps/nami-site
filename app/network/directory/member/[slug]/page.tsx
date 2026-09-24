@@ -13,6 +13,7 @@ import {
   primaryMemberGroup,
 } from "@/lib/content/network-directory-groups";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
+import { PortfolioGallery } from "./portfolio-gallery";
 
 const SITE_URL = "https://namicreative.co.uk";
 
@@ -34,13 +35,11 @@ function memberProfileCopy(member: NetworkDirectoryMember) {
   return {
     ...names,
     role: isEllie ? "Jewellery maker" : member.category,
-    aboutEyebrow: isEllie ? "Meet the maker" : "About this member",
-    aboutTitle: isEllie
-      ? "Handmade in the North East, with history woven through it."
-      : `More about ${names.brandName || names.personName}`,
-    aboutBody: isEllie
+    aboutEyebrow: "About",
+    aboutTitle: `About ${names.brandName || names.personName}`,
+    aboutBody: member.about || (isEllie
       ? "Rindill Makes creates handmade stainless-steel jewellery inspired by history, nature, fantasy and folklore. Ellie is based in Newcastle and makes chainmail jewellery, clothing and accessories."
-      : member.description,
+      : member.description),
     galleryTitle: isEllie
       ? "Made by Rindill"
       : `Work by ${names.brandName || names.personName}`,
@@ -275,7 +274,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
               <h2 className="mt-4 max-w-3xl text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl">
                 {profile.aboutTitle}
               </h2>
-              <p className="mt-7 max-w-3xl text-lg leading-relaxed text-fg-muted">
+              <p className="mt-7 max-w-3xl whitespace-pre-line text-lg leading-relaxed text-fg-muted">
                 {profile.aboutBody}
               </p>
             </div>
@@ -330,23 +329,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
               </div>
             </div>
 
-            <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
-              {(member.portfolioImages ?? []).map((image, index) => (
-                <figure key={`${image.src}-${index}`} className="overflow-hidden rounded-3xl border border-line bg-surface-0/65">
-                  <img src={image.src} alt={image.alt || `Work by ${member.name}`} className="aspect-[3/5] h-full w-full object-cover" />
-                </figure>
-              ))}
-              {Array.from({ length: Math.max(0, 4 - (member.portfolioImages?.length ?? 0)) }, (_, index) => (
-                <div key={`portfolio-placeholder-${index}`} className="relative grid aspect-[3/5] place-items-center overflow-hidden rounded-3xl border border-dashed border-accent/35 bg-surface-0/65 p-5 text-center md:p-8">
-                  <div aria-hidden className="hairline-grid absolute inset-0 opacity-20" />
-                  <div className="relative">
-                    <span className="mx-auto grid size-12 place-items-center rounded-full border border-accent/30 bg-accent/10 text-2xl text-accent">+</span>
-                    <p className="mt-4 font-semibold text-fg">Portfolio image</p>
-                    <p className="mt-2 text-sm text-fg-subtle">Portfolio image coming soon</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <PortfolioGallery images={member.portfolioImages ?? []} memberName={member.name} />
           </div>
         </section>
 

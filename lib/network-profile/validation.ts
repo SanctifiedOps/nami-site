@@ -23,6 +23,10 @@ export const memberProfileSchema = z.object({
   primaryGroup: z.enum(directoryGroups.map((group) => group.slug) as [string, ...string[]]),
   speciality: z.string().trim().min(2).max(80),
   bio: z.string().trim().min(20).max(800),
+  about: z.string().trim().max(6000).refine(
+    (value) => !value || value.split(/\s+/).filter(Boolean).length <= 750,
+    "Keep your About section to 750 words or fewer.",
+  ),
   websiteUrl: emptyOrUrl,
   instagramUrl: emptyOrInstagram,
   facebookUrl: emptyOrUrl,
