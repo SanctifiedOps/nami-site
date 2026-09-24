@@ -22,6 +22,17 @@ export type InstagramSnapshot = {
   error?: string;
 };
 
+export type MailchimpSnapshot = {
+  connected: boolean;
+  audienceName: string | null;
+  subscribers: number | null;
+  openRate: number | null;
+  clickRate: number | null;
+  campaignCount: number | null;
+  latestCampaign: string | null;
+  error?: string;
+};
+
 async function googleAccessToken() {
   const env = await getRuntimeEnvironment();
   const email = env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
@@ -116,5 +127,35 @@ export async function getInstagramSnapshot(): Promise<InstagramSnapshot> {
     return { connected: true, username: data.username ?? null, followers: data.followers_count ?? null, mediaCount: data.media_count ?? null };
   } catch (error) {
     return { connected: false, username: null, followers: null, mediaCount: null, error: error instanceof Error ? error.message : "Instagram is unavailable" };
+  }
+}
+
+export async function getMailchimpSnapshot(): Promise<MailchimpSnapshot> {
+  const env = await getRuntimeEnvironment();
+  const apiKey = env.MAILCHIMP_API_KEY;
+  const audienceId = env.MAILCHIMP_AUDIENCE_ID;
+  const server = env.MAILCHIMP_SERVER_PREFIX || apiKey?.split("-").at(-1);
+  const empty = { connected: false, audienceName: null, subscribers: null, openRate: null, clickRate: null, campaignCount: null, latestCampaign: null };
+  if (!apiKey || !audienceId || !server) return { ...empty, error: "Mailchimp connection needed" };
+  try {
+    const authorization = `Basic ${btoa(`nami:${apiKey}`)}`;
+    const [audienceResponse, reportsResponse] = await Promise.all([
+      fetch(`https://${server}.api.mailchimp.com/3.0/lists/${audienceId}?fields=name,stats.member_count,stats.open_rate,stats.click_rate,stats.campaign_count`, { headers: { Authorization: authorization }, cache: "no-store" }),
+      fetch(`https://${server}.api.mailchimp.com/3.0/reports?count=1&sort_field=send_time&sort_dir=DESC&fields=reports.campaign_title`, { headers: { Authorization: authorization }, cache: "no-store" }),
+    ]);
+    if (!audienceResponse.ok) throw new Error(`Mailchimp returned ${audienceResponse.status}`);
+    const audience = await audienceResponse.json() as { name?: string; stats?: { member_count?: number; open_rate?: number; click_rate?: number; campaign_count?: number } };
+    const reports = reportsResponse.ok ? await reportsResponse.json() as { reports?: Array<{ campaign_title?: string }> } : { reports: [] };
+    return {
+      connected: true,
+      audienceName: audience.name ?? null,
+      subscribers: audience.stats?.member_count ?? null,
+      openRate: audience.stats?.open_rate ?? null,
+      clickRate: audience.stats?.click_rate ?? null,
+      campaignCount: audience.stats?.campaign_count ?? null,
+      latestCampaign: reports.reports?.[0]?.campaign_title ?? null,
+    };
+  } catch (error) {
+    return { ...empty, error: error instanceof Error ? error.message : "Mailchimp is unavailable" };
   }
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { desc, eq } from "drizzle-orm";
 import { requireNetworkAdminSession } from "@/lib/network-auth/session";
 import { getNetworkDb, schema } from "@/lib/network-db";
-import { getGaSnapshot, getInstagramSnapshot } from "@/lib/network-admin/external-data";
+import { getGaSnapshot, getInstagramSnapshot, getMailchimpSnapshot } from "@/lib/network-admin/external-data";
 import { AdminDashboard } from "./admin-dashboard";
 
 export const metadata: Metadata = { title: "Network admin", robots: { index: false, follow: false } };
@@ -13,7 +13,7 @@ const iso = (value: Date | null) => value?.toISOString() ?? null;
 export default async function NetworkAdminPage() {
   const admin = await requireNetworkAdminSession();
   const db = await getNetworkDb();
-  const [applications, memberRows, tickets, events, alerts, emailJobs, syncJobs, ga, instagram] = await Promise.all([
+  const [applications, memberRows, tickets, events, alerts, emailJobs, syncJobs, ga, instagram, mailchimp] = await Promise.all([
     db.select().from(schema.networkApplications).orderBy(desc(schema.networkApplications.submittedAt)),
     db.select({ member: schema.members, profile: schema.memberProfiles }).from(schema.members)
       .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id)).orderBy(desc(schema.members.joinedAt)),
@@ -24,6 +24,7 @@ export default async function NetworkAdminPage() {
     db.select().from(schema.sheetSyncJobs).orderBy(desc(schema.sheetSyncJobs.createdAt)).limit(100),
     getGaSnapshot(),
     getInstagramSnapshot(),
+    getMailchimpSnapshot(),
   ]);
 
   return <AdminDashboard
@@ -57,5 +58,6 @@ export default async function NetworkAdminPage() {
     }}
     ga={ga}
     instagram={instagram}
+    mailchimp={mailchimp}
   />;
 }
