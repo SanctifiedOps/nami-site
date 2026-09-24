@@ -87,6 +87,10 @@ async function sendOwnerAlert(job: typeof schema.ownerAlertJobs.$inferSelect) {
   if (response.status !== 202) throw new Error(`Microsoft Graph owner alert was not accepted (${response.status}).`);
 }
 
+export async function retryOwnerAlertJob(job: typeof schema.ownerAlertJobs.$inferSelect) {
+  await sendOwnerAlert(job);
+}
+
 export async function queueOwnerAlert(input: OwnerAlertInput) {
   const env = await getRuntimeEnvironment();
   const recipient = allowedOwnerRecipient(env);

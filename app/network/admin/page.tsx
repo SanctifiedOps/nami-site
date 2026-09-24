@@ -14,7 +14,7 @@ export default async function NetworkAdminPage() {
   const admin = await requireNetworkAdminSession();
   const db = await getNetworkDb();
   const searchCutoff = new Date(Date.now() - 90 * 86400000);
-  const [applications, memberRows, tickets, events, alerts, emailJobs, syncJobs, searchEvents, ga, instagram, mailchimp] = await Promise.all([
+  const [applications, memberRows, tickets, events, alerts, emailJobs, syncJobs, mailchimpJobs, bioJobs, searchEvents, ga, instagram, mailchimp] = await Promise.all([
     db.select().from(schema.networkApplications).orderBy(desc(schema.networkApplications.submittedAt)),
     db.select({ member: schema.members, profile: schema.memberProfiles }).from(schema.members)
       .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id)).orderBy(desc(schema.members.joinedAt)),
@@ -23,6 +23,8 @@ export default async function NetworkAdminPage() {
     db.select().from(schema.ownerAlertJobs).orderBy(desc(schema.ownerAlertJobs.createdAt)).limit(100),
     db.select().from(schema.emailJobs).orderBy(desc(schema.emailJobs.createdAt)).limit(100),
     db.select().from(schema.sheetSyncJobs).orderBy(desc(schema.sheetSyncJobs.createdAt)).limit(100),
+    db.select().from(schema.mailchimpSyncJobs).orderBy(desc(schema.mailchimpSyncJobs.createdAt)).limit(100),
+    db.select().from(schema.bioGenerationJobs).orderBy(desc(schema.bioGenerationJobs.createdAt)).limit(100),
     db.select().from(schema.directorySearchEvents).where(gte(schema.directorySearchEvents.createdAt, searchCutoff)).orderBy(desc(schema.directorySearchEvents.createdAt)).limit(5000),
     getGaSnapshot(),
     getInstagramSnapshot(),
@@ -57,6 +59,10 @@ export default async function NetworkAdminPage() {
       pendingEmails: emailJobs.filter((item) => item.status === "pending").length,
       failedSyncs: syncJobs.filter((item) => item.status === "failed").length,
       pendingSyncs: syncJobs.filter((item) => item.status === "pending").length,
+      failedMailchimp: mailchimpJobs.filter((item) => item.status === "failed").length,
+      pendingMailchimp: mailchimpJobs.filter((item) => item.status === "pending").length,
+      failedBios: bioJobs.filter((item) => item.status === "failed").length,
+      pendingBios: bioJobs.filter((item) => item.status === "pending").length,
     }}
     searchEvents={searchEvents.map((item) => ({ ...item, createdAt: iso(item.createdAt)! }))}
     ga={ga}

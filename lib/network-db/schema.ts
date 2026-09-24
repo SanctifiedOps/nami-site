@@ -97,6 +97,9 @@ export const networkApplications = sqliteTable(
     websiteUrl: text("website_url"),
     instagramUrl: text("instagram_url"),
     profileImageKey: text("profile_image_key"),
+    suggestedBio: text("suggested_bio"),
+    bioGenerationStatus: text("bio_generation_status", { enum: ["pending", "complete", "failed"] }).notNull().default("pending"),
+    bioGenerationError: text("bio_generation_error"),
     status: text("status", { enum: ["pending", "approved", "rejected"] }).notNull().default("pending"),
     submittedAt: now("submitted_at"),
     reviewedAt: optionalTime("reviewed_at"),
@@ -247,6 +250,7 @@ export const mailchimpSyncJobs = sqliteTable(
     lastError: text("last_error"),
     audienceSyncedAt: optionalTime("audience_synced_at"),
     welcomeTriggeredAt: optionalTime("welcome_triggered_at"),
+    contactStatus: text("contact_status"),
     completedAt: optionalTime("completed_at"),
     createdAt: now("created_at"),
     updatedAt: now("updated_at"),
@@ -254,6 +258,25 @@ export const mailchimpSyncJobs = sqliteTable(
   (table) => [
     uniqueIndex("mailchimp_sync_application_idx").on(table.applicationId),
     index("mailchimp_sync_pending_idx").on(table.status, table.nextAttemptAt),
+  ],
+);
+
+export const bioGenerationJobs = sqliteTable(
+  "bio_generation_jobs",
+  {
+    id: text("id").primaryKey(),
+    applicationId: text("application_id").notNull().references(() => networkApplications.id, { onDelete: "cascade" }),
+    status: text("status", { enum: ["pending", "processing", "complete", "failed"] }).notNull().default("pending"),
+    attempts: integer("attempts").notNull().default(0),
+    nextAttemptAt: now("next_attempt_at"),
+    lastError: text("last_error"),
+    completedAt: optionalTime("completed_at"),
+    createdAt: now("created_at"),
+    updatedAt: now("updated_at"),
+  },
+  (table) => [
+    uniqueIndex("bio_generation_application_idx").on(table.applicationId),
+    index("bio_generation_pending_idx").on(table.status, table.nextAttemptAt),
   ],
 );
 

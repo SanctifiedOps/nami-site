@@ -8,6 +8,7 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "ai": { "binding": "AI", "remote": true },
   "d1_databases": [
     {
       "binding": "DB",
@@ -56,6 +57,7 @@
     "preview": {
       "name": "nami-creative-site-precutover",
       "workers_dev": true,
+      "ai": { "binding": "AI", "remote": true },
       "triggers": {
         "crons": []
       },
@@ -96,6 +98,7 @@
     },
     "staging": {
       "name": "nami-creative-site-staging",
+      "ai": { "binding": "AI", "remote": true },
       "triggers": {
         "crons": []
       },

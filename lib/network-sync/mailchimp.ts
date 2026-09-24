@@ -8,8 +8,17 @@ import { getNetworkDb, schema } from "@/lib/network-db";
 const JOURNEY_ID = "97";
 const JOURNEY_STEP_ID = "411";
 
-function tagsFor(category: string, location: string) {
-  return ["Creative Network", category.trim(), location.trim()].filter(Boolean);
+function tagsFor(category: string) {
+  const tags = [
+    "Creative Network",
+    "NAMI Creative Network",
+    "Community",
+    "Feature submission",
+    "source:instagram-network",
+    "type:feature-submission",
+  ];
+  if (category.trim()) tags.push(`category:${category.trim()}`, `network-category:${category.trim()}`);
+  return tags;
 }
 
 export async function syncApplicationToMailchimp(applicationId: string, triggerWelcome: boolean) {
@@ -36,9 +45,15 @@ export async function syncApplicationToMailchimp(applicationId: string, triggerW
       merge_fields: {
         FNAME: application.firstName,
         PTYPE: "Creative Network",
-        MESSAGE: application.bio.slice(0, 500),
+        MESSAGE: [
+          application.bio,
+          application.instagramUrl ? `Instagram: ${application.instagramUrl}` : null,
+          `Category: ${application.requestedCategory}`,
+          `Location: ${application.location}`,
+          application.websiteUrl ? `Link: ${application.websiteUrl}` : null,
+        ].filter(Boolean).join("\n\n").slice(0, 500),
       },
-      tags: tagsFor(application.requestedCategory, application.location),
+      tags: tagsFor(application.requestedCategory),
     }),
   });
   if (!upsert.ok) throw new Error(`Mailchimp audience sync failed (${upsert.status}): ${(await upsert.text()).slice(0, 500)}`);
@@ -54,5 +69,5 @@ export async function syncApplicationToMailchimp(applicationId: string, triggerW
     if (!trigger.ok) throw new Error(`Mailchimp welcome trigger failed (${trigger.status}): ${(await trigger.text()).slice(0, 500)}`);
   }
 
-  return { audienceSyncedAt: new Date(), welcomeTriggeredAt: triggerWelcome ? new Date() : null };
+  return { audienceSyncedAt: new Date(), welcomeTriggeredAt: triggerWelcome ? new Date() : null, contactStatus: member.status };
 }

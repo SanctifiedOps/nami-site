@@ -10,7 +10,7 @@ import { suggestDirectoryBio } from "@/lib/network-profile/directory-bio";
 
 type Application = {
   id: string; email: string; firstName: string; displayName: string; location: string; requestedCategory: string;
-  bio: string; websiteUrl: string | null; instagramUrl: string | null; status: string; submittedAt: string; reviewedAt: string | null;
+  bio: string; suggestedBio: string | null; bioGenerationStatus: string; bioGenerationError: string | null; websiteUrl: string | null; instagramUrl: string | null; status: string; submittedAt: string; reviewedAt: string | null;
 };
 type Member = {
   id: string; firstName: string; email: string; accountStatus: string; role: string; joinedAt: string; lastLoginAt: string | null;
@@ -24,7 +24,7 @@ type NetworkEvent = {
   id: string; memberId: string; title: string; summary: string; venue: string; location: string; startsAt: string; endsAt: string | null;
   bookingUrl: string | null; status: "pending" | "approved" | "rejected"; submittedAt: string; reviewedAt: string | null; publishedAt: string | null; updatedAt: string;
 };
-type Operations = { failedAlerts: number; pendingAlerts: number; failedEmails: number; pendingEmails: number; failedSyncs: number; pendingSyncs: number };
+type Operations = { failedAlerts: number; pendingAlerts: number; failedEmails: number; pendingEmails: number; failedSyncs: number; pendingSyncs: number; failedMailchimp: number; pendingMailchimp: number; failedBios: number; pendingBios: number };
 type SearchEvent = { id: string; eventType: "search" | "result_clicked"; anonymousSessionId: string; searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number; selectedMemberId: string | null; sourcePath: string; createdAt: string };
 
 const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35px_rgb(0_0_0/0.16)] md:rounded-[1.5rem] md:shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
@@ -195,13 +195,14 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
         <SectionHeading title="Applications" count={pendingApplications.length} note="" />
         <div className="mt-3 grid gap-2.5 md:mt-5 md:gap-4 [&>article]:!p-4 md:[&>article]:!p-6">
           {pendingApplications.map((item) => {
-            const option = applicationOptions[item.id] ?? { primaryGroup: directoryGroups.find((group) => group.slug === item.requestedCategory)?.slug ?? directoryGroups[0].slug, speciality: item.requestedCategory, bio: suggestDirectoryBio({ displayName: item.displayName, category: item.requestedCategory, location: item.location, submittedBio: item.bio }) };
+            const option = applicationOptions[item.id] ?? { primaryGroup: directoryGroups.find((group) => group.slug === item.requestedCategory)?.slug ?? directoryGroups[0].slug, speciality: item.requestedCategory, bio: item.suggestedBio || suggestDirectoryBio({ displayName: item.displayName, category: item.requestedCategory, location: item.location, submittedBio: item.bio }) };
             return <article key={item.id} className={`${panel} p-5 md:p-6`}>
               <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
                 <div><div className="flex flex-wrap items-center gap-3"><h3 className="text-2xl">{item.displayName}</h3><Status value="pending" /></div><p className="mt-2 text-sm text-fg-muted">{item.firstName} · {item.email} · {item.location}</p><p className="mt-4 max-w-3xl text-sm leading-6 text-fg-muted">{item.bio}</p><p className="mt-4 text-xs text-fg-subtle">Submitted {formatDate(item.submittedAt)}</p></div>
                 <div className="grid gap-3 rounded-2xl border border-line bg-surface-0 p-4">
                   <label className="text-xs font-bold">Directory group<select value={option.primaryGroup} onChange={(event) => setApplicationOptions((current) => ({ ...current, [item.id]: { ...option, primaryGroup: event.target.value } }))} className="mt-2 w-full rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5">{directoryGroups.map((group) => <option key={group.slug} value={group.slug}>{group.label}</option>)}</select></label>
                   <label className="text-xs font-bold">Speciality<input value={option.speciality} onChange={(event) => setApplicationOptions((current) => ({ ...current, [item.id]: { ...option, speciality: event.target.value } }))} className="mt-2 w-full rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5" /></label>
+                  <p className={`text-xs ${item.bioGenerationStatus === "failed" ? "text-red-300" : "text-fg-subtle"}`}>{item.bioGenerationStatus === "complete" ? "NAMI bio generated and ready for review." : item.bioGenerationStatus === "failed" ? `Bio generation will retry automatically: ${item.bioGenerationError || "generation failed"}` : "NAMI bio generation is queued."}</p>
                   <label className="text-xs font-bold">Directory card bio<textarea value={option.bio} onChange={(event) => setApplicationOptions((current) => ({ ...current, [item.id]: { ...option, bio: event.target.value } }))} maxLength={320} rows={5} className="mt-2 w-full rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5 leading-5" /><span className="mt-1 block text-right font-normal text-fg-subtle">{option.bio.length}/320</span></label>
                   <div className="mt-1 flex gap-2"><button disabled={busy !== null || option.speciality.trim().length < 2 || option.bio.trim().length < 20} onClick={() => runAction(`application-${item.id}`, { action: "approve-application", applicationId: item.id, ...option })} className="flex-1 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white disabled:opacity-40">{busy === `application-${item.id}` ? "Approving..." : "Approve profile"}</button><button disabled={busy !== null} onClick={() => runAction(`application-reject-${item.id}`, { action: "reject-application", applicationId: item.id })} className={button}>Reject</button></div>
                 </div>
@@ -249,10 +250,12 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
 
       <section id="operations" className="pt-7 md:pt-12">
         <SectionHeading title="Operations" note="The parts that keep member records and owner notifications moving." />
-        <div className="mt-3 grid grid-cols-2 gap-2.5 [&>article:last-child]:col-span-2 md:mt-5 md:grid-cols-3 md:gap-4 md:[&>article:last-child]:col-span-1">
+        <div className="mt-3 grid grid-cols-2 gap-2.5 md:mt-5 md:grid-cols-3 md:gap-4">
           <OperationCard icon={<Mail />} title="Owner notifications" pending={operations.pendingAlerts} failed={operations.failedAlerts} />
           <OperationCard icon={<Mail />} title="Member email queue" pending={operations.pendingEmails} failed={operations.failedEmails} locked />
           <OperationCard icon={<CheckCircle2 />} title="Google Sheet sync" pending={operations.pendingSyncs} failed={operations.failedSyncs} />
+          <OperationCard icon={<Mail />} title="Mailchimp sync" pending={operations.pendingMailchimp} failed={operations.failedMailchimp} />
+          <OperationCard icon={<Activity />} title="NAMI bio generation" pending={operations.pendingBios} failed={operations.failedBios} />
         </div>
         <div className={`${panel} mt-5 flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between`}><div><h3 className="text-xl">Data connections</h3><p className="mt-2 max-w-3xl text-sm leading-6 text-fg-muted">Membership, applications, tickets, events and job health come directly from the NAMI database. GA4 and Instagram refresh from their APIs whenever this page loads. No Make scenario is used for this dashboard.</p></div><button disabled={busy !== null} onClick={() => runAction("sheet-sync", { action: "process-sheet-jobs" })} className="shrink-0 rounded-full border border-accent px-5 py-3 text-sm font-bold text-accent disabled:opacity-40">{busy === "sheet-sync" ? "Syncing..." : "Sync Google Sheet now"}</button></div>
       </section></>}

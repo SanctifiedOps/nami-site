@@ -15,7 +15,8 @@ const COLUMNS = [
   "Speciality", "Bio", "About", "Website", "Facebook", "LinkedIn", "TikTok", "YouTube",
   "Account Status", "Profile Image Key", "Portfolio Image 1", "Portfolio Image 1 Alt", "Portfolio Image 2",
   "Portfolio Image 2 Alt", "Portfolio Image 3", "Portfolio Image 3 Alt", "Portfolio Image 4",
-  "Portfolio Image 4 Alt", "Last Member Update", "Last Successful Sync", "Sync Status",
+  "Portfolio Image 4 Alt", "Last Member Update", "Last Successful Sync", "Sync Status", "Tags",
+  "Mailchimp Status", "Mailchimp Audience Synced At", "Mailchimp Welcome Triggered At", "Suggested Directory Bio",
 ] as const;
 
 async function googleToken() {
@@ -74,6 +75,8 @@ export async function syncMemberToGoogleSheet(memberId: string) {
     .where(eq(schema.members.id, memberId)).limit(1);
   const [application] = await db.select().from(schema.networkApplications)
     .where(eq(schema.networkApplications.id, memberId)).limit(1);
+  const [mailchimpJob] = await db.select().from(schema.mailchimpSyncJobs)
+    .where(eq(schema.mailchimpSyncJobs.applicationId, memberId)).limit(1);
   if (!record && !application) throw new Error(`Member or application ${memberId} was not found.`);
   const images = record
     ? await db.select().from(schema.profileImages).where(eq(schema.profileImages.memberId, memberId)).orderBy(schema.profileImages.position)
@@ -129,6 +132,9 @@ export async function syncMemberToGoogleSheet(memberId: string) {
   setIfEmpty("Source", "namicreative.co.uk/network");
   setIfEmpty("Submission Type", "feature-submission");
   setIfEmpty("Mailchimp Segment", "Creative Network");
+  const category = application?.requestedCategory ?? record?.profile.speciality ?? "";
+  const tags = ["Creative Network", "NAMI Creative Network", "Community", "Feature submission", "source:instagram-network", "type:feature-submission", category ? `category:${category}` : "", category ? `network-category:${category}` : ""].filter(Boolean).join(", ");
+  set("Tags", tags);
   setIfEmpty("Feature Status", record?.profile.featured ? "Featured" : "Not featured");
   setIfEmpty("Follow-up Status", "No follow-up yet");
   set("Profile Image", profileImageUrl);
@@ -136,7 +142,12 @@ export async function syncMemberToGoogleSheet(memberId: string) {
   set("Image Status", profileImageUrl ? "Ready" : "Missing");
   setIfEmpty("Image Updated", submittedAt);
   if (record) set("Directory Bio", record.profile.bio);
+  else if (application?.suggestedBio) set("Directory Bio", application.suggestedBio);
   set("Directory ID", memberId);
+  set("Suggested Directory Bio", application?.suggestedBio ?? record?.profile.bio ?? "");
+  set("Mailchimp Status", mailchimpJob?.contactStatus ?? mailchimpJob?.status ?? "");
+  set("Mailchimp Audience Synced At", mailchimpJob?.audienceSyncedAt?.toISOString() ?? "");
+  set("Mailchimp Welcome Triggered At", mailchimpJob?.welcomeTriggeredAt?.toISOString() ?? "");
 
   if (record) {
     set("Member ID", memberId); if (record.member.firstName) set("First Name", record.member.firstName); set("Directory Display Name", record.profile.displayName);

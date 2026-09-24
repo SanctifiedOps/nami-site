@@ -432,7 +432,15 @@ async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
       nextAttemptAt: new Date(),
       createdAt: new Date(),
       updatedAt: new Date(),
-    }).onConflictDoNothing({ target: schema.mailchimpSyncJobs.applicationId })]);
+    }).onConflictDoNothing({ target: schema.mailchimpSyncJobs.applicationId }), db.insert(schema.bioGenerationJobs).values({
+      id: crypto.randomUUID(),
+      applicationId: d.memberId,
+      status: "pending",
+      attempts: 0,
+      nextAttemptAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }).onConflictDoNothing({ target: schema.bioGenerationJobs.applicationId })]);
     if (previousKey && previousKey !== uploadedKey) await bucket.delete(previousKey);
   } catch (error) {
     if (uploadedKey) {

@@ -18,6 +18,7 @@ export default function NetworkAdminPreviewPage() {
     applications={[{
       id: "preview-application", email: "hello@thirditeration.com", firstName: "Third", displayName: "Third Iteration", location: "Hexham", requestedCategory: "Publisher",
       bio: "Third Iteration is an independent publisher based in Hexham, making memoirs by people whose lives are more interesting than their public image. First titles include DJ Hurricane's memoir of life with the Beastie Boys and books from Matt Lewis and Jon Shield. I'm always keen to meet writers, designers, and photographers, and to connect on socials.",
+      suggestedBio: "Third Iteration is an independent publisher based in Hexham producing memoirs by musicians, creators, athletes and cultural outsiders.", bioGenerationStatus: "complete", bioGenerationError: null,
       websiteUrl: "https://thirditeration.com/", instagramUrl: "@third_iteration", status: "pending", submittedAt: iso(0), reviewedAt: null,
     }]}
     members={[
@@ -32,7 +33,7 @@ export default function NetworkAdminPreviewPage() {
       id: "NAMI-PREVIEW-01", memberId: "preview-1", name: "Preview member", email: "preview@local.test", subject: "Profile link needs checking", description: "This is representative preview content for the redesigned task view.", pageUrl: "http://localhost:3000/network/directory", status: "open", priority: "urgent", createdAt: iso(1), updatedAt: iso(1), resolvedAt: null,
     }]}
     events={[]}
-    operations={{ failedAlerts: 0, pendingAlerts: 1, failedEmails: 0, pendingEmails: 0, failedSyncs: 1, pendingSyncs: 0 }}
+    operations={{ failedAlerts: 0, pendingAlerts: 1, failedEmails: 0, pendingEmails: 0, failedSyncs: 1, pendingSyncs: 0, failedMailchimp: 0, pendingMailchimp: 0, failedBios: 0, pendingBios: 0 }}
     searchEvents={[
       { id: "search-1", eventType: "search", anonymousSessionId: "preview-a", searchQuery: "photographer", categoryFilter: "Photographers", locationFilter: "Newcastle", resultCount: 12, selectedMemberId: null, sourcePath: "/network/directory/all", createdAt: iso(1) },
       { id: "click-1", eventType: "result_clicked", anonymousSessionId: "preview-a", searchQuery: "photographer", categoryFilter: "Photographers", locationFilter: "Newcastle", resultCount: 12, selectedMemberId: "preview-3", sourcePath: "/network/directory/all", createdAt: iso(1) },
