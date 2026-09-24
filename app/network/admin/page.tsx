@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, gte } from "drizzle-orm";
 import { requireNetworkAdminSession } from "@/lib/network-auth/session";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { getGaSnapshot, getInstagramSnapshot, getMailchimpSnapshot } from "@/lib/network-admin/external-data";
@@ -13,7 +13,8 @@ const iso = (value: Date | null) => value?.toISOString() ?? null;
 export default async function NetworkAdminPage() {
   const admin = await requireNetworkAdminSession();
   const db = await getNetworkDb();
-  const [applications, memberRows, tickets, events, alerts, emailJobs, syncJobs, ga, instagram, mailchimp] = await Promise.all([
+  const searchCutoff = new Date(Date.now() - 90 * 86400000);
+  const [applications, memberRows, tickets, events, alerts, emailJobs, syncJobs, searchEvents, ga, instagram, mailchimp] = await Promise.all([
     db.select().from(schema.networkApplications).orderBy(desc(schema.networkApplications.submittedAt)),
     db.select({ member: schema.members, profile: schema.memberProfiles }).from(schema.members)
       .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id)).orderBy(desc(schema.members.joinedAt)),
@@ -22,6 +23,7 @@ export default async function NetworkAdminPage() {
     db.select().from(schema.ownerAlertJobs).orderBy(desc(schema.ownerAlertJobs.createdAt)).limit(100),
     db.select().from(schema.emailJobs).orderBy(desc(schema.emailJobs.createdAt)).limit(100),
     db.select().from(schema.sheetSyncJobs).orderBy(desc(schema.sheetSyncJobs.createdAt)).limit(100),
+    db.select().from(schema.directorySearchEvents).where(gte(schema.directorySearchEvents.createdAt, searchCutoff)).orderBy(desc(schema.directorySearchEvents.createdAt)).limit(5000),
     getGaSnapshot(),
     getInstagramSnapshot(),
     getMailchimpSnapshot(),
@@ -56,6 +58,7 @@ export default async function NetworkAdminPage() {
       failedSyncs: syncJobs.filter((item) => item.status === "failed").length,
       pendingSyncs: syncJobs.filter((item) => item.status === "pending").length,
     }}
+    searchEvents={searchEvents.map((item) => ({ ...item, createdAt: iso(item.createdAt)! }))}
     ga={ga}
     instagram={instagram}
     mailchimp={mailchimp}

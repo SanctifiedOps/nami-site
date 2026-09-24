@@ -24,6 +24,7 @@ type NetworkEvent = {
   bookingUrl: string | null; status: "pending" | "approved" | "rejected"; submittedAt: string; reviewedAt: string | null; publishedAt: string | null; updatedAt: string;
 };
 type Operations = { failedAlerts: number; pendingAlerts: number; failedEmails: number; pendingEmails: number; failedSyncs: number; pendingSyncs: number };
+type SearchEvent = { id: string; eventType: "search" | "result_clicked"; anonymousSessionId: string; searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number; selectedMemberId: string | null; sourcePath: string; createdAt: string };
 
 const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35px_rgb(0_0_0/0.16)] md:rounded-[1.5rem] md:shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
 const button = "rounded-full border border-line-strong px-4 py-2 text-xs font-bold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
@@ -42,8 +43,8 @@ function validUrl(value: string) {
   try { return ["http:", "https:"].includes(new URL(value).protocol); } catch { return false; }
 }
 
-export function AdminDashboard({ adminName, applications, members, tickets, events, operations, ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
-  adminName: string; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; operations: Operations; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
+export function AdminDashboard({ adminName, applications, members, tickets, events, operations, searchEvents = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
+  adminName: string; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; operations: Operations; searchEvents?: SearchEvent[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
@@ -76,6 +77,22 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
     if (member.location) counts[member.location] = (counts[member.location] ?? 0) + 1;
     return counts;
   }, {})).sort((a, b) => b[1] - a[1]), [members]);
+  const searchIntelligence = useMemo(() => {
+    const searches = searchEvents.filter((event) => event.eventType === "search");
+    const clicks = searchEvents.filter((event) => event.eventType === "result_clicked");
+    const count = (values: string[]) => Object.entries(values.reduce<Record<string, number>>((result, value) => {
+      if (value) result[value] = (result[value] ?? 0) + 1;
+      return result;
+    }, {})).sort((a, b) => b[1] - a[1]);
+    return {
+      total: searches.length,
+      zeroResults: searches.filter((event) => event.resultCount === 0).length,
+      clickRate: searches.length ? Math.round((clicks.length / searches.length) * 100) : 0,
+      terms: count(searches.map((event) => event.searchQuery).filter(Boolean)),
+      categories: count(searches.map((event) => event.categoryFilter).filter((value) => value !== "All categories")),
+      locations: count(searches.map((event) => event.locationFilter).filter((value) => value !== "All areas")),
+    };
+  }, [searchEvents]);
 
   async function runAction(key: string, payload: Record<string, unknown>) {
     setBusy(key); setMessage("");
@@ -168,6 +185,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
           <article className={`${panel} min-h-48 p-3 md:min-h-64 md:p-6`}><div className="flex items-center justify-between"><div><h3 className="text-sm md:text-xl">Audience engagement</h3><p className="mt-1 text-[10px] text-fg-subtle md:text-xs">Searches, visits, email and social activity</p></div><MousePointerClick size={18} className="text-sky-300 md:h-6 md:w-6" /></div><div className="mt-3 grid grid-cols-2 gap-2 [&>div]:!p-2 [&>div_span]:text-[9px] [&>div_strong]:!mt-1 [&>div_strong]:!text-xl md:mt-5 md:gap-3 md:[&>div]:!p-4 md:[&>div_span]:text-xs md:[&>div_strong]:!mt-2 md:[&>div_strong]:!text-2xl"><SmallMetric label="Directory searches" value={ga.directorySearches} /><SmallMetric label="Profile visits" value={ga.profileClicks} /><SmallMetric label="Email open rate (%)" value={mailchimp.openRate} /><SmallMetric label="Email click rate (%)" value={mailchimp.clickRate} /></div></article>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 md:mt-4 md:gap-4 lg:grid-cols-2"><Breakdown title="Member categories" items={categoryCounts.map(([name, count]) => [groupLabels.get(name) ?? name, count])} /><Breakdown title="Member locations" items={locationCounts} /></div>
+        <div className="mt-3 md:mt-4"><SectionHeading title="Search intelligence" note="" /><div className="mt-3 grid grid-cols-3 gap-2.5 md:grid-cols-3 md:gap-4"><SmallMetric label="Recorded searches" value={searchIntelligence.total} /><SmallMetric label="No results" value={searchIntelligence.zeroResults} /><SmallMetric label="Profile click rate (%)" value={searchIntelligence.clickRate} /></div><div className="mt-3 grid grid-cols-2 gap-2.5 md:gap-4 lg:grid-cols-3"><Breakdown title="Top search terms" items={searchIntelligence.terms} /><Breakdown title="Category demand" items={searchIntelligence.categories} /><Breakdown title="Location demand" items={searchIntelligence.locations} /></div></div>
       </section>}
 
       {activeView === "members" && <><section id="applications" className="pt-2 md:pt-10">

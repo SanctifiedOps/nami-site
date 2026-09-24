@@ -329,3 +329,25 @@ export const ownerAlertJobs = sqliteTable(
     index("owner_alert_jobs_record_idx").on(table.kind, table.recordId),
   ],
 );
+
+export const directorySearchEvents = sqliteTable(
+  "directory_search_events",
+  {
+    id: text("id").primaryKey(),
+    eventType: text("event_type", { enum: ["search", "result_clicked"] }).notNull(),
+    anonymousSessionId: text("anonymous_session_id").notNull(),
+    searchQuery: text("search_query").notNull().default(""),
+    categoryFilter: text("category_filter").notNull().default("All categories"),
+    locationFilter: text("location_filter").notNull().default("All areas"),
+    resultCount: integer("result_count").notNull().default(0),
+    selectedMemberId: text("selected_member_id"),
+    sourcePath: text("source_path").notNull().default("/network/directory"),
+    dedupeKey: text("dedupe_key").notNull().unique(),
+    createdAt: now("created_at"),
+  },
+  (table) => [
+    index("directory_search_events_created_idx").on(table.createdAt),
+    index("directory_search_events_query_idx").on(table.searchQuery, table.createdAt),
+    index("directory_search_events_type_idx").on(table.eventType, table.createdAt),
+  ],
+);

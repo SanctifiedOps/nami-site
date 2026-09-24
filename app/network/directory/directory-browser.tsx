@@ -29,6 +29,25 @@ const locationGroups = [
   "Elsewhere",
 ] as const;
 
+const DIRECTORY_SESSION_KEY = "nami_directory_session_id";
+
+function directorySessionId() {
+  const existing = sessionStorage.getItem(DIRECTORY_SESSION_KEY);
+  if (existing) return existing;
+  const id = crypto.randomUUID();
+  sessionStorage.setItem(DIRECTORY_SESSION_KEY, id);
+  return id;
+}
+
+function recordDirectoryEvent(payload: { eventType: "search" | "result_clicked"; searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number; selectedMemberId?: string }) {
+  void fetch("/api/network/directory-analytics", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    keepalive: true,
+    body: JSON.stringify({ ...payload, anonymousSessionId: directorySessionId(), sourcePath: window.location.pathname }),
+  }).catch(() => undefined);
+}
+
 function locationGroup(location: string): (typeof locationGroups)[number] {
   const value = location.toLowerCase();
   if (value.includes("newcastle") || value.includes("ouseburn")) return "Newcastle";
@@ -132,6 +151,13 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
         location_filter: location,
         result_count: filtered.length,
       });
+      recordDirectoryEvent({
+        eventType: "search",
+        searchQuery: query,
+        categoryFilter: category,
+        locationFilter: location,
+        resultCount: filtered.length,
+      });
     }, 700);
     return () => window.clearTimeout(timer);
   }, [category, filtered.length, hasFilters, location, query]);
@@ -197,7 +223,7 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
 
       {previewOnly && !hasFilters ? null : filtered.length > 0 ? (
         <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((member) => <DirectoryMemberCard key={member.id} member={member} />)}
+          {filtered.map((member) => <DirectoryMemberCard key={member.id} member={member} analyticsContext={{ searchQuery: query, categoryFilter: category, locationFilter: location, resultCount: filtered.length }} />)}
         </div>
       ) : (
         <div className="mt-8 rounded-3xl border border-line bg-surface-1/40 px-6 py-16 text-center">
@@ -237,7 +263,11 @@ function FilterSelect({
   );
 }
 
-export function DirectoryMemberCard({ member }: { member: NetworkDirectoryMember }) {
+export function DirectoryMemberCard({ member, analyticsContext }: { member: NetworkDirectoryMember; analyticsContext?: { searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number } }) {
+  const recordSelection = () => {
+    trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "profile", category: member.category });
+    if (analyticsContext) recordDirectoryEvent({ eventType: "result_clicked", ...analyticsContext, selectedMemberId: member.id });
+  };
   return (
     <article className="group relative flex min-h-72 flex-col overflow-hidden rounded-3xl border border-line bg-surface-1/55 p-6 transition-colors hover:border-accent/45 md:p-7">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent/70 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
@@ -255,7 +285,7 @@ export function DirectoryMemberCard({ member }: { member: NetworkDirectoryMember
       <h2 className="mt-6 text-2xl font-semibold leading-[1.02] tracking-tight">
         <Link
           href={`/network/directory/member/${member.id}`}
-          onClick={() => trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "profile", category: member.category })}
+          onClick={recordSelection}
           className="transition-colors hover:text-accent"
         >
           <span aria-hidden className="absolute inset-0" />
@@ -271,7 +301,7 @@ export function DirectoryMemberCard({ member }: { member: NetworkDirectoryMember
       <div className="mt-auto flex flex-wrap gap-x-5 gap-y-3 pt-7">
         <Link
           href={`/network/directory/member/${member.id}`}
-          onClick={() => trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "profile", category: member.category })}
+          onClick={recordSelection}
           className="relative z-10 inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
         >
           View profile
