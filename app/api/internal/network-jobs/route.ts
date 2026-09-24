@@ -8,6 +8,8 @@ export async function POST(request: Request) {
   const rotate = searchParams.get("rotateFeatured") === "1";
   const requestedType = searchParams.get("jobType");
   const jobType = requestedType === "sheet" || requestedType === "email" || requestedType === "mailchimp" || requestedType === "bio" || requestedType === "owner" ? requestedType : "all";
+  const requestedLimit = Number(searchParams.get("limit"));
+  const limit = Number.isFinite(requestedLimit) ? Math.max(1, Math.min(25, Math.floor(requestedLimit))) : 10;
   const featured = rotate ? await rotateFeaturedMember() : null;
-  return Response.json({ ...(await processNetworkJobs(10, jobType)), featured });
+  return Response.json({ ...(await processNetworkJobs(limit, jobType)), featured });
 }
