@@ -7,8 +7,12 @@ import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
 import { findMemberSheetRow } from "./find-sheet-row";
 
 const COLUMNS = [
-  "Member ID", "First Name", "Email", "Directory Display Name", "Location", "Main Directory Group",
-  "Speciality", "Bio", "About", "Website", "Instagram", "Facebook", "LinkedIn", "TikTok", "YouTube",
+  "Submitted At", "Name", "Email", "Instagram", "Category", "City / Area", "Region",
+  "Project Link", "What NAMI should know", "Source", "Submission Type", "Mailchimp Segment",
+  "Last Featured Date", "Feature Status", "Feature Notes", "Follow-up Status", "Internal Notes",
+  "Profile Image", "Image Alt Text", "Image Status", "Image Updated", "Directory Bio", "Directory ID",
+  "Member ID", "First Name", "Directory Display Name", "Location", "Main Directory Group",
+  "Speciality", "Bio", "About", "Website", "Facebook", "LinkedIn", "TikTok", "YouTube",
   "Account Status", "Profile Image Key", "Portfolio Image 1", "Portfolio Image 1 Alt", "Portfolio Image 2",
   "Portfolio Image 2 Alt", "Portfolio Image 3", "Portfolio Image 3 Alt", "Portfolio Image 4",
   "Portfolio Image 4 Alt", "Last Member Update", "Last Successful Sync", "Sync Status",
@@ -68,8 +72,12 @@ export async function syncMemberToGoogleSheet(memberId: string) {
   const [record] = await db.select({ member: schema.members, profile: schema.memberProfiles }).from(schema.members)
     .innerJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id))
     .where(eq(schema.members.id, memberId)).limit(1);
-  if (!record) throw new Error(`Member ${memberId} was not found.`);
-  const images = await db.select().from(schema.profileImages).where(eq(schema.profileImages.memberId, memberId)).orderBy(schema.profileImages.position);
+  const [application] = await db.select().from(schema.networkApplications)
+    .where(eq(schema.networkApplications.id, memberId)).limit(1);
+  if (!record && !application) throw new Error(`Member or application ${memberId} was not found.`);
+  const images = record
+    ? await db.select().from(schema.profileImages).where(eq(schema.profileImages.memberId, memberId)).orderBy(schema.profileImages.position)
+    : [];
   const token = await googleToken();
   await ensureSheetTab(sheetId, sheetName, token);
   const rangeName = encodeURIComponent(`'${sheetName}'!A:AZ`);
@@ -88,14 +96,62 @@ export async function syncMemberToGoogleSheet(memberId: string) {
   const previous = rowIndex >= 1 ? rows[rowIndex] : [];
   const values = [...previous, ...Array(Math.max(0, headers.length - previous.length)).fill("")];
   const set = (column: typeof COLUMNS[number], value: string) => { values[headers.indexOf(column)] = value; };
+  const setIfEmpty = (column: typeof COLUMNS[number], value: string) => {
+    const index = headers.indexOf(column);
+    if (index >= 0 && !values[index]) values[index] = value;
+  };
   const syncedAt = new Date().toISOString();
-  set("Member ID", memberId); if (record.member.firstName) set("First Name", record.member.firstName); set("Email", record.member.email); set("Directory Display Name", record.profile.displayName);
-  set("Location", record.profile.location); set("Main Directory Group", record.profile.primaryGroup); set("Speciality", record.profile.speciality);
-  set("Bio", record.profile.bio); set("About", record.profile.about); set("Website", record.profile.websiteUrl ?? ""); set("Instagram", record.profile.instagramUrl ?? "");
-  set("Facebook", record.profile.facebookUrl ?? ""); set("LinkedIn", record.profile.linkedinUrl ?? ""); set("TikTok", record.profile.tiktokUrl ?? ""); set("YouTube", record.profile.youtubeUrl ?? "");
-  set("Account Status", record.member.accountStatus); set("Profile Image Key", record.profile.profileImageKey ?? "");
-  images.slice(0, 4).forEach((image, index) => { set(`Portfolio Image ${index + 1}` as typeof COLUMNS[number], image.r2Key); set(`Portfolio Image ${index + 1} Alt` as typeof COLUMNS[number], image.altText); });
-  set("Last Member Update", record.profile.updatedAt.toISOString()); set("Last Successful Sync", syncedAt); set("Sync Status", "Synced");
+  const displayName = application?.displayName ?? record?.profile.displayName ?? "";
+  const email = application?.email ?? record?.member.email ?? "";
+  const location = application?.location ?? record?.profile.location ?? "";
+  const submittedAt = application?.submittedAt.toISOString() ?? record?.member.joinedAt.toISOString() ?? syncedAt;
+  const website = application?.websiteUrl ?? record?.profile.websiteUrl ?? "";
+  const instagram = application?.instagramUrl ?? record?.profile.instagramUrl ?? "";
+  const originalBio = application?.bio ?? record?.profile.about ?? record?.profile.bio ?? "";
+  const profileImageKey = record?.profile.profileImageKey ?? "";
+  const envBaseUrl = (env.APP_URL || "https://namicreative.co.uk").replace(/\/$/, "");
+  const profileImageUrl = profileImageKey
+    ? `${envBaseUrl}/api/network/media/${profileImageKey.split("/").map(encodeURIComponent).join("/")}`
+    : "";
+
+  // Preserve the original Make intake schema at the front of the workbook. These
+  // fields describe the application as submitted, so later profile edits do not
+  // erase or silently rewrite the source record.
+  setIfEmpty("Submitted At", submittedAt);
+  setIfEmpty("Name", displayName);
+  set("Email", email);
+  set("Instagram", instagram);
+  setIfEmpty("Category", application?.requestedCategory ?? record?.profile.speciality ?? "");
+  setIfEmpty("City / Area", location);
+  setIfEmpty("Region", "North East");
+  setIfEmpty("Project Link", website);
+  setIfEmpty("What NAMI should know", originalBio);
+  setIfEmpty("Source", "namicreative.co.uk/network");
+  setIfEmpty("Submission Type", "feature-submission");
+  setIfEmpty("Mailchimp Segment", "Creative Network");
+  setIfEmpty("Feature Status", record?.profile.featured ? "Featured" : "Not featured");
+  setIfEmpty("Follow-up Status", "No follow-up yet");
+  set("Profile Image", profileImageUrl);
+  setIfEmpty("Image Alt Text", `${displayName} profile picture`);
+  set("Image Status", profileImageUrl ? "Ready" : "Missing");
+  setIfEmpty("Image Updated", submittedAt);
+  if (record) set("Directory Bio", record.profile.bio);
+  set("Directory ID", memberId);
+
+  if (record) {
+    set("Member ID", memberId); if (record.member.firstName) set("First Name", record.member.firstName); set("Directory Display Name", record.profile.displayName);
+    set("Location", record.profile.location); set("Main Directory Group", record.profile.primaryGroup); set("Speciality", record.profile.speciality);
+    set("Bio", record.profile.bio); set("About", record.profile.about); set("Website", record.profile.websiteUrl ?? "");
+    set("Facebook", record.profile.facebookUrl ?? ""); set("LinkedIn", record.profile.linkedinUrl ?? ""); set("TikTok", record.profile.tiktokUrl ?? ""); set("YouTube", record.profile.youtubeUrl ?? "");
+    set("Account Status", record.member.accountStatus); set("Profile Image Key", profileImageKey);
+    images.slice(0, 4).forEach((image, index) => { set(`Portfolio Image ${index + 1}` as typeof COLUMNS[number], image.r2Key); set(`Portfolio Image ${index + 1} Alt` as typeof COLUMNS[number], image.altText); });
+    set("Last Member Update", record.profile.updatedAt.toISOString());
+  } else {
+    set("Directory Display Name", displayName);
+    set("First Name", application?.firstName ?? "");
+    set("Location", location);
+  }
+  set("Last Successful Sync", syncedAt); set("Sync Status", "Synced");
   const updateRange = encodeURIComponent(`'${sheetName}'!A${targetRow}:${columnLetters(headers.length)}${targetRow}`);
   await sheetsRequest(sheetId, `/values/${updateRange}?valueInputOption=RAW`, token, { method: "PUT", body: JSON.stringify({ values: [values.slice(0, headers.length)] }) });
 }

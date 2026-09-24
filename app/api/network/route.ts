@@ -389,7 +389,7 @@ async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
     await bucket.put(uploadedKey, await image.arrayBuffer(), {
       httpMetadata: { contentType: "image/webp", cacheControl: "private, no-store" },
     });
-    await db.insert(schema.networkApplications).values({
+    await db.batch([db.insert(schema.networkApplications).values({
       id: d.memberId,
       email: d.email.toLowerCase(),
       firstName: d.firstName,
@@ -416,7 +416,15 @@ async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
         profileImageKey: uploadedKey,
         status: "pending",
       },
-    });
+    }), db.insert(schema.sheetSyncJobs).values({
+      id: crypto.randomUUID(),
+      memberId: d.memberId,
+      status: "pending",
+      attempts: 0,
+      nextAttemptAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })]);
     if (previousKey && previousKey !== uploadedKey) await bucket.delete(previousKey);
   } catch (error) {
     if (uploadedKey) {
