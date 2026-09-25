@@ -1,5 +1,6 @@
 import { and, asc, eq, gte, ne } from "drizzle-orm";
 import { Accessibility, ArrowLeft, ArrowUpRight, CalendarDays, Clock3, MapPin, Ticket, UserRound } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getNetworkDb, schema } from "@/lib/network-db";
@@ -8,6 +9,21 @@ import { EventActions } from "./event-actions";
 
 const media=(key:string)=>`/api/network/media/${key.split("/").map(encodeURIComponent).join("/")}`;
 export const dynamic="force-dynamic";
+
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
+  const {slug}=await params, db=await getNetworkDb();
+  const [event]=await db.select().from(schema.networkEvents).where(and(eq(schema.networkEvents.slug,slug),eq(schema.networkEvents.status,"approved"))).limit(1);
+  if(!event)return {title:"Network event",description:"An event from the NAMI Creative Network."};
+  const url=`https://namicreative.co.uk/network/events/${event.slug}`;
+  const image=event.coverImageKey?`https://namicreative.co.uk${media(event.coverImageKey)}`:undefined;
+  return {
+    title:`${event.title} | NAMI Creative Network`,
+    description:event.summary,
+    alternates:{canonical:url},
+    openGraph:{title:event.title,description:event.summary,url,type:"website",siteName:"NAMI Creative Network",images:image?[{url:image,alt:event.coverImageAlt||event.title}]:undefined},
+    twitter:{card:image?"summary_large_image":"summary",title:event.title,description:event.summary,images:image?[image]:undefined},
+  };
+}
 
 export default async function EventPage({params}:{params:Promise<{slug:string}>}){
   const {slug}=await params, db=await getNetworkDb();
