@@ -28,8 +28,8 @@
   },
   "vars": {
     "APP_ENV": "production",
-    "OUTBOUND_EMAIL_MODE": "hold",
-    "MEMBER_INVITATIONS_MODE": "hold",
+    "OUTBOUND_EMAIL_MODE": "live",
+    "MEMBER_INVITATIONS_MODE": "live",
     "OUTBOUND_EMAIL_RETRY_MODE": "hold",
     "EXTERNAL_INTEGRATIONS_MODE": "hold",
     "MAILCHIMP_NETWORK_MODE": "live",
