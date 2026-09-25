@@ -11,6 +11,7 @@ type TurnstileApi = {
     "expired-callback": () => void;
     "error-callback": () => void;
     theme: "dark";
+    size?: "flexible";
   }) => string;
   reset: (widgetId?: string) => void;
 };
@@ -46,6 +47,7 @@ export function InviteForm({ token, turnstileSiteKey }: { token: string; turnsti
       turnstileWidgetId.current = window.turnstile.render(turnstileContainer.current, {
         sitekey: turnstileSiteKey,
         theme: "dark",
+        size: "flexible",
         callback: (responseToken) => {
           setTurnstileToken(responseToken);
           setTurnstileReady(true);
@@ -116,11 +118,11 @@ export function InviteForm({ token, turnstileSiteKey }: { token: string; turnsti
   return (
     <form onSubmit={submit} className="mt-8 space-y-5">
       <p className="rounded-xl border border-line bg-surface-0 p-4 text-sm text-fg-muted">
-        Creating an account for <strong className="text-fg">{details.displayName}</strong><br />{details.email}
+        Creating an account for <strong className="text-fg">{details.displayName}</strong><br /><span className="break-all">{details.email}</span>
       </p>
       <PasswordField name="password" label="Create a password" autoComplete="new-password" minLength={10} required hint="Use at least 10 characters." />
       <PasswordField name="confirmPassword" label="Confirm password" autoComplete="new-password" minLength={10} required />
-      {turnstileSiteKey && <div ref={turnstileContainer} className="min-h-[65px]" />}
+      {turnstileSiteKey && <div ref={turnstileContainer} className="min-h-[65px] w-full min-w-0 overflow-hidden" />}
       {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
       <button disabled={busy || !turnstileReady} className="w-full rounded-full bg-accent px-6 py-3 font-bold text-white disabled:opacity-60">
         {busy ? "Creating your account..." : "Create my account"}

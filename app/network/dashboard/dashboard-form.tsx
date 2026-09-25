@@ -5,6 +5,7 @@ import { ExternalLink, Pencil, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { networkAuthClient } from "@/lib/network-auth/client";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
+import { cropImageToWebp } from "@/lib/network/prepare-dashboard-image";
 
 type Profile = {
   memberId: string;
@@ -50,37 +51,6 @@ const communityLinks = [
     href: "https://www.facebook.com/groups/1033572522893615",
   },
 ];
-
-async function cropToWebp(file: File, width: number, height: number) {
-  const bitmap = await createImageBitmap(file);
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const context = canvas.getContext("2d");
-  if (!context) throw new Error("Image processing is unavailable.");
-  const scale = Math.max(width / bitmap.width, height / bitmap.height);
-  const sourceWidth = width / scale;
-  const sourceHeight = height / scale;
-  const sourceX = (bitmap.width - sourceWidth) / 2;
-  const sourceY = (bitmap.height - sourceHeight) / 2;
-  context.drawImage(
-    bitmap,
-    sourceX,
-    sourceY,
-    sourceWidth,
-    sourceHeight,
-    0,
-    0,
-    width,
-    height,
-  );
-  bitmap.close();
-  const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, "image/webp", 0.86),
-  );
-  if (!blob) throw new Error("The image could not be processed.");
-  return new File([blob], "nami-profile.webp", { type: "image/webp" });
-}
 
 export function DashboardForm({
   initialProfile,
@@ -162,10 +132,11 @@ export function DashboardForm({
     setStatus("Preparing your image...");
     if (kind === "portfolio") setPortfolioStatus("Preparing your image...");
     try {
-      const processed = await cropToWebp(
+      const processed = await cropImageToWebp(
         source,
         kind === "profile" ? 1000 : 1080,
         kind === "profile" ? 1000 : 1440,
+        kind === "profile" ? "profile-photo.webp" : "portfolio-image.webp",
       );
       const data = new FormData();
       data.set("image", processed);
@@ -369,14 +340,13 @@ export function DashboardForm({
               Choose a new picture
               <input
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept="image/*"
                 onChange={(event) => upload(event, "profile")}
                 className="sr-only"
               />
             </label>
             <p className="mt-3 text-xs text-fg-subtle">
-              I’ll crop it to a square for you. Choose a clear image at least
-              1000px wide.
+              I’ll crop, resize and optimise it for you.
             </p>
           </section>
           <section className="rounded-[1.5rem] border border-line bg-surface-1 p-6">
@@ -552,7 +522,7 @@ export function DashboardForm({
               Add an image
               <input
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept="image/*"
                 onChange={(event) => upload(event, "portfolio")}
                 className="sr-only"
               />

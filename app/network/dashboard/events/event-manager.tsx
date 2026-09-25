@@ -2,6 +2,7 @@
 
 import { FormEvent, InvalidEvent, useRef, useState } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
+import { cropImageToWebp } from "@/lib/network/prepare-dashboard-image";
 
 type EventRecord = { id:string; slug:string|null; title:string; eventType:string; summary:string; fullDescription:string; venue:string; address:string; location:string; region:string; format:string; startsAt:string; endsAt:string|null; priceType:string; priceDetails:string; bookingUrl:string|null; accessibility:string; ageGuidance:string; contactEmail:string; status:string; coverImageKey:string|null; coverImageAlt:string; adminFeedback:string|null; changesPending?:boolean };
 const field = "mt-1 w-full rounded-xl border border-line-strong bg-surface-0 px-3 py-3 text-sm transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40";
@@ -33,20 +34,7 @@ function DateTimePicker({name,label,required=false,initialValue=null}:{name:stri
 }
 
 async function prepareCoverImage(file:File){
-  if(!file.type.startsWith("image/")) throw new Error("Choose a JPG, PNG or WebP image.");
-  const bitmap=await createImageBitmap(file), canvas=document.createElement("canvas");
-  canvas.width=1080; canvas.height=1350;
-  const context=canvas.getContext("2d");
-  if(!context) throw new Error("Image processing is unavailable in this browser.");
-  const scale=Math.max(canvas.width/bitmap.width,canvas.height/bitmap.height), sourceWidth=canvas.width/scale, sourceHeight=canvas.height/scale;
-  context.drawImage(bitmap,(bitmap.width-sourceWidth)/2,(bitmap.height-sourceHeight)/2,sourceWidth,sourceHeight,0,0,canvas.width,canvas.height);
-  bitmap.close();
-  let quality=.88, blob:Blob|null=null;
-  do { blob=await new Promise<Blob|null>(resolve=>canvas.toBlob(resolve,"image/webp",quality)); quality-=.08; }
-  while(blob&&blob.size>2*1024*1024&&quality>=.56);
-  if(!blob) throw new Error("The image could not be prepared. Try another file.");
-  if(blob.size>2*1024*1024) throw new Error("This image is still too large after optimisation. Try a smaller image.");
-  return new File([blob],"event-cover.webp",{type:"image/webp"});
+  return cropImageToWebp(file,1080,1350,"event-cover.webp");
 }
 
 export function EventManager({initialEvents}:{initialEvents:EventRecord[]}){
@@ -97,7 +85,7 @@ export function EventManager({initialEvents}:{initialEvents:EventRecord[]}){
       <label className="text-sm font-bold md:col-span-2">Short summary<textarea name="summary" defaultValue={editing?.summary||""} required minLength={20} maxLength={320} className={field}/></label>
       <label className="text-sm font-bold md:col-span-2">Full description<textarea name="fullDescription" defaultValue={editing?.fullDescription||""} required minLength={20} rows={7} className={field}/></label>
       <label className="text-sm font-bold md:col-span-2">Accessibility information<textarea name="accessibility" defaultValue={editing?.accessibility||""} className={field}/></label>
-      <label className="text-sm font-bold">Cover image<input name="image" type="file" accept="image/jpeg,image/png,image/webp" required={!editing?.coverImageKey} className={field}/><span className="mt-2 block text-xs font-normal text-fg-muted">{editing?.coverImageKey?"Choose a file only if you want to replace the current image.":"Choose a clear portrait image. We'll crop and optimise it for you."}</span></label>
+      <label className="text-sm font-bold">Cover image<input name="image" type="file" accept="image/*" required={!editing?.coverImageKey} className={field}/><span className="mt-2 block text-xs font-normal text-fg-muted">{editing?.coverImageKey?"Choose a photo only if you want to replace the current image.":"Choose a photo from your device. We'll crop, resize and optimise it for you."}</span></label>
       <label className="text-sm font-bold">Image description<input name="coverImageAlt" defaultValue={editing?.coverImageAlt||""} required minLength={4} className={field}/><span className="mt-2 block text-xs font-normal text-fg-muted">Briefly describe what is in the image for people using screen readers.</span></label>
       {message&&<p role="status" className="text-sm text-accent md:col-span-2">{message}</p>}
       <button className="rounded-full bg-accent px-5 py-3 font-bold text-white md:col-span-2">{editing?.status==="approved"?"Submit changes for approval":"Submit for approval"}</button>

@@ -9,6 +9,7 @@ type TurnstileApi = {
     "expired-callback": () => void;
     "error-callback": () => void;
     theme: "dark";
+    size?: "flexible";
   }) => string;
   reset: (widgetId?: string) => void;
 };
