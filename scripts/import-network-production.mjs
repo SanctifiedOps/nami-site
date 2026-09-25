@@ -93,7 +93,7 @@ const members = [...existing, ...sheetOnly].map((entry) => validMember({
   primary_group: canonicalGroups.get(entry.primary_group) ?? entry.primary_group,
   email: entry.email.trim().toLowerCase(),
   email_normalized: entry.email.trim().toLowerCase(),
-  account_status: entry.account_status === "disabled" ? "disabled" : "invited",
+  account_status: entry.account_status === "disabled" ? "disabled" : "unclaimed",
   approval_status: "approved",
   published: Number(entry.published) === 1 ? 1 : 0,
   featured: Number(entry.featured) === 1 ? 1 : 0,

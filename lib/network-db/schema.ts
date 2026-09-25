@@ -117,7 +117,7 @@ export const members = sqliteTable(
     authUserId: text("auth_user_id").unique(),
     accountStatus: text("account_status", { enum: ["unclaimed", "invited", "active", "disabled"] })
       .notNull()
-      .default("invited"),
+      .default("unclaimed"),
     approvalStatus: text("approval_status", { enum: ["pending", "approved", "rejected"] })
       .notNull()
       .default("approved"),

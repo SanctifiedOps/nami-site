@@ -1,10 +1,11 @@
 "use client";
 
 import { FormEvent, InvalidEvent, useRef, useState } from "react";
-import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Clock3, MapPin, Send } from "lucide-react";
 import { cropImageToWebp } from "@/lib/network/prepare-dashboard-image";
 
 type EventRecord = { id:string; slug:string|null; title:string; eventType:string; summary:string; fullDescription:string; venue:string; address:string; location:string; region:string; format:string; startsAt:string; endsAt:string|null; priceType:string; priceDetails:string; bookingUrl:string|null; accessibility:string; ageGuidance:string; contactEmail:string; status:string; coverImageKey:string|null; coverImageAlt:string; adminFeedback:string|null; changesPending?:boolean };
+type UpcomingEvent = Pick<EventRecord,"id"|"slug"|"title"|"eventType"|"summary"|"venue"|"location"|"startsAt"|"priceType"|"coverImageKey"|"coverImageAlt">;
 const field = "mt-1 w-full rounded-xl border border-line-strong bg-surface-0 px-3 py-3 text-sm transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40";
 const basicFields = [["title","Event name"],["eventType","Event type"],["venue","Venue"],["address","Address"],["location","Town or area"],["region","Region"],["bookingUrl","Event or information link","url"],["ageGuidance","Age guidance"],["contactEmail","Contact email","email"]] as const;
 const requiredFields = new Set(["title","eventType","venue","location","region"]);
@@ -37,7 +38,10 @@ async function prepareCoverImage(file:File){
   return cropImageToWebp(file,1080,1350,"event-cover.webp");
 }
 
-export function EventManager({initialEvents}:{initialEvents:EventRecord[]}){
+const media=(key:string)=>`/api/network/media/${key.split("/").map(encodeURIComponent).join("/")}`;
+const statusLabels:Record<string,string>={draft:"Draft",pending:"Awaiting approval",approved:"Live",rejected:"Changes requested",cancelled:"Cancelled",past:"Past"};
+
+export function EventManager({initialEvents,upcomingEvents}:{initialEvents:EventRecord[];upcomingEvents:UpcomingEvent[]}){
   const [events]=useState(initialEvents), [open,setOpen]=useState(false), [editing,setEditing]=useState<EventRecord|null>(null), [message,setMessage]=useState(""), [priceType,setPriceType]=useState("free");
   const invalidHandled=useRef(false);
 
@@ -72,8 +76,24 @@ export function EventManager({initialEvents}:{initialEvents:EventRecord[]}){
     }catch(error){setMessage(error instanceof Error?error.message:"Could not save the event.");}
   }
 
-  return <main className="container-shell min-h-screen pb-24 pt-24">
-    <div className="flex items-center justify-between"><div><a href="/network/dashboard" className="text-sm text-accent">← Dashboard</a><h1 className="mt-3 text-4xl">Your events</h1></div><button onClick={()=>{setEditing(null);setPriceType("free");setOpen(!open);}} className="rounded-full bg-accent px-5 py-3 font-bold text-white">{open?"Close":"Add an event"}</button></div>
+  return <main className="relative min-h-screen overflow-hidden pb-24 pt-24">
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-[760px] [mask-image:linear-gradient(to_bottom,black_0%,black_48%,transparent_100%)]">
+      <div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-surface-0/30 via-surface-0/75 to-surface-0" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(255,0,188,.28),transparent_42%)]" />
+    </div>
+    <div className="container-shell relative z-10">
+    <section className="max-w-4xl pt-8 md:pt-14">
+      <a href="/network/dashboard" className="text-sm font-bold text-accent">← Dashboard</a>
+      <p className="mt-8 text-xs font-bold uppercase tracking-[.16em] text-accent">Member events</p>
+      <div className="mt-3 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <div><h1 className="text-5xl leading-[.95] md:text-7xl">Share what you’re<br/><span className="text-accent">putting on</span></h1><p className="mt-5 max-w-2xl text-base leading-7 text-fg-muted md:text-lg">Add your event once and we’ll prepare it for the Network calendar. You can manage updates, links and event details here.</p></div>
+        <button onClick={()=>{setEditing(null);setPriceType("free");setOpen(!open);}} className="shrink-0 rounded-full bg-accent px-6 py-3 font-bold text-white shadow-[0_12px_36px_rgba(255,0,188,.24)]">{open?"Close form":"Add an event"}</button>
+      </div>
+      <div className="mt-10 grid gap-3 sm:grid-cols-3">
+        {[{icon:Send,title:"Submit",copy:"Add the details, image and link."},{icon:Clock3,title:"Review",copy:"NAMI checks it before publishing."},{icon:CheckCircle2,title:"Live",copy:"Approved events join the public calendar."}].map(({icon:Icon,title,copy},index)=><article key={title} className="rounded-2xl border border-line bg-surface-1/90 p-4 backdrop-blur"><div className="flex items-center gap-3"><span className="flex size-9 items-center justify-center rounded-full bg-accent/15 text-accent"><Icon size={17}/></span><div><p className="text-[10px] font-bold uppercase tracking-wider text-fg-subtle">Step {index+1}</p><h2 className="text-lg">{title}</h2></div></div><p className="mt-3 text-sm text-fg-muted">{copy}</p></article>)}
+      </div>
+    </section>
     {open&&<form key={editing?.id||"new-event"} onSubmit={submit} onInvalid={handleInvalid} className="mt-8 grid gap-4 rounded-3xl border border-line bg-surface-1 p-5 md:grid-cols-2">
       <h2 className="text-2xl md:col-span-2">{editing?`Edit ${editing.title}`:"Add an event"}</h2>
       {basicFields.map(([name,label,type])=><label key={name} className="text-sm font-bold">{label}<input name={name} type={type||"text"} defaultValue={editing?.[name]??""} required={requiredFields.has(name)} className={field}/></label>)}
@@ -90,6 +110,15 @@ export function EventManager({initialEvents}:{initialEvents:EventRecord[]}){
       {message&&<p role="status" className="text-sm text-accent md:col-span-2">{message}</p>}
       <button className="rounded-full bg-accent px-5 py-3 font-bold text-white md:col-span-2">{editing?.status==="approved"?"Submit changes for approval":"Submit for approval"}</button>
     </form>}
-    <section className="mt-8 grid gap-4 md:grid-cols-2">{events.map(event=><article key={event.id} className="rounded-2xl border border-line bg-surface-1 p-5"><div className="flex justify-between gap-3"><h2 className="text-2xl">{event.title}</h2><span className="text-xs text-accent">{event.changesPending?"Changes awaiting approval":event.status}</span></div><p className="mt-2 text-sm text-fg-muted">{new Date(event.startsAt).toLocaleString("en-GB")} · {event.venue}, {event.location}</p>{event.adminFeedback&&<p className="mt-3 text-sm text-amber-300">{event.adminFeedback}</p>}<div className="mt-4 flex flex-wrap gap-3">{event.status==="approved"&&event.slug&&<a href={`/network/events/${event.slug}`} className="text-sm font-bold text-accent">View</a>}{event.status!=="cancelled"&&!event.changesPending&&<button onClick={()=>{setEditing(event);setPriceType(event.priceType);setOpen(true);window.scrollTo({top:0,behavior:"smooth"});}} className="text-sm font-bold">Edit</button>}<button onClick={()=>void action({action:"duplicate",eventId:event.id})} className="text-sm font-bold">Duplicate</button>{event.status!=="cancelled"&&<button onClick={()=>void action({action:"cancel",eventId:event.id})} className="text-sm font-bold text-red-300">Cancel</button>}</div></article>)}</section>
+    <section className="mt-16">
+      <div className="flex items-end justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.15em] text-accent">Manage</p><h2 className="mt-2 text-3xl md:text-5xl">Your events</h2></div><span className="text-sm text-fg-muted">{events.length} {events.length===1?"event":"events"}</span></div>
+      {events.length===0?<div className="mt-6 rounded-3xl border border-dashed border-accent/40 bg-surface-1/80 p-8 text-center"><CalendarDays className="mx-auto text-accent"/><h3 className="mt-4 text-2xl">Nothing here yet</h3><p className="mx-auto mt-2 max-w-md text-sm text-fg-muted">Add your first event and submit it for the public Network calendar.</p></div>:<div className="mt-6 grid gap-4 md:grid-cols-2">{events.map(event=><article key={event.id} className="overflow-hidden rounded-3xl border border-line bg-surface-1/95 shadow-[0_18px_55px_rgba(0,0,0,.24)]"><div className="grid grid-cols-[7rem_1fr] sm:grid-cols-[9rem_1fr]">{event.coverImageKey?<img src={media(event.coverImageKey)} alt={event.coverImageAlt} className="h-full min-h-48 w-full object-cover"/>:<div className="min-h-48 bg-[url('/network-news/creative-night.jpg')] bg-cover bg-center"/>}<div className="p-5"><div className="flex flex-wrap items-start justify-between gap-2"><span className="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-accent">{event.changesPending?"Changes awaiting approval":statusLabels[event.status]||event.status}</span><span className="text-[10px] font-bold uppercase tracking-wider text-fg-subtle">{event.eventType}</span></div><h3 className="mt-4 text-2xl">{event.title}</h3><p className="mt-2 text-xs leading-5 text-fg-muted">{new Date(event.startsAt).toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short",timeZone:"Europe/London"})}</p><p className="mt-1 flex items-center gap-1 text-xs text-fg-subtle"><MapPin size={12} className="text-accent"/>{event.venue}, {event.location}</p>{event.adminFeedback&&<p className="mt-3 rounded-xl border border-amber-300/25 bg-amber-300/5 p-3 text-xs text-amber-200">{event.adminFeedback}</p>}<div className="mt-5 flex flex-wrap gap-x-4 gap-y-2">{event.status==="approved"&&event.slug&&<a href={`/network/events/${event.slug}`} className="text-sm font-bold text-accent">View event</a>}{event.status!=="cancelled"&&!event.changesPending&&<button onClick={()=>{setEditing(event);setPriceType(event.priceType);setOpen(true);window.scrollTo({top:0,behavior:"smooth"});}} className="text-sm font-bold">Edit</button>}<button onClick={()=>void action({action:"duplicate",eventId:event.id})} className="text-sm font-bold">Duplicate</button>{event.status!=="cancelled"&&<button onClick={()=>void action({action:"cancel",eventId:event.id})} className="text-sm font-bold text-red-300">Cancel</button>}</div></div></div></article>)}</div>}
+    </section>
+    <section className="mt-20 border-t border-line pt-14">
+      <div className="flex items-end justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.15em] text-accent">Around the Network</p><h2 className="mt-2 text-3xl md:text-5xl">Upcoming events</h2></div><a href="/network/events" className="hidden items-center gap-1 text-sm font-bold text-accent sm:inline-flex">View the calendar <ArrowUpRight size={15}/></a></div>
+      {upcomingEvents.length>0?<div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{upcomingEvents.map(event=><a key={event.id} href={event.slug?`/network/events/${event.slug}`:"/network/events"} className="group overflow-hidden rounded-3xl border border-line bg-surface-1 transition hover:-translate-y-1 hover:border-accent/50"><div className="relative aspect-[4/3] overflow-hidden">{event.coverImageKey?<img src={media(event.coverImageKey)} alt={event.coverImageAlt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105"/>:<div className="h-full bg-[url('/network-news/creative-night.jpg')] bg-cover bg-center"/>}<div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"/><span className="absolute left-4 top-4 rounded-full bg-black/70 px-3 py-1 text-[10px] font-bold uppercase tracking-wider">{event.eventType}</span><p className="absolute inset-x-4 bottom-4 text-sm font-bold text-accent">{new Date(event.startsAt).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"Europe/London"})}</p></div><div className="p-5"><h3 className="text-2xl">{event.title}</h3><p className="mt-3 flex items-center gap-1 text-xs text-fg-subtle"><MapPin size={12} className="text-accent"/>{event.venue}, {event.location}</p><p className="mt-3 line-clamp-2 text-sm leading-6 text-fg-muted">{event.summary}</p></div></a>)}</div>:<div className="mt-7 rounded-3xl border border-line bg-surface-1 p-7"><p className="text-fg-muted">There are no upcoming public events yet. Yours could be the first.</p></div>}
+      <a href="/network/events" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-accent sm:hidden">View the calendar <ArrowUpRight size={15}/></a>
+    </section>
+    </div>
   </main>;
 }
