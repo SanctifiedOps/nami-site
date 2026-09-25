@@ -27,6 +27,7 @@ export const primaryNav: NavItem[] = [
     children: [
       { label: "Join The Network", href: "/network" },
       { label: "Creative Network Directory", href: "/network/directory" },
+      { label: "Network events", href: "/network/events" },
       { label: "Member login", href: "/network/login" },
     ],
   },
@@ -62,6 +63,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
       { label: "Selected work", href: "/work" },
       { label: "Creative Network", href: "/network" },
       { label: "Creative directory", href: "/network/directory" },
+      { label: "Network events", href: "/network/events" },
     ],
   },
 ];

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, MapPin, Search, Users } from "lucide-react";
+import { and, asc, eq, gte } from "drizzle-orm";
+import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, Search, Users } from "lucide-react";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { PageHero } from "@/components/sections/page-hero";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 import { dailyMemberPreview, directoryGroups, londonDayNumber, membersInGroup } from "@/lib/content/network-directory-groups";
+import { getNetworkDb, schema } from "@/lib/network-db";
 import { DirectoryBrowser, DirectoryMemberCard } from "./directory-browser";
 import { MemberDiscovery } from "./member-discovery";
 
@@ -41,6 +43,9 @@ export const metadata: Metadata = {
 
 export default async function NetworkDirectoryPage() {
   const members = await getNetworkDirectoryMembers();
+  const upcomingEvents = await getNetworkDb()
+    .then((db) => db.select().from(schema.networkEvents).where(and(eq(schema.networkEvents.status, "approved"), gte(schema.networkEvents.startsAt, new Date()))).orderBy(asc(schema.networkEvents.startsAt)).limit(3))
+    .catch(() => []);
   const featured = members.find((member) => member.featured) ?? members[0];
   const day = londonDayNumber();
   const newest = members.filter((member) => member.joinedAt && !Number.isNaN(Date.parse(member.joinedAt))).sort((a, b) => Date.parse(b.joinedAt!) - Date.parse(a.joinedAt!)).slice(0, 4);
@@ -164,6 +169,25 @@ export default async function NetworkDirectoryPage() {
             </div>
           </div>
         </section>
+        {group.slug === "makers" && upcomingEvents.length > 0 && (
+          <section className="relative isolate overflow-hidden py-16 md:py-24">
+            <ParallaxBackdrop src="/images/north-east/3.jpg" overlay={0.7} />
+            <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(255,0,188,.25),transparent_42%)]" />
+            <div className="container-shell relative">
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <div><p className="mono-label text-accent">Network events</p><h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Coming up</h2></div>
+                <Link href="/network/events" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-accent">View all events <ArrowUpRight size={15} aria-hidden /></Link>
+              </div>
+              <div className="mt-8 grid gap-5 md:grid-cols-3">
+                {upcomingEvents.filter((event) => event.slug).map((event) => (
+                  <Link key={event.id} href={`/network/events/${event.slug}`} className="group overflow-hidden rounded-3xl border border-white/15 bg-surface-1/90 shadow-2xl backdrop-blur transition hover:-translate-y-1 hover:border-accent/60">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-surface-2">{event.coverImageKey && <img src={`/api/network/media/${event.coverImageKey.split("/").map(encodeURIComponent).join("/")}`} alt={event.coverImageAlt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />}<div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" /><div className="absolute inset-x-0 bottom-0 p-5 text-white"><p className="flex items-center gap-2 text-xs font-bold text-accent"><CalendarDays size={14} aria-hidden />{event.startsAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Europe/London" })}</p><h3 className="mt-2 text-2xl font-semibold">{event.title}</h3><p className="mt-2 flex items-center gap-2 text-xs text-white/75"><MapPin size={13} aria-hidden />{event.location}</p></div></div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
         </div>
       ))}
 

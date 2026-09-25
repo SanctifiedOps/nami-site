@@ -19,6 +19,14 @@ const COLUMNS = [
   "Mailchimp Status", "Mailchimp Audience Synced At", "Mailchimp Welcome Triggered At", "Suggested Directory Bio",
 ] as const;
 
+const EVENT_COLUMNS = [
+  "Event ID", "Slug", "Member ID", "Organiser Name", "Member Email", "Title", "Event Type",
+  "Summary", "Description", "Format", "Venue", "Address", "Location", "Region", "Starts At",
+  "Ends At", "Price Type", "Price Details", "Accessibility", "Age Guidance", "Information URL",
+  "Cover Image URL", "Status", "Admin Feedback", "Submitted At", "Reviewed At", "Published At",
+  "Updated At", "Cancelled At", "Public Event URL", "Last Successful Sync",
+] as const;
+
 async function googleToken() {
   const env = await getRuntimeEnvironment();
   const email = env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
@@ -165,4 +173,50 @@ export async function syncMemberToGoogleSheet(memberId: string) {
   set("Last Successful Sync", syncedAt); set("Sync Status", "Synced");
   const updateRange = encodeURIComponent(`'${sheetName}'!A${targetRow}:${columnLetters(headers.length)}${targetRow}`);
   await sheetsRequest(sheetId, `/values/${updateRange}?valueInputOption=RAW`, token, { method: "PUT", body: JSON.stringify({ values: [values.slice(0, headers.length)] }) });
+}
+
+export async function syncEventToGoogleSheet(eventId: string) {
+  const env = await getRuntimeEnvironment();
+  const sheetId = env.GOOGLE_SHEET_ID;
+  const sheetName = env.GOOGLE_EVENT_SHEET_NAME || "Network Events";
+  if (!sheetId) throw new Error("GOOGLE_SHEET_ID is not configured.");
+  const db = await getNetworkDb();
+  const [record] = await db.select({ event: schema.networkEvents, member: schema.members, profile: schema.memberProfiles })
+    .from(schema.networkEvents)
+    .innerJoin(schema.members, eq(schema.members.id, schema.networkEvents.memberId))
+    .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id))
+    .where(eq(schema.networkEvents.id, eventId)).limit(1);
+  if (!record) throw new Error(`Event ${eventId} was not found.`);
+
+  const token = await googleToken();
+  await ensureSheetTab(sheetId, sheetName, token);
+  const rangeName = encodeURIComponent(`'${sheetName}'!A:AE`);
+  const currentResponse = await sheetsRequest(sheetId, `/values/${rangeName}`, token);
+  const rows = ((await currentResponse.json()) as { values?: string[][] }).values ?? [];
+  const existingHeaders = rows[0] ?? [];
+  const headers = [...existingHeaders];
+  for (const column of EVENT_COLUMNS) if (!headers.includes(column)) headers.push(column);
+  if (headers.length !== existingHeaders.length) {
+    const headerRange = encodeURIComponent(`'${sheetName}'!A1:${columnLetters(headers.length)}1`);
+    await sheetsRequest(sheetId, `/values/${headerRange}?valueInputOption=RAW`, token, { method: "PUT", body: JSON.stringify({ values: [headers] }) });
+  }
+  const eventColumn = headers.indexOf("Event ID");
+  const rowIndex = rows.findIndex((row, index) => index > 0 && row[eventColumn] === eventId);
+  const targetRow = rowIndex > 0 ? rowIndex + 1 : Math.max(rows.length + 1, 2);
+  const values = Array(headers.length).fill("") as string[];
+  const set = (column: typeof EVENT_COLUMNS[number], value: string) => { values[headers.indexOf(column)] = value; };
+  const event = record.event;
+  const appUrl = (env.APP_URL || "https://namicreative.co.uk").replace(/\/$/, "");
+  const coverUrl = event.coverImageKey ? `${appUrl}/api/network/media/${event.coverImageKey.split("/").map(encodeURIComponent).join("/")}` : "";
+  set("Event ID", event.id); set("Slug", event.slug ?? ""); set("Member ID", event.memberId);
+  set("Organiser Name", record.profile?.displayName ?? record.member.firstName); set("Member Email", record.member.email);
+  set("Title", event.title); set("Event Type", event.eventType); set("Summary", event.summary); set("Description", event.fullDescription);
+  set("Format", event.format); set("Venue", event.venue); set("Address", event.address); set("Location", event.location); set("Region", event.region);
+  set("Starts At", event.startsAt.toISOString()); set("Ends At", event.endsAt?.toISOString() ?? ""); set("Price Type", event.priceType); set("Price Details", event.priceDetails);
+  set("Accessibility", event.accessibility); set("Age Guidance", event.ageGuidance); set("Information URL", event.bookingUrl ?? ""); set("Cover Image URL", coverUrl);
+  set("Status", event.status); set("Admin Feedback", event.adminFeedback ?? ""); set("Submitted At", event.submittedAt.toISOString()); set("Reviewed At", event.reviewedAt?.toISOString() ?? "");
+  set("Published At", event.publishedAt?.toISOString() ?? ""); set("Updated At", event.updatedAt.toISOString()); set("Cancelled At", event.cancelledAt?.toISOString() ?? "");
+  set("Public Event URL", event.slug ? `${appUrl}/network/events/${event.slug}` : ""); set("Last Successful Sync", new Date().toISOString());
+  const updateRange = encodeURIComponent(`'${sheetName}'!A${targetRow}:${columnLetters(headers.length)}${targetRow}`);
+  await sheetsRequest(sheetId, `/values/${updateRange}?valueInputOption=RAW`, token, { method: "PUT", body: JSON.stringify({ values: [values] }) });
 }

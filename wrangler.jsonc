@@ -37,7 +37,7 @@
     "OWNER_NOTIFICATION_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
     "ACCOUNT_RECOVERY_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
     "MS_GRAPH_MAILBOX_SCOPE_VERIFIED": "true",
-    "NETWORK_EVENTS_MODE": "hold",
+    "NETWORK_EVENTS_MODE": "live",
     "APP_URL": "https://namicreative.co.uk",
     "NEXT_PUBLIC_APP_URL": "https://namicreative.co.uk",
     "OWNER_EMAIL": "hello@namicreative.co.uk",

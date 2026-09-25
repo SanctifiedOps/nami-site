@@ -39,6 +39,9 @@ const nextConfig: NextConfig = {
   },
 };
 
-initOpenNextCloudflareForDev();
+initOpenNextCloudflareForDev({
+  configPath: "wrangler.local.jsonc",
+  envFiles: [".env.local", ".env.development.local"],
+});
 
 export default nextConfig;

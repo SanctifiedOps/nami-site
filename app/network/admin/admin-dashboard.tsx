@@ -22,11 +22,14 @@ type Ticket = {
 };
 type NetworkEvent = {
   id: string; memberId: string; title: string; summary: string; venue: string; location: string; startsAt: string; endsAt: string | null;
-  bookingUrl: string | null; status: "pending" | "approved" | "rejected"; submittedAt: string; reviewedAt: string | null; publishedAt: string | null; updatedAt: string;
+  slug: string | null; eventType: string; fullDescription: string; format: string; address: string; region: string; priceType: string; priceDetails: string; accessibility: string; ageGuidance: string; contactEmail: string; coverImageKey: string | null; coverImageAlt: string; adminFeedback: string | null; featured: boolean;
+  bookingUrl: string | null; status: "draft" | "pending" | "approved" | "rejected" | "cancelled"; submittedAt: string; reviewedAt: string | null; publishedAt: string | null; updatedAt: string;
 };
 type Operations = { failedAlerts: number; pendingAlerts: number; failedEmails: number; pendingEmails: number; failedSyncs: number; pendingSyncs: number; failedMailchimp: number; pendingMailchimp: number; failedBios: number; pendingBios: number };
 type FailedJob = { id: string; type: string; recordId: string; status: string; attempts: number; error: string | null; nextAttemptAt: string | null; updatedAt: string };
 type SearchEvent = { id: string; eventType: "search" | "result_clicked"; anonymousSessionId: string; searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number; selectedMemberId: string | null; sourcePath: string; createdAt: string };
+type EventAnalyticsRecord = { id: string; eventId: string | null; eventType: string; anonymousSessionId: string; metadata: Record<string, unknown>; createdAt: string };
+type EventRevision = { id:string; eventId:string; memberId:string; payload:Record<string,unknown>; status:string; adminFeedback:string|null; submittedAt:string; reviewedAt:string|null; reviewerId:string|null };
 
 const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35px_rgb(0_0_0/0.16)] md:rounded-[1.5rem] md:shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
 const button = "rounded-full border border-line-strong px-4 py-2 text-xs font-bold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
@@ -45,8 +48,8 @@ function validUrl(value: string) {
   try { return ["http:", "https:"].includes(new URL(value).protocol); } catch { return false; }
 }
 
-export function AdminDashboard({ adminName, applications, members, tickets, events, operations, failedJobs = [], searchEvents = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
-  adminName: string; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; operations: Operations; failedJobs?: FailedJob[]; searchEvents?: SearchEvent[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
+export function AdminDashboard({ adminName, applications, members, tickets, events, eventRevisions = [], operations, failedJobs = [], searchEvents = [], eventAnalytics = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
+  adminName: string; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; eventRevisions?: EventRevision[]; operations: Operations; failedJobs?: FailedJob[]; searchEvents?: SearchEvent[]; eventAnalytics?: EventAnalyticsRecord[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,9 +61,11 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const requestedView = searchParams.get("view");
   const [activeView, setActiveView] = useState<DashboardView>(requestedView === "members" || requestedView === "tasks" || requestedView === "growth" || requestedView === "more" ? requestedView : "home");
   const [moreDetail, setMoreDetail] = useState<"integrations" | "health" | null>(null);
+  const [growthDays, setGrowthDays] = useState(30);
 
   const pendingApplications = applications.filter((item) => item.status === "pending");
   const pendingEvents = events.filter((item) => item.status === "pending");
+  const pendingEventRevisions = eventRevisions.filter((item) => item.status === "pending");
   const openTickets = tickets.filter((item) => item.status !== "resolved");
   const activeMembers = members.filter((item) => item.published && item.accountStatus !== "disabled");
   const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
@@ -72,6 +77,12 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const memberPageCount = Math.max(1, Math.ceil(filteredMembers.length / membersPerPage));
   const safeMemberPage = Math.min(memberPage, memberPageCount);
   const visibleMembers = filteredMembers.slice((safeMemberPage - 1) * membersPerPage, safeMemberPage * membersPerPage);
+  const growthCutoff = Date.now() - growthDays * 86400000;
+  const periodEventAnalytics = eventAnalytics.filter((item) => new Date(item.createdAt).getTime() >= growthCutoff);
+  const eventViews = periodEventAnalytics.filter((item) => item.eventType === "page_view").length;
+  const bookingClicks = periodEventAnalytics.filter((item) => item.eventType === "booking_click").length;
+  const calendarClicks = periodEventAnalytics.filter((item) => item.eventType === "calendar_click").length;
+  const approvedEventsInPeriod = events.filter((item) => item.status === "approved" && new Date(item.reviewedAt || item.updatedAt).getTime() >= growthCutoff).length;
 
   const categoryCounts = useMemo(() => Object.entries(members.reduce<Record<string, number>>((counts, member) => {
     if (member.primaryGroup) counts[member.primaryGroup] = (counts[member.primaryGroup] ?? 0) + 1;
@@ -120,7 +131,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
     { id: "home", label: "Home", icon: <Home size={20} /> },
     { id: "growth", label: "Growth", icon: <TrendingUp size={20} /> },
     { id: "members", label: "Members", icon: <Users size={20} /> },
-    { id: "tasks", label: "Tasks", icon: <TicketCheck size={20} />, badge: pendingApplications.length + openTickets.length + pendingEvents.length + failedJobs.length },
+    { id: "tasks", label: "Tasks", icon: <TicketCheck size={20} />, badge: pendingApplications.length + openTickets.length + pendingEvents.length + pendingEventRevisions.length + failedJobs.length },
     { id: "more", label: "More", icon: <MoreHorizontal size={20} /> },
   ];
 
@@ -179,9 +190,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
       {activeView === "growth" && <section className="pt-4 md:pt-10">
         <SectionHeading title="Growth analytics" note="" />
         <div className="mt-3 flex items-center justify-between rounded-xl border border-line bg-surface-1/70 p-1.5 md:mt-5 md:rounded-2xl md:p-2">
-          <div className="grid flex-1 grid-cols-4 gap-1">{["7 days", "30 days", "60 days", "90 days"].map((period, index) => <button key={period} className={`whitespace-nowrap rounded-lg px-1.5 py-2 text-[11px] font-bold md:rounded-xl md:px-3 md:text-xs ${index === 1 ? "bg-accent text-white" : "text-fg-muted hover:bg-white/5"}`}>{period}</button>)}</div>
+          <div className="grid flex-1 grid-cols-4 gap-1">{[7,30,60,90].map((days) => <button key={days} onClick={()=>setGrowthDays(days)} className={`whitespace-nowrap rounded-lg px-1.5 py-2 text-[11px] font-bold md:rounded-xl md:px-3 md:text-xs ${growthDays === days ? "bg-accent text-white" : "text-fg-muted hover:bg-white/5"}`}>{days} days</button>)}</div>
           <button title="Metric definitions" className="ml-1 shrink-0 rounded-lg p-1.5 text-fg-muted hover:bg-white/5 hover:text-fg md:rounded-xl md:p-2"><Info size={16} /></button>
         </div>
+        <div className="mt-3"><SectionHeading title="Event performance" note="First-party interactions recorded on Network event pages."/><div className="mt-3 grid grid-cols-2 gap-2.5 md:grid-cols-4 md:gap-4"><SmallMetric label="Events approved" value={approvedEventsInPeriod}/><SmallMetric label="Event views" value={eventViews}/><SmallMetric label="Information clicks" value={bookingClicks}/><SmallMetric label="Calendar adds" value={calendarClicks}/></div><p className="mt-3 text-xs text-fg-subtle">Information click-through rate: {eventViews ? Math.round((bookingClicks/eventViews)*100) : 0}%</p></div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 [&>article]:!p-3 [&>article:last-child]:col-span-2 [&>article_p]:!mt-2 [&>article_p]:line-clamp-1 [&>article_strong]:!mt-2 [&>article_strong]:!text-3xl md:mt-4 md:gap-4 md:[&>article]:!p-5 md:[&>article_p]:!mt-5 md:[&>article_p]:line-clamp-none md:[&>article_strong]:!mt-5 md:[&>article_strong]:!text-4xl xl:grid-cols-5 xl:[&>article:last-child]:col-span-1">
           <ExternalMetric icon={<Users size={20} />} label="Website users" value={ga.users} note={ga.usersChange === null ? ga.error ?? "Awaiting GA4" : `${ga.usersChange >= 0 ? "+" : ""}${ga.usersChange}% vs previous period`} tone="pink" />
           <ExternalMetric icon={<Activity size={20} />} label="Sessions" value={ga.sessions} note="Visits during the period" tone="blue" />
@@ -247,9 +259,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
       </section>
 
       <section id="events" className="pt-7 md:pt-12">
-        <SectionHeading title="Event submissions" count={pendingEvents.length} note="Review member events before they appear on the noticeboard." />
+        <SectionHeading title="Event submissions" count={pendingEvents.length + pendingEventRevisions.length} note="Review new events and proposed changes." />
+        {pendingEventRevisions.length>0&&<div className="mt-3 grid gap-3 md:mt-5">{pendingEventRevisions.map((revision)=>{const live=events.find((event)=>event.id===revision.eventId), proposed=revision.payload;return <article key={revision.id} className={`${panel} p-5 md:p-6`}><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-wider text-accent">Changes awaiting approval</p><h3 className="mt-2 text-xl">{String(proposed.title||live?.title||"Event changes")}</h3><p className="mt-2 text-xs text-fg-subtle">Submitted {formatDate(revision.submittedAt)}</p></div><Status value="pending"/></div><div className="mt-5 grid gap-3 md:grid-cols-2"><div className="rounded-xl border border-line bg-surface-0 p-4"><p className="text-xs font-bold text-fg-subtle">Currently live</p><p className="mt-2 text-sm">{live?.summary}</p><p className="mt-3 text-xs text-fg-muted">{live?formatDate(live.startsAt):"Event unavailable"}</p></div><div className="rounded-xl border border-accent/30 bg-accent/5 p-4"><p className="text-xs font-bold text-accent">Proposed version</p><p className="mt-2 text-sm">{String(proposed.summary||"")}</p><p className="mt-3 text-xs text-fg-muted">{proposed.startsAt?formatDate(String(proposed.startsAt)):"No date supplied"}</p></div></div><div className="mt-5 flex flex-wrap gap-2"><button disabled={busy!==null} onClick={()=>runAction(`revision-${revision.id}-approve`,{action:"event-revision-status",revisionId:revision.id,status:"approved",feedback:""})} className="rounded-full bg-accent px-4 py-2 text-xs font-bold text-white disabled:opacity-40">Approve changes</button><button disabled={busy!==null} onClick={()=>{const feedback=window.prompt("Feedback for the member","");if(feedback!==null)void runAction(`revision-${revision.id}-reject`,{action:"event-revision-status",revisionId:revision.id,status:"rejected",feedback});}} className={button}>Reject with feedback</button></div></article>})}</div>}
         <div className="mt-3 grid grid-cols-2 gap-2.5 md:mt-5 md:gap-4 [&>article]:!p-4 md:[&>article]:!p-6">
-          {events.map((event) => <article key={event.id} className={`${panel} p-5 md:p-6`}><div className="flex items-start justify-between gap-4"><div><h3 className="text-xl">{event.title}</h3><p className="mt-2 flex items-center gap-2 text-sm text-fg-muted"><MapPin size={15} /> {event.venue}, {event.location}</p></div><Status value={event.status} /></div><p className="mt-4 text-sm leading-6 text-fg-muted">{event.summary}</p><p className="mt-4 text-xs text-fg-subtle">Starts {formatDate(event.startsAt)}</p>{event.status === "pending" && <div className="mt-5 flex gap-2"><button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-approved`, { action: "event-status", eventId: event.id, status: "approved" })} className="rounded-full bg-accent px-4 py-2 text-xs font-bold text-white disabled:opacity-40">Approve</button><button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-rejected`, { action: "event-status", eventId: event.id, status: "rejected" })} className={button}>Reject</button></div>}</article>)}
+          {events.map((event) => <article key={event.id} className={`${panel} p-5 md:p-6`}><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-wider text-accent">{event.eventType} · {event.format.replaceAll("_", " ")}</p><h3 className="mt-2 text-xl">{event.title}</h3><p className="mt-2 flex items-center gap-2 text-sm text-fg-muted"><MapPin size={15} /> {event.venue}, {event.location}</p></div><Status value={event.status} /></div><p className="mt-4 text-sm leading-6 text-fg-muted">{event.summary}</p><div className="mt-4 grid gap-2 text-xs text-fg-subtle"><p>Starts {formatDate(event.startsAt)}</p><p className="capitalize">{event.priceType}{event.priceDetails ? ` · ${event.priceDetails}` : ""}</p>{event.bookingUrl && <a href={event.bookingUrl} target="_blank" rel="noreferrer" className="break-all font-bold text-accent">Open event information ↗</a>}</div>{event.adminFeedback&&<p className="mt-4 rounded-xl border border-amber-400/20 bg-amber-400/5 p-3 text-xs text-amber-200">Admin feedback: {event.adminFeedback}</p>}<div className="mt-5 flex flex-wrap gap-2">{event.status === "pending" && <><button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-approved`, { action: "event-status", eventId: event.id, status: "approved", feedback: "" })} className="rounded-full bg-accent px-4 py-2 text-xs font-bold text-white disabled:opacity-40">Approve</button><button disabled={busy !== null} onClick={() => { const feedback=window.prompt("Feedback for the member (optional)", event.adminFeedback || ""); if(feedback!==null) void runAction(`event-${event.id}-rejected`, { action: "event-status", eventId: event.id, status: "rejected", feedback }); }} className={button}>Reject with feedback</button></>}{event.status === "approved" && <><a href={`/network/events/${event.slug}`} target="_blank" className={button}>View live page</a><button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-cancel`, { action: "event-cancel", eventId: event.id })} className={button}>Cancel</button><button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-feature`, { action: "event-feature", eventId: event.id, featured: !event.featured })} className={button}>{event.featured ? "Remove feature" : "Feature"}</button></>}{event.status === "cancelled" && <button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-restore`, { action: "event-restore", eventId: event.id })} className={button}>Restore</button>}</div></article>)}
           {!events.length && <Empty text="No events have been submitted." />}
         </div>
       </section>

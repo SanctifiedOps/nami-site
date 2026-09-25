@@ -8,11 +8,16 @@ import { revalidateNetworkProfile } from "@/lib/network-profile/revalidate";
 import { processNetworkJobs } from "@/lib/network-sync/process-jobs";
 
 const groupSlugs = directoryGroups.map((group) => group.slug) as [string, ...string[]];
+const eventRevisionSchema = z.object({ title:z.string(), eventType:z.string(), summary:z.string(), fullDescription:z.string(), venue:z.string(), address:z.string(), location:z.string(), region:z.string(), format:z.string(), startsAt:z.coerce.date(), endsAt:z.coerce.date().nullable(), priceType:z.string(), priceDetails:z.string(), bookingUrl:z.string().nullable(), accessibility:z.string(), ageGuidance:z.string(), contactEmail:z.string(), coverImageKey:z.string(), coverImageAlt:z.string() });
 const actionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("approve-application"), applicationId: z.string().min(2), primaryGroup: z.enum(groupSlugs), speciality: z.string().trim().min(2).max(80), bio: z.string().trim().min(20).max(320) }),
   z.object({ action: z.literal("reject-application"), applicationId: z.string().min(2) }),
   z.object({ action: z.literal("ticket-status"), ticketId: z.string().min(3), status: z.enum(["open", "in_progress", "resolved"]) }),
-  z.object({ action: z.literal("event-status"), eventId: z.string().uuid(), status: z.enum(["approved", "rejected"]) }),
+  z.object({ action: z.literal("event-status"), eventId: z.string().uuid(), status: z.enum(["approved", "rejected"]), feedback: z.string().trim().max(1000).optional().default("") }),
+  z.object({ action: z.literal("event-cancel"), eventId: z.string().uuid() }),
+  z.object({ action: z.literal("event-restore"), eventId: z.string().uuid() }),
+  z.object({ action: z.literal("event-feature"), eventId: z.string().uuid(), featured: z.boolean() }),
+  z.object({ action: z.literal("event-revision-status"), revisionId: z.string().uuid(), status: z.enum(["approved", "rejected"]), feedback: z.string().trim().max(1000).optional().default("") }),
   z.object({ action: z.literal("member-status"), memberId: z.string().min(2), status: z.enum(["active", "disabled"]) }),
   z.object({ action: z.literal("process-sheet-jobs") }),
 ]);
@@ -40,12 +45,49 @@ export async function POST(request: Request) {
   }
 
   if (parsed.data.action === "event-status") {
-    await db.update(schema.networkEvents).set({
-      status: parsed.data.status,
-      reviewedAt: now,
-      publishedAt: parsed.data.status === "approved" ? now : null,
-      updatedAt: now,
-    }).where(eq(schema.networkEvents.id, parsed.data.eventId));
+    const [event] = await db.select().from(schema.networkEvents).where(eq(schema.networkEvents.id, parsed.data.eventId)).limit(1);
+    if (!event) return Response.json({ error: "Event not found." }, { status: 404 });
+    if (event.status !== "pending") return Response.json({ error: "This event has already been reviewed." }, { status: 409 });
+    if (parsed.data.status === "approved" && (event.endsAt || event.startsAt) <= now) return Response.json({ error: "An event that has already finished cannot be approved." }, { status: 409 });
+    await db.batch([
+      db.update(schema.networkEvents).set({ status: parsed.data.status, adminFeedback: parsed.data.feedback || null, reviewedAt: now, publishedAt: parsed.data.status === "approved" ? now : null, updatedAt: now }).where(eq(schema.networkEvents.id, parsed.data.eventId)),
+      db.insert(schema.eventSheetSyncJobs).values({ id: crypto.randomUUID(), eventId: parsed.data.eventId, status: "pending", attempts: 0, nextAttemptAt: now, createdAt: now, updatedAt: now }),
+    ]);
+    return Response.json({ ok: true });
+  }
+
+  if (parsed.data.action === "event-cancel" || parsed.data.action === "event-restore" || parsed.data.action === "event-feature") {
+    const [event] = await db.select().from(schema.networkEvents).where(eq(schema.networkEvents.id, parsed.data.eventId)).limit(1);
+    if (!event) return Response.json({ error: "Event not found." }, { status: 404 });
+    if (parsed.data.action === "event-restore" && (event.endsAt || event.startsAt) <= now) return Response.json({ error: "A finished event cannot be restored to upcoming events." }, { status: 409 });
+    const values = parsed.data.action === "event-cancel" ? { status: "cancelled" as const, cancelledAt: now, updatedAt: now }
+      : parsed.data.action === "event-restore" ? { status: "approved" as const, cancelledAt: null, updatedAt: now }
+      : { featured: parsed.data.featured, updatedAt: now };
+    await db.batch([
+      db.update(schema.networkEvents).set(values).where(eq(schema.networkEvents.id, parsed.data.eventId)),
+      db.insert(schema.eventSheetSyncJobs).values({ id: crypto.randomUUID(), eventId: parsed.data.eventId, status: "pending", attempts: 0, nextAttemptAt: now, createdAt: now, updatedAt: now }),
+    ]);
+    return Response.json({ ok: true });
+  }
+
+  if (parsed.data.action === "event-revision-status") {
+    const [revision] = await db.select().from(schema.eventRevisions).where(eq(schema.eventRevisions.id, parsed.data.revisionId)).limit(1);
+    if (!revision) return Response.json({ error: "Event revision not found." }, { status: 404 });
+    if (revision.status !== "pending") return Response.json({ error: "This revision has already been reviewed." }, { status: 409 });
+    const [event] = await db.select().from(schema.networkEvents).where(eq(schema.networkEvents.id, revision.eventId)).limit(1);
+    if (!event) return Response.json({ error: "Event not found." }, { status: 404 });
+    if (parsed.data.status === "approved") {
+      const payload = eventRevisionSchema.safeParse(revision.payload);
+      if (!payload.success) return Response.json({ error: "The proposed event changes are invalid." }, { status: 400 });
+      if ((payload.data.endsAt || payload.data.startsAt) <= now) return Response.json({ error: "Changes to a finished event cannot be approved." }, { status: 409 });
+      await db.batch([
+        db.update(schema.networkEvents).set({ ...payload.data, adminFeedback: null, reviewedAt: now, updatedAt: now }).where(eq(schema.networkEvents.id, event.id)),
+        db.update(schema.eventRevisions).set({ status: "approved", adminFeedback: parsed.data.feedback || null, reviewerId: admin.member.id, reviewedAt: now }).where(eq(schema.eventRevisions.id, revision.id)),
+        db.insert(schema.eventSheetSyncJobs).values({ id: crypto.randomUUID(), eventId: event.id, status: "pending", attempts: 0, nextAttemptAt: now, createdAt: now, updatedAt: now }),
+      ]);
+    } else {
+      await db.update(schema.eventRevisions).set({ status: "rejected", adminFeedback: parsed.data.feedback || null, reviewerId: admin.member.id, reviewedAt: now }).where(eq(schema.eventRevisions.id, revision.id));
+    }
     return Response.json({ ok: true });
   }
 

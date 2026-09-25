@@ -14,18 +14,21 @@ export default async function NetworkAdminPage() {
   const admin = await requireNetworkAdminSession();
   const db = await getNetworkDb();
   const searchCutoff = new Date(Date.now() - 90 * 86400000);
-  const [applications, memberRows, tickets, events, alerts, emailJobs, syncJobs, mailchimpJobs, bioJobs, searchEvents, ga, instagram, mailchimp] = await Promise.all([
+  const [applications, memberRows, tickets, events, eventRevisions, alerts, emailJobs, syncJobs, eventSyncJobs, mailchimpJobs, bioJobs, searchEvents, eventAnalytics, ga, instagram, mailchimp] = await Promise.all([
     db.select().from(schema.networkApplications).orderBy(desc(schema.networkApplications.submittedAt)),
     db.select({ member: schema.members, profile: schema.memberProfiles }).from(schema.members)
       .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id)).orderBy(desc(schema.members.joinedAt)),
     db.select().from(schema.supportTickets).orderBy(desc(schema.supportTickets.createdAt)),
     db.select().from(schema.networkEvents).orderBy(desc(schema.networkEvents.submittedAt)),
+    db.select().from(schema.eventRevisions).orderBy(desc(schema.eventRevisions.submittedAt)),
     db.select().from(schema.ownerAlertJobs).orderBy(desc(schema.ownerAlertJobs.createdAt)).limit(100),
     db.select().from(schema.emailJobs).orderBy(desc(schema.emailJobs.createdAt)).limit(100),
     db.select().from(schema.sheetSyncJobs).orderBy(desc(schema.sheetSyncJobs.createdAt)).limit(100),
+    db.select().from(schema.eventSheetSyncJobs).orderBy(desc(schema.eventSheetSyncJobs.createdAt)).limit(100),
     db.select().from(schema.mailchimpSyncJobs).orderBy(desc(schema.mailchimpSyncJobs.createdAt)).limit(100),
     db.select().from(schema.bioGenerationJobs).orderBy(desc(schema.bioGenerationJobs.createdAt)).limit(100),
     db.select().from(schema.directorySearchEvents).where(gte(schema.directorySearchEvents.createdAt, searchCutoff)).orderBy(desc(schema.directorySearchEvents.createdAt)).limit(5000),
+    db.select().from(schema.eventAnalytics).where(gte(schema.eventAnalytics.createdAt, searchCutoff)).orderBy(desc(schema.eventAnalytics.createdAt)).limit(10000),
     getGaSnapshot(),
     getInstagramSnapshot(),
     getMailchimpSnapshot(),
@@ -35,6 +38,7 @@ export default async function NetworkAdminPage() {
     ...alerts.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Owner notification", recordId: item.recordId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
     ...emailJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Member email", recordId: item.memberId || item.recipient, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
     ...syncJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Google Sheet sync", recordId: item.memberId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...eventSyncJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Event Google Sheet sync", recordId: item.eventId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
     ...mailchimpJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Mailchimp sync", recordId: item.applicationId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
     ...bioJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "NAMI bio generation", recordId: item.applicationId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
   ].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
@@ -60,13 +64,14 @@ export default async function NetworkAdminPage() {
     }))}
     tickets={tickets.map((item) => ({ ...item, createdAt: iso(item.createdAt)!, updatedAt: iso(item.updatedAt)!, resolvedAt: iso(item.resolvedAt) }))}
     events={events.map((item) => ({ ...item, startsAt: iso(item.startsAt)!, endsAt: iso(item.endsAt), submittedAt: iso(item.submittedAt)!, reviewedAt: iso(item.reviewedAt), publishedAt: iso(item.publishedAt), updatedAt: iso(item.updatedAt)! }))}
+    eventRevisions={eventRevisions.map((item) => ({ ...item, submittedAt: iso(item.submittedAt)!, reviewedAt: iso(item.reviewedAt) }))}
     operations={{
       failedAlerts: alerts.filter((item) => item.status === "failed").length,
       pendingAlerts: alerts.filter((item) => item.status === "pending").length,
       failedEmails: emailJobs.filter((item) => item.status === "failed").length,
       pendingEmails: emailJobs.filter((item) => item.status === "pending").length,
-      failedSyncs: syncJobs.filter((item) => item.status === "failed").length,
-      pendingSyncs: syncJobs.filter((item) => item.status === "pending").length,
+      failedSyncs: syncJobs.filter((item) => item.status === "failed").length + eventSyncJobs.filter((item) => item.status === "failed").length,
+      pendingSyncs: syncJobs.filter((item) => item.status === "pending").length + eventSyncJobs.filter((item) => item.status === "pending").length,
       failedMailchimp: mailchimpJobs.filter((item) => item.status === "failed").length,
       pendingMailchimp: mailchimpJobs.filter((item) => item.status === "pending").length,
       failedBios: bioJobs.filter((item) => item.status === "failed").length,
@@ -74,6 +79,7 @@ export default async function NetworkAdminPage() {
     }}
     failedJobs={failedJobs}
     searchEvents={searchEvents.map((item) => ({ ...item, createdAt: iso(item.createdAt)! }))}
+    eventAnalytics={eventAnalytics.map((item) => ({ ...item, createdAt: iso(item.createdAt)! }))}
     ga={ga}
     instagram={instagram}
     mailchimp={mailchimp}

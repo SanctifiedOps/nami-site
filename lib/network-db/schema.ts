@@ -343,7 +343,11 @@ export const networkEvents = sqliteTable(
     startsAt: integer("starts_at", { mode: "timestamp_ms" }).notNull(),
     endsAt: optionalTime("ends_at"),
     bookingUrl: text("booking_url"),
-    status: text("status", { enum: ["pending", "approved", "rejected"] }).notNull().default("pending"),
+    slug: text("slug").unique(), eventType: text("event_type").notNull().default("Other"), fullDescription: text("full_description").notNull().default(""),
+    format: text("format").notNull().default("in_person"), address: text("address").notNull().default(""), region: text("region").notNull().default("North East"),
+    priceType: text("price_type").notNull().default("free"), priceDetails: text("price_details").notNull().default(""), accessibility: text("accessibility").notNull().default(""), ageGuidance: text("age_guidance").notNull().default(""), contactEmail: text("contact_email").notNull().default(""),
+    coverImageKey: text("cover_image_key"), coverImageAlt: text("cover_image_alt").notNull().default(""), adminFeedback: text("admin_feedback"), cancelledAt: optionalTime("cancelled_at"), featured: integer("featured", { mode: "boolean" }).notNull().default(false),
+    status: text("status", { enum: ["draft", "pending", "approved", "rejected", "cancelled"] }).notNull().default("pending"),
     submittedAt: now("submitted_at"),
     reviewedAt: optionalTime("reviewed_at"),
     publishedAt: optionalTime("published_at"),
@@ -354,6 +358,10 @@ export const networkEvents = sqliteTable(
     index("network_events_member_idx").on(table.memberId, table.submittedAt),
   ],
 );
+
+export const eventRevisions = sqliteTable("event_revisions", { id: text("id").primaryKey(), eventId: text("event_id").notNull().references(() => networkEvents.id, { onDelete: "cascade" }), memberId: text("member_id").notNull().references(() => members.id, { onDelete: "cascade" }), payload: text("payload", { mode: "json" }).$type<Record<string, unknown>>().notNull(), status: text("status").notNull().default("pending"), adminFeedback: text("admin_feedback"), submittedAt: now("submitted_at"), reviewedAt: optionalTime("reviewed_at"), reviewerId: text("reviewer_id") }, (table) => [index("event_revisions_event_status_idx").on(table.eventId, table.status)]);
+export const eventSheetSyncJobs = sqliteTable("event_sheet_sync_jobs", { id: text("id").primaryKey(), eventId: text("event_id").notNull().references(() => networkEvents.id, { onDelete: "cascade" }), status: text("status").notNull().default("pending"), attempts: integer("attempts").notNull().default(0), nextAttemptAt: now("next_attempt_at"), lastError: text("last_error"), completedAt: optionalTime("completed_at"), createdAt: now("created_at"), updatedAt: now("updated_at") }, (table) => [index("event_sheet_sync_pending_idx").on(table.status, table.nextAttemptAt)]);
+export const eventAnalytics = sqliteTable("event_analytics", { id: text("id").primaryKey(), eventId: text("event_id"), eventType: text("event_type").notNull(), anonymousSessionId: text("anonymous_session_id").notNull().default(""), metadata: text("metadata", { mode: "json" }).$type<Record<string, unknown>>().notNull().default({}), createdAt: now("created_at") }, (table) => [index("event_analytics_created_idx").on(table.eventType, table.createdAt)]);
 
 export const ownerAlertJobs = sqliteTable(
   "owner_alert_jobs",

@@ -1,0 +1,37 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nami-creative-site-local",
+  "main": "cloudflare-worker.ts",
+  "compatibility_date": "2026-09-19",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nami-network",
+      "database_id": "755fb14b-0e54-4bcf-91a1-ef3f5c520a6a",
+      "migrations_dir": "drizzle/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEMBER_MEDIA",
+      "bucket_name": "nami-creative-local"
+    }
+  ],
+  "vars": {
+    "APP_ENV": "development",
+    "NETWORK_EVENTS_MODE": "live",
+    "OUTBOUND_EMAIL_MODE": "hold",
+    "MEMBER_INVITATIONS_MODE": "hold",
+    "OUTBOUND_EMAIL_RETRY_MODE": "hold",
+    "EXTERNAL_INTEGRATIONS_MODE": "hold",
+    "MAILCHIMP_NETWORK_MODE": "hold",
+    "OWNER_NOTIFICATIONS_MODE": "live",
+    "OWNER_NOTIFICATION_ALLOWED_RECIPIENTS": "hello@namicreative.co.uk",
+    "MS_GRAPH_MAILBOX_SCOPE_VERIFIED": "true",
+    "APP_URL": "http://localhost:3000",
+    "NEXT_PUBLIC_APP_URL": "http://localhost:3000",
+    "OWNER_EMAIL": "hello@namicreative.co.uk",
+    "MEMBER_MEDIA_BASE_URL": "http://localhost:3000/api/network/media"
+  }
+}

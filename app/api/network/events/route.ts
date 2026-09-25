@@ -6,68 +6,9 @@ import { getMemberSession } from "@/lib/network-auth/session";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { queueOwnerAlert } from "@/lib/network-ops/owner-alerts";
 
-const eventSchema = z.object({
-  title: z.string().trim().min(3).max(140),
-  summary: z.string().trim().min(20).max(1200),
-  venue: z.string().trim().min(2).max(140),
-  location: z.string().trim().min(2).max(140),
-  startsAt: z.string().datetime(),
-  endsAt: z.string().datetime().optional().or(z.literal("")),
-  bookingUrl: z.string().trim().max(500).optional().or(z.literal("")),
-});
-
-export async function GET() {
-  const env = await getRuntimeEnvironment();
-  if (env.NETWORK_EVENTS_MODE !== "live") return Response.json({ error: "Not found" }, { status: 404 });
-  const db = await getNetworkDb();
-  const events = await db.select().from(schema.networkEvents)
-    .where(and(eq(schema.networkEvents.status, "approved"), gte(schema.networkEvents.startsAt, new Date())))
-    .orderBy(asc(schema.networkEvents.startsAt));
-  return Response.json({ events });
-}
-
-export async function POST(request: Request) {
-  const env = await getRuntimeEnvironment();
-  if (env.NETWORK_EVENTS_MODE !== "live") return Response.json({ error: "Event submissions are not open yet." }, { status: 503 });
-  const auth = await getMemberSession();
-  if (!auth) return Response.json({ error: "Sign in before submitting an event." }, { status: 401 });
-  const parsed = eventSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) return Response.json({ error: "Check the event details and try again." }, { status: 400 });
-  const startsAt = new Date(parsed.data.startsAt);
-  const endsAt = parsed.data.endsAt ? new Date(parsed.data.endsAt) : null;
-  if (startsAt.getTime() < Date.now() - 60_000) return Response.json({ error: "Choose a future date for the event." }, { status: 400 });
-  if (endsAt && endsAt <= startsAt) return Response.json({ error: "The finish time must be after the start time." }, { status: 400 });
-
-  const id = crypto.randomUUID();
-  const now = new Date();
-  const db = await getNetworkDb();
-  await db.insert(schema.networkEvents).values({
-    id,
-    memberId: auth.member.id,
-    title: parsed.data.title,
-    summary: parsed.data.summary,
-    venue: parsed.data.venue,
-    location: parsed.data.location,
-    startsAt,
-    endsAt,
-    bookingUrl: normalizeExternalUrl(parsed.data.bookingUrl || "") || null,
-    status: "pending",
-    submittedAt: now,
-    updatedAt: now,
-  });
-
-  const appUrl = env.APP_URL || "https://namicreative.co.uk";
-  try {
-    await queueOwnerAlert({
-      kind: "event",
-      recordId: id,
-      subject: `NAMI event submission: ${parsed.data.title}`,
-      heading: "A Network event is waiting for approval",
-      body: `${parsed.data.title} at ${parsed.data.venue}, submitted by ${auth.member.firstName || auth.member.email}.`,
-      actionUrl: `${appUrl.replace(/\/$/, "")}/network/admin#events`,
-    });
-  } catch (error) {
-    console.error("Event saved but owner alert failed:", error);
-  }
-  return Response.json({ ok: true, eventId: id });
-}
+const eventFields=z.object({title:z.string().trim().min(3).max(140),eventType:z.string().trim().min(2).max(60),summary:z.string().trim().min(20).max(320),fullDescription:z.string().trim().min(20).max(6000),venue:z.string().trim().min(2).max(140),address:z.string().trim().max(240),location:z.string().trim().min(2).max(140),region:z.string().trim().max(100),format:z.enum(["in_person","online","hybrid"]),startsAt:z.string().datetime(),endsAt:z.string().datetime().optional().or(z.literal("")),priceType:z.enum(["free","paid"]),priceDetails:z.string().trim().max(160),bookingUrl:z.string().trim().max(500).optional().or(z.literal("")),accessibility:z.string().trim().max(1000),ageGuidance:z.string().trim().max(160),contactEmail:z.string().trim().email().or(z.literal("")),coverImageKey:z.string().trim().min(3),coverImageAlt:z.string().trim().min(4).max(180)});
+const input=z.discriminatedUnion("action",[z.object({action:z.literal("create"),data:eventFields}),z.object({action:z.literal("update"),eventId:z.string().uuid(),data:eventFields}),z.object({action:z.literal("cancel"),eventId:z.string().uuid()}),z.object({action:z.literal("duplicate"),eventId:z.string().uuid()})]);
+const slug=(s:string,id:string)=>`${s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,70)}-${id.slice(0,8)}`;
+export async function GET(request:Request){const env=await getRuntimeEnvironment();if(env.NETWORK_EVENTS_MODE!=="live")return Response.json({error:"Not found"},{status:404});const db=await getNetworkDb(),auth=await getMemberSession();if(new URL(request.url).searchParams.get("mine")==="1"){if(!auth)return Response.json({error:"Unauthorized"},{status:401});return Response.json({events:await db.select().from(schema.networkEvents).where(eq(schema.networkEvents.memberId,auth.member.id)).orderBy(asc(schema.networkEvents.startsAt))});}return Response.json({events:await db.select().from(schema.networkEvents).where(and(eq(schema.networkEvents.status,"approved"),gte(schema.networkEvents.startsAt,new Date()))).orderBy(asc(schema.networkEvents.startsAt))});}
+export async function POST(request:Request){const env=await getRuntimeEnvironment();if(env.NETWORK_EVENTS_MODE!=="live")return Response.json({error:"Event submissions are not open yet."},{status:503});const auth=await getMemberSession();if(!auth||auth.member.accountStatus!=="active")return Response.json({error:"An active member account is required."},{status:401});const parsed=input.safeParse(await request.json().catch(()=>null));if(!parsed.success)return Response.json({error:"Check the event details and try again."},{status:400});const db=await getNetworkDb(),now=new Date();if(parsed.data.action!=="create"){const [old]=await db.select().from(schema.networkEvents).where(and(eq(schema.networkEvents.id,parsed.data.eventId),eq(schema.networkEvents.memberId,auth.member.id))).limit(1);if(!old)return Response.json({error:"Event not found."},{status:404});if(parsed.data.action==="cancel"){await db.update(schema.networkEvents).set({status:"cancelled",cancelledAt:now,updatedAt:now}).where(eq(schema.networkEvents.id,old.id));return Response.json({ok:true});}if(parsed.data.action==="duplicate"){const id=crypto.randomUUID();await db.insert(schema.networkEvents).values({...old,id,slug:slug(old.title,id),title:`${old.title} copy`,status:"draft",publishedAt:null,reviewedAt:null,cancelledAt:null,submittedAt:now,updatedAt:now});return Response.json({ok:true,eventId:id});}const d=parsed.data.data,start=new Date(d.startsAt),end=d.endsAt?new Date(d.endsAt):null;if(start.getTime()<Date.now()||end&&end<=start)return Response.json({error:"Check the event dates."},{status:400});const payload={...d,bookingUrl:normalizeExternalUrl(d.bookingUrl||"")||null,startsAt:start,endsAt:end,status:"pending" as const,adminFeedback:null,updatedAt:now};if(old.status==="approved")await db.insert(schema.eventRevisions).values({id:crypto.randomUUID(),eventId:old.id,memberId:auth.member.id,payload,status:"pending",submittedAt:now});else await db.update(schema.networkEvents).set(payload).where(eq(schema.networkEvents.id,old.id));await notify(env,old.id,d.title,auth.member.firstName||auth.member.email);return Response.json({ok:true,eventId:old.id});}const d=parsed.data.data,start=new Date(d.startsAt),end=d.endsAt?new Date(d.endsAt):null;if(start.getTime()<Date.now()||end&&end<=start)return Response.json({error:"Check the event dates."},{status:400});const id=crypto.randomUUID();await db.batch([db.insert(schema.networkEvents).values({id,memberId:auth.member.id,...d,bookingUrl:normalizeExternalUrl(d.bookingUrl||"")||null,startsAt:start,endsAt:end,slug:slug(d.title,id),status:"pending",submittedAt:now,updatedAt:now}),db.insert(schema.eventSheetSyncJobs).values({id:crypto.randomUUID(),eventId:id,nextAttemptAt:now,createdAt:now,updatedAt:now})]);await notify(env,id,d.title,auth.member.firstName||auth.member.email);return Response.json({ok:true,eventId:id});}
+async function notify(env:Awaited<ReturnType<typeof getRuntimeEnvironment>>,id:string,title:string,member:string){await queueOwnerAlert({kind:"event",recordId:id,subject:`NAMI event submission: ${title}`,heading:"A Network event is waiting for approval",body:`${title}, submitted by ${member}.`,actionUrl:`${(env.APP_URL||"https://namicreative.co.uk").replace(/\/$/,"")}/network/admin?view=tasks#event-${id}`});}

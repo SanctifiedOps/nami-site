@@ -4,7 +4,7 @@ import { and, asc, eq, inArray, lte } from "drizzle-orm";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { retryNetworkEmailJob } from "@/lib/network-auth/email";
 import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
-import { syncMemberToGoogleSheet } from "./google-sheet";
+import { syncEventToGoogleSheet, syncMemberToGoogleSheet } from "./google-sheet";
 import { syncApplicationToMailchimp } from "./mailchimp";
 import { generateDirectoryBio } from "./directory-bio";
 import { retryOwnerAlertJob } from "@/lib/network-ops/owner-alerts";
@@ -18,6 +18,7 @@ export async function processNetworkJobs(limit = 10, jobType: "all" | "sheet" | 
   const staleError = "Recovered after the previous processing attempt stopped unexpectedly.";
   await Promise.all([
     db.update(schema.sheetSyncJobs).set({ status: "failed", lastError: staleError, nextAttemptAt: now, updatedAt: now }).where(and(eq(schema.sheetSyncJobs.status, "processing"), lte(schema.sheetSyncJobs.updatedAt, staleBefore))),
+    db.update(schema.eventSheetSyncJobs).set({ status: "failed", lastError: staleError, nextAttemptAt: now, updatedAt: now }).where(and(eq(schema.eventSheetSyncJobs.status, "processing"), lte(schema.eventSheetSyncJobs.updatedAt, staleBefore))),
     db.update(schema.mailchimpSyncJobs).set({ status: "failed", lastError: staleError, nextAttemptAt: now, updatedAt: now }).where(and(eq(schema.mailchimpSyncJobs.status, "processing"), lte(schema.mailchimpSyncJobs.updatedAt, staleBefore))),
     db.update(schema.bioGenerationJobs).set({ status: "failed", lastError: staleError, nextAttemptAt: now, updatedAt: now }).where(and(eq(schema.bioGenerationJobs.status, "processing"), lte(schema.bioGenerationJobs.updatedAt, staleBefore))),
     db.update(schema.ownerAlertJobs).set({ status: "failed", lastError: staleError, nextAttemptAt: now, updatedAt: now }).where(and(eq(schema.ownerAlertJobs.status, "processing"), lte(schema.ownerAlertJobs.updatedAt, staleBefore))),
@@ -26,6 +27,7 @@ export async function processNetworkJobs(limit = 10, jobType: "all" | "sheet" | 
   const mailchimpEnabled = env.MAILCHIMP_NETWORK_MODE === "live";
   const only = (type: string) => jobType !== "all" && jobType !== type;
   const sheetJobs = only("sheet") ? [] : await db.select().from(schema.sheetSyncJobs).where(and(inArray(schema.sheetSyncJobs.status, ["pending", "failed"]), lte(schema.sheetSyncJobs.nextAttemptAt, now))).orderBy(asc(schema.sheetSyncJobs.createdAt)).limit(limit);
+  const eventSheetJobs = only("sheet") ? [] : await db.select().from(schema.eventSheetSyncJobs).where(and(inArray(schema.eventSheetSyncJobs.status, ["pending", "failed"]), lte(schema.eventSheetSyncJobs.nextAttemptAt, now))).orderBy(asc(schema.eventSheetSyncJobs.createdAt)).limit(limit);
   const emailJobs = only("email") || !emailRetriesEnabled ? [] : await db.select().from(schema.emailJobs).where(and(eq(schema.emailJobs.status, "failed"), lte(schema.emailJobs.nextAttemptAt, now))).orderBy(asc(schema.emailJobs.createdAt)).limit(limit);
   const mailchimpJobs = only("mailchimp") || !mailchimpEnabled ? [] : await db.select().from(schema.mailchimpSyncJobs).where(and(inArray(schema.mailchimpSyncJobs.status, ["pending", "failed"]), lte(schema.mailchimpSyncJobs.nextAttemptAt, now))).orderBy(asc(schema.mailchimpSyncJobs.createdAt)).limit(limit);
   const bioJobs = only("bio") ? [] : await db.select().from(schema.bioGenerationJobs).where(and(inArray(schema.bioGenerationJobs.status, ["pending", "failed"]), lte(schema.bioGenerationJobs.nextAttemptAt, now))).orderBy(asc(schema.bioGenerationJobs.createdAt)).limit(limit);
@@ -34,6 +36,10 @@ export async function processNetworkJobs(limit = 10, jobType: "all" | "sheet" | 
   for (const job of sheetJobs) {
     try { await db.update(schema.sheetSyncJobs).set({ status: "processing", updatedAt: now }).where(eq(schema.sheetSyncJobs.id, job.id)); await syncMemberToGoogleSheet(job.memberId); await db.update(schema.sheetSyncJobs).set({ status: "complete", completedAt: new Date(), updatedAt: new Date(), lastError: null }).where(eq(schema.sheetSyncJobs.id, job.id)); completed++; }
     catch (error) { const attempts = job.attempts + 1; await db.update(schema.sheetSyncJobs).set({ status: "failed", attempts, nextAttemptAt: nextAttempt(attempts), lastError: String(error).slice(0, 800), updatedAt: new Date() }).where(eq(schema.sheetSyncJobs.id, job.id)); failed++; }
+  }
+  for (const job of eventSheetJobs) {
+    try { await db.update(schema.eventSheetSyncJobs).set({ status: "processing", updatedAt: now }).where(eq(schema.eventSheetSyncJobs.id, job.id)); await syncEventToGoogleSheet(job.eventId); await db.update(schema.eventSheetSyncJobs).set({ status: "complete", completedAt: new Date(), updatedAt: new Date(), lastError: null }).where(eq(schema.eventSheetSyncJobs.id, job.id)); completed++; }
+    catch (error) { const attempts = job.attempts + 1; await db.update(schema.eventSheetSyncJobs).set({ status: "failed", attempts, nextAttemptAt: nextAttempt(attempts), lastError: String(error).slice(0, 800), updatedAt: new Date() }).where(eq(schema.eventSheetSyncJobs.id, job.id)); failed++; }
   }
   for (const job of emailJobs) {
     try { await db.update(schema.emailJobs).set({ status: "processing", updatedAt: now }).where(eq(schema.emailJobs.id, job.id)); await retryNetworkEmailJob(job); await db.update(schema.emailJobs).set({ status: "sent", sentAt: new Date(), updatedAt: new Date(), lastError: null }).where(eq(schema.emailJobs.id, job.id)); completed++; }
@@ -87,5 +93,5 @@ export async function processNetworkJobs(limit = 10, jobType: "all" | "sheet" | 
       failed++;
     }
   }
-  return { processed: sheetJobs.length + emailJobs.length + mailchimpJobs.length + bioJobs.length + ownerJobs.length, completed, failed };
+  return { processed: sheetJobs.length + eventSheetJobs.length + emailJobs.length + mailchimpJobs.length + bioJobs.length + ownerJobs.length, completed, failed };
 }

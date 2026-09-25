@@ -399,12 +399,12 @@ export function DashboardForm({
               >
                 Report a problem →
               </a>
-              {eventsEnabled && (
+              {(eventsEnabled || process.env.NODE_ENV === "development") && (
                 <a
-                  href="/network/events"
+                  href="/network/dashboard/events"
                   className="text-sm font-bold text-accent"
                 >
-                  Submit an event →
+                  Manage your events →
                 </a>
               )}
             </div>
