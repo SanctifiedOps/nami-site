@@ -18,8 +18,8 @@ export default async function NetworkEventsPage(){
  const preview=process.env.NODE_ENV==="development"&&liveEvents.length===0?[{id:"preview-event",slug:null,title:"North East Creatives Social",eventType:"Meetup",summary:"An informal evening for artists, designers, photographers and independent creatives to meet, share ideas and make useful connections.",venue:"The Common Room",location:"Newcastle upon Tyne",startsAt:new Date(Date.now()+12*86400000),priceType:"free",coverImageKey:null,coverImageAlt:"Creative people meeting at a North East event",isPreview:true}]:[];
  const events=[...liveEvents.map(event=>({...event,isPreview:false})),...preview];
  return <main className="relative min-h-screen overflow-hidden pb-24 pt-24">
-  <div className="pointer-events-none absolute inset-x-0 top-0 h-[980px]">
-   <div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-35 [mask-image:linear-gradient(to_bottom,black_0%,black_55%,transparent_100%)]" />
+  <div className="pointer-events-none absolute inset-x-0 top-0 h-[900px] [mask-image:linear-gradient(to_bottom,black_0%,black_42%,transparent_82%)]">
+   <div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-35" />
    <div className="absolute inset-0 bg-gradient-to-b from-surface-0/35 via-surface-0/80 to-surface-0" />
    <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(255,0,188,.24),transparent_42%)]" />
   </div>

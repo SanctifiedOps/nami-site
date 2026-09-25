@@ -21,7 +21,7 @@ export default async function EventPage({params}:{params:Promise<{slug:string}>}
 
   return <main className="relative min-h-screen overflow-hidden pb-24 pt-24">
     <EventAnalytics eventId={event.id}/>
-    <div className="pointer-events-none absolute inset-x-0 top-0 h-[1050px]"><div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-25 [mask-image:linear-gradient(to_bottom,black_0%,black_55%,transparent_100%)]"/><div className="absolute inset-0 bg-gradient-to-b from-surface-0/20 via-surface-0/75 to-surface-0"/><div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(255,0,188,.24),transparent_42%)]"/></div>
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-[900px] [mask-image:linear-gradient(to_bottom,black_0%,black_40%,transparent_80%)]"><div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-25"/><div className="absolute inset-0 bg-gradient-to-b from-surface-0/20 via-surface-0/75 to-surface-0"/><div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,0,188,.24),transparent_42%)]"/></div>
     <div className="container-shell relative z-10">
       <Link href="/network/events" className="inline-flex items-center gap-2 text-sm font-semibold text-accent"><ArrowLeft size={15}/>All events</Link>
       <section className="mt-7 overflow-hidden rounded-[2rem] border border-accent/35 bg-surface-1/90 shadow-[0_30px_100px_rgba(0,0,0,.55)] backdrop-blur md:p-3">
