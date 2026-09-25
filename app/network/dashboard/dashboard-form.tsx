@@ -5,7 +5,7 @@ import { ExternalLink, Pencil, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { networkAuthClient } from "@/lib/network-auth/client";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
-import { cropImageToWebp } from "@/lib/network/prepare-dashboard-image";
+import { cropImageForUpload } from "@/lib/network/prepare-dashboard-image";
 
 type Profile = {
   memberId: string;
@@ -132,7 +132,7 @@ export function DashboardForm({
     setStatus("Preparing your image...");
     if (kind === "portfolio") setPortfolioStatus("Preparing your image...");
     try {
-      const processed = await cropImageToWebp(
+      const processed = await cropImageForUpload(
         source,
         kind === "profile" ? 1000 : 1080,
         kind === "profile" ? 1000 : 1440,

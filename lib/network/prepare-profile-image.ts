@@ -76,12 +76,17 @@ export async function prepareProfileImage(file: File, memberId: string) {
       OUTPUT_SIZE,
     );
 
-    const blob = await new Promise<Blob | null>((resolve) =>
+    let blob = await new Promise<Blob | null>((resolve) =>
       canvas.toBlob(resolve, "image/webp", 0.86),
     );
+    if (blob && blob.type !== "image/webp") {
+      blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, "image/jpeg", 0.82),
+      );
+    }
     if (!blob) throw new Error("image-processing-unavailable");
 
-    return new File([blob], `${memberId}.webp`, { type: blob.type || "image/webp" });
+    return new File([blob], `${memberId}.${blob.type === "image/jpeg" ? "jpg" : "webp"}`, { type: blob.type });
   } finally {
     decoded.dispose();
   }

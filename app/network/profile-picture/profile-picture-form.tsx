@@ -126,7 +126,7 @@ export function ProfilePictureForm({
           ref={inputRef}
           type="file"
           name="image"
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/*"
           required
           onChange={chooseFile}
           className="sr-only"
@@ -139,7 +139,7 @@ export function ProfilePictureForm({
             <img src={previewUrl} alt="Selected profile preview" className="size-24 rounded-full object-cover" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-fg">{file?.name}</p>
-          <p className="mt-1 text-xs leading-relaxed text-fg-subtle">I’ll centre-crop and prepare it as an 800px WebP.</p>
+          <p className="mt-1 text-xs leading-relaxed text-fg-subtle">I’ll centre-crop, resize and optimise it for you.</p>
               <button type="button" onClick={clearFile} className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-accent hover:text-accent-soft">
                 <X size={14} aria-hidden /> Choose another
               </button>
@@ -153,7 +153,7 @@ export function ProfilePictureForm({
           >
             <ImagePlus size={30} aria-hidden className="text-accent" />
             <span className="mt-4 font-semibold text-fg">Choose a profile picture</span>
-            <span className="mt-2 text-sm text-fg-subtle">JPG, PNG or WebP. Up to 10 MB.</span>
+            <span className="mt-2 text-sm text-fg-subtle">Choose a photo from your device. Up to 10 MB.</span>
           </button>
         )}
       </div>

@@ -28,7 +28,7 @@ async function decodeImage(file: File): Promise<DecodedImage> {
   return { source: image, width: image.naturalWidth, height: image.naturalHeight, dispose: () => URL.revokeObjectURL(url) };
 }
 
-export async function cropImageToWebp(file: File, width: number, height: number, filename: string) {
+export async function cropImageForUpload(file: File, width: number, height: number, filename: string) {
   const decoded = await decodeImage(file);
   try {
     if (!decoded.width || !decoded.height) throw new Error("I couldn't read that photo. Please choose another image.");
@@ -42,16 +42,22 @@ export async function cropImageToWebp(file: File, width: number, height: number,
     const sourceHeight = height / scale;
     context.drawImage(decoded.source, (decoded.width - sourceWidth) / 2, (decoded.height - sourceHeight) / 2, sourceWidth, sourceHeight, 0, 0, width, height);
 
-    let quality = 0.88;
+    let outputType = "image/webp";
+    let quality = 0.86;
     let blob: Blob | null = null;
     do {
-      blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/webp", quality));
+      blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, outputType, quality));
+      if (blob && blob.type !== outputType) {
+        outputType = "image/jpeg";
+        blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, outputType, quality));
+      }
       quality -= 0.08;
-    } while (blob && blob.size > 2 * 1024 * 1024 && quality >= 0.48);
+    } while (blob && blob.size > 2 * 1024 * 1024 && quality >= 0.30);
 
     if (!blob) throw new Error("The photo could not be prepared. Please try another image.");
     if (blob.size > 2 * 1024 * 1024) throw new Error("The photo could not be reduced enough. Please try another image.");
-    return new File([blob], filename, { type: "image/webp" });
+    const extension = blob.type === "image/jpeg" ? "jpg" : "webp";
+    return new File([blob], filename.replace(/\.[^.]+$/, `.${extension}`), { type: blob.type });
   } finally {
     decoded.dispose();
   }

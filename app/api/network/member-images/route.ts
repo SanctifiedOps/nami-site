@@ -2,7 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { getMemberSession } from "@/lib/network-auth/session";
 import { getMemberMediaBucket, getNetworkDb, schema } from "@/lib/network-db";
-import { webpDimensions } from "@/lib/network-profile/webp";
+import { imageDimensions } from "@/lib/network-profile/image-dimensions";
 import { revalidateNetworkProfile } from "@/lib/network-profile/revalidate";
 import { normalizeProfileUrl } from "@/lib/network-profile/links";
 
@@ -18,15 +18,15 @@ export async function POST(request: Request) {
   if (!(file instanceof File) || (kind !== "profile" && kind !== "portfolio")) {
     return Response.json({ error: "Choose a valid image." }, { status: 400 });
   }
-  if (file.size > MAX_IMAGE_BYTES || file.type !== "image/webp") {
-    return Response.json({ error: "Images must be WebP and no larger than 2 MB." }, { status: 400 });
+  if (file.size > MAX_IMAGE_BYTES || !["image/webp", "image/jpeg"].includes(file.type)) {
+    return Response.json({ error: "That photo could not be prepared. Please try it again." }, { status: 400 });
   }
   if (kind === "portfolio" && altText.length > 180) {
     return Response.json({ error: "Image descriptions can be up to 180 characters." }, { status: 400 });
   }
 
   const bytes = new Uint8Array(await file.arrayBuffer());
-  const dimensions = webpDimensions(bytes);
+  const dimensions = imageDimensions(bytes, file.type);
   if (!dimensions || dimensions.width < 300 || dimensions.height < 300) {
     return Response.json({ error: "The image is invalid or too small." }, { status: 400 });
   }
@@ -41,9 +41,10 @@ export async function POST(request: Request) {
   const db = await getNetworkDb();
   const bucket = await getMemberMediaBucket();
   const id = crypto.randomUUID();
+  const extension = file.type === "image/jpeg" ? "jpg" : "webp";
   const key = kind === "profile"
-    ? `network-members/${auth.member.id}/profile/${id}.webp`
-    : `network-members/${auth.member.id}/portfolio/${id}.webp`;
+    ? `network-members/${auth.member.id}/profile/${id}.${extension}`
+    : `network-members/${auth.member.id}/portfolio/${id}.${extension}`;
 
   let oldKey: string | null = null;
   if (kind === "profile") {
@@ -54,7 +55,7 @@ export async function POST(request: Request) {
     if (current.length >= 4) return Response.json({ error: "You can upload up to four portfolio images." }, { status: 409 });
   }
 
-  await bucket.put(key, bytes, { httpMetadata: { contentType: "image/webp", cacheControl: "public, max-age=31536000, immutable" } });
+  await bucket.put(key, bytes, { httpMetadata: { contentType: file.type, cacheControl: "public, max-age=31536000, immutable" } });
   const now = new Date();
   try {
     if (kind === "profile") {
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
       const current = await db.select({ position: schema.profileImages.position }).from(schema.profileImages).where(and(eq(schema.profileImages.memberId, auth.member.id), eq(schema.profileImages.status, "ready")));
       const position = current.length ? Math.max(...current.map((image) => image.position)) + 1 : 0;
       await db.batch([
-        db.insert(schema.profileImages).values({ id, memberId: auth.member.id, r2Key: key, position, altText, width: dimensions.width, height: dimensions.height, contentType: "image/webp", status: "ready", createdAt: now, updatedAt: now }),
+        db.insert(schema.profileImages).values({ id, memberId: auth.member.id, r2Key: key, position, altText, width: dimensions.width, height: dimensions.height, contentType: file.type, status: "ready", createdAt: now, updatedAt: now }),
         db.insert(schema.profileAuditLog).values({ id: crypto.randomUUID(), memberId: auth.member.id, actorUserId: auth.session.user.id, changedFields: ["portfolioImages"], beforeJson: {}, afterJson: { added: id }, createdAt: now }),
         db.insert(schema.sheetSyncJobs).values({ id: crypto.randomUUID(), memberId: auth.member.id, status: "pending", attempts: 0, nextAttemptAt: now, createdAt: now, updatedAt: now }),
       ]);

@@ -2,7 +2,7 @@
 
 import { FormEvent, InvalidEvent, useRef, useState } from "react";
 import { ArrowUpRight, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Clock3, MapPin, Send } from "lucide-react";
-import { cropImageToWebp } from "@/lib/network/prepare-dashboard-image";
+import { cropImageForUpload } from "@/lib/network/prepare-dashboard-image";
 
 type EventRecord = { id:string; slug:string|null; title:string; eventType:string; summary:string; fullDescription:string; venue:string; address:string; location:string; region:string; format:string; startsAt:string; endsAt:string|null; priceType:string; priceDetails:string; bookingUrl:string|null; accessibility:string; ageGuidance:string; contactEmail:string; status:string; coverImageKey:string|null; coverImageAlt:string; adminFeedback:string|null; changesPending?:boolean };
 type UpcomingEvent = Pick<EventRecord,"id"|"slug"|"title"|"eventType"|"summary"|"venue"|"location"|"startsAt"|"priceType"|"coverImageKey"|"coverImageAlt">;
@@ -35,7 +35,7 @@ function DateTimePicker({name,label,required=false,initialValue=null}:{name:stri
 }
 
 async function prepareCoverImage(file:File){
-  return cropImageToWebp(file,1080,1350,"event-cover.webp");
+  return cropImageForUpload(file,1080,1350,"event-cover.webp");
 }
 
 const media=(key:string)=>`/api/network/media/${key.split("/").map(encodeURIComponent).join("/")}`;
