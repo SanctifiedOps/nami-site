@@ -23,7 +23,7 @@ export function PortfolioGallery({ images, memberName }: { images: PortfolioImag
   }, [activeImage]);
 
   return <>
-    <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-4">
       {images.map((image, index) => (
         <figure key={`${image.src}-${index}`} className="group relative aspect-[3/4] overflow-hidden rounded-3xl border border-line bg-surface-0/65 shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[0_22px_60px_rgba(255,0,166,0.16)]">
           <button type="button" onClick={() => setActiveImage(image)} className="absolute inset-0 z-10" aria-label={`Open ${image.title || `work by ${memberName}`} in gallery`} />
@@ -38,9 +38,9 @@ export function PortfolioGallery({ images, memberName }: { images: PortfolioImag
         </figure>
       ))}
       {Array.from({ length: Math.max(0, 4 - images.length) }, (_, index) => (
-        <div key={`portfolio-placeholder-${index}`} className="relative grid aspect-[3/4] place-items-center overflow-hidden rounded-3xl border border-dashed border-accent/35 bg-surface-0/65 p-5 text-center md:p-8">
+        <div key={`portfolio-placeholder-${index}`} className="relative grid aspect-[3/4] place-items-center overflow-hidden rounded-2xl border border-dashed border-accent/35 bg-surface-0/65 px-2 py-4 text-center sm:rounded-3xl sm:p-5 md:p-8">
           <div aria-hidden className="hairline-grid absolute inset-0 opacity-20" />
-          <div className="relative"><span className="mx-auto grid size-12 place-items-center rounded-full border border-accent/30 bg-accent/10 text-2xl text-accent">+</span><p className="mt-4 font-semibold text-fg">Portfolio image</p><p className="mt-2 text-sm text-fg-subtle">Portfolio image coming soon</p></div>
+          <div className="relative min-w-0"><span className="mx-auto grid size-9 place-items-center rounded-full border border-accent/30 bg-accent/10 text-lg leading-none text-accent sm:size-12 sm:text-2xl">+</span><p className="mx-auto mt-3 max-w-24 text-xs font-semibold leading-[1.2] text-fg-muted sm:mt-4 sm:max-w-none sm:text-sm">More work coming soon</p></div>
         </div>
       ))}
     </div>
