@@ -64,6 +64,7 @@
   html {
     background-color: var(--color-surface-0);
     color: var(--color-fg);
+    color-scheme: dark;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -81,6 +82,38 @@
     letter-spacing: -0.02em;
     font-weight: 600;
     line-height: 1.12;
+  }
+
+  /* Keep page, panel, textarea and code-block scrollbars consistent with the
+     NAMI interface. Firefox uses scrollbar-color; Chromium and Safari use
+     the WebKit pseudo-elements below. */
+  * {
+    scrollbar-color: var(--color-accent) #050506;
+    scrollbar-width: thin;
+  }
+
+  *::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #050506;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    min-height: 36px;
+    border: 3px solid #050506;
+    border-radius: 999px;
+    background: var(--color-accent);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-soft);
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: #050506;
   }
 
   ::selection {
