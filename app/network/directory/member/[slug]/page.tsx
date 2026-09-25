@@ -192,7 +192,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
       />
 
       <main className="overflow-hidden pb-24">
-        <section className="relative isolate overflow-hidden pb-16 pt-28 md:pb-24 md:pt-36">
+        <section className="relative isolate overflow-hidden pb-4 pt-24 sm:pt-28 md:pb-24 md:pt-36">
           <ParallaxBackdrop
             src="/images/north-east/4.jpg"
             overlay={0.88}
@@ -208,12 +208,12 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
             Back to the directory
           </Link>
 
-          <section className="relative mt-8 overflow-hidden rounded-[2rem] border border-accent/30 bg-surface-1 px-6 py-7 md:px-10 md:py-10 lg:px-14 lg:py-14">
+          <section className="relative mt-5 overflow-hidden rounded-[1.5rem] border border-accent/30 bg-surface-1 px-5 py-6 sm:mt-8 sm:rounded-[2rem] sm:px-6 sm:py-7 md:px-10 md:py-10 lg:px-14 lg:py-14">
             <div aria-hidden className="hairline-grid absolute inset-0 opacity-30" />
             <div aria-hidden className="absolute -right-24 -top-24 size-96 rounded-full bg-accent/20 blur-3xl" />
 
-            <div className="relative grid gap-10 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-16">
-              <div className="mx-auto w-full max-w-md">
+            <div className="relative grid gap-6 sm:gap-10 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-16">
+              <div className="mx-auto w-full max-w-[12rem] sm:max-w-xs lg:max-w-md">
                 <MemberAvatar
                   name={member.name}
                   src={member.profileImage}
@@ -223,31 +223,31 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
               </div>
 
               <div>
-                <p className="mono-label text-accent">NAMI Creative Network member</p>
-                <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-fg-subtle">
-                  <span className="rounded-full border border-line bg-surface-0/50 px-3 py-1.5">{profile.role}</span>
+                <p className="mono-label text-[10px] text-accent sm:text-xs">NAMI Creative Network member</p>
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-fg-subtle sm:mt-5 sm:gap-3 sm:text-sm">
+                  <span className="rounded-full border border-line bg-surface-0/50 px-2.5 py-1 sm:px-3 sm:py-1.5">{profile.role}</span>
                   <span className="inline-flex items-center gap-2">
                     <MapPin size={15} className="text-accent" aria-hidden />
                     {member.location}
                   </span>
                 </div>
 
-                <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl">
+                <h1 className="mt-4 max-w-4xl break-words text-[clamp(2.15rem,10.5vw,3rem)] font-semibold leading-[0.94] tracking-tight sm:mt-6 sm:text-6xl lg:text-7xl">
                   {profile.personName}
                   {profile.brandName && <span className="mt-2 block text-accent">{profile.brandName}</span>}
                 </h1>
 
-                <p className="mt-7 max-w-2xl text-lg leading-relaxed text-fg-muted md:text-xl">
+                <p className="mt-5 max-w-2xl text-base leading-6 text-fg-muted sm:mt-7 sm:text-lg sm:leading-relaxed md:text-xl">
                   {member.description}
                 </p>
 
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className="mt-5 flex flex-wrap gap-2 sm:mt-8 sm:gap-3">
                   {member.websiteUrl && (
                     <a
                       href={member.websiteUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-accent-soft sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm"
                     >
                       Visit their work <ArrowUpRight size={15} aria-hidden />
                     </a>
@@ -255,7 +255,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                   {socialLinks.length > 0 && (
                     <a
                       href="#member-socials"
-                      className="inline-flex items-center gap-2 rounded-full border border-accent bg-black/75 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_0_0_rgba(255,0,166,0)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:text-accent hover:shadow-[0_10px_30px_rgba(255,0,166,0.2)]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-accent bg-black/75 px-4 py-2.5 text-xs font-semibold text-white shadow-[0_0_0_rgba(255,0,166,0)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:text-accent hover:shadow-[0_10px_30px_rgba(255,0,166,0.2)] sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm"
                     >
                       View socials <ArrowUpRight size={15} aria-hidden />
                     </a>
@@ -268,20 +268,20 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
         </section>
 
         <div className="container-shell">
-          <section className="grid gap-6 py-16 md:py-24 lg:grid-cols-[minmax(0,1.3fr)_minmax(18rem,0.7fr)] lg:gap-14">
+          <section className="grid gap-8 pb-16 pt-10 md:py-24 lg:grid-cols-[minmax(0,1.3fr)_minmax(18rem,0.7fr)] lg:gap-14">
             <div>
               <p className="mono-label text-accent">{profile.aboutEyebrow}</p>
-              <h2 className="mt-4 max-w-3xl text-4xl font-semibold leading-[0.98] tracking-tight md:text-6xl">
+              <h2 className="mt-3 max-w-3xl text-3xl font-semibold leading-[0.98] tracking-tight sm:text-4xl md:mt-4 md:text-6xl">
                 {profile.aboutTitle}
               </h2>
-              <p className="mt-7 max-w-3xl whitespace-pre-line text-lg leading-relaxed text-fg-muted">
+              <p className="mt-5 max-w-3xl whitespace-pre-line text-base leading-6 text-fg-muted sm:mt-7 sm:text-lg sm:leading-relaxed">
                 {profile.aboutBody}
               </p>
             </div>
 
             <aside
               id="member-socials"
-              className="group scroll-mt-28 rounded-3xl border border-accent/35 bg-[linear-gradient(145deg,rgba(255,0,166,0.20),rgba(18,18,22,0.96)_45%,rgba(255,0,166,0.08))] p-7 shadow-[0_18px_55px_rgba(255,0,166,0.10)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/65 hover:shadow-[0_24px_70px_rgba(255,0,166,0.20)] md:p-8"
+              className="group scroll-mt-28 rounded-3xl border border-accent/35 bg-[linear-gradient(145deg,rgba(255,0,166,0.20),rgba(18,18,22,0.96)_45%,rgba(255,0,166,0.08))] p-6 shadow-[0_18px_55px_rgba(255,0,166,0.10)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/65 hover:shadow-[0_24px_70px_rgba(255,0,166,0.20)] md:p-8"
             >
               <p className="mono-label text-accent">At a glance</p>
               <dl className="mt-6 divide-y divide-line">
