@@ -13,6 +13,7 @@ const actionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("approve-application"), applicationId: z.string().min(2), primaryGroup: z.enum(groupSlugs), speciality: z.string().trim().min(2).max(80), bio: z.string().trim().min(20).max(320) }),
   z.object({ action: z.literal("reject-application"), applicationId: z.string().min(2) }),
   z.object({ action: z.literal("ticket-status"), ticketId: z.string().min(3), status: z.enum(["open", "in_progress", "resolved"]) }),
+  z.object({ action: z.literal("dismiss-failed-job"), jobId: z.string().min(2), jobType: z.enum(["owner-alert", "member-email", "sheet-sync", "event-sheet-sync", "mailchimp-sync", "bio-generation"]) }),
   z.object({ action: z.literal("event-status"), eventId: z.string().uuid(), status: z.enum(["approved", "rejected"]), feedback: z.string().trim().max(1000).optional().default("") }),
   z.object({ action: z.literal("event-cancel"), eventId: z.string().uuid() }),
   z.object({ action: z.literal("event-restore"), eventId: z.string().uuid() }),
@@ -41,6 +42,13 @@ export async function POST(request: Request) {
       resolvedAt: parsed.data.status === "resolved" ? now : null,
       updatedAt: now,
     }).where(eq(schema.supportTickets.id, parsed.data.ticketId));
+    return Response.json({ ok: true });
+  }
+
+  if (parsed.data.action === "dismiss-failed-job") {
+    const key = `admin-dismissed-job:${parsed.data.jobType}:${parsed.data.jobId}`;
+    await db.insert(schema.systemState).values({ key, value: now.toISOString(), updatedAt: now })
+      .onConflictDoUpdate({ target: schema.systemState.key, set: { value: now.toISOString(), updatedAt: now } });
     return Response.json({ ok: true });
   }
 

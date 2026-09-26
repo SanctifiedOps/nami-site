@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { desc, eq, gte } from "drizzle-orm";
+import { desc, eq, gte, like } from "drizzle-orm";
 import { requireNetworkAdminSession } from "@/lib/network-auth/session";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { getGaSnapshot, getInstagramSnapshot, getMailchimpSnapshot } from "@/lib/network-admin/external-data";
@@ -14,7 +14,7 @@ export default async function NetworkAdminPage() {
   const admin = await requireNetworkAdminSession();
   const db = await getNetworkDb();
   const searchCutoff = new Date(Date.now() - 90 * 86400000);
-  const [applications, memberRows, tickets, events, eventRevisions, alerts, emailJobs, syncJobs, eventSyncJobs, mailchimpJobs, bioJobs, searchEvents, eventAnalytics, ga, instagram, mailchimp] = await Promise.all([
+  const [applications, memberRows, tickets, events, eventRevisions, alerts, emailJobs, syncJobs, eventSyncJobs, mailchimpJobs, bioJobs, dismissedJobRows, searchEvents, eventAnalytics, ga, instagram, mailchimp] = await Promise.all([
     db.select().from(schema.networkApplications).orderBy(desc(schema.networkApplications.submittedAt)),
     db.select({ member: schema.members, profile: schema.memberProfiles }).from(schema.members)
       .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id)).orderBy(desc(schema.members.joinedAt)),
@@ -27,6 +27,7 @@ export default async function NetworkAdminPage() {
     db.select().from(schema.eventSheetSyncJobs).orderBy(desc(schema.eventSheetSyncJobs.createdAt)).limit(100),
     db.select().from(schema.mailchimpSyncJobs).orderBy(desc(schema.mailchimpSyncJobs.createdAt)).limit(100),
     db.select().from(schema.bioGenerationJobs).orderBy(desc(schema.bioGenerationJobs.createdAt)).limit(100),
+    db.select().from(schema.systemState).where(like(schema.systemState.key, "admin-dismissed-job:%")),
     db.select().from(schema.directorySearchEvents).where(gte(schema.directorySearchEvents.createdAt, searchCutoff)).orderBy(desc(schema.directorySearchEvents.createdAt)).limit(5000),
     db.select().from(schema.eventAnalytics).where(gte(schema.eventAnalytics.createdAt, searchCutoff)).orderBy(desc(schema.eventAnalytics.createdAt)).limit(10000),
     getGaSnapshot(),
@@ -34,13 +35,15 @@ export default async function NetworkAdminPage() {
     getMailchimpSnapshot(),
   ]);
 
+  const dismissedJobs = new Set(dismissedJobRows.map((item) => item.key));
+  const isDismissed = (jobType: string, id: string) => dismissedJobs.has(`admin-dismissed-job:${jobType}:${id}`);
   const failedJobs = [
-    ...alerts.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Owner notification", recordId: item.recordId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
-    ...emailJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Member email", recordId: item.memberId || item.recipient, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
-    ...syncJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Google Sheet sync", recordId: item.memberId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
-    ...eventSyncJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Event Google Sheet sync", recordId: item.eventId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
-    ...mailchimpJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "Mailchimp sync", recordId: item.applicationId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
-    ...bioJobs.filter((item) => item.status === "failed").map((item) => ({ id: item.id, type: "NAMI bio generation", recordId: item.applicationId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...alerts.filter((item) => item.status === "failed" && !isDismissed("owner-alert", item.id)).map((item) => ({ id: item.id, jobType: "owner-alert" as const, type: "Owner notification", recordId: item.recordId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...emailJobs.filter((item) => item.status === "failed" && !isDismissed("member-email", item.id)).map((item) => ({ id: item.id, jobType: "member-email" as const, type: "Member email", recordId: item.memberId || item.recipient, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...syncJobs.filter((item) => item.status === "failed" && !isDismissed("sheet-sync", item.id)).map((item) => ({ id: item.id, jobType: "sheet-sync" as const, type: "Google Sheet sync", recordId: item.memberId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...eventSyncJobs.filter((item) => item.status === "failed" && !isDismissed("event-sheet-sync", item.id)).map((item) => ({ id: item.id, jobType: "event-sheet-sync" as const, type: "Event Google Sheet sync", recordId: item.eventId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...mailchimpJobs.filter((item) => item.status === "failed" && !isDismissed("mailchimp-sync", item.id)).map((item) => ({ id: item.id, jobType: "mailchimp-sync" as const, type: "Mailchimp sync", recordId: item.applicationId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
+    ...bioJobs.filter((item) => item.status === "failed" && !isDismissed("bio-generation", item.id)).map((item) => ({ id: item.id, jobType: "bio-generation" as const, type: "NAMI bio generation", recordId: item.applicationId, status: item.status, attempts: item.attempts, error: item.lastError, nextAttemptAt: iso(item.nextAttemptAt), updatedAt: iso(item.updatedAt)! })),
   ].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 
   return <AdminDashboard
@@ -66,15 +69,15 @@ export default async function NetworkAdminPage() {
     events={events.map((item) => ({ ...item, startsAt: iso(item.startsAt)!, endsAt: iso(item.endsAt), submittedAt: iso(item.submittedAt)!, reviewedAt: iso(item.reviewedAt), publishedAt: iso(item.publishedAt), updatedAt: iso(item.updatedAt)! }))}
     eventRevisions={eventRevisions.map((item) => ({ ...item, submittedAt: iso(item.submittedAt)!, reviewedAt: iso(item.reviewedAt) }))}
     operations={{
-      failedAlerts: alerts.filter((item) => item.status === "failed").length,
+      failedAlerts: alerts.filter((item) => item.status === "failed" && !isDismissed("owner-alert", item.id)).length,
       pendingAlerts: alerts.filter((item) => item.status === "pending").length,
-      failedEmails: emailJobs.filter((item) => item.status === "failed").length,
+      failedEmails: emailJobs.filter((item) => item.status === "failed" && !isDismissed("member-email", item.id)).length,
       pendingEmails: emailJobs.filter((item) => item.status === "pending").length,
-      failedSyncs: syncJobs.filter((item) => item.status === "failed").length + eventSyncJobs.filter((item) => item.status === "failed").length,
+      failedSyncs: syncJobs.filter((item) => item.status === "failed" && !isDismissed("sheet-sync", item.id)).length + eventSyncJobs.filter((item) => item.status === "failed" && !isDismissed("event-sheet-sync", item.id)).length,
       pendingSyncs: syncJobs.filter((item) => item.status === "pending").length + eventSyncJobs.filter((item) => item.status === "pending").length,
-      failedMailchimp: mailchimpJobs.filter((item) => item.status === "failed").length,
+      failedMailchimp: mailchimpJobs.filter((item) => item.status === "failed" && !isDismissed("mailchimp-sync", item.id)).length,
       pendingMailchimp: mailchimpJobs.filter((item) => item.status === "pending").length,
-      failedBios: bioJobs.filter((item) => item.status === "failed").length,
+      failedBios: bioJobs.filter((item) => item.status === "failed" && !isDismissed("bio-generation", item.id)).length,
       pendingBios: bioJobs.filter((item) => item.status === "pending").length,
     }}
     failedJobs={failedJobs}

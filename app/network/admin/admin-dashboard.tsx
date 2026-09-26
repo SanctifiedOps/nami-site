@@ -26,7 +26,7 @@ type NetworkEvent = {
   bookingUrl: string | null; status: "draft" | "pending" | "approved" | "rejected" | "cancelled"; submittedAt: string; reviewedAt: string | null; publishedAt: string | null; updatedAt: string;
 };
 type Operations = { failedAlerts: number; pendingAlerts: number; failedEmails: number; pendingEmails: number; failedSyncs: number; pendingSyncs: number; failedMailchimp: number; pendingMailchimp: number; failedBios: number; pendingBios: number };
-type FailedJob = { id: string; type: string; recordId: string; status: string; attempts: number; error: string | null; nextAttemptAt: string | null; updatedAt: string };
+type FailedJob = { id: string; jobType: "owner-alert" | "member-email" | "sheet-sync" | "event-sheet-sync" | "mailchimp-sync" | "bio-generation"; type: string; recordId: string; status: string; attempts: number; error: string | null; nextAttemptAt: string | null; updatedAt: string };
 type SearchEvent = { id: string; eventType: "search" | "result_clicked"; anonymousSessionId: string; searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number; selectedMemberId: string | null; sourcePath: string; createdAt: string };
 type EventAnalyticsRecord = { id: string; eventId: string | null; eventType: string; anonymousSessionId: string; metadata: Record<string, unknown>; createdAt: string };
 type EventRevision = { id:string; eventId:string; memberId:string; payload:Record<string,unknown>; status:string; adminFeedback:string|null; submittedAt:string; reviewedAt:string|null; reviewerId:string|null };
@@ -62,11 +62,14 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const [activeView, setActiveView] = useState<DashboardView>(requestedView === "members" || requestedView === "tasks" || requestedView === "growth" || requestedView === "more" ? requestedView : "home");
   const [moreDetail, setMoreDetail] = useState<"integrations" | "health" | null>(null);
   const [growthDays, setGrowthDays] = useState(30);
+  const [ticketView, setTicketView] = useState<"active" | "archive">("active");
 
   const pendingApplications = applications.filter((item) => item.status === "pending");
   const pendingEvents = events.filter((item) => item.status === "pending");
   const pendingEventRevisions = eventRevisions.filter((item) => item.status === "pending");
   const openTickets = tickets.filter((item) => item.status !== "resolved");
+  const archivedTickets = tickets.filter((item) => item.status === "resolved");
+  const visibleTickets = ticketView === "active" ? openTickets : archivedTickets;
   const activeMembers = members.filter((item) => item.published && item.accountStatus !== "disabled");
   const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
   const newThisMonth = members.filter((item) => new Date(item.joinedAt) >= monthStart).length;
@@ -252,9 +255,13 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
 
       {activeView === "tasks" && <><section id="tickets" className="pt-2 md:pt-10">
         <SectionHeading title="Support tickets" count={openTickets.length} note="" />
+        <div className="mt-3 inline-flex rounded-full border border-line bg-surface-1 p-1 text-xs font-bold md:mt-5">
+          <button onClick={() => setTicketView("active")} className={`rounded-full px-4 py-2 transition ${ticketView === "active" ? "bg-accent text-white" : "text-fg-muted hover:text-fg"}`}>Active ({openTickets.length})</button>
+          <button onClick={() => setTicketView("archive")} className={`rounded-full px-4 py-2 transition ${ticketView === "archive" ? "bg-accent text-white" : "text-fg-muted hover:text-fg"}`}>Archive ({archivedTickets.length})</button>
+        </div>
         <div className="mt-3 grid gap-2.5 md:mt-5 md:gap-4 [&>article]:!p-4 md:[&>article]:!p-6">
-          {tickets.map((ticket) => <article key={ticket.id} className={`${panel} min-w-0 overflow-hidden p-5 md:p-6`}><div className="flex min-w-0 flex-col gap-5 lg:flex-row lg:items-start lg:justify-between"><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-3"><h3 className="text-xl">{ticket.subject}</h3><Status value={ticket.status} />{ticket.priority === "urgent" && <span className="rounded-full bg-red-400/12 px-3 py-1 text-xs font-bold text-red-300">Urgent</span>}</div><p className="mt-2 break-words text-xs text-fg-subtle [overflow-wrap:anywhere]">{ticket.id} · {ticket.name} · {ticket.email} · {formatDate(ticket.createdAt)}</p><p className="mt-4 whitespace-pre-wrap break-words text-sm leading-6 text-fg-muted [overflow-wrap:anywhere]">{ticket.description}</p>{ticket.pageUrl && <a href={ticket.pageUrl} target="_blank" rel="noreferrer" className="mt-3 inline-block max-w-full break-all text-xs font-bold text-accent">Open reported page ↗</a>}</div><div className="flex shrink-0 flex-wrap gap-2">{(['open','in_progress','resolved'] as const).map((status) => <button key={status} disabled={busy !== null || ticket.status === status} onClick={() => runAction(`ticket-${ticket.id}-${status}`, { action: "ticket-status", ticketId: ticket.id, status })} className={button}>{status === "in_progress" ? "In progress" : status[0].toUpperCase() + status.slice(1)}</button>)}</div></div></article>)}
-          {!tickets.length && <Empty text="No support tickets have been logged." />}
+          {visibleTickets.map((ticket) => <article key={ticket.id} className={`${panel} min-w-0 overflow-hidden p-5 md:p-6`}><div className="flex min-w-0 flex-col gap-5 lg:flex-row lg:items-start lg:justify-between"><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-3"><h3 className="text-xl">{ticket.subject}</h3><Status value={ticket.status} />{ticket.priority === "urgent" && <span className="rounded-full bg-red-400/12 px-3 py-1 text-xs font-bold text-red-300">Urgent</span>}</div><p className="mt-2 break-words text-xs text-fg-subtle [overflow-wrap:anywhere]">{ticket.id} · {ticket.name} · {ticket.email} · {formatDate(ticket.createdAt)}</p><p className="mt-4 whitespace-pre-wrap break-words text-sm leading-6 text-fg-muted [overflow-wrap:anywhere]">{ticket.description}</p>{ticket.pageUrl && <a href={ticket.pageUrl} target="_blank" rel="noreferrer" className="mt-3 inline-block max-w-full break-all text-xs font-bold text-accent">Open reported page ↗</a>}</div><div className="flex shrink-0 flex-wrap gap-2">{ticket.status === "resolved" ? <button disabled={busy !== null} onClick={() => runAction(`ticket-${ticket.id}-open`, { action: "ticket-status", ticketId: ticket.id, status: "open" })} className={button}>Reopen</button> : <>{ticket.status !== "open" && <button disabled={busy !== null} onClick={() => runAction(`ticket-${ticket.id}-open`, { action: "ticket-status", ticketId: ticket.id, status: "open" })} className={button}>Open</button>}<button disabled={busy !== null || ticket.status === "in_progress"} onClick={() => runAction(`ticket-${ticket.id}-in_progress`, { action: "ticket-status", ticketId: ticket.id, status: "in_progress" })} className={button}>In progress</button><button disabled={busy !== null} onClick={() => runAction(`ticket-${ticket.id}-resolved`, { action: "ticket-status", ticketId: ticket.id, status: "resolved" })} className="rounded-full bg-accent px-4 py-2 text-xs font-bold text-white disabled:opacity-40">Resolve and archive</button></>}</div></div></article>)}
+          {!visibleTickets.length && <Empty text={ticketView === "active" ? "No active support tickets." : "No archived support tickets."} />}
         </div>
       </section>
 
@@ -284,6 +291,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
               <div className="flex flex-wrap items-start justify-between gap-3"><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="text-sm md:text-lg">{job.type}</h3><Status value={job.status} /></div><p className="mt-1 break-all text-[10px] text-fg-subtle md:text-xs">Record: {job.recordId}</p></div><span className="text-[10px] text-fg-subtle md:text-xs">Updated {formatDate(job.updatedAt)}</span></div>
               <p className="mt-3 whitespace-pre-wrap break-words rounded-xl border border-red-400/15 bg-red-400/5 p-3 text-xs leading-5 text-red-200 [overflow-wrap:anywhere]">{job.error || "No error message was recorded."}</p>
               <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[10px] text-fg-subtle md:text-xs"><span>Attempts: {job.attempts}</span><span>{job.nextAttemptAt ? `Next retry: ${formatDate(job.nextAttemptAt)}` : "No retry scheduled"}</span></div>
+              <button disabled={busy !== null} onClick={() => runAction(`dismiss-job-${job.id}`, { action: "dismiss-failed-job", jobId: job.id, jobType: job.jobType })} className={`${button} mt-4`}>{busy === `dismiss-job-${job.id}` ? "Dismissing..." : "Dismiss"}</button>
             </article>)}
             {!failedJobs.length && <Empty text="No failed jobs." />}
           </div>
