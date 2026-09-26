@@ -1,19 +1,13 @@
 export function NetworkHeroBackground() {
   return (
     <>
-      <picture>
-        <source
-          media="(max-width: 767px)"
-          srcSet="/network-news/hero-background-mobile.webp"
-        />
-        <img
-          src="/network-news/hero-background.webp"
-          alt=""
-          fetchPriority="high"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.70] grayscale contrast-125"
-        />
-      </picture>
+      <img
+        src="/network-news/hero-background.webp"
+        alt=""
+        fetchPriority="high"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.70] grayscale contrast-125"
+      />
       <div aria-hidden className="absolute inset-0 bg-surface-0/18" />
       <div
         aria-hidden

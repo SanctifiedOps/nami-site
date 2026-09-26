@@ -72,7 +72,7 @@ export default async function NetworkDirectoryPage() {
       </PageHero>
 
       {featured && (
-        <section className="border-b border-line bg-surface-1/35 py-10 md:py-14">
+        <section className="border-b border-accent/40 bg-accent py-10 md:py-14">
           <div className="container-shell">
             <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-surface-1 p-7 md:p-10">
               <div aria-hidden className="hairline-grid absolute inset-0 opacity-30" />
@@ -175,7 +175,7 @@ export default async function NetworkDirectoryPage() {
             <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(255,0,188,.25),transparent_42%)]" />
             <div className="container-shell relative">
               <div className="flex flex-wrap items-end justify-between gap-4">
-                <div><p className="mono-label text-accent">Network events</p><h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Coming up</h2></div>
+                <div><p className="mono-label text-accent">Network events</p><h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Upcoming network events</h2></div>
                 <Link href="/network/events" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-accent">View all events <ArrowUpRight size={15} aria-hidden /></Link>
               </div>
               <div className="mt-8 grid gap-5 md:grid-cols-3">
