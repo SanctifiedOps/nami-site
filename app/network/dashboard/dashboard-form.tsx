@@ -298,14 +298,14 @@ export function DashboardForm({
               href="/network/admin"
               className="rounded-full bg-accent px-5 py-3 text-sm font-bold text-white shadow-[0_5px_20px_rgb(255_0_188/0.22)]"
             >
-              Network admin
+              Admin
             </a>
           )}
           <a
             href={`/network/directory/member/${profile.memberId}`}
             className="rounded-full border border-line-strong px-5 py-3 text-sm font-bold"
           >
-            View public profile ↗
+            Profile
           </a>
           <button
             onClick={signOut}
