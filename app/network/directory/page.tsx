@@ -72,7 +72,7 @@ export default async function NetworkDirectoryPage() {
       </PageHero>
 
       {featured && (
-        <section className="border-b border-accent/40 bg-accent py-10 md:py-14">
+        <section className="border-b border-line bg-surface-0 py-10 md:py-14">
           <div className="container-shell">
             <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-surface-1 p-7 md:p-10">
               <div aria-hidden className="hairline-grid absolute inset-0 opacity-30" />
