@@ -76,7 +76,15 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const missingImages = members.filter((item) => item.published && !item.profileImageKey).length;
   const linkIssues = members.filter((item) => item.links.some((link) => !validUrl(link))).length;
   const groupLabels = new Map<string, string>(directoryGroups.map((group) => [group.slug, group.label]));
-  const filteredMembers = memberCategory === "all" ? members : members.filter((member) => member.primaryGroup === memberCategory);
+  const sortedMembers = useMemo(
+    () => [...members].sort((a, b) => {
+      const activeDifference = Number(b.accountStatus === "active") - Number(a.accountStatus === "active");
+      if (activeDifference !== 0) return activeDifference;
+      return a.displayName.localeCompare(b.displayName, "en-GB", { sensitivity: "base" });
+    }),
+    [members],
+  );
+  const filteredMembers = memberCategory === "all" ? sortedMembers : sortedMembers.filter((member) => member.primaryGroup === memberCategory);
   const memberPageCount = Math.max(1, Math.ceil(filteredMembers.length / membersPerPage));
   const safeMemberPage = Math.min(memberPage, memberPageCount);
   const visibleMembers = filteredMembers.slice((safeMemberPage - 1) * membersPerPage, safeMemberPage * membersPerPage);

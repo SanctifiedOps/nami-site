@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { CustomCursor } from "@/components/providers/custom-cursor";
 import { MotionProvider } from "@/components/providers/motion-config";
+import { NavigationEffects } from "@/components/providers/navigation-effects";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { NetworkAnalytics } from "@/components/analytics/network-analytics";
 import {
@@ -96,6 +97,7 @@ export default function RootLayout({
           schema={[organizationSchema, localBusinessSchema, websiteSchema]}
         />
         <SmoothScroll />
+        <NavigationEffects />
         <CustomCursor />
         <MotionProvider>
           <SiteHeader />

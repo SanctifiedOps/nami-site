@@ -13,6 +13,9 @@ import {
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
 import { cn } from "@/lib/utils";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
+import { HeroLights } from "@/components/hero/hero-lights";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 type MemberMap = Map<string, NetworkDirectoryMember>;
 
@@ -127,17 +130,20 @@ export default async function NetworkNewsPage() {
 
   return (
     <main className="bg-surface-0">
-      <header className="border-b border-line pt-28 md:pt-32">
-        <div className="container-shell py-8 md:py-10">
+      <header className="relative isolate overflow-hidden border-b border-line pt-28 md:pt-32">
+        <ParallaxBackdrop src="/images/north-east/7.jpg" overlay={0.76} />
+        <HeroLights />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-b from-transparent to-surface-0" />
+        <div className="container-shell relative z-10 py-12 md:py-20">
           <div className="flex items-end justify-between gap-8">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">NAMI Creative Network</p>
-              <h1 className="mt-2 text-[clamp(3.2rem,9vw,8.5rem)] font-semibold leading-[0.78] tracking-[-0.07em]">News</h1>
+              <h1 className="type-page-title mt-2">News</h1>
             </div>
             <p className="hidden max-w-md pb-1 text-right text-sm leading-relaxed text-fg-muted md:block">People, projects and useful ideas from across the North East creative community.</p>
           </div>
         </div>
-        <div className="border-t border-line">
+        <div className="relative z-10 border-t border-line bg-surface-0/55 backdrop-blur">
           <div className="container-shell flex gap-6 overflow-x-auto py-3 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-fg-muted">
             <span className="shrink-0 text-accent">Latest</span>
             {categories.map((category) => <span key={category} className="shrink-0">{category}</span>)}
@@ -145,14 +151,14 @@ export default async function NetworkNewsPage() {
         </div>
       </header>
 
-      <section className="container-shell py-8 md:py-12">
+      <ScrollReveal><section className="container-shell py-8 md:py-12">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(17rem,0.78fr)]">
           {lead && <LeadStory item={lead} members={members} />}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">{sideStories.map((item) => <SideStory key={item.href} item={item} members={members} />)}</div>
         </div>
-      </section>
+      </section></ScrollReveal>
 
-      <section className="border-y border-line bg-surface-1/45">
+      <ScrollReveal><section className="border-y border-line bg-surface-1/45">
         <div className="container-shell py-10 md:py-14">
           <div className="mb-8 flex items-end justify-between gap-4 border-b border-line pb-4">
             <h2 className="text-2xl font-semibold tracking-[-0.03em] md:text-3xl">From the Network</h2>
@@ -160,9 +166,9 @@ export default async function NetworkNewsPage() {
           </div>
           <div className="grid gap-x-7 gap-y-10 md:grid-cols-2 xl:grid-cols-4">{features.map((item, index) => <FeatureStory key={item.href} item={item} index={index} members={members} />)}</div>
         </div>
-      </section>
+      </section></ScrollReveal>
 
-      <section className="container-shell grid gap-12 py-12 md:py-16 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
+      <ScrollReveal><section className="container-shell grid gap-12 py-12 md:py-16 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
         <div>
           <div className="mb-6 border-b-2 border-fg pb-3"><h2 className="text-3xl font-semibold tracking-[-0.035em]">Latest stories</h2></div>
           {latest.map((item, index) => <LatestStory key={item.href} item={item} number={index + 1} members={members} />)}
@@ -179,7 +185,7 @@ export default async function NetworkNewsPage() {
             <Link href="/network" className="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-fg hover:text-accent">Join the Network <ArrowUpRight size={14} aria-hidden /></Link>
           </section>
         </aside>
-      </section>
+      </section></ScrollReveal>
 
       {marketingNotes.length > 0 && (
         <section className="border-t border-line bg-accent text-white">

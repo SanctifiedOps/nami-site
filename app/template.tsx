@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
+import { RouteTransition } from "@/components/motion/route-transition";
 
-/** Keep route changes immediate. Individual sections handle their own motion. */
+/** Shared route entrance. Individual sections add their own scroll reveals. */
 export default function Template({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return <RouteTransition>{children}</RouteTransition>;
 }
