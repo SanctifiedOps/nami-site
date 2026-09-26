@@ -30,12 +30,8 @@ export async function POST(request: Request) {
   if (!dimensions || dimensions.width < 300 || dimensions.height < 300) {
     return Response.json({ error: "The image is invalid or too small." }, { status: 400 });
   }
-  const ratio = dimensions.width / dimensions.height;
-  if (kind === "profile" && Math.abs(ratio - 1) > 0.02) {
+  if (kind === "profile" && Math.abs(dimensions.width / dimensions.height - 1) > 0.02) {
     return Response.json({ error: "Profile pictures must be square." }, { status: 400 });
-  }
-  if (kind === "portfolio" && Math.abs(ratio - 0.75) > 0.02) {
-    return Response.json({ error: "Portfolio images must use a 3:4 crop." }, { status: 400 });
   }
 
   const db = await getNetworkDb();

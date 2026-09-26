@@ -62,3 +62,38 @@ export async function cropImageForUpload(file: File, width: number, height: numb
     decoded.dispose();
   }
 }
+
+export async function prepareFullImageForUpload(file: File, maxWidth: number, maxHeight: number, filename: string) {
+  const decoded = await decodeImage(file);
+  try {
+    if (!decoded.width || !decoded.height) throw new Error("I couldn't read that photo. Please choose another image.");
+    const scale = Math.min(1, maxWidth / decoded.width, maxHeight / decoded.height);
+    const width = Math.max(1, Math.round(decoded.width * scale));
+    const height = Math.max(1, Math.round(decoded.height * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Image processing is unavailable in this browser.");
+    context.drawImage(decoded.source, 0, 0, width, height);
+
+    let outputType = "image/webp";
+    let quality = 0.88;
+    let blob: Blob | null = null;
+    do {
+      blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, outputType, quality));
+      if (blob && blob.type !== outputType) {
+        outputType = "image/jpeg";
+        blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, outputType, quality));
+      }
+      quality -= 0.08;
+    } while (blob && blob.size > 2 * 1024 * 1024 && quality >= 0.30);
+
+    if (!blob) throw new Error("The photo could not be prepared. Please try another image.");
+    if (blob.size > 2 * 1024 * 1024) throw new Error("The photo could not be reduced enough. Please try another image.");
+    const extension = blob.type === "image/jpeg" ? "jpg" : "webp";
+    return new File([blob], filename.replace(/\.[^.]+$/, `.${extension}`), { type: blob.type });
+  } finally {
+    decoded.dispose();
+  }
+}

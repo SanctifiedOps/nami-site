@@ -5,7 +5,7 @@ import { ExternalLink, Pencil, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { networkAuthClient } from "@/lib/network-auth/client";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
-import { cropImageForUpload } from "@/lib/network/prepare-dashboard-image";
+import { cropImageForUpload, prepareFullImageForUpload } from "@/lib/network/prepare-dashboard-image";
 
 type Profile = {
   memberId: string;
@@ -132,12 +132,9 @@ export function DashboardForm({
     setStatus("Preparing your image...");
     if (kind === "portfolio") setPortfolioStatus("Preparing your image...");
     try {
-      const processed = await cropImageForUpload(
-        source,
-        kind === "profile" ? 1000 : 1080,
-        kind === "profile" ? 1000 : 1440,
-        kind === "profile" ? "profile-photo.webp" : "portfolio-image.webp",
-      );
+      const processed = kind === "profile"
+        ? await cropImageForUpload(source, 1000, 1000, "profile-photo.webp")
+        : await prepareFullImageForUpload(source, 2400, 2400, "portfolio-image.webp");
       const data = new FormData();
       data.set("image", processed);
       data.set("kind", kind);
@@ -513,8 +510,8 @@ export function DashboardForm({
           <div>
             <h2 className="text-3xl">Your work</h2>
             <p className="mt-2 text-fg-muted">
-              Add up to four images, then open Edit to add the details visitors
-              will see.
+              Add up to four portrait or landscape images. Gallery previews use
+              a consistent crop, while the lightbox shows the full image.
             </p>
           </div>
           {images.length < 4 && (
