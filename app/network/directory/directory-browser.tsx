@@ -170,8 +170,8 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
 
   return (
     <div>
-      <div className="glass-refractive rounded-3xl p-5 md:p-7">
-        <div className={`grid gap-4 ${hideCategoryFilter ? "lg:grid-cols-[minmax(0,1fr)_15rem]" : "lg:grid-cols-[minmax(0,1fr)_15rem_15rem]"}`}>
+      <div className="glass-refractive rounded-3xl p-4 md:p-5">
+        <div className={`grid gap-3 ${hideCategoryFilter ? "lg:grid-cols-[minmax(0,1fr)_15rem]" : "lg:grid-cols-[minmax(0,1fr)_15rem_15rem]"}`}>
           <label className="relative block">
             <span className="sr-only">Search the directory</span>
             <Search
@@ -184,7 +184,7 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search by name, work or city"
-              className="w-full rounded-xl border border-line bg-surface-0/65 py-4 pl-12 pr-4 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-accent focus:ring-4 focus:ring-accent/10"
+              className="w-full rounded-xl border border-line bg-surface-0/65 py-3.5 pl-12 pr-4 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-accent focus:ring-4 focus:ring-accent/10"
             />
           </label>
 
@@ -255,7 +255,7 @@ function FilterSelect({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-xl border border-line bg-surface-0/65 px-4 py-4 text-sm text-fg outline-none transition-colors focus:border-accent focus:ring-4 focus:ring-accent/10"
+        className="w-full rounded-xl border border-line bg-surface-0/65 px-4 py-3.5 text-sm text-fg outline-none transition-colors focus:border-accent focus:ring-4 focus:ring-accent/10"
       >
         {children}
       </select>
@@ -269,7 +269,7 @@ export function DirectoryMemberCard({ member, analyticsContext }: { member: Netw
     if (analyticsContext) recordDirectoryEvent({ eventType: "result_clicked", ...analyticsContext, selectedMemberId: member.id });
   };
   return (
-    <article className="group relative flex min-h-72 flex-col overflow-hidden rounded-3xl border border-line bg-surface-1/55 p-6 transition-colors hover:border-accent/45 md:p-7">
+    <article className="group relative flex min-h-72 flex-col overflow-hidden rounded-3xl border border-line bg-[linear-gradient(145deg,rgba(255,0,188,0.065),rgba(17,18,22,0.72)_46%,rgba(255,0,188,0.025))] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/45 hover:shadow-[0_18px_45px_rgba(255,0,188,0.08)] md:p-7">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent/70 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       <div className="flex items-start justify-between gap-4">
         <MemberAvatar

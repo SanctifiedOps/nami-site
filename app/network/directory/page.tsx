@@ -106,8 +106,8 @@ export default async function NetworkDirectoryPage() {
         </section>
       )}
 
-      <section id="directory" className="container-shell scroll-mt-24 py-16 md:py-24">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
+      <section id="directory" className="container-shell scroll-mt-24 py-10 md:py-14">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="mono-label text-accent">Explore the Network</p>
             <h2 className="mt-4 text-4xl font-semibold leading-[0.96] tracking-tight md:text-6xl">Find your people</h2>
