@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Activity, AlertTriangle, ArrowLeft, BarChart3, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
 import type { GaSnapshot, InstagramSnapshot, MailchimpSnapshot } from "@/lib/network-admin/external-data";
@@ -62,6 +62,11 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const [activeView, setActiveView] = useState<DashboardView>(requestedView === "members" || requestedView === "tasks" || requestedView === "growth" || requestedView === "more" ? requestedView : "home");
   const [moreDetail, setMoreDetail] = useState<"integrations" | "health" | null>(null);
   const [growthDays, setGrowthDays] = useState(30);
+  const [growthGa, setGrowthGa] = useState(ga);
+  const [growthLoading, setGrowthLoading] = useState(false);
+  const [growthError, setGrowthError] = useState("");
+  const [showMetricDefinitions, setShowMetricDefinitions] = useState(false);
+  const growthRequest = useRef(0);
   const [ticketView, setTicketView] = useState<"active" | "archive">("active");
 
   const pendingApplications = applications.filter((item) => item.status === "pending");
@@ -94,6 +99,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const bookingClicks = periodEventAnalytics.filter((item) => item.eventType === "booking_click").length;
   const calendarClicks = periodEventAnalytics.filter((item) => item.eventType === "calendar_click").length;
   const approvedEventsInPeriod = events.filter((item) => item.status === "approved" && new Date(item.reviewedAt || item.updatedAt).getTime() >= growthCutoff).length;
+  const periodSearchEvents = searchEvents.filter((item) => new Date(item.createdAt).getTime() >= growthCutoff);
 
   const categoryCounts = useMemo(() => Object.entries(members.reduce<Record<string, number>>((counts, member) => {
     if (member.primaryGroup) counts[member.primaryGroup] = (counts[member.primaryGroup] ?? 0) + 1;
@@ -104,8 +110,8 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
     return counts;
   }, {})).sort((a, b) => b[1] - a[1]), [members]);
   const searchIntelligence = useMemo(() => {
-    const searches = searchEvents.filter((event) => event.eventType === "search");
-    const clicks = searchEvents.filter((event) => event.eventType === "result_clicked");
+    const searches = periodSearchEvents.filter((event) => event.eventType === "search");
+    const clicks = periodSearchEvents.filter((event) => event.eventType === "result_clicked");
     const count = (values: string[]) => Object.entries(values.reduce<Record<string, number>>((result, value) => {
       if (value) result[value] = (result[value] ?? 0) + 1;
       return result;
@@ -118,7 +124,24 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
       categories: count(searches.map((event) => event.categoryFilter).filter((value) => value !== "All categories")),
       locations: count(searches.map((event) => event.locationFilter).filter((value) => value !== "All areas")),
     };
-  }, [searchEvents]);
+  }, [periodSearchEvents]);
+
+  async function selectGrowthPeriod(days: number) {
+    const requestId = ++growthRequest.current;
+    setGrowthDays(days);
+    setGrowthLoading(true);
+    setGrowthError("");
+    try {
+      const response = await fetch(`/api/network/admin/analytics?days=${days}`, { cache: "no-store" });
+      const result = await response.json() as { ga?: GaSnapshot; error?: string };
+      if (!response.ok || !result.ga) throw new Error(result.error || "Analytics could not be refreshed.");
+      if (requestId === growthRequest.current) setGrowthGa(result.ga);
+    } catch (error) {
+      if (requestId === growthRequest.current) setGrowthError(error instanceof Error ? error.message : "Analytics could not be refreshed.");
+    } finally {
+      if (requestId === growthRequest.current) setGrowthLoading(false);
+    }
+  }
 
   async function runAction(key: string, payload: Record<string, unknown>) {
     setBusy(key); setMessage("");
@@ -201,16 +224,19 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
       {activeView === "growth" && <section className="pt-4 md:pt-10">
         <SectionHeading title="Growth analytics" note="" />
         <div className="mt-3 flex items-center justify-between rounded-xl border border-line bg-surface-1/70 p-1.5 md:mt-5 md:rounded-2xl md:p-2">
-          <div className="grid flex-1 grid-cols-4 gap-1">{[7,30,60,90].map((days) => <button key={days} onClick={()=>setGrowthDays(days)} className={`whitespace-nowrap rounded-lg px-1.5 py-2 text-[11px] font-bold md:rounded-xl md:px-3 md:text-xs ${growthDays === days ? "bg-accent text-white" : "text-fg-muted hover:bg-white/5"}`}>{days} days</button>)}</div>
-          <button title="Metric definitions" className="ml-1 shrink-0 rounded-lg p-1.5 text-fg-muted hover:bg-white/5 hover:text-fg md:rounded-xl md:p-2"><Info size={16} /></button>
+          <div className="grid flex-1 grid-cols-4 gap-1">{[7,30,60,90].map((days) => <button type="button" key={days} aria-pressed={growthDays === days} onClick={()=>void selectGrowthPeriod(days)} className={`whitespace-nowrap rounded-lg px-1.5 py-2 text-[11px] font-bold transition md:rounded-xl md:px-3 md:text-xs ${growthDays === days ? "bg-accent text-white" : "text-fg-muted hover:bg-white/5 hover:text-fg"}`}>{days} days</button>)}</div>
+          <button type="button" aria-expanded={showMetricDefinitions} aria-label="Show metric definitions" title="Metric definitions" onClick={() => setShowMetricDefinitions((current) => !current)} className="ml-1 shrink-0 rounded-lg p-1.5 text-fg-muted hover:bg-white/5 hover:text-fg md:rounded-xl md:p-2"><Info size={16} /></button>
         </div>
+        {growthLoading && <p role="status" className="mt-2 text-xs text-accent">Updating {growthDays}-day analytics...</p>}
+        {growthError && <p role="alert" className="mt-2 text-xs text-red-300">{growthError}</p>}
+        {showMetricDefinitions && <div className={`${panel} mt-2 p-4 text-xs leading-5 text-fg-muted`}><p><strong className="text-fg">Reporting period:</strong> Website, search and event metrics use the selected date range. Percentage change compares it with the immediately preceding period of the same length.</p><p className="mt-2"><strong className="text-fg">Current totals:</strong> Instagram followers and Mailchimp subscribers are live totals because those services do not provide historical snapshots here yet.</p></div>}
         <div className="mt-3"><SectionHeading title="Event performance" note="First-party interactions recorded on Network event pages."/><div className="mt-3 grid grid-cols-2 gap-2.5 md:grid-cols-4 md:gap-4"><SmallMetric label="Events approved" value={approvedEventsInPeriod}/><SmallMetric label="Event views" value={eventViews}/><SmallMetric label="Information clicks" value={bookingClicks}/><SmallMetric label="Calendar adds" value={calendarClicks}/></div><p className="mt-3 text-xs text-fg-subtle">Information click-through rate: {eventViews ? Math.round((bookingClicks/eventViews)*100) : 0}%</p></div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 [&>article]:!p-3 [&>article:last-child]:col-span-2 [&>article_p]:!mt-2 [&>article_p]:line-clamp-1 [&>article_strong]:!mt-2 [&>article_strong]:!text-3xl md:mt-4 md:gap-4 md:[&>article]:!p-5 md:[&>article_p]:!mt-5 md:[&>article_p]:line-clamp-none md:[&>article_strong]:!mt-5 md:[&>article_strong]:!text-4xl xl:grid-cols-5 xl:[&>article:last-child]:col-span-1">
-          <ExternalMetric icon={<Users size={20} />} label="Website users" value={ga.users} note={ga.usersChange === null ? ga.error ?? "Awaiting GA4" : `${ga.usersChange >= 0 ? "+" : ""}${ga.usersChange}% vs previous period`} tone="pink" />
-          <ExternalMetric icon={<Activity size={20} />} label="Sessions" value={ga.sessions} note="Visits during the period" tone="blue" />
-          <ExternalMetric icon={<BarChart3 size={20} />} label="Page views" value={ga.views} note="Across the NAMI site" tone="green" />
-          <ExternalMetric icon={<Camera size={20} />} label="Instagram followers" value={instagram.followers} note={instagram.connected ? `@${instagram.username}` : instagram.error ?? "Instagram unavailable"} tone="pink" />
-          <ExternalMetric icon={<Mail size={20} />} label="Email audience" value={mailchimp.subscribers} note={mailchimp.connected ? mailchimp.audienceName ?? "Mailchimp" : mailchimp.error ?? "Mailchimp unavailable"} tone="amber" />
+          <ExternalMetric icon={<Users size={20} />} label="Website users" value={growthGa.users} note={growthGa.usersChange === null ? growthGa.error ?? "Awaiting GA4" : `${growthGa.usersChange >= 0 ? "+" : ""}${growthGa.usersChange}% vs previous ${growthDays} days`} tone="pink" />
+          <ExternalMetric icon={<Activity size={20} />} label="Sessions" value={growthGa.sessions} note={`Visits in the last ${growthDays} days`} tone="blue" />
+          <ExternalMetric icon={<BarChart3 size={20} />} label="Page views" value={growthGa.views} note={`Views in the last ${growthDays} days`} tone="green" />
+          <ExternalMetric icon={<Camera size={20} />} label="Instagram followers" value={instagram.followers} note={instagram.connected ? `Current total · @${instagram.username}` : instagram.error ?? "Instagram unavailable"} tone="pink" />
+          <ExternalMetric icon={<Mail size={20} />} label="Email audience" value={mailchimp.subscribers} note={mailchimp.connected ? `Current total · ${mailchimp.audienceName ?? "Mailchimp"}` : mailchimp.error ?? "Mailchimp unavailable"} tone="amber" />
         </div>
         <div className="mt-3 grid gap-3 md:mt-4 md:gap-4 lg:grid-cols-2">
           <article className={`${panel} min-h-48 p-3 md:min-h-64 md:p-6`}><div className="flex items-center justify-between"><div><h3 className="text-sm md:text-xl">Network growth</h3><p className="mt-1 text-[10px] text-fg-subtle md:text-xs">Member, website and channel growth over time</p></div><TrendingUp size={18} className="text-accent md:h-6 md:w-6" /></div><div className="mt-3 flex min-h-24 items-center justify-center rounded-xl border border-dashed border-line px-3 text-center text-[10px] text-fg-subtle md:mt-8 md:min-h-36 md:rounded-2xl md:text-sm">Historical trend collection will populate this chart.</div></article>

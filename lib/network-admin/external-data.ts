@@ -78,19 +78,20 @@ function percentChange(current: number, previous: number) {
   return Math.round(((current - previous) / previous) * 100);
 }
 
-export async function getGaSnapshot(): Promise<GaSnapshot> {
+export async function getGaSnapshot(days = 30): Promise<GaSnapshot> {
   const env = await getRuntimeEnvironment();
   const propertyId = env.GA4_PROPERTY_ID;
   if (!propertyId) return { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, error: "GA4 property ID needs connecting" };
   try {
     const token = await googleAccessToken();
     if (!token) throw new Error("Google service account is not configured");
+    const safeDays = [7, 30, 60, 90].includes(days) ? days : 30;
     const metrics = [{ name: "totalUsers" }, { name: "sessions" }, { name: "screenPageViews" }];
     const [current, previous, events] = await Promise.all([
-      gaReport(token, propertyId, { dateRanges: [{ startDate: "30daysAgo", endDate: "yesterday" }], metrics }),
-      gaReport(token, propertyId, { dateRanges: [{ startDate: "60daysAgo", endDate: "31daysAgo" }], metrics }),
+      gaReport(token, propertyId, { dateRanges: [{ startDate: `${safeDays}daysAgo`, endDate: "yesterday" }], metrics }),
+      gaReport(token, propertyId, { dateRanges: [{ startDate: `${safeDays * 2}daysAgo`, endDate: `${safeDays + 1}daysAgo` }], metrics }),
       gaReport(token, propertyId, {
-        dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+        dateRanges: [{ startDate: `${safeDays}daysAgo`, endDate: "today" }],
         dimensions: [{ name: "eventName" }],
         metrics: [{ name: "eventCount" }],
         dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["network_directory_searched", "network_member_profile_clicked"] } } },
