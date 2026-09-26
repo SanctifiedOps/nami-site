@@ -15,7 +15,6 @@ export default {
   },
   async scheduled(event, env, ctx) {
     const runtimeEnv = env as CloudflareEnv & {
-      EXTERNAL_INTEGRATIONS_MODE?: string;
       NETWORK_ADMIN_SECRET: string;
     };
     const londonHour = new Intl.DateTimeFormat("en-GB", {
@@ -23,7 +22,7 @@ export default {
       hour: "2-digit",
       hourCycle: "h23",
     }).format(new Date(event.scheduledTime));
-    const rotateFeatured = runtimeEnv.EXTERNAL_INTEGRATIONS_MODE === "live" && event.cron !== "*/10 * * * *" && londonHour === "08";
+    const rotateFeatured = event.cron !== "*/10 * * * *" && londonHour === "08";
     const jobTypes = ["mailchimp", "bio", "owner", "email", "sheet"] as const;
     const requests = jobTypes.map((jobType) => {
       const url = new URL("/api/internal/network-jobs", env.APP_URL);

@@ -4,6 +4,7 @@ import { and, asc, eq, ne, sql } from "drizzle-orm";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { sendNetworkEmail } from "@/lib/network-auth/email";
 import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
+import { revalidateNetworkProfile } from "@/lib/network-profile/revalidate";
 
 const londonDate = () => new Intl.DateTimeFormat("en-CA", {
   timeZone: "Europe/London",
@@ -48,6 +49,7 @@ export async function rotateFeaturedMember() {
       nextAttemptAt: now, createdAt: now, updatedAt: now,
     }),
   ]);
+  revalidateNetworkProfile(chosen.memberId);
 
   const env = await getRuntimeEnvironment();
   try {
