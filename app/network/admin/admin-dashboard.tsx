@@ -73,6 +73,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const [invitationBusy, setInvitationBusy] = useState(false);
   const [invitationProgress, setInvitationProgress] = useState("");
   const [invitationError, setInvitationError] = useState("");
+  const [confirmInvitationBatch, setConfirmInvitationBatch] = useState(false);
 
   const pendingApplications = applications.filter((item) => item.status === "pending");
   const pendingEvents = events.filter((item) => item.status === "pending");
@@ -166,7 +167,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   async function sendInvitationBatch() {
     if (!invitationPreview?.batch.length) return;
     const total = invitationPreview.batch.length;
-    if (!window.confirm(`Send profile invitations to these ${total} members now?`)) return;
+    setConfirmInvitationBatch(false);
     setInvitationBusy(true);
     setInvitationError("");
     let sent = 0;
@@ -327,7 +328,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
           </div>
           {invitationPreview && <div className="mt-4">
             <div className="grid grid-cols-2 gap-2 md:grid-cols-5"><SmallMetric label="Eligible" value={invitationPreview.eligible} /><SmallMetric label="Active" value={invitationPreview.active} /><SmallMetric label="Invited" value={invitationPreview.invited} /><SmallMetric label="Outstanding links" value={invitationPreview.outstanding} /><SmallMetric label="Disabled" value={invitationPreview.disabled} /></div>
-            {invitationPreview.batch.length > 0 ? <div className="mt-4 rounded-2xl border border-line bg-surface-0/65 p-4"><div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-sm font-bold">Next batch: {invitationPreview.batch.length} members</p><p className="mt-1 text-xs text-fg-subtle">Secure claim links remain valid for {invitationPreview.inviteDays} days.</p></div><button type="button" disabled={invitationBusy} onClick={() => void sendInvitationBatch()} className="rounded-full bg-accent px-5 py-2.5 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">{invitationBusy ? invitationProgress || "Sending..." : `Send ${invitationPreview.batch.length} invitations`}</button></div><details className="mt-4"><summary className="cursor-pointer text-xs font-bold text-accent">Review recipients</summary><div className="mt-3 grid gap-2 md:grid-cols-2">{invitationPreview.batch.map((member) => <div key={member.id} className="rounded-xl border border-line px-3 py-2"><p className="truncate text-xs font-bold">{member.name}</p><p className="mt-0.5 truncate text-[10px] text-fg-subtle">{member.email}</p></div>)}</div></details></div> : <p className="mt-4 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-3 text-sm text-emerald-200">There are no unclaimed profiles waiting for an invitation.</p>}
+            {invitationPreview.batch.length > 0 ? <div className="mt-4 rounded-2xl border border-line bg-surface-0/65 p-4"><div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-sm font-bold">Next batch: {invitationPreview.batch.length} members</p><p className="mt-1 text-xs text-fg-subtle">Secure claim links remain valid for {invitationPreview.inviteDays} days.</p></div>{confirmInvitationBatch ? <div className="flex flex-wrap gap-2"><button type="button" disabled={invitationBusy} onClick={() => setConfirmInvitationBatch(false)} className={button}>Cancel</button><button type="button" disabled={invitationBusy} onClick={() => void sendInvitationBatch()} className="rounded-full bg-accent px-5 py-2.5 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">Confirm send {invitationPreview.batch.length}</button></div> : <button type="button" disabled={invitationBusy} onClick={() => setConfirmInvitationBatch(true)} className="rounded-full bg-accent px-5 py-2.5 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">{invitationBusy ? invitationProgress || "Sending..." : `Send ${invitationPreview.batch.length} invitations`}</button>}</div><details className="mt-4"><summary className="cursor-pointer text-xs font-bold text-accent">Review recipients</summary><div className="mt-3 grid gap-2 md:grid-cols-2">{invitationPreview.batch.map((member) => <div key={member.id} className="rounded-xl border border-line px-3 py-2"><p className="truncate text-xs font-bold">{member.name}</p><p className="mt-0.5 truncate text-[10px] text-fg-subtle">{member.email}</p></div>)}</div></details></div> : <p className="mt-4 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-3 text-sm text-emerald-200">There are no unclaimed profiles waiting for an invitation.</p>}
           </div>}
           {invitationProgress && <p role="status" className="mt-3 text-xs text-fg-muted">{invitationProgress}</p>}
           {invitationError && <p role="alert" className="mt-3 text-xs leading-5 text-red-300">{invitationError}</p>}
