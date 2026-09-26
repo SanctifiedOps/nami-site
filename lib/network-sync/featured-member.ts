@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, ne, sql } from "drizzle-orm";
+import { and, asc, eq, isNotNull, ne, sql } from "drizzle-orm";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { sendNetworkEmail } from "@/lib/network-auth/email";
 import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
@@ -27,6 +27,8 @@ export async function rotateFeaturedMember() {
     .innerJoin(schema.members, eq(schema.members.id, schema.memberProfiles.memberId))
     .where(and(
       eq(schema.memberProfiles.published, true),
+      isNotNull(schema.memberProfiles.profileImageKey),
+      ne(schema.memberProfiles.profileImageKey, ""),
       eq(schema.members.approvalStatus, "approved"),
       ne(schema.members.accountStatus, "disabled"),
       ne(schema.members.role, "admin"),
