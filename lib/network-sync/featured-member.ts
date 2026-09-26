@@ -29,6 +29,7 @@ export async function rotateFeaturedMember() {
       eq(schema.memberProfiles.published, true),
       eq(schema.members.approvalStatus, "approved"),
       ne(schema.members.accountStatus, "disabled"),
+      ne(schema.members.role, "admin"),
     ))
     .orderBy(
       sql`case when ${schema.memberProfiles.lastFeaturedAt} is null then 0 else 1 end`,
