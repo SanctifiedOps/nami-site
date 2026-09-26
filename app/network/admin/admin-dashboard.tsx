@@ -30,6 +30,7 @@ type FailedJob = { id: string; jobType: "owner-alert" | "member-email" | "sheet-
 type SearchEvent = { id: string; eventType: "search" | "result_clicked"; anonymousSessionId: string; searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number; selectedMemberId: string | null; sourcePath: string; createdAt: string };
 type EventAnalyticsRecord = { id: string; eventId: string | null; eventType: string; anonymousSessionId: string; metadata: Record<string, unknown>; createdAt: string };
 type EventRevision = { id:string; eventId:string; memberId:string; payload:Record<string,unknown>; status:string; adminFeedback:string|null; submittedAt:string; reviewedAt:string|null; reviewerId:string|null };
+type InvitationPreview = { eligible:number; active:number; invited:number; disabled:number; outstanding:number; inviteDays:number; batch:Array<{id:string;name:string;email:string}> };
 
 const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35px_rgb(0_0_0/0.16)] md:rounded-[1.5rem] md:shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
 const button = "rounded-full border border-line-strong px-4 py-2 text-xs font-bold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
@@ -68,6 +69,10 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
   const [showMetricDefinitions, setShowMetricDefinitions] = useState(false);
   const growthRequest = useRef(0);
   const [ticketView, setTicketView] = useState<"active" | "archive">("active");
+  const [invitationPreview, setInvitationPreview] = useState<InvitationPreview | null>(null);
+  const [invitationBusy, setInvitationBusy] = useState(false);
+  const [invitationProgress, setInvitationProgress] = useState("");
+  const [invitationError, setInvitationError] = useState("");
 
   const pendingApplications = applications.filter((item) => item.status === "pending");
   const pendingEvents = events.filter((item) => item.status === "pending");
@@ -141,6 +146,51 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
     } finally {
       if (requestId === growthRequest.current) setGrowthLoading(false);
     }
+  }
+
+  async function loadInvitationPreview() {
+    setInvitationBusy(true);
+    setInvitationError("");
+    try {
+      const response = await fetch("/api/network/admin/invitations", { cache: "no-store" });
+      const result = await response.json() as InvitationPreview & { error?: string };
+      if (!response.ok) throw new Error(result.error || "The invitation list could not be loaded.");
+      setInvitationPreview(result);
+    } catch (error) {
+      setInvitationError(error instanceof Error ? error.message : "The invitation list could not be loaded.");
+    } finally {
+      setInvitationBusy(false);
+    }
+  }
+
+  async function sendInvitationBatch() {
+    if (!invitationPreview?.batch.length) return;
+    const total = invitationPreview.batch.length;
+    if (!window.confirm(`Send profile invitations to these ${total} members now?`)) return;
+    setInvitationBusy(true);
+    setInvitationError("");
+    let sent = 0;
+    const failures: string[] = [];
+    for (const member of invitationPreview.batch) {
+      setInvitationProgress(`Sending ${sent + 1} of ${total}...`);
+      try {
+        const response = await fetch("/api/network/admin/invitations", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ memberId: member.id, confirmation: "SEND INVITE" }),
+        });
+        const result = await response.json() as { error?: string };
+        if (!response.ok) throw new Error(result.error || "Send failed.");
+        sent += 1;
+      } catch (error) {
+        failures.push(`${member.name}: ${error instanceof Error ? error.message : "Send failed."}`);
+      }
+    }
+    setInvitationProgress(`${sent} of ${total} invitations sent.`);
+    setInvitationBusy(false);
+    await loadInvitationPreview();
+    if (failures.length) setInvitationError(failures.join(" "));
+    router.refresh();
   }
 
   async function runAction(key: string, payload: Record<string, unknown>) {
@@ -270,6 +320,18 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
 
       <section id="members" className="pt-7 md:pt-12">
         <SectionHeading title="Members" count={members.length} note="Profile, account and sign-in status in one place." />
+        <div className={`${panel} mt-3 p-4 md:mt-5 md:p-6`}>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div><div className="flex items-center gap-2"><Mail size={18} className="text-accent" /><h3 className="text-lg md:text-xl">Profile invitations</h3></div><p className="mt-2 max-w-2xl text-xs leading-5 text-fg-muted md:text-sm">Preview the eligible list, then send one controlled batch of up to 20 members. Active, disabled, duplicate and already-invited accounts are excluded automatically.</p></div>
+            <button type="button" disabled={invitationBusy} onClick={() => void loadInvitationPreview()} className={button}>{invitationBusy && !invitationPreview ? "Checking..." : invitationPreview ? "Refresh preview" : "Preview invitations"}</button>
+          </div>
+          {invitationPreview && <div className="mt-4">
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-5"><SmallMetric label="Eligible" value={invitationPreview.eligible} /><SmallMetric label="Active" value={invitationPreview.active} /><SmallMetric label="Invited" value={invitationPreview.invited} /><SmallMetric label="Outstanding links" value={invitationPreview.outstanding} /><SmallMetric label="Disabled" value={invitationPreview.disabled} /></div>
+            {invitationPreview.batch.length > 0 ? <div className="mt-4 rounded-2xl border border-line bg-surface-0/65 p-4"><div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-sm font-bold">Next batch: {invitationPreview.batch.length} members</p><p className="mt-1 text-xs text-fg-subtle">Secure claim links remain valid for {invitationPreview.inviteDays} days.</p></div><button type="button" disabled={invitationBusy} onClick={() => void sendInvitationBatch()} className="rounded-full bg-accent px-5 py-2.5 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">{invitationBusy ? invitationProgress || "Sending..." : `Send ${invitationPreview.batch.length} invitations`}</button></div><details className="mt-4"><summary className="cursor-pointer text-xs font-bold text-accent">Review recipients</summary><div className="mt-3 grid gap-2 md:grid-cols-2">{invitationPreview.batch.map((member) => <div key={member.id} className="rounded-xl border border-line px-3 py-2"><p className="truncate text-xs font-bold">{member.name}</p><p className="mt-0.5 truncate text-[10px] text-fg-subtle">{member.email}</p></div>)}</div></details></div> : <p className="mt-4 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-3 text-sm text-emerald-200">There are no unclaimed profiles waiting for an invitation.</p>}
+          </div>}
+          {invitationProgress && <p role="status" className="mt-3 text-xs text-fg-muted">{invitationProgress}</p>}
+          {invitationError && <p role="alert" className="mt-3 text-xs leading-5 text-red-300">{invitationError}</p>}
+        </div>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between md:mt-5 md:gap-3">
           <label className="text-xs font-bold text-fg-muted">Filter by category
             <select value={memberCategory} onChange={(event) => { setMemberCategory(event.target.value); setMemberPage(1); }} className="mt-2 block min-w-64 rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5 text-sm text-fg">
