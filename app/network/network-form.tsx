@@ -17,7 +17,7 @@ import { friendlyUploadError, prepareProfileImage } from "@/lib/network/prepare-
 type Status = "idle" | "submitting" | "error";
 
 const SUBMISSION_ID_KEY = "nami_network_submission_id";
-const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
+const MAX_SOURCE_BYTES = 30 * 1024 * 1024;
 
 function slugify(value: string) {
   return value
@@ -70,7 +70,7 @@ export function NetworkForm() {
     }
     if (nextFile.size > MAX_SOURCE_BYTES) {
       setStatus("error");
-      setErrorMsg("Choose an image smaller than 10 MB.");
+      setErrorMsg("Choose an image smaller than 30 MB.");
       return;
     }
     if (profilePreview) URL.revokeObjectURL(profilePreview);
@@ -244,7 +244,7 @@ export function NetworkForm() {
       submissionBody.set("image", preparedImage, memberId);
 
       const detailsController = new AbortController();
-      const detailsTimeout = setTimeout(() => detailsController.abort(), 30000);
+      const detailsTimeout = setTimeout(() => detailsController.abort(), 60000);
       try {
         const res = await fetch("/api/network", {
           method: "POST",
@@ -299,7 +299,6 @@ export function NetworkForm() {
       onFocusCapture={onFormFocus}
       onChange={onFormChange}
       className="glass-refractive rounded-2xl p-6 md:p-8"
-      noValidate
     >
       <div
         aria-hidden
@@ -433,8 +432,7 @@ export function NetworkForm() {
           ref={imageInputRef}
           type="file"
           name="profilePicture"
-          accept="image/jpeg,image/png,image/webp"
-          required
+          accept="image/*,.heic,.heif"
           onChange={chooseProfilePicture}
           className="sr-only"
         />
@@ -468,7 +466,7 @@ export function NetworkForm() {
           >
             <ImagePlus size={28} aria-hidden className="text-accent" />
             <span className="mt-3 font-semibold text-fg">Add your profile picture</span>
-            <span className="mt-2 text-sm text-fg-subtle">JPG, PNG or WebP. Up to 10 MB.</span>
+            <span className="mt-2 text-sm text-fg-subtle">Choose a photo from your phone or computer. Up to 30 MB.</span>
           </button>
         )}
       </div>
