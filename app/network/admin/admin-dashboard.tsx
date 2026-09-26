@@ -231,7 +231,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
         </div>
         <div className="hidden rounded-2xl border border-emerald-400/25 bg-emerald-400/8 px-5 py-4 text-sm md:block">
           <span className="flex items-center gap-2 font-bold text-emerald-300"><ShieldCheck size={18} /> Admin access verified</span>
-          <span className="mt-1 block text-fg-muted">Member invitations and profile emails remain locked.</span>
+          <span className="mt-1 block text-fg-muted">Member invitations, profile emails and owner notifications are live.</span>
         </div>
       </div>
 
@@ -375,7 +375,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
         <SectionHeading title="Operations" note="The parts that keep member records and owner notifications moving." />
         <div className="mt-3 grid grid-cols-2 gap-2.5 md:mt-5 md:grid-cols-3 md:gap-4">
           <OperationCard icon={<Mail />} title="Owner notifications" pending={operations.pendingAlerts} failed={operations.failedAlerts} />
-          <OperationCard icon={<Mail />} title="Member email queue" pending={operations.pendingEmails} failed={operations.failedEmails} locked />
+          <OperationCard icon={<Mail />} title="Member email queue" pending={operations.pendingEmails} failed={operations.failedEmails} />
           <OperationCard icon={<CheckCircle2 />} title="Google Sheet sync" pending={operations.pendingSyncs} failed={operations.failedSyncs} />
           <OperationCard icon={<Mail />} title="Mailchimp sync" pending={operations.pendingMailchimp} failed={operations.failedMailchimp} />
           <OperationCard icon={<Activity />} title="NAMI bio generation" pending={operations.pendingBios} failed={operations.failedBios} />
@@ -404,7 +404,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
         </div>
         {moreDetail === "integrations" && <div className={`${panel} mt-3 grid grid-cols-2 gap-2.5 p-3 md:mt-5 md:grid-cols-3 md:gap-4 md:p-6`}><ConnectionStatus label="Site database" connected /><ConnectionStatus label="GA4" connected={ga.connected} /><ConnectionStatus label="Instagram" connected={instagram.connected} /><ConnectionStatus label="Mailchimp" connected={mailchimp.connected} /><ConnectionStatus label="Google Sheets" connected={operations.failedSyncs === 0} /><ConnectionStatus label="Owner email" connected={operations.failedAlerts === 0} /></div>}
         {moreDetail === "health" && <div className={`${panel} mt-3 grid grid-cols-3 gap-2 p-3 md:mt-5 md:gap-4 md:p-6`}><SmallMetric label="Pending jobs" value={operations.pendingAlerts + operations.pendingEmails + operations.pendingSyncs} /><SmallMetric label="Failed jobs" value={operations.failedAlerts + operations.failedEmails + operations.failedSyncs} /><SmallMetric label="Open tickets" value={openTickets.length} /></div>}
-        <div className={`${panel} mt-5 p-5 md:p-6`}><div className="flex items-center gap-3"><ShieldCheck className="text-emerald-300" /><h3 className="text-xl">Communication controls</h3></div><p className="mt-3 text-sm leading-6 text-fg-muted">Member invitations and profile emails remain locked. Owner notifications stay active.</p></div>
+        <div className={`${panel} mt-5 p-5 md:p-6`}><div className="flex items-center gap-3"><ShieldCheck className="text-emerald-300" /><h3 className="text-xl">Communication controls</h3></div><p className="mt-3 text-sm leading-6 text-fg-muted">Member invitations, profile emails, account recovery and owner notifications are active.</p></div>
       </section>}
     </div>
 
@@ -441,8 +441,8 @@ function Status({ value }: { value: string }) {
   return <span className={`inline-flex rounded-full px-2 py-0.5 text-[9px] font-bold md:px-3 md:py-1 md:text-xs ${color}`}>{value.replaceAll("_", " ")}</span>;
 }
 
-function OperationCard({ icon, title, pending, failed, locked = false }: { icon: React.ReactNode; title: string; pending: number; failed: number; locked?: boolean }) {
-  return <article className={`${panel} p-3 md:p-5`}><div className="flex items-start justify-between gap-2"><h3 className="text-sm md:text-lg">{title}</h3><span className="scale-75 text-accent md:scale-100">{icon}</span></div><div className="mt-3 grid grid-cols-2 gap-1.5 md:mt-5 md:gap-3"><div className="rounded-lg bg-surface-0 p-2 md:rounded-xl md:p-3"><span className="text-[9px] text-fg-subtle md:text-xs">Pending</span><strong className="mt-0.5 block text-xl md:mt-1 md:text-2xl">{pending}</strong></div><div className="rounded-lg bg-surface-0 p-2 md:rounded-xl md:p-3"><span className="text-[9px] text-fg-subtle md:text-xs">Failed</span><strong className="mt-0.5 block text-xl md:mt-1 md:text-2xl">{failed}</strong></div></div>{locked && <p className="mt-2 text-[9px] font-semibold text-amber-300 md:mt-4 md:text-xs">Sending locked</p>}</article>;
+function OperationCard({ icon, title, pending, failed }: { icon: React.ReactNode; title: string; pending: number; failed: number }) {
+  return <article className={`${panel} p-3 md:p-5`}><div className="flex items-start justify-between gap-2"><h3 className="text-sm md:text-lg">{title}</h3><span className="scale-75 text-accent md:scale-100">{icon}</span></div><div className="mt-3 grid grid-cols-2 gap-1.5 md:mt-5 md:gap-3"><div className="rounded-lg bg-surface-0 p-2 md:rounded-xl md:p-3"><span className="text-[9px] text-fg-subtle md:text-xs">Pending</span><strong className="mt-0.5 block text-xl md:mt-1 md:text-2xl">{pending}</strong></div><div className="rounded-lg bg-surface-0 p-2 md:rounded-xl md:p-3"><span className="text-[9px] text-fg-subtle md:text-xs">Failed</span><strong className="mt-0.5 block text-xl md:mt-1 md:text-2xl">{failed}</strong></div></div></article>;
 }
 
 function SmallMetric({ label, value }: { label: string; value: number | null }) { return <div className="rounded-xl border border-line bg-surface-0 p-4"><span className="text-xs text-fg-subtle">{label}</span><strong className="mt-2 block text-2xl tabular-nums">{value === null ? "—" : value.toLocaleString("en-GB")}</strong></div>; }
