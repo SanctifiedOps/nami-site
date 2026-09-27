@@ -63,6 +63,17 @@ export async function processNetworkJobs(limit = 10, jobType: "all" | "sheet" | 
   }
   for (const job of bioJobs) {
     try {
+      const [application] = await db.select({ status: schema.networkApplications.status })
+        .from(schema.networkApplications)
+        .where(eq(schema.networkApplications.id, job.applicationId))
+        .limit(1);
+      if (!application || application.status === "rejected") {
+        const completedAt = new Date();
+        await db.update(schema.bioGenerationJobs).set({ status: "complete", completedAt, updatedAt: completedAt, lastError: null })
+          .where(eq(schema.bioGenerationJobs.id, job.id));
+        completed++;
+        continue;
+      }
       await db.update(schema.bioGenerationJobs).set({ status: "processing", updatedAt: now }).where(eq(schema.bioGenerationJobs.id, job.id));
       const bio = await generateDirectoryBio(job.applicationId);
       const completedAt = new Date();
