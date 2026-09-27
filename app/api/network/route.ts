@@ -375,7 +375,8 @@ async function notifyDashboard(d: Cleaned): Promise<void> {
 }
 
 async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
-  if (image.type !== "image/webp") throw new Error("The prepared profile image must be WebP.");
+  if (!ALLOWED_IMAGE_TYPES.has(image.type)) throw new Error("The prepared profile image format is not supported.");
+  const imageExtension = image.type === "image/jpeg" ? "jpg" : image.type === "image/png" ? "png" : "webp";
   let uploadedKey: string | null = null;
   let previousKey: string | null = null;
   try {
@@ -385,9 +386,9 @@ async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
       .from(schema.networkApplications).where(eq(schema.networkApplications.id, d.memberId)).limit(1);
     previousKey = previous?.profileImageKey ?? null;
     const bucket = await getMemberMediaBucket();
-    uploadedKey = `network-applications/${d.memberId}/profile/${crypto.randomUUID()}.webp`;
+    uploadedKey = `network-applications/${d.memberId}/profile/${crypto.randomUUID()}.${imageExtension}`;
     await bucket.put(uploadedKey, await image.arrayBuffer(), {
-      httpMetadata: { contentType: "image/webp", cacheControl: "private, no-store" },
+      httpMetadata: { contentType: image.type, cacheControl: "private, no-store" },
     });
     await db.batch([db.insert(schema.networkApplications).values({
       id: d.memberId,

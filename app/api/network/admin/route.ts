@@ -126,11 +126,15 @@ export async function POST(request: Request) {
   if (otherAccount) return Response.json({ error: "This email already belongs to another member account." }, { status: 409 });
 
   const bucket = await getMemberMediaBucket();
-  const approvedImageKey = application.profileImageKey ? `network-members/${application.id}/profile/${crypto.randomUUID()}.webp` : null;
+  const submittedImageExtension = application.profileImageKey?.split(".").pop()?.toLowerCase();
+  const approvedImageExtension = submittedImageExtension && ["jpg", "jpeg", "png", "webp"].includes(submittedImageExtension)
+    ? (submittedImageExtension === "jpeg" ? "jpg" : submittedImageExtension)
+    : "webp";
+  const approvedImageKey = application.profileImageKey ? `network-members/${application.id}/profile/${crypto.randomUUID()}.${approvedImageExtension}` : null;
   if (application.profileImageKey && approvedImageKey) {
     const source = await bucket.get(application.profileImageKey);
     if (!source) return Response.json({ error: "The submitted profile image could not be found." }, { status: 409 });
-    await bucket.put(approvedImageKey, source.body, { httpMetadata: { contentType: "image/webp", cacheControl: "public, max-age=31536000, immutable" } });
+    await bucket.put(approvedImageKey, source.body, { httpMetadata: { contentType: source.httpMetadata?.contentType || `image/${approvedImageExtension === "jpg" ? "jpeg" : approvedImageExtension}`, cacheControl: "public, max-age=31536000, immutable" } });
   }
 
   try {
