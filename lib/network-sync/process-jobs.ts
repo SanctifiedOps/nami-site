@@ -42,7 +42,17 @@ export async function processNetworkJobs(limit = 10, jobType: "all" | "sheet" | 
     catch (error) { const attempts = job.attempts + 1; await db.update(schema.eventSheetSyncJobs).set({ status: "failed", attempts, nextAttemptAt: nextAttempt(attempts), lastError: String(error).slice(0, 800), updatedAt: new Date() }).where(eq(schema.eventSheetSyncJobs.id, job.id)); failed++; }
   }
   for (const job of emailJobs) {
-    try { await db.update(schema.emailJobs).set({ status: "processing", updatedAt: now }).where(eq(schema.emailJobs.id, job.id)); await retryNetworkEmailJob(job); await db.update(schema.emailJobs).set({ status: "sent", sentAt: new Date(), updatedAt: new Date(), lastError: null }).where(eq(schema.emailJobs.id, job.id)); completed++; }
+    try {
+      await db.update(schema.emailJobs).set({ status: "processing", updatedAt: now }).where(eq(schema.emailJobs.id, job.id));
+      await retryNetworkEmailJob(job);
+      const completedAt = new Date();
+      await db.update(schema.emailJobs).set({ status: "sent", sentAt: completedAt, updatedAt: completedAt, lastError: null }).where(eq(schema.emailJobs.id, job.id));
+      if (job.template === "profile-ready" && job.memberId) {
+        await db.update(schema.members).set({ accountStatus: "invited", invitedAt: completedAt, updatedAt: completedAt })
+          .where(and(eq(schema.members.id, job.memberId), inArray(schema.members.accountStatus, ["unclaimed", "invited"])));
+      }
+      completed++;
+    }
     catch (error) { const attempts = job.attempts + 1; await db.update(schema.emailJobs).set({ status: "failed", attempts, nextAttemptAt: nextAttempt(attempts), lastError: String(error).slice(0, 800), updatedAt: new Date() }).where(eq(schema.emailJobs.id, job.id)); failed++; }
   }
   for (const job of mailchimpJobs) {

@@ -6,6 +6,7 @@ import { getMemberMediaBucket, getNetworkDb, schema } from "@/lib/network-db";
 import { normalizeInstagramProfileUrl, normalizeProfileUrl } from "@/lib/network-profile/links";
 import { revalidateNetworkProfile } from "@/lib/network-profile/revalidate";
 import { processNetworkJobs } from "@/lib/network-sync/process-jobs";
+import { issueMemberInvite } from "@/lib/network-auth/member-invitations";
 
 const groupSlugs = directoryGroups.map((group) => group.slug) as [string, ...string[]];
 const eventRevisionSchema = z.object({ title:z.string(), eventType:z.string(), summary:z.string(), fullDescription:z.string(), venue:z.string(), address:z.string(), location:z.string(), region:z.string(), format:z.string(), startsAt:z.coerce.date(), endsAt:z.coerce.date().nullable(), priceType:z.string(), priceDetails:z.string(), bookingUrl:z.string().nullable(), accessibility:z.string(), ageGuidance:z.string(), contactEmail:z.string(), coverImageKey:z.string(), coverImageAlt:z.string() });
@@ -150,5 +151,15 @@ export async function POST(request: Request) {
   }
   if (application.profileImageKey) await bucket.delete(application.profileImageKey);
   revalidateNetworkProfile(application.id, [parsed.data.primaryGroup], true);
-  return Response.json({ ok: true });
+  try {
+    await issueMemberInvite(application.id);
+    return Response.json({ ok: true, memberId: application.id, inviteSent: true });
+  } catch (error) {
+    return Response.json({
+      ok: true,
+      memberId: application.id,
+      inviteSent: false,
+      warning: `The profile is live, but the claim email needs a retry: ${error instanceof Error ? error.message : "Unknown email error"}`,
+    });
+  }
 }

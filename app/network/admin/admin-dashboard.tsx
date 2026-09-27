@@ -198,9 +198,9 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
     setBusy(key); setMessage("");
     try {
       const response = await fetch("/api/network/admin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      const result = await response.json().catch(() => ({})) as { error?: string };
+      const result = await response.json().catch(() => ({})) as { error?: string; warning?: string; inviteSent?: boolean };
       if (!response.ok) throw new Error(result.error || "The admin action could not be completed.");
-      setMessage("Saved. The Network records are up to date.");
+      setMessage(result.warning || (result.inviteSent ? "Approved, published and claim email sent." : "Saved. The Network records are up to date."));
       router.refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The admin action could not be completed.");

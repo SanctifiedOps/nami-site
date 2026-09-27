@@ -62,7 +62,17 @@ export async function POST(request: Request) {
     }
     if (application.profileImageKey) await bucket.delete(application.profileImageKey);
     revalidateNetworkProfile(application.id, [parsed.data.primaryGroup], true);
-    return Response.json({ ok: true, memberId: application.id });
+    try {
+      await issueMemberInvite(application.id);
+      return Response.json({ ok: true, memberId: application.id, inviteSent: true });
+    } catch (error) {
+      return Response.json({
+        ok: true,
+        memberId: application.id,
+        inviteSent: false,
+        warning: `The profile is live, but the claim email needs a retry: ${error instanceof Error ? error.message : "Unknown email error"}`,
+      });
+    }
   }
   if (parsed.data.action === "resend-invite") { await issueMemberInvite(parsed.data.memberId); return Response.json({ ok: true }); }
   const status = parsed.data.action === "disable" ? "disabled" : "active";

@@ -51,7 +51,8 @@ export async function issueMemberInvite(memberId: string) {
     });
     await db.update(schema.members).set({ invitedAt: now, accountStatus: "invited", updatedAt: now }).where(eq(schema.members.id, memberId));
   } catch (error) {
-    await db.update(schema.memberInvites).set({ revokedAt: new Date() }).where(eq(schema.memberInvites.id, inviteId));
+    // Keep the token valid so the failed email job can safely retry with the
+    // same claim URL. A later manual resend will revoke it before issuing a new one.
     throw error;
   }
 

@@ -30,7 +30,7 @@
     "APP_ENV": "production",
     "OUTBOUND_EMAIL_MODE": "live",
     "MEMBER_INVITATIONS_MODE": "live",
-    "OUTBOUND_EMAIL_RETRY_MODE": "hold",
+    "OUTBOUND_EMAIL_RETRY_MODE": "live",
     "EXTERNAL_INTEGRATIONS_MODE": "hold",
     "MAILCHIMP_NETWORK_MODE": "live",
     "OWNER_NOTIFICATIONS_MODE": "live",
