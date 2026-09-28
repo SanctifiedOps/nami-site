@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, MapPin, Search, X } from "lucide-react";
+import { ArrowUpRight, Check, ChevronDown, MapPin, Search, X } from "lucide-react";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
 import { directoryGroups, memberGroupSlugs } from "@/lib/content/network-directory-groups";
@@ -188,15 +188,9 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
             />
           </label>
 
-          {!hideCategoryFilter && <FilterSelect label="Filter by category" value={category} onChange={setCategory}>
-            <option>All categories</option>
-            {categories.map((item) => <option key={item.slug}>{item.label}</option>)}
-          </FilterSelect>}
+          {!hideCategoryFilter && <FilterSelect label="Filter by category" value={category} onChange={setCategory} options={["All categories", ...categories.map((item) => item.label)]} />}
 
-          <FilterSelect label="Filter by area" value={location} onChange={setLocation}>
-            <option>All areas</option>
-            {availableLocations.map((item) => <option key={item}>{item}</option>)}
-          </FilterSelect>
+          <FilterSelect label="Filter by area" value={location} onChange={setLocation} options={["All areas", ...availableLocations]} />
         </div>
       </div>
 
@@ -242,24 +236,77 @@ function FilterSelect({
   label,
   value,
   onChange,
-  children,
+  options,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  children: React.ReactNode;
+  options: readonly string[];
 }) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const listboxId = useId();
+
+  useEffect(() => {
+    if (!open) return;
+    const close = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
   return (
-    <label className="block">
-      <span className="sr-only">{label}</span>
-      <select
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-xl border border-line bg-surface-0/65 px-4 py-3.5 text-sm text-fg outline-none transition-colors focus:border-accent focus:ring-4 focus:ring-accent/10"
+    <div ref={rootRef} className="relative">
+      <span id={`${listboxId}-label`} className="sr-only">{label}</span>
+      <button
+        type="button"
+        aria-labelledby={`${listboxId}-label`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listboxId}
+        onClick={() => setOpen((current) => !current)}
+        className="flex w-full items-center justify-between gap-4 rounded-xl border border-line bg-surface-0/65 px-4 py-3.5 text-left text-sm text-fg outline-none transition-all hover:border-accent/60 focus-visible:border-accent focus-visible:ring-4 focus-visible:ring-accent/10"
       >
-        {children}
-      </select>
-    </label>
+        <span>{value}</span>
+        <ChevronDown size={16} aria-hidden className={`shrink-0 text-accent transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div
+          id={listboxId}
+          role="listbox"
+          aria-labelledby={`${listboxId}-label`}
+          className="absolute inset-x-0 top-[calc(100%+.4rem)] z-50 max-h-72 overflow-y-auto rounded-xl border border-accent/60 bg-[#0c0d0f] p-1.5 shadow-[0_18px_50px_rgba(0,0,0,.65),0_0_30px_rgba(255,0,188,.14)]"
+        >
+          {options.map((option) => {
+            const selected = option === value;
+            return (
+              <button
+                key={option}
+                type="button"
+                role="option"
+                aria-selected={selected}
+                onClick={() => {
+                  onChange(option);
+                  setOpen(false);
+                }}
+                className={`flex w-full items-center justify-between gap-3 rounded-lg px-3.5 py-2.5 text-left text-sm transition-colors ${selected ? "bg-accent text-white" : "text-fg hover:bg-accent/15 hover:text-accent"}`}
+              >
+                <span>{option}</span>
+                {selected && <Check size={15} aria-hidden className="shrink-0" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 

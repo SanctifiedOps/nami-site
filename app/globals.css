@@ -144,6 +144,35 @@
     text-wrap: pretty;
   }
 
+  /* Keep native selects consistent with the NAMI interface. Browsers retain
+     their own menu mechanics, while the field and supported option surfaces
+     use the site palette and typeface. */
+  select {
+    color-scheme: dark;
+    font: inherit;
+    color: var(--color-fg);
+    background-color: var(--color-surface-0);
+    accent-color: var(--color-accent);
+  }
+
+  select option,
+  select optgroup {
+    font-family: var(--font-sans);
+    color: var(--color-fg);
+    background-color: var(--color-surface-1);
+  }
+
+  select option:checked {
+    color: #fff;
+    background: var(--color-accent);
+  }
+
+  select option:hover,
+  select option:focus {
+    color: #fff;
+    background: var(--color-accent-deep);
+  }
+
   /* hide native cursor when custom cursor is active (desktop only, set by JS) */
   html[data-cursor="custom"] {
     cursor: none;

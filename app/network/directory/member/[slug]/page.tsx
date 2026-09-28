@@ -221,10 +221,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
             Back to the directory
           </Link>
 
-          <section className="relative mt-5 overflow-hidden rounded-[1.5rem] border border-accent/30 bg-surface-1 px-5 py-6 sm:mt-8 sm:rounded-[2rem] sm:px-6 sm:py-7 md:px-10 md:py-10 lg:px-14 lg:py-14">
-            <div aria-hidden className="hairline-grid absolute inset-0 opacity-30" />
-            <div aria-hidden className="absolute -right-24 -top-24 size-96 rounded-full bg-accent/20 blur-3xl" />
-
+          <section className="relative mt-5 py-6 sm:mt-8 sm:py-7 md:py-10 lg:py-14">
             <div className="relative grid gap-6 sm:gap-10 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-16">
               <div className="mx-auto w-full max-w-[12rem] sm:max-w-xs lg:max-w-md">
                 <MemberAvatar
@@ -235,9 +232,9 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                 />
               </div>
 
-              <div>
+              <div className="text-center lg:text-left">
                 <p className="mono-label text-[10px] text-accent sm:text-xs">NAMI Creative Network member</p>
-                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-fg-subtle sm:mt-5 sm:gap-3 sm:text-sm">
+                <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs text-fg-subtle sm:mt-5 sm:gap-3 sm:text-sm lg:justify-start">
                   <span className="rounded-full border border-line bg-surface-0/50 px-2.5 py-1 sm:px-3 sm:py-1.5">{profile.role}</span>
                   <span className="inline-flex items-center gap-2">
                     <MapPin size={15} className="text-accent" aria-hidden />
@@ -245,16 +242,16 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                   </span>
                 </div>
 
-                <h1 className="mt-4 max-w-4xl break-words text-[clamp(2.15rem,10.5vw,3rem)] font-semibold leading-[0.94] tracking-tight sm:mt-6 sm:text-6xl lg:text-7xl">
+                <h1 className="mx-auto mt-4 max-w-4xl break-words text-[clamp(2.15rem,10.5vw,3rem)] font-semibold leading-[0.94] tracking-tight sm:mt-6 sm:text-6xl lg:mx-0 lg:text-7xl">
                   {profile.personName}
                   {profile.brandName && <span className="mt-2 block text-accent">{profile.brandName}</span>}
                 </h1>
 
-                <p className="mt-5 max-w-2xl text-base leading-6 text-fg-muted sm:mt-7 sm:text-lg sm:leading-relaxed md:text-xl">
+                <p className="mx-auto mt-5 max-w-2xl text-base leading-6 text-fg-muted sm:mt-7 sm:text-lg sm:leading-relaxed md:text-xl lg:mx-0">
                   {member.description}
                 </p>
 
-                <div className="mt-5 flex flex-wrap gap-2 sm:mt-8 sm:gap-3">
+                <div className="mt-5 flex flex-wrap justify-center gap-2 sm:mt-8 sm:gap-3 lg:justify-start">
                   {member.websiteUrl && (
                     <a
                       href={member.websiteUrl}

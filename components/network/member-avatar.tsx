@@ -31,11 +31,13 @@ export function MemberAvatar({
   src,
   alt,
   featured = false,
+  imageClassName,
 }: {
   name: string;
   src?: string;
   alt?: string;
   featured?: boolean;
+  imageClassName?: string;
 }) {
   const [failed, setFailed] = useState(false);
   const size = featured
@@ -61,7 +63,7 @@ export function MemberAvatar({
           fill
           unoptimized={isProxiedImage}
           sizes={featured ? "(min-width: 1024px) 40vw, (min-width: 640px) 384px, calc(100vw - 96px)" : "48px"}
-          className="object-cover"
+          className={cn("object-cover", imageClassName)}
           onError={() => setFailed(true)}
         />
       ) : (
