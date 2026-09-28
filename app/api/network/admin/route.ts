@@ -7,6 +7,7 @@ import { normalizeInstagramProfileUrl, normalizeProfileUrl } from "@/lib/network
 import { revalidateNetworkProfile } from "@/lib/network-profile/revalidate";
 import { processNetworkJobs } from "@/lib/network-sync/process-jobs";
 import { issueMemberInvite } from "@/lib/network-auth/member-invitations";
+import { correctUnclaimedMemberEmail } from "@/lib/network-admin/correct-member-email";
 
 const groupSlugs = directoryGroups.map((group) => group.slug) as [string, ...string[]];
 const eventRevisionSchema = z.object({ title:z.string(), eventType:z.string(), summary:z.string(), fullDescription:z.string(), venue:z.string(), address:z.string(), location:z.string(), region:z.string(), format:z.string(), startsAt:z.coerce.date(), endsAt:z.coerce.date().nullable(), priceType:z.string(), priceDetails:z.string(), bookingUrl:z.string().nullable(), accessibility:z.string(), ageGuidance:z.string(), contactEmail:z.string(), coverImageKey:z.string(), coverImageAlt:z.string() });
@@ -21,6 +22,7 @@ const actionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("event-feature"), eventId: z.string().uuid(), featured: z.boolean() }),
   z.object({ action: z.literal("event-revision-status"), revisionId: z.string().uuid(), status: z.enum(["approved", "rejected"]), feedback: z.string().trim().max(1000).optional().default("") }),
   z.object({ action: z.literal("member-status"), memberId: z.string().min(2), status: z.enum(["active", "disabled"]) }),
+  z.object({ action: z.literal("correct-member-email"), memberId: z.string().min(2), email: z.string().trim().email() }),
   z.object({ action: z.literal("process-sheet-jobs") }),
 ]);
 
@@ -35,6 +37,11 @@ export async function POST(request: Request) {
 
   if (parsed.data.action === "process-sheet-jobs") {
     return Response.json({ ok: true, ...(await processNetworkJobs(50, "sheet")) });
+  }
+
+  if (parsed.data.action === "correct-member-email") {
+    try { return Response.json({ ok: true, ...(await correctUnclaimedMemberEmail(parsed.data.memberId, parsed.data.email)) }); }
+    catch (error) { return Response.json({ error: error instanceof Error ? error.message : "Email correction failed." }, { status: 409 }); }
   }
 
   if (parsed.data.action === "ticket-status") {
