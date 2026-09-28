@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, ne } from "drizzle-orm";
 import { z } from "zod";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
 import { isNetworkAdminRequest } from "@/lib/network-auth/admin";
@@ -6,11 +6,13 @@ import { getMemberMediaBucket, getNetworkDb, schema } from "@/lib/network-db";
 import { issueMemberInvite } from "@/lib/network-auth/member-invitations";
 import { revalidateNetworkProfile } from "@/lib/network-profile/revalidate";
 import { normalizeInstagramProfileUrl, normalizeProfileUrl } from "@/lib/network-profile/links";
+import { changeMailchimpContactEmail } from "@/lib/network-sync/mailchimp";
 
 const groupSlugs = directoryGroups.map((group) => group.slug) as [string, ...string[]];
 const actionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("approve"), applicationId: z.string().min(2), primaryGroup: z.enum(groupSlugs), speciality: z.string().trim().min(2).max(80), bio: z.string().trim().min(20).max(320) }),
   z.object({ action: z.literal("resend-invite"), memberId: z.string().min(2) }),
+  z.object({ action: z.literal("correct-member-email"), memberId: z.string().min(2), email: z.string().trim().email() }),
   z.object({ action: z.literal("disable"), memberId: z.string().min(2) }),
   z.object({ action: z.literal("enable"), memberId: z.string().min(2) }),
 ]);
@@ -75,6 +77,26 @@ export async function POST(request: Request) {
     }
   }
   if (parsed.data.action === "resend-invite") { await issueMemberInvite(parsed.data.memberId); return Response.json({ ok: true }); }
+  if (parsed.data.action === "correct-member-email") {
+    const email = parsed.data.email.trim().toLowerCase();
+    const [target] = await db.select().from(schema.members).where(eq(schema.members.id, parsed.data.memberId)).limit(1);
+    if (!target) return Response.json({ error: "Member not found." }, { status: 404 });
+    if (target.authUserId || target.accountStatus === "active") {
+      return Response.json({ error: "Active account emails must be changed through the authenticated account workflow." }, { status: 409 });
+    }
+    const [duplicate] = await db.select({ id: schema.members.id }).from(schema.members)
+      .where(and(eq(schema.members.emailNormalized, email), ne(schema.members.id, target.id))).limit(1);
+    if (duplicate) return Response.json({ error: "That email is already assigned to another member." }, { status: 409 });
+
+    const mailchimp = await changeMailchimpContactEmail(target.email, email, target.firstName);
+    await db.batch([
+      db.update(schema.members).set({ email, emailNormalized: email, updatedAt: now }).where(eq(schema.members.id, target.id)),
+      db.update(schema.networkApplications).set({ email }).where(eq(schema.networkApplications.id, target.id)),
+      db.insert(schema.sheetSyncJobs).values({ id: crypto.randomUUID(), memberId: target.id, status: "pending", attempts: 0, nextAttemptAt: now, createdAt: now, updatedAt: now }),
+    ]);
+    const invite = await issueMemberInvite(target.id);
+    return Response.json({ ok: true, memberId: target.id, email, mailchimp, inviteSent: true, invite });
+  }
   const status = parsed.data.action === "disable" ? "disabled" : "active";
   const [targetMember] = await db.select({ authUserId: schema.members.authUserId }).from(schema.members).where(eq(schema.members.id, parsed.data.memberId)).limit(1);
   await db.update(schema.members).set({ accountStatus: status, updatedAt: now }).where(eq(schema.members.id, parsed.data.memberId));

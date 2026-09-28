@@ -71,3 +71,46 @@ export async function syncApplicationToMailchimp(applicationId: string, triggerW
 
   return { audienceSyncedAt: new Date(), welcomeTriggeredAt: triggerWelcome ? new Date() : null, contactStatus: member.status };
 }
+
+export async function changeMailchimpContactEmail(oldEmail: string, newEmail: string, firstName: string) {
+  const env = await getRuntimeEnvironment();
+  const apiKey = env.MAILCHIMP_API_KEY;
+  const audienceId = env.MAILCHIMP_AUDIENCE_ID;
+  const dc = env.MAILCHIMP_SERVER_PREFIX || apiKey?.split("-")[1];
+  if (!apiKey || !audienceId || !dc) throw new Error("Mailchimp credentials are incomplete.");
+
+  const previous = oldEmail.trim().toLowerCase();
+  const next = newEmail.trim().toLowerCase();
+  const previousHash = crypto.createHash("md5").update(previous).digest("hex");
+  const nextHash = crypto.createHash("md5").update(next).digest("hex");
+  const headers = { "Content-Type": "application/json", Authorization: `apikey ${apiKey}` };
+  const previousUrl = `https://${dc}.api.mailchimp.com/3.0/lists/${audienceId}/members/${previousHash}`;
+
+  const existing = await fetch(previousUrl, { headers });
+  let response: Response;
+  if (existing.ok) {
+    response = await fetch(previousUrl, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({ email_address: next, merge_fields: { FNAME: firstName } }),
+    });
+  } else if (existing.status === 404) {
+    response = await fetch(`https://${dc}.api.mailchimp.com/3.0/lists/${audienceId}/members/${nextHash}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify({
+        email_address: next,
+        status_if_new: "subscribed",
+        merge_fields: { FNAME: firstName, PTYPE: "Creative Network" },
+        tags: tagsFor(""),
+      }),
+    });
+  } else {
+    throw new Error(`Mailchimp lookup failed (${existing.status}): ${(await existing.text()).slice(0, 500)}`);
+  }
+
+  if (!response.ok) throw new Error(`Mailchimp email update failed (${response.status}): ${(await response.text()).slice(0, 500)}`);
+  const member = await response.json() as { email_address?: string; status?: string };
+  if (member.email_address?.trim().toLowerCase() !== next) throw new Error("Mailchimp returned a different email address after the update.");
+  return { email: member.email_address, status: member.status ?? "unknown" };
+}
