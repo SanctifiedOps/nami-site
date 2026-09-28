@@ -3,8 +3,34 @@ import openNextHandler from "./.open-next/worker.js";
 
 export default {
   async fetch(request, env, ctx) {
-    const response = await openNextHandler.fetch(request, env, ctx);
-    if (!new URL(request.url).hostname.endsWith(".workers.dev")) return response;
+    const url = new URL(request.url);
+    let response: Response;
+
+    if (request.method === "GET" && url.pathname === "/sitemap.xml") {
+      const cache = await caches.open("nami-sitemap");
+      const cached = await cache.match(request);
+      if (cached) return cached;
+
+      const generated = await openNextHandler.fetch(request, env, ctx);
+      if (generated.ok) {
+        const body = await generated.arrayBuffer();
+        const headers = new Headers(generated.headers);
+        headers.set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
+        headers.set("Content-Length", String(body.byteLength));
+        response = new Response(body, {
+          status: generated.status,
+          statusText: generated.statusText,
+          headers,
+        });
+        ctx.waitUntil(cache.put(request, response.clone()));
+      } else {
+        response = generated;
+      }
+    } else {
+      response = await openNextHandler.fetch(request, env, ctx);
+    }
+
+    if (!url.hostname.endsWith(".workers.dev")) return response;
     const headers = new Headers(response.headers);
     headers.set("X-Robots-Tag", "noindex, nofollow");
     return new Response(response.body, {

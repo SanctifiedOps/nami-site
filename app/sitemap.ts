@@ -9,6 +9,11 @@ const SITE = "https://namicreative.co.uk";
 const LAST_SEO_UPDATE = new Date("2026-09-19");
 const HOMEPAGE_SEO_UPDATE = new Date("2026-09-19");
 
+// Keep the generated sitemap stable for crawlers. It includes live D1 member
+// records, but rebuilding it for every bot request made delivery depend on a
+// fresh database query and prevented Cloudflare from serving a cached copy.
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const directoryMembers = await getNetworkDirectoryMembers();
   const staticRoutes: MetadataRoute.Sitemap = [
