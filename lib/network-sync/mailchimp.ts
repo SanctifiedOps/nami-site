@@ -89,11 +89,25 @@ export async function changeMailchimpContactEmail(oldEmail: string, newEmail: st
   const existing = await fetch(previousUrl, { headers });
   let response: Response;
   if (existing.ok) {
-    response = await fetch(previousUrl, {
-      method: "PATCH",
-      headers,
-      body: JSON.stringify({ email_address: next, merge_fields: { FNAME: firstName } }),
-    });
+    const existingMember = await existing.json() as { status?: string };
+    if (existingMember.status === "subscribed") {
+      response = await fetch(previousUrl, {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ email_address: next, merge_fields: { FNAME: firstName } }),
+      });
+    } else {
+      response = await fetch(`https://${dc}.api.mailchimp.com/3.0/lists/${audienceId}/members/${nextHash}`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({
+          email_address: next,
+          status_if_new: "subscribed",
+          merge_fields: { FNAME: firstName, PTYPE: "Creative Network" },
+          tags: tagsFor(""),
+        }),
+      });
+    }
   } else if (existing.status === 404) {
     response = await fetch(`https://${dc}.api.mailchimp.com/3.0/lists/${audienceId}/members/${nextHash}`, {
       method: "PUT",
