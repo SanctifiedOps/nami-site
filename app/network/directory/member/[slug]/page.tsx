@@ -281,7 +281,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
 
             <aside
               id="member-socials"
-              className="group scroll-mt-28 rounded-3xl border border-accent/35 bg-[linear-gradient(145deg,rgba(255,0,166,0.20),rgba(18,18,22,0.96)_45%,rgba(255,0,166,0.08))] p-6 shadow-[0_18px_55px_rgba(255,0,166,0.10)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/65 hover:shadow-[0_24px_70px_rgba(255,0,166,0.20)] md:p-8"
+              className="group self-start scroll-mt-28 rounded-3xl border border-accent/35 bg-[linear-gradient(145deg,rgba(255,0,166,0.20),rgba(18,18,22,0.96)_45%,rgba(255,0,166,0.08))] p-6 shadow-[0_18px_55px_rgba(255,0,166,0.10)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/65 hover:shadow-[0_24px_70px_rgba(255,0,166,0.20)] md:p-8"
             >
               <p className="mono-label text-accent">At a glance</p>
               <dl className="mt-6 divide-y divide-line">
