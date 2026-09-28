@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
+import { and, asc, eq, gte, isNotNull } from "drizzle-orm";
+import { ArrowLeft, ArrowUpRight, CalendarDays, MapPin, Sparkles } from "lucide-react";
 import { JsonLd, buildBreadcrumbSchema, type JsonLdSchema } from "@/components/seo/json-ld";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
@@ -13,6 +14,7 @@ import {
   primaryMemberGroup,
 } from "@/lib/content/network-directory-groups";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
+import { getNetworkDb, schema } from "@/lib/network-db";
 import { PortfolioGallery } from "./portfolio-gallery";
 
 const SITE_URL = "https://namicreative.co.uk";
@@ -146,6 +148,17 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
   const relatedMembers = membersInGroup(members, groupSlug)
     .filter((item) => item.id !== member.id)
     .slice(0, 3);
+  const db = await getNetworkDb();
+  const upcomingEvents = await db.select()
+    .from(schema.networkEvents)
+    .where(and(
+      eq(schema.networkEvents.memberId, member.id),
+      eq(schema.networkEvents.status, "approved"),
+      gte(schema.networkEvents.startsAt, new Date()),
+      isNotNull(schema.networkEvents.slug),
+    ))
+    .orderBy(asc(schema.networkEvents.startsAt))
+    .limit(3);
 
   const mainEntity: JsonLdSchema = {
     "@type": entityType,
@@ -332,6 +345,65 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
             <PortfolioGallery images={member.portfolioImages ?? []} memberName={member.name} />
           </div>
         </section>
+
+        {upcomingEvents.length > 0 && (
+          <section className="relative isolate overflow-hidden border-b border-line py-16 md:py-24">
+            <ParallaxBackdrop src="/images/north-east/3.jpg" overlay={0.84} position="center 44%" />
+            <div className="container-shell relative">
+              <div className="flex flex-wrap items-end justify-between gap-5">
+                <div>
+                  <p className="mono-label text-accent">Coming up</p>
+                  <h2 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">
+                    Upcoming {upcomingEvents.length === 1 ? "event" : "events"} by {profile.brandName || profile.personName}
+                  </h2>
+                </div>
+                <Link href="/network/events" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-accent">
+                  View all events <ArrowUpRight size={15} aria-hidden />
+                </Link>
+              </div>
+
+              <div className="mt-9 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {upcomingEvents.map((event) => (
+                  <Link
+                    key={event.id}
+                    href={`/network/events/${event.slug}`}
+                    className="group overflow-hidden rounded-3xl border border-accent/25 bg-surface-1/90 shadow-[0_18px_55px_rgba(0,0,0,0.3)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/65 hover:shadow-[0_24px_70px_rgba(255,0,166,0.18)]"
+                  >
+                    <div className="relative aspect-[4/5] overflow-hidden bg-surface-2">
+                      {event.coverImageKey && (
+                        <img
+                          src={`/api/network/media/${event.coverImageKey.split("/").map(encodeURIComponent).join("/")}`}
+                          alt={event.coverImageAlt || event.title}
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-transparent" />
+                      <div className="absolute left-5 top-5 rounded-2xl border border-white/20 bg-black/75 px-4 py-3 text-center backdrop-blur">
+                        <span className="block text-2xl font-bold text-accent">
+                          {event.startsAt.toLocaleDateString("en-GB", { day: "2-digit", timeZone: "Europe/London" })}
+                        </span>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-white">
+                          {event.startsAt.toLocaleDateString("en-GB", { month: "short", timeZone: "Europe/London" })}
+                        </span>
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 p-6">
+                        <p className="text-xs font-bold uppercase tracking-wider text-accent">{event.eventType}</p>
+                        <h3 className="mt-2 text-2xl font-semibold leading-tight text-white">{event.title}</h3>
+                        <p className="mt-3 flex items-center gap-2 text-sm text-white/75">
+                          <MapPin size={14} aria-hidden /> {event.venue}{event.location ? `, ${event.location}` : ""}
+                        </p>
+                        <p className="mt-2 flex items-center gap-2 text-sm text-white/75">
+                          <CalendarDays size={14} aria-hidden />
+                          {event.startsAt.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "long", timeZone: "Europe/London" })}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {relatedMembers.length > 0 && (
           <section className="relative isolate overflow-hidden py-16 md:py-24">
