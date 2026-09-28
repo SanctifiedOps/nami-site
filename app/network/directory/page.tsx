@@ -3,6 +3,7 @@ import Link from "next/link";
 import { and, asc, eq, gte } from "drizzle-orm";
 import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, Search, Users } from "lucide-react";
 import { MemberAvatar } from "@/components/network/member-avatar";
+import { AnimatedMemberTooltip } from "@/components/ui/animated-member-tooltip";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { PageHero } from "@/components/sections/page-hero";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
@@ -48,10 +49,11 @@ export default async function NetworkDirectoryPage() {
     .catch(() => []);
   const featured = members.find((member) => member.featured) ?? members[0];
   const day = londonDayNumber();
-  const newest = members.filter((member) => member.joinedAt && !Number.isNaN(Date.parse(member.joinedAt))).sort((a, b) => Date.parse(b.joinedAt!) - Date.parse(a.joinedAt!)).slice(0, 4);
-  const firstSectionMembers = newest.length === 4 ? newest : dailyMemberPreview(members, day, 4);
+  const membersWithPictures = members.filter((member) => member.profileImage);
+  const newest = membersWithPictures.filter((member) => member.joinedAt && !Number.isNaN(Date.parse(member.joinedAt))).sort((a, b) => Date.parse(b.joinedAt!) - Date.parse(a.joinedAt!)).slice(0, 4);
+  const firstSectionMembers = newest.length > 0 ? newest : dailyMemberPreview(membersWithPictures, day, 4);
   const previewSlugs = ["artists", "photographers", "designers", "makers", "music", "independent-businesses"] as const;
-  const previews = previewSlugs.map((slug) => ({ group: directoryGroups.find((group) => group.slug === slug)!, members: membersInGroup(members, slug) })).filter(({ members: groupMembers }) => groupMembers.length >= 4);
+  const previews = previewSlugs.map((slug) => ({ group: directoryGroups.find((group) => group.slug === slug)!, members: membersInGroup(members, slug), picturedMembers: membersInGroup(membersWithPictures, slug) })).filter(({ picturedMembers }) => picturedMembers.length > 0);
   const otherGroups = directoryGroups.filter((group) => !previewSlugs.includes(group.slug as typeof previewSlugs[number]) && membersInGroup(members, group.slug).length > 0);
 
   return (
@@ -61,22 +63,33 @@ export default async function NetworkDirectoryPage() {
         eyebrow="NAMI Creative Network"
         title="NAMI Creative Network Directory"
         lead="Meet the artists, photographers, makers and independent businesses in the Network. Find someone to follow, work with or support across the North East."
+        aboveTitle={
+          <AnimatedMemberTooltip
+            memberCount={members.length}
+            items={members.map((member) => ({
+              id: member.id,
+              name: member.name,
+              designation: member.category,
+              image: member.profileImage,
+            }))}
+          />
+        }
       >
         <div className="flex flex-wrap justify-center gap-3">
-          <Link
-            href="#directory"
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
-          >
-            Explore the directory
-            <ArrowDown size={16} aria-hidden className="transition-transform group-hover:translate-y-0.5" />
-          </Link>
-          <Link
-            href="/network#join-network"
-            className="group inline-flex items-center gap-2 rounded-full border border-accent bg-black/60 px-7 py-4 text-sm font-semibold text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-accent hover:shadow-[0_8px_32px_rgb(255_0_188/0.3)]"
-          >
-            Join the Network
-            <ArrowUpRight size={16} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </Link>
+            <Link
+              href="#directory"
+              className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+            >
+              Explore the directory
+              <ArrowDown size={16} aria-hidden className="transition-transform group-hover:translate-y-0.5" />
+            </Link>
+            <Link
+              href="/network#join-network"
+              className="group inline-flex items-center gap-2 rounded-full border border-accent bg-black/60 px-7 py-4 text-sm font-semibold text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-accent hover:shadow-[0_8px_32px_rgb(255_0_188/0.3)]"
+            >
+              Join the Network
+              <ArrowUpRight size={16} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
         </div>
       </PageHero>
 
@@ -115,12 +128,12 @@ export default async function NetworkDirectoryPage() {
       )}
 
       <section id="directory" className="container-shell scroll-mt-24 py-10 md:py-14">
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
-          <div>
+        <div className="mb-5 flex flex-wrap items-end justify-center gap-4 text-center md:justify-between md:text-left">
+          <div className="w-full md:w-auto">
             <p className="mono-label text-accent">Explore the Network</p>
             <h2 className="mt-4 text-4xl font-semibold leading-[0.96] tracking-tight md:text-6xl">Find your people</h2>
           </div>
-          <div className="flex flex-wrap gap-5 text-sm text-fg-muted">
+          <div className="flex flex-wrap justify-center gap-5 text-sm text-fg-muted md:justify-start">
             <span className="inline-flex items-center gap-2"><Users size={18} className="text-accent" aria-hidden />{members.length} members</span>
             <span className="inline-flex items-center gap-2"><Search size={18} className="text-accent" aria-hidden />Search by work and place</span>
           </div>
@@ -130,15 +143,15 @@ export default async function NetworkDirectoryPage() {
 
       <section className="border-y border-line bg-surface-1/35 py-16 md:py-20">
         <div className="container-shell">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div>
+          <div className="mb-8 flex flex-wrap items-end justify-center gap-4 text-center md:justify-between md:text-left">
+            <div className="w-full md:w-auto">
               <p className="mono-label text-accent">People to meet</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">{newest.length === 4 ? "Newest members" : "Meet more members"}</h2>
             </div>
-            <Link href="/network/directory/all" className="text-sm font-semibold text-fg hover:text-accent">View everyone <ArrowUpRight size={15} className="inline" aria-hidden /></Link>
+            <Link href="/network/directory/all" className="w-full text-sm font-semibold text-fg hover:text-accent md:w-auto">View everyone <ArrowUpRight size={15} className="inline" aria-hidden /></Link>
           </div>
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {firstSectionMembers.map((member) => <DirectoryMemberCard key={member.id} member={member} />)}
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
+            {firstSectionMembers.map((member) => <DirectoryMemberCard key={member.id} member={member} className="w-[calc(50%_-_0.375rem)] sm:w-[calc(50%_-_0.625rem)] xl:w-[calc(25%_-_0.9375rem)]" />)}
           </div>
         </div>
       </section>
@@ -146,8 +159,10 @@ export default async function NetworkDirectoryPage() {
       <section className="relative isolate overflow-hidden py-16 md:py-20">
         <ParallaxBackdrop src="/images/north-east/1.jpg" overlay={0.72} />
         <div className="container-shell relative">
-          <p className="mono-label text-accent">Browse by work</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">What are you looking for?</h2>
+          <div className="text-center md:text-left">
+            <p className="mono-label text-accent">Browse by work</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">What are you looking for?</h2>
+          </div>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {directoryGroups.filter((group) => membersInGroup(members, group.slug).length > 0).map((group) => (
               <Link key={group.slug} href={`/network/directory/${group.slug}`} className="group flex items-center justify-between gap-4 rounded-2xl border border-line bg-surface-1/90 px-5 py-6 transition-colors hover:border-accent/50 hover:bg-surface-1">
@@ -159,16 +174,16 @@ export default async function NetworkDirectoryPage() {
         </div>
       </section>
 
-      {previews.map(({ group, members: groupMembers }, index) => (
+      {previews.map(({ group, members: groupMembers, picturedMembers }, index) => (
         <div key={group.slug}>
         {index === 2 && upcomingEvents.length > 0 && (
           <section className="relative isolate overflow-hidden py-16 md:py-24">
             <ParallaxBackdrop src="/images/north-east/3.jpg" overlay={0.7} />
             <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(255,0,188,.28),transparent_50%)]" />
             <div className="container-shell relative">
-              <div className="flex flex-wrap items-end justify-between gap-4">
-                <div><p className="mono-label text-accent">Network events</p><h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Upcoming network events</h2></div>
-                <Link href="/network/events" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-accent">View all events <ArrowUpRight size={15} aria-hidden /></Link>
+              <div className="flex flex-wrap items-end justify-center gap-4 text-center md:justify-between md:text-left">
+                <div className="w-full md:w-auto"><p className="mono-label text-accent">Network events</p><h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Upcoming network events</h2></div>
+                <Link href="/network/events" className="inline-flex w-full items-center justify-center gap-2 text-sm font-semibold hover:text-accent md:w-auto md:justify-start">View all events <ArrowUpRight size={15} aria-hidden /></Link>
               </div>
               <div className="mt-8 grid gap-5 md:grid-cols-3">
                 {upcomingEvents.filter((event) => event.slug).map((event) => (
@@ -182,41 +197,41 @@ export default async function NetworkDirectoryPage() {
         )}
         <section className={`border-t border-line py-16 md:py-20 ${index % 2 === 0 ? "bg-surface-1/35" : ""}`}>
           <div className="container-shell">
-            <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
-              <div>
+            <div className="mb-8 flex flex-wrap items-end justify-center gap-5 text-center md:justify-between md:text-left">
+              <div className="w-full md:w-auto">
                 <p className="mono-label text-accent">The Network</p>
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">{group.label}</h2>
-                <p className="mt-3 max-w-xl text-fg-muted">{group.description}</p>
+                <p className="mx-auto mt-3 max-w-xl text-fg-muted md:mx-0">{group.description}</p>
               </div>
-              <Link href={`/network/directory/${group.slug}`} className="text-sm font-semibold text-fg hover:text-accent">View all {groupMembers.length} <ArrowUpRight size={15} className="inline" aria-hidden /></Link>
+              <Link href={`/network/directory/${group.slug}`} className="w-full text-sm font-semibold text-fg hover:text-accent md:w-auto">View all {groupMembers.length} <ArrowUpRight size={15} className="inline" aria-hidden /></Link>
             </div>
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {dailyMemberPreview(groupMembers, day, 4).map((member) => <DirectoryMemberCard key={member.id} member={member} />)}
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
+              {dailyMemberPreview(picturedMembers, day, 4).map((member) => <DirectoryMemberCard key={member.id} member={member} className="w-[calc(50%_-_0.375rem)] sm:w-[calc(50%_-_0.625rem)] xl:w-[calc(25%_-_0.9375rem)]" />)}
             </div>
           </div>
         </section>
-        {group.slug === "makers" && <section className="relative isolate overflow-hidden py-16 md:py-20"><ParallaxBackdrop src="/images/north-east/5.jpg" overlay={0.72} /><div className="container-shell relative"><MemberDiscovery members={members} initialIndex={day % members.length} /></div></section>}
+        {group.slug === "makers" && <section id="member-discovery" className="relative isolate scroll-mt-24 overflow-hidden py-16 md:py-20"><ParallaxBackdrop src="/images/north-east/5.jpg" overlay={0.72} /><div className="container-shell relative"><MemberDiscovery members={membersWithPictures} initialIndex={day % membersWithPictures.length} /></div></section>}
         </div>
       ))}
 
-      <section className="border-t border-line bg-surface-1/35 py-16 md:py-20">
-        <div className="container-shell">
-          <p className="mono-label text-accent">Around the North East</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Find people near you</h2>
-          <div className="mt-7 flex flex-wrap gap-3">
-            {["Newcastle", "Gateshead", "Sunderland", "County Durham", "North Tyneside", "Northumberland"].map((area) => <Link key={area} href={`/network/directory/all?area=${encodeURIComponent(area)}`} className="rounded-full border border-line bg-surface-0 px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent">{area} <ArrowUpRight size={14} className="inline" aria-hidden /></Link>)}
+      <section className="bg-surface-1/35 py-16 md:py-20">
+        <div className="container-shell space-y-14 text-center md:space-y-16 md:text-left">
+          <div>
+            <p className="mono-label text-accent">Around the North East</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Find people near you</h2>
+            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
+              {["Newcastle", "Gateshead", "Sunderland", "County Durham", "North Tyneside", "Northumberland"].map((area) => <Link key={area} href={`/network/directory/all?area=${encodeURIComponent(area)}`} className="rounded-full border border-line bg-surface-0 px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent">{area} <ArrowUpRight size={14} className="inline" aria-hidden /></Link>)}
+            </div>
           </div>
+
+          {otherGroups.length > 0 && <div>
+            <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">There’s more to explore</h2>
+            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
+              {otherGroups.map((group) => <Link key={group.slug} href={`/network/directory/${group.slug}`} className="rounded-full border border-line px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent">{group.label} <ArrowUpRight size={14} className="inline" aria-hidden /></Link>)}
+            </div>
+          </div>}
         </div>
       </section>
-
-      {otherGroups.length > 0 && <section className="border-t border-line py-16 md:py-20">
-        <div className="container-shell">
-          <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">There’s more to explore</h2>
-          <div className="mt-7 flex flex-wrap gap-3">
-            {otherGroups.map((group) => <Link key={group.slug} href={`/network/directory/${group.slug}`} className="rounded-full border border-line px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent">{group.label} <ArrowUpRight size={14} className="inline" aria-hidden /></Link>)}
-          </div>
-        </div>
-      </section>}
 
       <section className="relative isolate overflow-hidden py-20 md:py-24">
         <ParallaxBackdrop src="/images/north-east/7.jpg" overlay={0.72} />

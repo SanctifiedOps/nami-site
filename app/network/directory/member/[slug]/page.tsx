@@ -359,7 +359,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                 </Link>
               </div>
 
-              <div className="mt-9 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="mt-9 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {upcomingEvents.map((event) => (
                   <Link
                     key={event.id}

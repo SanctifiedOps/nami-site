@@ -13,8 +13,10 @@ import {
   Users,
 } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
+import { AnimatedMemberTooltip } from "@/components/ui/animated-member-tooltip";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 import { NetworkForm } from "./network-form";
 
 export const metadata: Metadata = {
@@ -116,7 +118,9 @@ function FormAnchor({ children = "Join the network" }: { children?: string }) {
   );
 }
 
-export default function NetworkPage() {
+export default async function NetworkPage() {
+  const members = await getNetworkDirectoryMembers();
+
   return (
     <>
       <div data-network-section="hero">
@@ -130,6 +134,17 @@ export default function NetworkPage() {
           </>
         }
         lead="Meet North East creatives. Give people a way to discover your work, hire you, buy from you or get in touch."
+        aboveTitle={
+          <AnimatedMemberTooltip
+            memberCount={members.length}
+            items={members.map((member) => ({
+              id: member.id,
+              name: member.name,
+              designation: member.category,
+              image: member.profileImage,
+            }))}
+          />
+        }
       >
         <div className="flex flex-wrap items-center justify-center gap-3">
           <FormAnchor>Join the network</FormAnchor>
@@ -185,9 +200,9 @@ export default function NetworkPage() {
               return (
                 <div
                   key={card.title}
-                  className="glass-refractive rounded-2xl p-7 md:p-8"
+                  className="glass-refractive rounded-2xl p-7 text-center md:p-8 md:text-left"
                 >
-                  <Icon size={22} className="text-accent" aria-hidden />
+                  <Icon size={22} className="mx-auto text-accent md:mx-0" aria-hidden />
                   <h3 className="type-card-title mt-6">
                     {card.title}
                   </h3>
@@ -216,12 +231,12 @@ export default function NetworkPage() {
         />
         <div className="container-shell relative z-10 grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-20">
           <ScrollReveal>
-            <div>
+            <div className="text-center lg:text-left">
             <p className="mono-label mb-5">03 / Who belongs here</p>
             <h2 className="type-section-title">
               If you&apos;re making something up here, you belong here
             </h2>
-            <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
+            <p className="mx-auto mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg lg:mx-0">
               You don&apos;t need a huge following or a perfectly polished feed. If you&apos;re making, building, filming, playing, painting or running an independent business in the North East, I&apos;d like to know about it.
             </p>
             </div>
@@ -235,7 +250,7 @@ export default function NetworkPage() {
                     index === 0 || index === 5
                       ? "bg-[linear-gradient(135deg,rgb(255_0_188/0.11),rgb(12_13_16/0.78)_62%)]"
                       : ""
-                  }`}
+                  } text-center md:text-left`}
                 >
                   <span className="relative z-10">{item}</span>
                   <span
@@ -267,9 +282,9 @@ export default function NetworkPage() {
               return (
                 <div
                   key={card.title}
-                  className="rounded-2xl border border-line bg-surface-1/45 p-7 md:p-8"
+                  className="rounded-2xl border border-line bg-surface-1/45 p-7 text-center md:p-8 md:text-left"
                 >
-                  <Icon size={22} className="text-accent" aria-hidden />
+                  <Icon size={22} className="mx-auto text-accent md:mx-0" aria-hidden />
                   <h3 className="type-card-title mt-6">
                     {card.title}
                   </h3>
@@ -301,15 +316,15 @@ export default function NetworkPage() {
         className="border-t border-line bg-surface-1/30 py-20 md:py-28"
       >
         <div className="container-shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-          <div>
+          <div className="text-center lg:text-left">
             <p className="mono-label mb-5">05 / Join the network</p>
             <h2 className="type-section-title">
               Join the NAMI Creative Network today
             </h2>
-            <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
+            <p className="mx-auto mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg lg:mx-0">
               Tell me what you do, where you&apos;re based and how you want to appear in the directory. I&apos;ll turn that into a NAMI network profile people can find and share.
             </p>
-            <div className="mt-8 rounded-2xl border border-line bg-surface-0/60 p-6">
+            <div className="mt-8 rounded-2xl border border-line bg-surface-0/60 p-6 text-left">
               <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-accent">
                 What happens after you join
               </p>

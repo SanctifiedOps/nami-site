@@ -2,8 +2,8 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Check, ChevronDown, MapPin, Search, X } from "lucide-react";
-import { MemberAvatar } from "@/components/network/member-avatar";
+import { Check, ChevronDown, Search, X } from "lucide-react";
+import { MemberProfileCard } from "@/components/ui/member-profile-card";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
 import { directoryGroups, memberGroupSlugs } from "@/lib/content/network-directory-groups";
 import { trackEvent } from "@/lib/analytics";
@@ -195,9 +195,9 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
       </div>
 
       {previewOnly && !hasFilters ? (
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 text-sm text-fg-muted">
-          <p>Search all {members.length} members by name, work or place.</p>
-          <Link href="/network/directory/all" className="font-semibold text-fg hover:text-accent">View all members <span aria-hidden>↗</span></Link>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-center text-sm text-fg-muted md:justify-between md:text-left">
+          <p className="w-full md:w-auto">Search all {members.length} members by name, work or place.</p>
+          <Link href="/network/directory/all" className="w-full font-semibold text-fg hover:text-accent md:w-auto">View all members <span aria-hidden>↗</span></Link>
         </div>
       ) : <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
         <p aria-live="polite" className="text-sm text-fg-muted">
@@ -216,7 +216,7 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
       </div>}
 
       {previewOnly && !hasFilters ? null : filtered.length > 0 ? (
-        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((member) => <DirectoryMemberCard key={member.id} member={member} analyticsContext={{ searchQuery: query, categoryFilter: category, locationFilter: location, resultCount: filtered.length }} />)}
         </div>
       ) : (
@@ -310,51 +310,21 @@ function FilterSelect({
   );
 }
 
-export function DirectoryMemberCard({ member, analyticsContext }: { member: NetworkDirectoryMember; analyticsContext?: { searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number } }) {
+export function DirectoryMemberCard({ member, analyticsContext, className }: { member: NetworkDirectoryMember; analyticsContext?: { searchQuery: string; categoryFilter: string; locationFilter: string; resultCount: number }; className?: string }) {
   const recordSelection = () => {
     trackEvent("network_member_profile_clicked", { member_id: member.id, member_name: member.name, destination: "profile", category: member.category });
     if (analyticsContext) recordDirectoryEvent({ eventType: "result_clicked", ...analyticsContext, selectedMemberId: member.id });
   };
   return (
-    <article className="group relative flex min-h-72 flex-col overflow-hidden rounded-3xl border border-line bg-[linear-gradient(145deg,rgba(255,0,188,0.065),rgba(17,18,22,0.72)_46%,rgba(255,0,188,0.025))] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/45 hover:shadow-[0_18px_45px_rgba(255,0,188,0.08)] md:p-7">
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent/70 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-      <div className="flex items-start justify-between gap-4">
-        <MemberAvatar
-          name={member.name}
-          src={member.profileImage}
-          alt={member.imageAlt}
-        />
-        <span className="rounded-full border border-line bg-surface-0/55 px-3 py-1.5 text-xs font-medium text-fg-muted">
-          {member.category}
-        </span>
-      </div>
-
-      <h2 className="mt-6 text-2xl font-semibold leading-[1.02] tracking-tight">
-        <Link
-          href={`/network/directory/member/${member.id}`}
-          onClick={recordSelection}
-          className="transition-colors hover:text-accent"
-        >
-          <span aria-hidden className="absolute inset-0" />
-          {member.name}
-        </Link>
-      </h2>
-      <p className="mt-3 inline-flex items-center gap-2 text-sm text-fg-subtle">
-        <MapPin size={14} aria-hidden className="text-accent" />
-        {member.location}
-      </p>
-      <p className="mt-5 leading-relaxed text-fg-muted">{member.description}</p>
-
-      <div className="mt-auto flex flex-wrap gap-x-5 gap-y-3 pt-7">
-        <Link
-          href={`/network/directory/member/${member.id}`}
-          onClick={recordSelection}
-          className="relative z-10 inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
-        >
-          View profile
-          <ArrowUpRight size={14} aria-hidden />
-        </Link>
-      </div>
-    </article>
+    <MemberProfileCard
+      id={member.id}
+      name={member.name}
+      description={member.description}
+      speciality={member.category}
+      image={member.profileImage}
+      imageAlt={member.imageAlt}
+      onSelect={recordSelection}
+      className={className}
+    />
   );
 }

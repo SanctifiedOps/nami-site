@@ -17,6 +17,8 @@ type Props = {
   networkBackground?: boolean;
   backgroundImage?: string;
   backgroundPosition?: string;
+  /** Optional content rendered above the title */
+  aboveTitle?: React.ReactNode;
   /** Optional content rendered below the lead, inside the hero stack */
   children?: React.ReactNode;
 };
@@ -29,6 +31,7 @@ export function PageHero({
   networkBackground = false,
   backgroundImage,
   backgroundPosition,
+  aboveTitle,
   children,
 }: Props) {
   return (
@@ -63,6 +66,11 @@ export function PageHero({
         animate="show"
         variants={stage}
       >
+        {aboveTitle && (
+          <motion.div className="mb-7 flex justify-center md:mb-9" variants={fadeUp}>
+            {aboveTitle}
+          </motion.div>
+        )}
         <h1 className="type-page-title mx-auto max-w-4xl text-balance">
           <LetterReveal>{title}</LetterReveal>
         </h1>
