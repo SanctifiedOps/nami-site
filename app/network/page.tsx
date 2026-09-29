@@ -132,8 +132,8 @@ export default async function NetworkPage() {
         eyebrow="NAMI Creative Network"
         title={
           <>
-            Find your people.{" "}
-            <span className="text-gradient sm:block">Get your work seen.</span>
+            Find your people{" "}
+            <span className="sm:block">Get your work seen</span>
           </>
         }
         lead="Meet North East creatives. Give people a way to discover your work, hire you, buy from you or get in touch."
