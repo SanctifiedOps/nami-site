@@ -14,9 +14,11 @@ import {
 } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { AnimatedMemberTooltip } from "@/components/ui/animated-member-tooltip";
+import { RotatingMemberCards } from "@/components/ui/rotating-member-cards";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
+import { isShowcaseReadyMember } from "@/lib/content/network-directory";
 import { NetworkForm } from "./network-form";
 
 export const metadata: Metadata = {
@@ -120,6 +122,7 @@ function FormAnchor({ children = "Join the network" }: { children?: string }) {
 
 export default async function NetworkPage() {
   const members = await getNetworkDirectoryMembers();
+  const showcaseMembers = members.filter(isShowcaseReadyMember);
 
   return (
     <>
@@ -137,7 +140,7 @@ export default async function NetworkPage() {
         aboveTitle={
           <AnimatedMemberTooltip
             memberCount={members.length}
-            items={members.map((member) => ({
+            items={showcaseMembers.map((member) => ({
               id: member.id,
               name: member.name,
               designation: member.category,
@@ -296,14 +299,9 @@ export default async function NetworkPage() {
             })}
           </div>
 
-          <div className="mx-auto mt-12 max-w-3xl rounded-2xl border border-line bg-surface-1/55 p-6 text-center backdrop-blur-md md:p-10">
-            <p className="text-xl font-bold leading-relaxed text-accent md:text-2xl">
-              The directory is live, and there&apos;s room for your work in it.
-            </p>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-fg-muted md:text-lg">
-              Make a NAMI network profile people can find. From there, I can keep an eye on what you&apos;re doing and put you forward when the right thing comes up.
-            </p>
-            <div className="mt-8">
+          <div className="mt-12">
+            <RotatingMemberCards members={showcaseMembers} />
+            <div className="mt-8 text-center">
               <FormAnchor>Join the network</FormAnchor>
             </div>
           </div>

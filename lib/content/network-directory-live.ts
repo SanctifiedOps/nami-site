@@ -57,6 +57,7 @@ async function d1Members(): Promise<NetworkDirectoryMember[] | null> {
       joinedAt: member.joinedAt.toISOString(),
       primaryGroup: profile.primaryGroup,
       portfolioImages: imagesByMember.get(member.id) ?? [],
+      accountStatus: member.accountStatus,
     }));
   } catch {
     return null;

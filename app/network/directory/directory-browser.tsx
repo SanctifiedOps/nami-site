@@ -216,7 +216,7 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
       </div>}
 
       {previewOnly && !hasFilters ? null : filtered.length > 0 ? (
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
           {filtered.map((member) => <DirectoryMemberCard key={member.id} member={member} analyticsContext={{ searchQuery: query, categoryFilter: category, locationFilter: location, resultCount: filtered.length }} />)}
         </div>
       ) : (

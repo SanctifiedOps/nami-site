@@ -7,6 +7,7 @@ import { AnimatedMemberTooltip } from "@/components/ui/animated-member-tooltip";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { PageHero } from "@/components/sections/page-hero";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
+import { isShowcaseReadyMember } from "@/lib/content/network-directory";
 import { dailyMemberPreview, directoryGroups, londonDayNumber, membersInGroup } from "@/lib/content/network-directory-groups";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { DirectoryBrowser, DirectoryMemberCard } from "./directory-browser";
@@ -48,6 +49,7 @@ export default async function NetworkDirectoryPage() {
     .then((db) => db.select().from(schema.networkEvents).where(and(eq(schema.networkEvents.status, "approved"), gte(schema.networkEvents.startsAt, new Date()))).orderBy(asc(schema.networkEvents.startsAt)).limit(3))
     .catch(() => []);
   const featured = members.find((member) => member.featured) ?? members[0];
+  const showcaseMembers = members.filter(isShowcaseReadyMember);
   const day = londonDayNumber();
   const membersWithPictures = members.filter((member) => member.profileImage);
   const newest = membersWithPictures.filter((member) => member.joinedAt && !Number.isNaN(Date.parse(member.joinedAt))).sort((a, b) => Date.parse(b.joinedAt!) - Date.parse(a.joinedAt!)).slice(0, 4);
@@ -66,7 +68,7 @@ export default async function NetworkDirectoryPage() {
         aboveTitle={
           <AnimatedMemberTooltip
             memberCount={members.length}
-            items={members.map((member) => ({
+            items={showcaseMembers.map((member) => ({
               id: member.id,
               name: member.name,
               designation: member.category,

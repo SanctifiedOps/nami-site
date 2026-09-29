@@ -18,7 +18,12 @@ export type NetworkDirectoryMember = {
   joinedAt?: string;
   primaryGroup?: string;
   portfolioImages?: Array<{ src: string; alt: string; title?: string; description?: string; linkUrl?: string }>;
+  accountStatus?: "unclaimed" | "invited" | "active" | "disabled";
 };
+
+export function isShowcaseReadyMember(member: NetworkDirectoryMember) {
+  return member.accountStatus === "active" && (member.portfolioImages?.length ?? 0) > 0;
+}
 
 // Public projection of the private Creative Network submissions sheet.
 // Keep email addresses, internal notes, and full submission text out of this file.
