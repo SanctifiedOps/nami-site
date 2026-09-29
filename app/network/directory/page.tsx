@@ -205,7 +205,7 @@ export default async function NetworkDirectoryPage() {
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">{group.label}</h2>
                 <p className="mx-auto mt-3 max-w-xl text-fg-muted md:mx-0">{group.description}</p>
               </div>
-              <Link href={`/network/directory/${group.slug}`} className="w-full text-sm font-semibold text-fg hover:text-accent md:w-auto">View all {groupMembers.length} <ArrowUpRight size={15} className="inline" aria-hidden /></Link>
+              <Link href={`/network/directory/${group.slug}`} className="w-full text-sm font-semibold text-accent transition-colors hover:text-accent-soft md:w-auto">View all {groupMembers.length} <ArrowUpRight size={15} className="inline" aria-hidden /></Link>
             </div>
             <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
               {dailyMemberPreview(picturedMembers, day, 4).map((member) => <DirectoryMemberCard key={member.id} member={member} className="w-[calc(50%_-_0.375rem)] sm:w-[calc(50%_-_0.625rem)] xl:w-[calc(25%_-_0.9375rem)]" />)}
