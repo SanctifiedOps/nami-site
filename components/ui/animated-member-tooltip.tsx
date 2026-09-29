@@ -90,7 +90,7 @@ export function AnimatedMemberTooltip({
       </div>
 
       <p className="text-sm text-fg-muted">
-        Join <span className="font-semibold text-white">{memberCount} members</span> and get your work seen.
+        Join our <span className="font-semibold text-white">{memberCount} members</span> and get your work seen.
       </p>
     </div>
   );
