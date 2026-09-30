@@ -55,6 +55,7 @@ async function d1Members(): Promise<NetworkDirectoryMember[] | null> {
       imageAlt: `${profile.displayName} profile picture`,
       featured: profile.featured,
       joinedAt: member.joinedAt.toISOString(),
+      updatedAt: profile.updatedAt.toISOString(),
       primaryGroup: profile.primaryGroup,
       portfolioImages: imagesByMember.get(member.id) ?? [],
       accountStatus: member.accountStatus,

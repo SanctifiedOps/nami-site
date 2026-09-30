@@ -62,8 +62,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const memberRoutes: MetadataRoute.Sitemap = directoryMembers.map((member) => ({
     url: `${SITE}/network/directory/member/${member.id}`,
-    lastModified: member.joinedAt && !Number.isNaN(Date.parse(member.joinedAt))
-      ? new Date(member.joinedAt)
+    lastModified: member.updatedAt && !Number.isNaN(Date.parse(member.updatedAt))
+      ? new Date(member.updatedAt)
+      : member.joinedAt && !Number.isNaN(Date.parse(member.joinedAt))
+        ? new Date(member.joinedAt)
       : LAST_SEO_UPDATE,
     changeFrequency: "monthly",
     priority: 0.68,

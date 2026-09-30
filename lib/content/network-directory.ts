@@ -16,6 +16,7 @@ export type NetworkDirectoryMember = {
   imageAlt?: string;
   featured: boolean;
   joinedAt?: string;
+  updatedAt?: string;
   primaryGroup?: string;
   portfolioImages?: Array<{ src: string; alt: string; title?: string; description?: string; linkUrl?: string }>;
   accountStatus?: "unclaimed" | "invited" | "active" | "disabled";
