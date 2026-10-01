@@ -15,6 +15,14 @@ export default function NetworkAdminPreviewPage() {
 
   return <AdminDashboard
     adminName="Joe"
+    featuredApproval={{
+      memberId: "preview-2",
+      displayName: "Aniseed Creative",
+      speciality: "Brand and graphic design",
+      location: "Gateshead",
+      proposedAt: iso(0),
+      currentFeaturedName: "Eleanor Osada",
+    }}
     applications={[{
       id: "preview-application", email: "hello@thirditeration.com", firstName: "Third", displayName: "Third Iteration", location: "Hexham", requestedCategory: "Publisher",
       bio: "Third Iteration is an independent publisher based in Hexham, making memoirs by people whose lives are more interesting than their public image. First titles include DJ Hurricane's memoir of life with the Beastie Boys and books from Matt Lewis and Jon Shield. I'm always keen to meet writers, designers, and photographers, and to connect on socials.",
