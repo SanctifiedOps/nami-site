@@ -31,6 +31,7 @@ type SearchEvent = { id: string; eventType: "search" | "result_clicked"; anonymo
 type EventAnalyticsRecord = { id: string; eventId: string | null; eventType: string; anonymousSessionId: string; metadata: Record<string, unknown>; createdAt: string };
 type EventRevision = { id:string; eventId:string; memberId:string; payload:Record<string,unknown>; status:string; adminFeedback:string|null; submittedAt:string; reviewedAt:string|null; reviewerId:string|null };
 type InvitationPreview = { eligible:number; active:number; invited:number; disabled:number; outstanding:number; inviteDays:number; batch:Array<{id:string;name:string;email:string}> };
+type FeaturedApproval = { memberId:string; displayName:string; speciality:string; location:string; proposedAt:string; currentFeaturedName:string|null };
 
 const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35px_rgb(0_0_0/0.16)] md:rounded-[1.5rem] md:shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
 const button = "rounded-full border border-line-strong px-4 py-2 text-xs font-bold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
@@ -49,8 +50,8 @@ function validUrl(value: string) {
   try { return ["http:", "https:"].includes(new URL(value).protocol); } catch { return false; }
 }
 
-export function AdminDashboard({ adminName, applications, members, tickets, events, eventRevisions = [], operations, failedJobs = [], searchEvents = [], eventAnalytics = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
-  adminName: string; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; eventRevisions?: EventRevision[]; operations: Operations; failedJobs?: FailedJob[]; searchEvents?: SearchEvent[]; eventAnalytics?: EventAnalyticsRecord[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
+export function AdminDashboard({ adminName, featuredApproval, applications, members, tickets, events, eventRevisions = [], operations, failedJobs = [], searchEvents = [], eventAnalytics = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
+  adminName: string; featuredApproval: FeaturedApproval|null; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; eventRevisions?: EventRevision[]; operations: Operations; failedJobs?: FailedJob[]; searchEvents?: SearchEvent[]; eventAnalytics?: EventAnalyticsRecord[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -198,9 +199,9 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
     setBusy(key); setMessage("");
     try {
       const response = await fetch("/api/network/admin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      const result = await response.json().catch(() => ({})) as { error?: string; warning?: string; inviteSent?: boolean };
+      const result = await response.json().catch(() => ({})) as { error?: string; warning?: string; message?: string; inviteSent?: boolean };
       if (!response.ok) throw new Error(result.error || "The admin action could not be completed.");
-      setMessage(result.warning || (result.inviteSent ? "Approved, published and claim email sent." : "Saved. The Network records are up to date."));
+      setMessage(result.warning || result.message || (result.inviteSent ? "Approved, published and claim email sent." : "Saved. The Network records are up to date."));
       router.refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The admin action could not be completed.");
@@ -216,7 +217,7 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
     { id: "home", label: "Home", icon: <Home size={20} /> },
     { id: "growth", label: "Growth", icon: <TrendingUp size={20} /> },
     { id: "members", label: "Members", icon: <Users size={20} /> },
-    { id: "tasks", label: "Tasks", icon: <TicketCheck size={20} />, badge: pendingApplications.length + openTickets.length + pendingEvents.length + pendingEventRevisions.length + failedJobs.length },
+    { id: "tasks", label: "Tasks", icon: <TicketCheck size={20} />, badge: pendingApplications.length + openTickets.length + pendingEvents.length + pendingEventRevisions.length + failedJobs.length + (featuredApproval ? 1 : 0) },
     { id: "more", label: "More", icon: <MoreHorizontal size={20} /> },
   ];
 
@@ -350,7 +351,27 @@ export function AdminDashboard({ adminName, applications, members, tickets, even
         </div>
       </section></>}
 
-      {activeView === "tasks" && <><section id="tickets" className="pt-2 md:pt-10">
+      {activeView === "tasks" && <><section id="featured-member-approval" className="scroll-mt-28 pt-2 md:pt-10">
+        <SectionHeading title="Featured member" count={featuredApproval ? 1 : 0} note="Sunday's selection stays private until you approve it." />
+        <div className="mt-3 md:mt-5">
+          {featuredApproval ? <article className={`${panel} p-5 md:p-6`}>
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.15em] text-accent">Waiting for approval</p>
+                <h3 className="mt-2 text-2xl">{featuredApproval.displayName}</h3>
+                <p className="mt-2 text-sm text-fg-muted">{featuredApproval.speciality}{featuredApproval.location ? ` · ${featuredApproval.location}` : ""}</p>
+                <p className="mt-4 text-xs text-fg-subtle">Selected {formatDate(featuredApproval.proposedAt)}. {featuredApproval.currentFeaturedName ? `${featuredApproval.currentFeaturedName} remains live until approval.` : "No live feature will change before approval."}</p>
+              </div>
+              <div className="flex shrink-0 flex-wrap gap-2">
+                <Link href={`/network/directory/member/${featuredApproval.memberId}`} target="_blank" className={button}>View profile</Link>
+                <button disabled={busy !== null} onClick={() => runAction("approve-featured-member", { action: "approve-featured-member", memberId: featuredApproval.memberId })} className="rounded-full bg-accent px-5 py-3 text-xs font-bold text-white disabled:opacity-40">{busy === "approve-featured-member" ? "Approving..." : "Approve and feature"}</button>
+              </div>
+            </div>
+          </article> : <Empty text="No featured member is waiting for approval." />}
+        </div>
+      </section>
+
+      <section id="tickets" className="pt-7 md:pt-12">
         <SectionHeading title="Support tickets" count={openTickets.length} note="" />
         <div className="mt-3 inline-flex rounded-full border border-line bg-surface-1 p-1 text-xs font-bold md:mt-5">
           <button onClick={() => setTicketView("active")} className={`rounded-full px-4 py-2 transition ${ticketView === "active" ? "bg-accent text-white" : "text-fg-muted hover:text-fg"}`}>Active ({openTickets.length})</button>

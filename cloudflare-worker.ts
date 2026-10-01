@@ -48,13 +48,13 @@ export default {
       hour: "2-digit",
       hourCycle: "h23",
     }).format(new Date(event.scheduledTime));
-    const rotateFeatured = event.cron !== "*/10 * * * *" && londonHour === "08";
+    const proposeFeatured = event.cron !== "*/10 * * * *" && londonHour === "12";
     const jobTypes = ["mailchimp", "bio", "owner", "email", "sheet"] as const;
     const requests = jobTypes.map((jobType) => {
       const url = new URL("/api/internal/network-jobs", env.APP_URL);
       url.searchParams.set("jobType", jobType);
       url.searchParams.set("limit", jobType === "sheet" ? "3" : "10");
-      if (rotateFeatured && jobType === "owner") url.searchParams.set("rotateFeatured", "1");
+      if (proposeFeatured && jobType === "owner") url.searchParams.set("proposeFeatured", "1");
       return new Request(url, { method: "POST", headers: { Authorization: `Bearer ${runtimeEnv.NETWORK_ADMIN_SECRET}` } });
     });
     ctx.waitUntil(Promise.all(requests.map((request) => openNextHandler.fetch(request, env, ctx))).then(() => undefined));

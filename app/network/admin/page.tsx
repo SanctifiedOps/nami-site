@@ -3,6 +3,7 @@ import { desc, eq, gte, like } from "drizzle-orm";
 import { requireNetworkAdminSession } from "@/lib/network-auth/session";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { getGaSnapshot, getInstagramSnapshot, getMailchimpSnapshot } from "@/lib/network-admin/external-data";
+import { parseFeaturedMemberProposal } from "@/lib/network-sync/featured-member";
 import { AdminDashboard } from "./admin-dashboard";
 
 export const metadata: Metadata = { title: "Network admin", robots: { index: false, follow: false } };
@@ -14,7 +15,7 @@ export default async function NetworkAdminPage() {
   const admin = await requireNetworkAdminSession();
   const db = await getNetworkDb();
   const searchCutoff = new Date(Date.now() - 90 * 86400000);
-  const [applications, memberRows, tickets, events, eventRevisions, alerts, emailJobs, syncJobs, eventSyncJobs, mailchimpJobs, bioJobs, dismissedJobRows, searchEvents, eventAnalytics, ga, instagram, mailchimp] = await Promise.all([
+  const [applications, memberRows, tickets, events, eventRevisions, alerts, emailJobs, syncJobs, eventSyncJobs, mailchimpJobs, bioJobs, dismissedJobRows, searchEvents, eventAnalytics, ga, instagram, mailchimp, featuredProposalRows] = await Promise.all([
     db.select().from(schema.networkApplications).orderBy(desc(schema.networkApplications.submittedAt)),
     db.select({ member: schema.members, profile: schema.memberProfiles }).from(schema.members)
       .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id)).orderBy(desc(schema.members.joinedAt)),
@@ -33,7 +34,14 @@ export default async function NetworkAdminPage() {
     getGaSnapshot(),
     getInstagramSnapshot(),
     getMailchimpSnapshot(),
+    db.select().from(schema.systemState).where(eq(schema.systemState.key, "featured-member-proposal")).limit(1),
   ]);
+
+  const featuredProposal = parseFeaturedMemberProposal(featuredProposalRows[0]?.value);
+  const featuredCandidate = featuredProposal?.status === "pending"
+    ? memberRows.find(({ member }) => member.id === featuredProposal.memberId)
+    : null;
+  const currentFeatured = memberRows.find(({ profile }) => profile?.featured);
 
   const dismissedJobs = new Set(dismissedJobRows.map((item) => item.key));
   const isDismissed = (jobType: string, id: string) => dismissedJobs.has(`admin-dismissed-job:${jobType}:${id}`);
@@ -48,6 +56,14 @@ export default async function NetworkAdminPage() {
 
   return <AdminDashboard
     adminName={admin.member.firstName || admin.session.user.name || "Admin"}
+    featuredApproval={featuredCandidate && featuredProposal ? {
+      memberId: featuredCandidate.member.id,
+      displayName: featuredCandidate.profile?.displayName ?? featuredProposal.displayName,
+      speciality: featuredCandidate.profile?.speciality ?? "",
+      location: featuredCandidate.profile?.location ?? "",
+      proposedAt: featuredProposal.proposedAt,
+      currentFeaturedName: currentFeatured?.profile?.displayName ?? null,
+    } : null}
     applications={applications.map((item) => ({ ...item, submittedAt: iso(item.submittedAt)!, reviewedAt: iso(item.reviewedAt) }))}
     members={memberRows.map(({ member, profile }) => ({
       id: member.id,
