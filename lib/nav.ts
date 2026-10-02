@@ -30,6 +30,11 @@ export const primaryNav: NavItem[] = [
 ];
 
 export const ctaNav: NavItem = {
+  label: "Work with me",
+  href: "/contact",
+};
+
+export const networkCtaNav: NavItem = {
   label: "Join the network",
   href: "/network",
 };
