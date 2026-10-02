@@ -30,8 +30,8 @@ export const primaryNav: NavItem[] = [
 ];
 
 export const ctaNav: NavItem = {
-  label: "Work with me",
-  href: "/contact",
+  label: "Join the network",
+  href: "/network",
 };
 
 export const footerNav: { title: string; items: NavItem[] }[] = [

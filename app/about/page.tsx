@@ -21,12 +21,118 @@ export default function AboutPage() {
         eyebrow="About - NAMI Creative"
         title={
           <>
-            Good work should not{" "}
-            <span className="text-gradient sm:block">go unnoticed</span>
+            Making waves of{" "}
+            <span className="text-gradient sm:block">creative impact</span>
           </>
         }
-        lead="I’m Joe Wilson. I help North East businesses explain what they do, look the part and make it easier for customers to choose them. I also run the NAMI Creative Network to help local creative people get found and hired."
+        lead="Through NAMI, I work with North East businesses on their brand, website, content and automation while building a creative network that helps local people find each other, get discovered and create more opportunities together."
       />
+
+      {/* Founder note */}
+      <section className="relative isolate overflow-hidden border-t border-line py-24 md:py-32">
+        <ParallaxBackdrop
+          src="/images/north-east/2.jpg"
+          position="center 48%"
+          overlay={0.89}
+        />
+        <div className="container-shell relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={stage}
+            className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:items-start md:gap-16 lg:gap-20"
+          >
+            <motion.div variants={fadeUp}>
+              <div className="glass-refractive relative aspect-3/4 overflow-hidden rounded-2xl">
+                <Image
+                  src="/assets/images/bb.jpg"
+                  alt="Joe Wilson, founder of NAMI Creative"
+                  fill
+                  sizes="(min-width: 768px) 40vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              <p className="mono-label mt-4">Joe Wilson - Founder, NAMI Creative</p>
+            </motion.div>
+            <motion.div variants={fadeUp} className="max-w-2xl space-y-6">
+              <p className="mono-label">01 / The founder</p>
+              <p className="type-subsection-title">
+                I&apos;m <span className="text-gradient">Joe Wilson</span>
+              </p>
+              <p className="text-fg-muted md:text-lg leading-relaxed">
+                I started NAMI because I kept seeing good businesses held back by
+                unclear words, disjointed marketing and admin that took up too
+                much of the week. I like finding the problem, fixing it and
+                leaving people with something they can use.
+              </p>
+              <p className="text-fg-muted md:text-lg leading-relaxed">
+                I have spent 20 years working in branding and design. I previously
+                led a department at the UK&apos;s leading trade body for energy
+                consultants, where I helped build a brand that was represented in
+                Westminster. BBC Radio has also featured my Nami Up North project.
+              </p>
+              <p className="text-fg-muted md:text-lg leading-relaxed">
+                I am a proud dad and a Newcastle lad. I care about doing the work
+                properly, being straightforward with people and helping good ideas
+                make it out into the world.
+              </p>
+              <dl className="grid gap-8 border-t border-line pt-6 sm:grid-cols-3">
+                <div>
+                  <dt className="mono-label">Experience</dt>
+                  <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
+                    20 years
+                  </dd>
+                  <p className="mt-1 text-sm text-fg-muted">Brand building + design</p>
+                </div>
+                <div>
+                  <dt className="mono-label">Leadership</dt>
+                  <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
+                    Head of Dept.
+                  </dd>
+                  <p className="mt-1 text-sm text-fg-muted">
+                    UK&apos;s leading energy consultants&apos; trade body
+                  </p>
+                </div>
+                <div>
+                  <dt className="mono-label">Featured</dt>
+                  <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
+                    BBC Radio
+                  </dd>
+                  <p className="mt-1 text-sm text-fg-muted">Nami Up North project</p>
+                </div>
+              </dl>
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-2">
+                <a
+                  href="https://www.linkedin.com/in/brandingbyjoewilson/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent transition-colors"
+                >
+                  <LinkedinIcon size={16} aria-hidden />
+                  Connect on LinkedIn
+                  <ArrowUpRight
+                    size={12}
+                    aria-hidden
+                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </a>
+                <Link
+                  href="/contact"
+                  className="group inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent transition-colors"
+                >
+                  Start a conversation
+                  <ArrowUpRight
+                    size={14}
+                    aria-hidden
+                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Story */}
       <section className="container-shell py-24 md:py-32">
@@ -38,7 +144,7 @@ export default function AboutPage() {
           className="mx-auto max-w-3xl text-center"
         >
           <motion.p className="mono-label md:mt-2" variants={fadeUp}>
-            01 / The story
+            02 / The story
           </motion.p>
           <motion.div variants={fadeUp} className="space-y-6">
             <p className="type-subsection-title">
@@ -78,7 +184,7 @@ export default function AboutPage() {
             className="mx-auto max-w-3xl text-center"
           >
             <motion.p className="mono-label md:mt-2" variants={fadeUp}>
-              02 / The North East
+              03 / The North East
             </motion.p>
             <motion.div variants={fadeUp} className="space-y-6">
               <p className="type-subsection-title">
@@ -117,7 +223,7 @@ export default function AboutPage() {
             className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20"
           >
             <motion.div variants={fadeUp} className="max-w-2xl">
-              <p className="mono-label mb-5">03 / NAMI Creative Network</p>
+              <p className="mono-label mb-5">04 / NAMI Creative Network</p>
               <h2 className="type-section-title">
                 One place to find creative people across the North East
               </h2>
@@ -236,117 +342,6 @@ export default function AboutPage() {
 
       {/* Testimonials */}
       <Testimonials />
-
-      {/* Founder note */}
-      <section className="relative isolate overflow-hidden border-t border-line py-24 md:py-32">
-        <ParallaxBackdrop
-          src="/images/north-east/2.jpg"
-          position="center 48%"
-          overlay={0.89}
-        />
-        <div className="container-shell relative z-10">
-          <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={stage}
-          className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:items-start md:gap-16 lg:gap-20"
-        >
-          <motion.div variants={fadeUp}>
-            <div className="glass-refractive relative aspect-3/4 overflow-hidden rounded-2xl">
-              <Image
-                src="/assets/images/bb.jpg"
-                alt="Joe Wilson, founder of NAMI Creative"
-                fill
-                sizes="(min-width: 768px) 40vw, 100vw"
-                className="object-cover"
-              />
-            </div>
-            <p className="mono-label mt-4">Joe Wilson - Founder, NAMI Creative</p>
-          </motion.div>
-          <motion.div variants={fadeUp} className="max-w-2xl space-y-6">
-            <p className="mono-label">04 / The founder</p>
-            <p className="type-subsection-title">
-              I’m <span className="text-gradient">Joe Wilson</span>
-            </p>
-            <p className="text-fg-muted md:text-lg leading-relaxed">
-              I started NAMI because I kept seeing good businesses held back by
-              unclear words, disjointed marketing and admin that took up too
-              much of the week. I like finding the problem, fixing it and
-              leaving people with something they can use.
-            </p>
-            <p className="text-fg-muted md:text-lg leading-relaxed">
-              I have spent 20 years working in branding and design. I previously
-              led a department at the UK&apos;s leading trade body for energy
-              consultants, where I helped build a brand that was represented in
-              Westminster. BBC Radio has also featured my Nami Up North project.
-            </p>
-            <p className="text-fg-muted md:text-lg leading-relaxed">
-              I am a proud dad and a Newcastle lad. I care about doing the work
-              properly, being straightforward with people and helping good ideas
-              make it out into the world.
-            </p>
-            <dl className="grid gap-8 border-t border-line pt-6 sm:grid-cols-3">
-              <div>
-                <dt className="mono-label">Experience</dt>
-                <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
-                  20 years
-                </dd>
-                <p className="mt-1 text-sm text-fg-muted">
-                  Brand building + design
-                </p>
-              </div>
-              <div>
-                <dt className="mono-label">Leadership</dt>
-                <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
-                  Head of Dept.
-                </dd>
-                <p className="mt-1 text-sm text-fg-muted">
-                  UK&apos;s leading energy consultants&apos; trade body
-                </p>
-              </div>
-              <div>
-                <dt className="mono-label">Featured</dt>
-                <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
-                  BBC Radio
-                </dd>
-                <p className="mt-1 text-sm text-fg-muted">
-                  Nami Up North project
-                </p>
-              </div>
-            </dl>
-
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-2">
-              <a
-                href="https://www.linkedin.com/in/brandingbyjoewilson/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent transition-colors"
-              >
-                <LinkedinIcon size={16} aria-hidden />
-                Connect on LinkedIn
-                <ArrowUpRight
-                  size={12}
-                  aria-hidden
-                  className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </a>
-              <Link
-                href="/contact"
-                className="group inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent transition-colors"
-              >
-                Start a conversation
-                <ArrowUpRight
-                  size={14}
-                  aria-hidden
-                  className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </Link>
-            </div>
-          </motion.div>
-          </motion.div>
-        </div>
-      </section>
     </>
   );
 }

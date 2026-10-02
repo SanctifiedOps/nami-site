@@ -107,9 +107,9 @@ export function HomeHero() {
         <motion.div initial="hidden" animate="show" variants={stageHero}>
           <h1 className="type-page-title mx-auto max-w-4xl text-balance">
             <LetterReveal stagger={0.018} duration={0.8}>
-              Proper work deserves{" "}
+              Helping people find their people{" "}
               <span className="text-gradient sm:block">
-                to be seen and chosen
+                and get their work seen
               </span>
             </LetterReveal>
           </h1>
@@ -118,9 +118,9 @@ export function HomeHero() {
             className="type-lead mx-auto mt-7 max-w-2xl md:mt-8"
             variants={fadeUp}
           >
-            I help North East businesses bring their brand, website, content
-            and automation together. The NAMI Creative Network helps local
-            creatives reach more people and find paid opportunities.
+            NAMI brings marketing services and a growing North East creative
+            network together, helping businesses build stronger brands, find
+            the right creative people and turn good work into real opportunities.
           </motion.p>
 
           <motion.div

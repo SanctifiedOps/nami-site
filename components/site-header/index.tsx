@@ -9,7 +9,7 @@ import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { Logo } from "./logo";
 import { MobileDrawer } from "./mobile-drawer";
 import { Magnetic } from "@/components/motion/magnetic";
-import { primaryNav } from "@/lib/nav";
+import { ctaNav, primaryNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
 export type HeaderMember = {
@@ -222,6 +222,19 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <Magnetic strength={0.2} field={14}>
+            <Link
+              href={ctaNav.href}
+              className="group hidden items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_18px_rgb(255_0_188/0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-soft hover:shadow-[0_8px_28px_rgb(255_0_188/0.4)] lg:inline-flex"
+            >
+              {ctaNav.label}
+              <ArrowUpRight
+                size={14}
+                aria-hidden
+                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </Link>
+          </Magnetic>
           {member && (
             <Link
               href="/network/dashboard"
