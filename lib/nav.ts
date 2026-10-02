@@ -6,21 +6,16 @@ export type NavItem = {
 
 export const primaryNav: NavItem[] = [
   { label: "About", href: "/about" },
-  { label: "Work", href: "/work" },
   {
-    label: "Services",
+    label: "Work with me",
     href: "/services",
     children: [
-      { label: "All services", href: "/services" },
-      { label: "Branding", href: "/services/brand-strategy" },
-      { label: "Content", href: "/services/content-systems" },
-      { label: "Websites", href: "/services/website-funnel" },
-      { label: "Automation", href: "/services/automation-growth" },
+      { label: "Services", href: "/services" },
+      { label: "Work", href: "/work" },
+      { label: "Process", href: "/process" },
+      { label: "Pricing", href: "/pricing" },
     ],
   },
-  { label: "Process", href: "/process" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Contact", href: "/contact" },
   {
     label: "Creative Network",
     href: "/network",
@@ -31,6 +26,7 @@ export const primaryNav: NavItem[] = [
       { label: "Member login", href: "/network/login" },
     ],
   },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const ctaNav: NavItem = {

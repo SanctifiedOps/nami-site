@@ -9,7 +9,7 @@ import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { Logo } from "./logo";
 import { MobileDrawer } from "./mobile-drawer";
 import { Magnetic } from "@/components/motion/magnetic";
-import { primaryNav, ctaNav } from "@/lib/nav";
+import { primaryNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
 export type HeaderMember = {
@@ -26,6 +26,10 @@ function memberInitials(name: string) {
 
 function mediaUrl(key: string) {
   return key ? `/api/network/media/${key.split("/").map(encodeURIComponent).join("/")}` : "";
+}
+
+function matchesPath(pathname: string, href: string) {
+  return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 }
 
 export function SiteHeader() {
@@ -108,8 +112,8 @@ export function SiteHeader() {
           {primaryNav.map((item) => {
             const active =
               mounted &&
-              (pathname === item.href ||
-                (item.href !== "/" && pathname?.startsWith(item.href)));
+              (matchesPath(pathname, item.href) ||
+                item.children?.some((child) => matchesPath(pathname, child.href)));
             if (item.children) {
               return (
                 <div
@@ -234,20 +238,6 @@ export function SiteHeader() {
               <span className="hidden xl:inline">My dashboard</span>
             </Link>
           )}
-          <Magnetic strength={0.3} field={22} className="hidden md:inline-flex">
-            <Link
-              href={ctaNav.href}
-              className="group/cta relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-shadow duration-500 hover:shadow-[0_10px_36px_rgb(255_0_188/0.5)]"
-            >
-              <span className="absolute inset-0 -z-10 translate-y-full bg-accent-soft transition-transform duration-500 ease-out-expo group-hover/cta:translate-y-0" />
-              {ctaNav.label}
-              <ArrowUpRight
-                size={16}
-                aria-hidden
-                className="transition-transform duration-500 ease-out-expo group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
-              />
-            </Link>
-          </Magnetic>
           <MobileDrawer member={member} />
         </div>
       </div>

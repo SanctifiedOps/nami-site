@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { primaryNav, ctaNav } from "@/lib/nav";
+import { primaryNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import type { HeaderMember } from "./index";
 
@@ -17,14 +17,18 @@ function memberInitials(name: string) {
   return `${words[0][0]}${words.at(-1)?.[0] ?? ""}`.toUpperCase();
 }
 
+function matchesPath(pathname: string, href: string) {
+  return pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
+}
+
 export function MobileDrawer({ member }: { member: HeaderMember | null }) {
   const [open, setOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
     setOpen(false);
-    setServicesOpen(false);
+    setOpenSubmenu(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -128,8 +132,9 @@ export function MobileDrawer({ member }: { member: HeaderMember | null }) {
                 <ul className="flex flex-col gap-1">
                   {primaryNav.map((item, i) => {
                     const active =
-                      pathname === item.href ||
-                      (item.href !== "/" && pathname?.startsWith(item.href));
+                      matchesPath(pathname, item.href) ||
+                      item.children?.some((child) => matchesPath(pathname, child.href));
+                    const submenuOpen = openSubmenu === item.href;
                     return (
                       <motion.li
                         key={item.href}
@@ -145,9 +150,13 @@ export function MobileDrawer({ member }: { member: HeaderMember | null }) {
                           <div className="border-y border-line py-2">
                             <button
                               type="button"
-                              onClick={() => setServicesOpen((value) => !value)}
-                              aria-expanded={servicesOpen}
-                              aria-controls="mobile-services-menu"
+                              onClick={() =>
+                                setOpenSubmenu((current) =>
+                                  current === item.href ? null : item.href,
+                                )
+                              }
+                              aria-expanded={submenuOpen}
+                              aria-controls={`mobile-submenu-${item.href.replaceAll("/", "-")}`}
                               className={cn(
                                 "flex w-full items-center justify-between rounded-md px-4 py-4 text-left text-2xl font-medium tracking-tight transition-colors",
                                 active
@@ -161,14 +170,14 @@ export function MobileDrawer({ member }: { member: HeaderMember | null }) {
                                 aria-hidden
                                 className={cn(
                                   "transition-transform duration-300",
-                                  servicesOpen && "rotate-180",
+                                  submenuOpen && "rotate-180",
                                 )}
                               />
                             </button>
                             <AnimatePresence initial={false}>
-                              {servicesOpen && (
+                              {submenuOpen && (
                                 <motion.div
-                                  id="mobile-services-menu"
+                                  id={`mobile-submenu-${item.href.replaceAll("/", "-")}`}
                                   initial={{ height: 0, opacity: 0 }}
                                   animate={{ height: "auto", opacity: 1 }}
                                   exit={{ height: 0, opacity: 0 }}
@@ -210,25 +219,7 @@ export function MobileDrawer({ member }: { member: HeaderMember | null }) {
                     );
                   })}
                 </ul>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 0.05 + primaryNav.length * 0.04,
-                    duration: 0.35,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                className="mt-6 border-t border-line pt-6 pb-[max(2rem,env(safe-area-inset-bottom))]"
-                >
-                  <Link
-                    href={ctaNav.href}
-                    className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 text-base font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-all hover:bg-accent-soft"
-                  >
-                    {ctaNav.label}
-                    <ArrowUpRight size={18} aria-hidden />
-                  </Link>
-                </motion.div>
+                <div className="pb-[max(2rem,env(safe-area-inset-bottom))]" />
               </nav>
             </motion.div>
           </motion.div>
