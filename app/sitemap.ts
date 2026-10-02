@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { services } from "@/lib/content/services";
 import { work } from "@/lib/content/work";
 import { offers } from "@/lib/content/offers";
+import { networkDirectoryMembers } from "@/lib/content/network-directory";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 
@@ -13,9 +14,28 @@ const HOMEPAGE_SEO_UPDATE = new Date("2026-09-19");
 // records, but rebuilding it for every bot request made delivery depend on a
 // fresh database query and prevented Cloudflare from serving a cached copy.
 export const revalidate = 3600;
+const DIRECTORY_LOOKUP_TIMEOUT_MS = 4000;
+
+async function getSitemapMembers() {
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  const fallback = networkDirectoryMembers;
+
+  try {
+    return await Promise.race([
+      getNetworkDirectoryMembers(),
+      new Promise<typeof fallback>((resolve) => {
+        timeout = setTimeout(() => resolve(fallback), DIRECTORY_LOOKUP_TIMEOUT_MS);
+      }),
+    ]);
+  } finally {
+    if (timeout) clearTimeout(timeout);
+  }
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const directoryMembers = await getNetworkDirectoryMembers();
+  // Search crawlers must always receive valid XML, even if the live member
+  // database is slow or unavailable during a cold start or deployment build.
+  const directoryMembers = await getSitemapMembers();
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE}/`, lastModified: HOMEPAGE_SEO_UPDATE, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE}/network`, lastModified: LAST_SEO_UPDATE, changeFrequency: "weekly", priority: 0.95 },
