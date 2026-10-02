@@ -204,7 +204,8 @@ export async function POST(req: Request) {
   }
 
   const env = await getRuntimeEnvironment();
-  if (!externalIntegrationsAllowed(env, req, d.email)) {
+  const contactFormLive = env.CONTACT_FORM_MODE === "live";
+  if (!contactFormLive && !externalIntegrationsAllowed(env, req, d.email)) {
     return NextResponse.json({ error: "This form is unavailable in staging." }, { status: 503 });
   }
 
