@@ -15,9 +15,19 @@ import { Magnetic } from "@/components/motion/magnetic";
 import { VideoBackground } from "@/components/hero/video-background";
 import { HeroParticles } from "@/components/hero/particles";
 import { LetterReveal } from "@/components/motion/letter-reveal";
+import {
+  AnimatedMemberTooltip,
+  type TooltipMember,
+} from "@/components/ui/animated-member-tooltip";
 import { fadeUp, ctaPop } from "@/lib/motion";
 
-export function HomeHero() {
+export function HomeHero({
+  memberCount,
+  tooltipMembers,
+}: {
+  memberCount: number;
+  tooltipMembers: TooltipMember[];
+}) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
 
@@ -105,6 +115,14 @@ export function HomeHero() {
         className="container-shell relative z-10 pt-28 pb-20 text-center md:pt-32 md:pb-24"
       >
         <motion.div initial="hidden" animate="show" variants={stageHero}>
+          <motion.div variants={fadeUp} className="mb-7 md:mb-8">
+            <AnimatedMemberTooltip
+              items={tooltipMembers}
+              memberCount={memberCount}
+              context="contact"
+            />
+          </motion.div>
+
           <h1 className="type-page-title mx-auto max-w-4xl text-balance">
             <LetterReveal stagger={0.018} duration={0.8}>
               Helping people find their people{" "}

@@ -60,23 +60,64 @@ export default function AboutPage() {
               <p className="type-subsection-title">
                 I&apos;m <span className="text-gradient">Joe Wilson</span>
               </p>
-              <p className="text-fg-muted md:text-lg leading-relaxed">
-                I started NAMI because I kept seeing good businesses held back by
-                unclear words, disjointed marketing and admin that took up too
-                much of the week. I like finding the problem, fixing it and
-                leaving people with something they can use.
-              </p>
-              <p className="text-fg-muted md:text-lg leading-relaxed">
-                I&apos;ve spent 20 years working in branding and design. I previously
-                led a department at the UK&apos;s leading trade body for energy
-                consultants, where I helped build a brand that was represented in
-                Westminster. BBC Radio has also featured my Nami Up North project.
-              </p>
-              <p className="text-fg-muted md:text-lg leading-relaxed">
-                I&apos;m a proud dad and a Newcastle lad. I care about doing the work
-                properly, being straightforward with people and helping good ideas
-                make it out into the world.
-              </p>
+              <div className="space-y-5">
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  I help creatives, businesses and brands find their people and get
+                  their work seen.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  That can mean developing the brand strategy and visual identity,
+                  designing and building a website, writing the copy, planning
+                  content, directing campaigns, or setting up lead flows and
+                  automation so enquiries don&apos;t get missed.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  I help make all those parts connect.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  I work out what you need to say, who needs to hear it and what
+                  should happen next, then design and build around that.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  I have over two decades of marketing and design experience (makes
+                  me feel old).
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  A lot of which was held at a head of department level where
+                  campaigns I&apos;ve created have landed clients in national
+                  publications, sold out events and even Westminster.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  I now use that experience to create my own path, business and
+                  dreams.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  Speaking of dreams, I also run the NAMI Creative Network, a
+                  growing community and directory for artists, makers, freelancers
+                  and independent businesses across the North East.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  Members can create profiles, share their work, promote events and
+                  contribute their own stories, helping more local talent get found
+                  and hired.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  NAMI grew from a love for the North East and the people here who
+                  keep making, building, opening, posting, filming, designing,
+                  playing and putting themselves forward.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  The thread through all of it is pretty simple: clear thinking,
+                  good work and more support for people doing proper work up here.
+                </p>
+                <p className="text-fg-muted md:text-lg leading-relaxed">
+                  I&apos;m North East through and through, proud dad, and I love
+                  nothing more than to see the people around me win.
+                </p>
+                <p className="font-medium text-fg md:text-lg leading-relaxed">
+                  North East forever!
+                </p>
+              </div>
               <dl className="grid gap-8 border-t border-line pt-6 sm:grid-cols-3">
                 <div>
                   <dt className="mono-label">Experience</dt>

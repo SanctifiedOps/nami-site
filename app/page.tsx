@@ -12,12 +12,25 @@ import { Testimonials } from "@/components/sections/testimonials";
 import { faq } from "@/lib/content/faq";
 import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
+import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
+import { isShowcaseReadyMember } from "@/lib/content/network-directory";
 
-export default function Home() {
+export default async function Home() {
+  const members = await getNetworkDirectoryMembers();
+  const showcaseMembers = members.filter(isShowcaseReadyMember);
+
   return (
     <>
       <JsonLd schema={buildFaqPageSchema(faq)} />
-      <HomeHero />
+      <HomeHero
+        memberCount={members.length}
+        tooltipMembers={showcaseMembers.map((member) => ({
+          id: member.id,
+          name: member.name,
+          designation: member.category,
+          image: member.profileImage,
+        }))}
+      />
 
       <PositioningBand />
       <PressurePaths />
