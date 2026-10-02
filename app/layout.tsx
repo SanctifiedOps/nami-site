@@ -45,6 +45,11 @@ export const metadata: Metadata = {
   creator: "Joe Wilson",
   publisher: "NAMI Creative",
   category: "Marketing and creative services",
+  formatDetection: {
+    address: false,
+    email: false,
+    telephone: false,
+  },
   metadataBase: new URL("https://namicreative.co.uk"),
   alternates: {
     canonical: "/",

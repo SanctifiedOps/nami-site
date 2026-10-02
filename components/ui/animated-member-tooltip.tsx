@@ -98,7 +98,7 @@ export function AnimatedMemberTooltip({
           <>
             Join our network of{" "}
             <Link
-              href="/network#join-network"
+              href="/network"
               className="font-semibold text-accent transition-colors hover:text-accent-soft focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               {memberCount} North East creatives
