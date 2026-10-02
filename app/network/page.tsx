@@ -388,23 +388,6 @@ export default async function NetworkPage() {
         </div>
       </section>
 
-      <section data-network-section="business_cta" className="container-shell py-20 text-center md:py-28">
-        <p className="mx-auto max-w-2xl text-xl font-medium leading-relaxed tracking-tight text-fg md:text-2xl">
-          I also help businesses get their brand, content, website, and
-          automation sorted properly.
-        </p>
-        <Link
-          href="/contact"
-          className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent"
-        >
-          Talk about a project
-          <ArrowUpRight
-            size={14}
-            aria-hidden
-            className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-          />
-        </Link>
-      </section>
     </>
   );
 }
