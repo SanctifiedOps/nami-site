@@ -14,9 +14,9 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "/nami-og%20%281%29.png",
-        width: 2800,
-        height: 1750,
+        url: "/assets/images/nami-og.png",
+        width: 1080,
+        height: 540,
         alt: "NAMI Creative - marketing and creative support pricing",
       },
     ],

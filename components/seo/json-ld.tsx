@@ -31,7 +31,7 @@ const STUDIO_NAME = "NAMI Creative";
 const FOUNDER_NAME = "Joe Wilson";
 const STUDIO_EMAIL = "hello@namicreative.co.uk";
 const STUDIO_LOGO = `${SITE_URL}/Nami%20Favicon.png`;
-const STUDIO_OG = `${SITE_URL}/nami-og%20%281%29.png`;
+const STUDIO_OG = `${SITE_URL}/assets/images/nami-og.png`;
 const STUDIO_LINKEDIN = "https://www.linkedin.com/in/brandingbyjoewilson/";
 const STUDIO_INSTAGRAM = "https://www.instagram.com/namicreativeuk/";
 

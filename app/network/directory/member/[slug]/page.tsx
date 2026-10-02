@@ -89,7 +89,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = `${member.description} Find ${displayName} in the NAMI Creative Network directory.`;
   const url = `/network/directory/member/${member.id}`;
   const profileImage = absoluteUrl(member.profileImage);
-  const shareImage = profileImage ?? `${SITE_URL}/nami-og%20%281%29.png`;
+  const shareImage = profileImage ?? `${SITE_URL}/assets/images/nami-og.png`;
 
   return {
     title,

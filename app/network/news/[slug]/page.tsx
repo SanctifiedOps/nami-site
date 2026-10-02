@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: article.title,
       description: article.summary,
       url: `https://namicreative.co.uk/network/news/${article.slug}`,
-      images: [{ url: article.image ?? "/nami-og%20%281%29.png", alt: article.title }],
+      images: [{ url: article.image ?? "/assets/images/nami-og.png", alt: article.title }],
     },
     alternates: { canonical: `/network/news/${article.slug}` },
   };

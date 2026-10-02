@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "News | NAMI Creative Network",
     description: "People, projects and useful ideas from the North East creative community.",
     url: "https://namicreative.co.uk/network/news",
-    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative Network news" }],
+    images: [{ url: "/assets/images/nami-og.png", width: 1080, height: 540, alt: "NAMI Creative Network news" }],
   },
   alternates: { canonical: "/network/news" },
 };

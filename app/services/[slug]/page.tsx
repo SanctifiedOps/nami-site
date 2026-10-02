@@ -62,9 +62,9 @@ export async function generateMetadata({
       description: service.metaDescription,
       images: [
         {
-          url: "/nami-og%20%281%29.png",
-          width: 2800,
-          height: 1750,
+          url: "/assets/images/nami-og.png",
+          width: 1080,
+          height: 540,
           alt: `${service.title} from NAMI Creative`,
         },
       ],

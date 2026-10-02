@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     "performance pricing web design",
   ],
   openGraph: {
-    images: [{ url: "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: "NAMI Creative - Marketing and creative work done properly" }],
+    images: [{ url: "/assets/images/nami-og.png", width: 1080, height: 540, alt: "NAMI Creative - Marketing and creative work done properly" }],
     title: "The Flow Funnel · NAMI Creative",
     description:
       "Landing page, lead capture, dashboard, attribution. Live in 7 days for £750. Then you only pay £50 per qualified lead, capped at £750 a month. Built for UK service operators.",

@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       description: study.oneLiner,
       type: "article",
       url: `https://namicreative.co.uk/work/${study.slug}`,
-      images: [{ url: study.cover ?? "/nami-og%20%281%29.png", width: 2800, height: 1750, alt: `${study.client} case study by NAMI Creative` }],
+      images: [{ url: study.cover ?? "/assets/images/nami-og.png", width: 1080, height: 540, alt: `${study.client} case study by NAMI Creative` }],
     },
     alternates: { canonical: `/work/${study.slug}` },
   };

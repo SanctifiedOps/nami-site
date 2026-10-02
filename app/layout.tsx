@@ -63,9 +63,9 @@ export const metadata: Metadata = {
     url: "https://namicreative.co.uk",
     images: [
       {
-        url: "/nami-og%20%281%29.png",
-        width: 2800,
-        height: 1750,
+        url: "/assets/images/nami-og.png",
+        width: 1080,
+        height: 540,
         alt: "NAMI Creative - Newcastle marketing and North East creative network",
       },
     ],
@@ -74,12 +74,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NAMI Creative | North East Freelance Marketing & Creative Network",
     description: socialDescription,
-    images: ["/nami-og%20%281%29.png"],
+    images: ["/assets/images/nami-og.png"],
   },
   icons: {
-    icon: [{ url: "/icon.png", type: "image/png", sizes: "96x96" }],
-    shortcut: "/icon.png",
-    apple: "/Nami%20Favicon.png",
+    icon: [{ url: "/assets/images/nami-fav.png", type: "image/png", sizes: "96x96" }],
+    shortcut: "/assets/images/nami-fav.png",
+    apple: "/assets/images/nami-fav.png",
   },
 };
 
