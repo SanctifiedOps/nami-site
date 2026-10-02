@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
-import { Activity, AlertTriangle, ArrowLeft, BarChart3, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
+import { Activity, AlertTriangle, ArrowLeft, BarChart3, BookOpen, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
 import type { GaSnapshot, InstagramSnapshot, MailchimpSnapshot } from "@/lib/network-admin/external-data";
 import { suggestDirectoryBio } from "@/lib/network-profile/directory-bio";
@@ -230,9 +230,12 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
           <h1 className="mt-2 text-4xl md:mt-3 md:text-7xl">Network control centre</h1>
           <p className="mt-3 max-w-2xl text-sm text-fg-muted md:mt-4 md:text-base">Welcome back, {adminName}. Growth, members and daily operations in one place.</p>
         </div>
-        <div className="hidden rounded-2xl border border-emerald-400/25 bg-emerald-400/8 px-5 py-4 text-sm md:block">
-          <span className="flex items-center gap-2 font-bold text-emerald-300"><ShieldCheck size={18} /> Admin access verified</span>
-          <span className="mt-1 block text-fg-muted">Member invitations, profile emails and owner notifications are live.</span>
+        <div className="hidden items-end gap-3 md:flex">
+          <Link href="/network/admin/contributions" className="inline-flex items-center gap-2 rounded-full border border-accent px-5 py-3 text-sm font-bold text-accent transition hover:bg-accent hover:text-white"><BookOpen size={17} /> Contribution review</Link>
+          <div className="rounded-2xl border border-emerald-400/25 bg-emerald-400/8 px-5 py-4 text-sm">
+            <span className="flex items-center gap-2 font-bold text-emerald-300"><ShieldCheck size={18} /> Admin access verified</span>
+            <span className="mt-1 block text-fg-muted">Member invitations, profile emails and owner notifications are live.</span>
+          </div>
         </div>
       </div>
 

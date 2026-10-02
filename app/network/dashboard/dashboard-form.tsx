@@ -374,6 +374,16 @@ export function DashboardForm({
                   Manage your events →
                 </a>
               )}
+              <a
+                href={
+                  previewMode
+                    ? "/network/dashboard/contributions/preview"
+                    : "/network/dashboard/contributions"
+                }
+                className="text-sm font-bold text-accent"
+              >
+                Write for the Network →
+              </a>
             </div>
           </section>
           <section className="rounded-[1.5rem] border border-line bg-surface-1 p-6">

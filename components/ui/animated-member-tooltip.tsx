@@ -25,10 +25,12 @@ function randomMembers(items: TooltipMember[], count: number) {
 export function AnimatedMemberTooltip({
   items,
   memberCount,
+  context = "join",
   className,
 }: {
   items: TooltipMember[];
   memberCount: number;
+  context?: "join" | "directory";
   className?: string;
 }) {
   const candidates = useMemo(() => {
@@ -90,7 +92,11 @@ export function AnimatedMemberTooltip({
       </div>
 
       <p className="text-sm text-fg-muted">
-        Join our <span className="font-semibold text-white">{memberCount} members</span> and get your work seen.
+        {context === "directory" ? (
+          <><span className="font-semibold text-white">{memberCount} North East creatives</span> doing proper work</>
+        ) : (
+          <>Join our network of <span className="font-semibold text-white">{memberCount} North East creatives</span></>
+        )}
       </p>
     </div>
   );

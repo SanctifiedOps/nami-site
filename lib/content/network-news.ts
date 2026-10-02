@@ -13,6 +13,7 @@ export function formatPostDate(iso: string): string {
 
 export type NetworkNewsCategory =
   | "Spotlights"
+  | "Member Stories"
   | "Network News"
   | "Interviews"
   | "Opportunities"

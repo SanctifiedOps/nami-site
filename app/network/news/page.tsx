@@ -2,7 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BookOpenText,
+  CalendarDays,
+  Images,
+  MapPin,
+  UserRound,
+  Users,
+} from "lucide-react";
 import {
   formatPostDate,
   getAllNetworkNews,
@@ -83,17 +92,16 @@ function SideStory({ item, members }: { item: NetworkNewsItem; members: MemberMa
   );
 }
 
-function FeatureStory({ item, index, members }: { item: NetworkNewsItem; index: number; members: MemberMap }) {
-  const wide = index === 0;
+function FeatureStory({ item, members }: { item: NetworkNewsItem; members: MemberMap }) {
   return (
-    <article className={cn("group border-t border-line pt-5", wide && "md:col-span-2")}>
-      <Link href={item.href} className={cn("grid gap-5", wide && "md:grid-cols-[1.15fr_0.85fr]")}>
-        <StoryImage item={item} members={members} className={wide ? "aspect-[16/9]" : "aspect-[4/3]"} />
-        <div className={cn(wide && "md:self-end md:pb-2")}>
+    <article className="group h-full border-t border-line pt-5">
+      <Link href={item.href} className="flex h-full flex-col">
+        <StoryImage item={item} members={members} className="aspect-[4/3] w-full" />
+        <div className="flex flex-1 flex-col pt-5">
           <ArticleMeta item={item} />
-          <h2 className={cn("mt-3 font-semibold leading-[0.98] tracking-[-0.035em] text-balance transition-colors group-hover:text-accent", wide ? "text-3xl md:text-5xl" : "text-2xl md:text-3xl")}>{item.title}</h2>
-          <p className="mt-4 text-sm leading-relaxed text-fg-muted md:text-base">{item.summary}</p>
-          <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-fg group-hover:text-accent">Read story <ArrowUpRight size={13} aria-hidden /></span>
+          <h2 className="mt-3 text-2xl font-semibold leading-[1.02] tracking-[-0.035em] text-balance transition-colors group-hover:text-accent md:text-3xl">{item.title}</h2>
+          <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-fg-muted md:text-base">{item.summary}</p>
+          <span className="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-bold uppercase tracking-[0.14em] text-fg group-hover:text-accent">Read story <ArrowUpRight size={13} aria-hidden /></span>
         </div>
       </Link>
     </article>
@@ -116,10 +124,26 @@ function LatestStory({ item, number, members }: { item: NetworkNewsItem; number:
   );
 }
 
-export default async function NetworkNewsPage() {
-  if (!networkNewsPublished) notFound();
-  const [items, directory] = await Promise.all([getAllNetworkNews(), getNetworkDirectoryMembers()]);
+async function NetworkNewsContent({ previewMode = false }: { previewMode?: boolean }) {
+  if (!previewMode && !networkNewsPublished) notFound();
+  const [publishedItems, directory] = await Promise.all([getAllNetworkNews(), getNetworkDirectoryMembers()]);
+  const previewContribution: NetworkNewsItem = {
+    slug: "member-article-preview",
+    title: "What painting a studio wall taught me about working in public",
+    summary:
+      "Mara Bell shares what changed when she made a twelve-metre mural while the building stayed open.",
+    kicker: "Member voice",
+    category: "Member Stories",
+    date: "2026-10-01",
+    minutes: 4,
+    href: "/network/news/preview/member-article",
+    image: "/network-news/studio-detail.webp",
+    source: "network",
+    featured: true,
+  };
+  const items = previewMode ? [previewContribution, ...publishedItems] : publishedItems;
   const members = new Map(directory.map((member) => [member.id, member]));
+  const featuredMember = directory.find((member) => member.featured) ?? directory[0];
   const categories = getNetworkCategories(items);
   const lead = items.find((item) => item.featured && item.source === "network") ?? items[0];
   const rest = items.filter((item) => item.slug !== lead?.slug);
@@ -130,6 +154,11 @@ export default async function NetworkNewsPage() {
 
   return (
     <main className="bg-surface-0">
+      {previewMode && (
+        <div className="fixed inset-x-0 top-20 z-40 mx-auto w-fit rounded-full border border-accent/40 bg-surface-0/95 px-4 py-2 text-xs font-semibold text-fg shadow-xl backdrop-blur">
+          Local Network hub preview
+        </div>
+      )}
       <header className="relative isolate overflow-hidden border-b border-line pt-28 md:pt-32">
         <ParallaxBackdrop src="/images/north-east/7.jpg" overlay={0.76} />
         <HeroLights />
@@ -143,12 +172,15 @@ export default async function NetworkNewsPage() {
             <p className="hidden max-w-md pb-1 text-right text-sm leading-relaxed text-fg-muted md:block">People, projects and useful ideas from across the North East creative community.</p>
           </div>
         </div>
-        <div className="relative z-10 border-t border-line bg-surface-0/55 backdrop-blur">
-          <div className="container-shell flex gap-6 overflow-x-auto py-3 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-fg-muted">
-            <span className="shrink-0 text-accent">Latest</span>
-            {categories.map((category) => <span key={category} className="shrink-0">{category}</span>)}
+        <nav aria-label="News sections" className="relative z-10 border-y border-accent/25 bg-surface-1/90 shadow-[0_14px_40px_rgb(0_0_0/0.2)] backdrop-blur-md">
+          <div className="container-shell flex flex-col items-center gap-4 py-5 md:flex-row md:justify-between">
+            <p className="shrink-0 text-xs font-bold uppercase tracking-[0.18em] text-fg">Browse stories</p>
+            <div className="flex flex-wrap justify-center gap-2 md:justify-end">
+              <span className="rounded-full bg-accent px-4 py-2 text-[0.68rem] font-bold uppercase tracking-[0.13em] text-white">Latest</span>
+              {categories.map((category) => <span key={category} className="rounded-full border border-line-strong bg-surface-0/60 px-4 py-2 text-[0.68rem] font-bold uppercase tracking-[0.13em] text-fg-muted">{category}</span>)}
+            </div>
           </div>
-        </div>
+        </nav>
       </header>
 
       <ScrollReveal><section className="container-shell py-8 md:py-12">
@@ -158,13 +190,50 @@ export default async function NetworkNewsPage() {
         </div>
       </section></ScrollReveal>
 
+      {featuredMember && (
+        <ScrollReveal>
+          <section className="border-y border-line bg-surface-1/45">
+            <div className="container-shell grid gap-8 py-10 md:grid-cols-[minmax(16rem,0.72fr)_minmax(0,1.28fr)] md:items-center md:gap-12 md:py-14 lg:grid-cols-[23rem_minmax(0,1fr)] lg:gap-16">
+              <Link href={`/network/directory/member/${featuredMember.id}`} className="group relative aspect-[4/3] overflow-hidden bg-surface-2">
+                {featuredMember.profileImage ? (
+                  <Image
+                    src={featuredMember.profileImage}
+                    alt={featuredMember.imageAlt ?? `${featuredMember.name} profile picture`}
+                    fill
+                    sizes="(min-width: 1024px) 23rem, (min-width: 768px) 38vw, 100vw"
+                    className="object-cover grayscale transition duration-700 ease-out group-hover:scale-[1.025] group-hover:grayscale-0"
+                  />
+                ) : (
+                  <div className="grid h-full place-items-center text-5xl font-semibold text-accent">
+                    {featuredMember.name.split(/\s|\//).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase()}
+                  </div>
+                )}
+              </Link>
+              <div className="text-center md:text-left">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Featured member</p>
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-fg-subtle md:justify-start">
+                  <span className="font-bold uppercase tracking-[0.12em] text-fg-muted">{featuredMember.category}</span>
+                  <span className="inline-flex items-center gap-2"><MapPin size={13} className="text-accent" aria-hidden />{featuredMember.location}</span>
+                </div>
+                <h2 className="mt-4 text-4xl font-semibold leading-[0.94] tracking-[-0.045em] md:text-6xl">{featuredMember.name}</h2>
+                <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-fg-muted md:mx-0 md:text-lg">{featuredMember.description}</p>
+                <Link href={`/network/directory/member/${featuredMember.id}`} className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-fg transition-colors hover:text-accent">
+                  View member profile
+                  <ArrowUpRight size={14} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+              </div>
+            </div>
+          </section>
+        </ScrollReveal>
+      )}
+
       <ScrollReveal><section className="border-y border-line bg-surface-1/45">
         <div className="container-shell py-10 md:py-14">
           <div className="mb-8 flex items-end justify-between gap-4 border-b border-line pb-4">
             <h2 className="text-2xl font-semibold tracking-[-0.03em] md:text-3xl">From the Network</h2>
             <Link href="/network/directory" className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-fg-muted hover:text-accent">Browse directory <ArrowRight size={13} aria-hidden className="transition-transform group-hover:translate-x-1" /></Link>
           </div>
-          <div className="grid gap-x-7 gap-y-10 md:grid-cols-2 xl:grid-cols-4">{features.map((item, index) => <FeatureStory key={item.href} item={item} index={index} members={members} />)}</div>
+          <div className="grid items-stretch gap-x-7 gap-y-10 md:grid-cols-2 xl:grid-cols-3">{features.map((item) => <FeatureStory key={item.href} item={item} members={members} />)}</div>
         </div>
       </section></ScrollReveal>
 
@@ -178,27 +247,68 @@ export default async function NetworkNewsPage() {
             <p className="border-b border-line pb-3 text-xs font-bold uppercase tracking-[0.18em] text-accent">Browse by section</p>
             <div className="divide-y divide-line">{categories.map((category) => <p key={category} className="py-3 text-sm text-fg-muted">{category}</p>)}</div>
           </section>
-          <section className="border-y border-accent py-6">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Join the Network</p>
-            <h2 className="mt-3 text-2xl font-semibold leading-[1] tracking-[-0.03em]">Put your work where people can find it.</h2>
-            <p className="mt-4 text-sm leading-relaxed text-fg-muted">Join for future features, roundups and opportunities across the region.</p>
-            <Link href="/network" className="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-fg hover:text-accent">Join the Network <ArrowUpRight size={14} aria-hidden /></Link>
-          </section>
         </aside>
       </section></ScrollReveal>
 
+      <ScrollReveal>
+        <section id="join-network-cta" className="scroll-mt-24 bg-surface-0 py-12 md:py-16">
+          <div className="container-shell">
+            <div className="grid overflow-hidden border border-line bg-surface-1/45 lg:grid-cols-[minmax(22rem,0.9fr)_minmax(0,1.1fr)]">
+            <div className="flex flex-col justify-center bg-accent/[0.045] px-7 py-10 text-center sm:px-10 md:py-14 lg:border-r lg:border-accent/20 lg:px-12 lg:text-left">
+              <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-accent"><Users size={15} aria-hidden />Join the Network</p>
+              <h2 className="mt-4 text-4xl font-semibold leading-[0.94] tracking-[-0.045em] md:text-5xl xl:text-6xl">Make your work easier to find</h2>
+              <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-fg-muted lg:mx-0">Create a free profile, add your work and contribute to the stories and events shared across the Network.</p>
+              <Link href="/network#join-network" className="group mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-accent-soft hover:shadow-[0_12px_36px_rgb(255_0_188/0.24)]">
+                Join the Network
+                <ArrowUpRight size={15} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </div>
+
+            <div className="grid border-l border-t border-line sm:grid-cols-2 lg:border-l-0 lg:border-t-0">
+              {[
+                { icon: UserRound, label: "Your profile", text: "A public page for who you are, what you do and where to find you." },
+                { icon: Images, label: "Your work", text: "Add portfolio pieces and send people straight to the projects behind them." },
+                { icon: BookOpenText, label: "Your stories", text: "Contribute articles in your own words, with NAMI approval before publication." },
+                { icon: CalendarDays, label: "Your events", text: "Share exhibitions, workshops, meetups and other things worth showing up for." },
+              ].map(({ icon: Icon, label, text }) => (
+                <div key={label} className="border-b border-r border-line bg-surface-0/55 p-6 text-center transition-colors hover:bg-accent/[0.035] sm:min-h-48 sm:p-7 sm:text-left">
+                  <Icon size={20} className="mx-auto text-accent sm:mx-0" aria-hidden />
+                  <h3 className="mt-5 text-xl font-semibold tracking-[-0.025em]">{label}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-fg-muted">{text}</p>
+                </div>
+              ))}
+            </div>
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+
       {marketingNotes.length > 0 && (
-        <section className="border-t border-line bg-accent text-white">
-          <div className="container-shell py-12 md:py-16">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Useful thinking</p>
-            <div className="mt-4 grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
-              <h2 className="text-4xl font-semibold leading-[0.92] tracking-[-0.045em] md:text-6xl">Notes for making the work work.</h2>
-              <div className="divide-y divide-white/25 border-y border-white/25">
-                {marketingNotes.map((item) => (
-                  <Link key={item.href} href={item.href} className="group grid gap-2 py-5 sm:grid-cols-[8rem_1fr_auto] sm:items-center">
-                    <time dateTime={item.date} className="text-xs text-white/70">{formatPostDate(item.date)}</time>
-                    <h3 className="text-lg font-semibold leading-tight md:text-xl">{item.title}</h3>
-                    <ArrowUpRight size={16} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        <section id="useful-thinking" className="scroll-mt-24 border-b border-line bg-surface-0 py-12 md:py-16">
+          <div className="container-shell">
+            <div className="grid overflow-hidden border border-line lg:grid-cols-[0.72fr_1.28fr]">
+              <div className="flex min-h-80 flex-col justify-between bg-accent p-8 text-white md:p-10 lg:min-h-[30rem] lg:p-12">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/75">Useful thinking</p>
+                  <h2 className="mt-5 max-w-lg text-4xl font-semibold leading-[0.92] tracking-[-0.045em] md:text-6xl">Notes for making the work work</h2>
+                </div>
+                <p className="mt-10 max-w-md text-sm leading-relaxed text-white/80 md:text-base">Plain-speaking ideas about sharing creative work, finding the right people and building something that lasts beyond the feed.</p>
+              </div>
+
+              <div className="divide-y divide-line bg-surface-1/55">
+                {marketingNotes.map((item, index) => (
+                  <Link key={item.href} href={item.href} className="group grid h-full gap-6 p-6 sm:grid-cols-[minmax(12rem,0.86fr)_minmax(0,1.14fr)] sm:items-center md:p-8 lg:p-10">
+                    <StoryImage item={item} members={members} className="aspect-[4/3] w-full" />
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2 text-[0.68rem] text-fg-subtle">
+                        <span className="font-bold uppercase tracking-[0.16em] text-accent">{String(index + 1).padStart(2, "0")} / {item.category}</span>
+                        <span aria-hidden>/</span>
+                        <time dateTime={item.date}>{formatPostDate(item.date)}</time>
+                      </div>
+                      <h3 className="mt-4 text-3xl font-semibold leading-[0.96] tracking-[-0.04em] transition-colors group-hover:text-accent md:text-5xl">{item.title}</h3>
+                      <p className="mt-5 max-w-xl text-sm leading-relaxed text-fg-muted md:text-base">{item.summary}</p>
+                      <span className="mt-7 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-fg transition-colors group-hover:text-accent">Read the note <ArrowUpRight size={14} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -208,4 +318,8 @@ export default async function NetworkNewsPage() {
       )}
     </main>
   );
+}
+
+export default async function NetworkNewsPage() {
+  return <NetworkNewsContent previewMode={process.env.NODE_ENV === "development"} />;
 }

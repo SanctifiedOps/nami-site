@@ -1,5 +1,9 @@
 import { sql } from "drizzle-orm";
 import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import type {
+  ContributionAssetSnapshot,
+  ContributionDocument,
+} from "@/lib/network-contributions/types";
 
 const now = (name: string) =>
   integer(name, { mode: "timestamp_ms" })
@@ -363,11 +367,176 @@ export const eventRevisions = sqliteTable("event_revisions", { id: text("id").pr
 export const eventSheetSyncJobs = sqliteTable("event_sheet_sync_jobs", { id: text("id").primaryKey(), eventId: text("event_id").notNull().references(() => networkEvents.id, { onDelete: "cascade" }), status: text("status").notNull().default("pending"), attempts: integer("attempts").notNull().default(0), nextAttemptAt: now("next_attempt_at"), lastError: text("last_error"), completedAt: optionalTime("completed_at"), createdAt: now("created_at"), updatedAt: now("updated_at") }, (table) => [index("event_sheet_sync_pending_idx").on(table.status, table.nextAttemptAt)]);
 export const eventAnalytics = sqliteTable("event_analytics", { id: text("id").primaryKey(), eventId: text("event_id"), eventType: text("event_type").notNull(), anonymousSessionId: text("anonymous_session_id").notNull().default(""), metadata: text("metadata", { mode: "json" }).$type<Record<string, unknown>>().notNull().default({}), createdAt: now("created_at") }, (table) => [index("event_analytics_created_idx").on(table.eventType, table.createdAt)]);
 
+export const contributions = sqliteTable(
+  "contributions",
+  {
+    id: text("id").primaryKey(),
+    memberId: text("member_id")
+      .notNull()
+      .references(() => members.id, { onDelete: "cascade" }),
+    format: text("format", {
+      enum: ["project_story", "member_story", "useful_resource", "field_note"],
+    }).notNull(),
+    title: text("title").notNull().default(""),
+    slug: text("slug").unique(),
+    summary: text("summary").notNull().default(""),
+    contentJson: text("content_json", { mode: "json" })
+      .$type<ContributionDocument>()
+      .notNull(),
+    plainText: text("plain_text").notNull().default(""),
+    status: text("status", {
+      enum: [
+        "draft",
+        "submitted",
+        "under_review",
+        "changes_requested",
+        "approved",
+        "scheduled",
+        "published",
+        "rejected",
+        "archived",
+      ],
+    })
+      .notNull()
+      .default("draft"),
+    featured: integer("featured", { mode: "boolean" }).notNull().default(false),
+    commercialContent: integer("commercial_content", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    originalWorkConfirmed: integer("original_work_confirmed", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    imageRightsConfirmed: integer("image_rights_confirmed", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    noGeneratedTextConfirmed: integer("no_generated_text_confirmed", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    submittedContentHash: text("submitted_content_hash"),
+    approvedContentHash: text("approved_content_hash"),
+    adminFeedback: text("admin_feedback"),
+    reviewerId: text("reviewer_id"),
+    submittedAt: optionalTime("submitted_at"),
+    reviewedAt: optionalTime("reviewed_at"),
+    scheduledAt: optionalTime("scheduled_at"),
+    publishedAt: optionalTime("published_at"),
+    createdAt: now("created_at"),
+    updatedAt: now("updated_at"),
+  },
+  (table) => [
+    index("contributions_member_status_idx").on(table.memberId, table.status, table.updatedAt),
+    index("contributions_publication_idx").on(table.status, table.publishedAt),
+  ],
+);
+
+export const contributionVersions = sqliteTable(
+  "contribution_versions",
+  {
+    id: text("id").primaryKey(),
+    contributionId: text("contribution_id")
+      .notNull()
+      .references(() => contributions.id, { onDelete: "cascade" }),
+    memberId: text("member_id")
+      .notNull()
+      .references(() => members.id, { onDelete: "cascade" }),
+    versionNumber: integer("version_number").notNull(),
+    reason: text("reason", {
+      enum: ["submitted", "resubmitted", "published_update"],
+    }).notNull(),
+    title: text("title").notNull(),
+    summary: text("summary").notNull(),
+    contentJson: text("content_json", { mode: "json" })
+      .$type<ContributionDocument>()
+      .notNull(),
+    assetsJson: text("assets_json", { mode: "json" })
+      .$type<ContributionAssetSnapshot[]>()
+      .notNull()
+      .default([]),
+    contentHash: text("content_hash").notNull(),
+    createdAt: now("created_at"),
+  },
+  (table) => [
+    uniqueIndex("contribution_versions_number_idx").on(
+      table.contributionId,
+      table.versionNumber,
+    ),
+  ],
+);
+
+export const contributionAssets = sqliteTable(
+  "contribution_assets",
+  {
+    id: text("id").primaryKey(),
+    contributionId: text("contribution_id")
+      .notNull()
+      .references(() => contributions.id, { onDelete: "cascade" }),
+    memberId: text("member_id")
+      .notNull()
+      .references(() => members.id, { onDelete: "cascade" }),
+    r2Key: text("r2_key").notNull().unique(),
+    kind: text("kind", { enum: ["cover", "inline"] }).notNull(),
+    altText: text("alt_text").notNull().default(""),
+    caption: text("caption").notNull().default(""),
+    position: integer("position").notNull().default(0),
+    width: integer("width").notNull(),
+    height: integer("height").notNull(),
+    contentType: text("content_type").notNull(),
+    status: text("status", { enum: ["uploading", "ready", "removed"] })
+      .notNull()
+      .default("uploading"),
+    createdAt: now("created_at"),
+    updatedAt: now("updated_at"),
+  },
+  (table) => [
+    index("contribution_assets_contribution_idx").on(
+      table.contributionId,
+      table.position,
+    ),
+  ],
+);
+
+export const contributionModerationEvents = sqliteTable(
+  "contribution_moderation_events",
+  {
+    id: text("id").primaryKey(),
+    contributionId: text("contribution_id")
+      .notNull()
+      .references(() => contributions.id, { onDelete: "cascade" }),
+    actorMemberId: text("actor_member_id").references(() => members.id, {
+      onDelete: "set null",
+    }),
+    eventType: text("event_type", {
+      enum: [
+        "created",
+        "submitted",
+        "review_started",
+        "changes_requested",
+        "resubmitted",
+        "approved",
+        "scheduled",
+        "published",
+        "hidden",
+        "restored",
+        "rejected",
+        "withdrawn",
+      ],
+    }).notNull(),
+    note: text("note"),
+    createdAt: now("created_at"),
+  },
+  (table) => [
+    index("contribution_moderation_timeline_idx").on(
+      table.contributionId,
+      table.createdAt,
+    ),
+  ],
+);
+
 export const ownerAlertJobs = sqliteTable(
   "owner_alert_jobs",
   {
     id: text("id").primaryKey(),
-    kind: text("kind", { enum: ["application", "ticket", "event"] }).notNull(),
+    kind: text("kind", { enum: ["application", "ticket", "event", "contribution"] }).notNull(),
     recordId: text("record_id").notNull(),
     recipient: text("recipient").notNull(),
     subject: text("subject").notNull(),

@@ -75,11 +75,11 @@ const reasons = [
 
 
 const joinSteps = [
-  "What you send becomes your NAMI network profile in the live directory",
-  "People can find you in the directory by what you do and where you're based",
-  "Your profile can link to your Instagram and website or portfolio",
-  "You will get links to the WhatsApp community and Facebook group",
-  "I can keep you in mind for features and introductions when there's a good fit",
+  "Send the form so I can review your details and add you to the Network",
+  "Once approved, you will receive an email with a secure link to claim your profile",
+  "Create your login, then edit your profile picture, information and links whenever you need to",
+  "Upload portfolio work with links to the full projects behind it",
+  "Submit your own events for approval and inclusion in the Network calendar",
 ];
 const futureAccess = [
   {
@@ -139,7 +139,8 @@ export default async function NetworkPage() {
         lead="Meet North East creatives. Give people a way to discover your work, hire you, buy from you or get in touch."
         aboveTitle={
           <AnimatedMemberTooltip
-            memberCount={members.length}
+            memberCount={218}
+            context="join"
             items={showcaseMembers.map((member) => ({
               id: member.id,
               name: member.name,
@@ -320,7 +321,7 @@ export default async function NetworkPage() {
               Join the NAMI Creative Network today
             </h2>
             <p className="mx-auto mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg lg:mx-0">
-              Tell me what you do, where you&apos;re based and how you want to appear in the directory. I&apos;ll turn that into a NAMI network profile people can find and share.
+              Tell me what you do, where you&apos;re based and how you want to appear in the directory. Once your application is approved, you can claim your profile, log in and keep it up to date yourself.
             </p>
             <div className="mt-8 rounded-2xl border border-line bg-surface-0/60 p-6 text-left">
               <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-accent">
@@ -342,7 +343,7 @@ export default async function NetworkPage() {
                 ))}
               </ul>
               <p className="mt-5 text-sm leading-relaxed text-fg-subtle">
-                It&apos;s free to join. Your NAMI network profile may take a little time to appear after you submit.
+                It&apos;s free to join. I review each application before the profile goes live.
               </p>
             </div>
           </div>

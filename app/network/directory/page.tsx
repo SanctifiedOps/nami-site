@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 export default async function NetworkDirectoryPage() {
   const members = await getNetworkDirectoryMembers();
   const upcomingEvents = await getNetworkDb()
-    .then((db) => db.select().from(schema.networkEvents).where(and(eq(schema.networkEvents.status, "approved"), gte(schema.networkEvents.startsAt, new Date()))).orderBy(asc(schema.networkEvents.startsAt)).limit(3))
+    .then((db) => db.select().from(schema.networkEvents).where(and(eq(schema.networkEvents.status, "approved"), gte(schema.networkEvents.startsAt, new Date()))).orderBy(asc(schema.networkEvents.startsAt)).limit(4))
     .catch(() => []);
   const featured = members.find((member) => member.featured) ?? members[0];
   const showcaseMembers = members.filter(isShowcaseReadyMember);
@@ -67,7 +67,8 @@ export default async function NetworkDirectoryPage() {
         lead="Meet the artists, photographers, makers and independent businesses in the Network. Find someone to follow, work with or support across the North East."
         aboveTitle={
           <AnimatedMemberTooltip
-            memberCount={members.length}
+            memberCount={218}
+            context="directory"
             items={showcaseMembers.map((member) => ({
               id: member.id,
               name: member.name,
@@ -187,10 +188,10 @@ export default async function NetworkDirectoryPage() {
                 <div className="w-full md:w-auto"><p className="mono-label text-accent">Network events</p><h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Upcoming network events</h2></div>
                 <Link href="/network/events" className="inline-flex w-full items-center justify-center gap-2 text-sm font-semibold hover:text-accent md:w-auto md:justify-start">View all events <ArrowUpRight size={15} aria-hidden /></Link>
               </div>
-              <div className="mt-8 grid gap-5 md:grid-cols-3">
+              <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
                 {upcomingEvents.filter((event) => event.slug).map((event) => (
-                  <Link key={event.id} href={`/network/events/${event.slug}`} className="group overflow-hidden rounded-3xl border border-white/15 bg-surface-1/90 shadow-2xl backdrop-blur transition hover:-translate-y-1 hover:border-accent/60">
-                    <div className="relative aspect-[4/5] overflow-hidden bg-surface-2">{event.coverImageKey && <img src={`/api/network/media/${event.coverImageKey.split("/").map(encodeURIComponent).join("/")}`} alt={event.coverImageAlt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />}<div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" /><div className="absolute inset-x-0 bottom-0 p-5 text-white"><p className="flex items-center gap-2 text-xs font-bold text-accent"><CalendarDays size={14} aria-hidden />{event.startsAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Europe/London" })}</p><h3 className="mt-2 text-2xl font-semibold">{event.title}</h3><p className="mt-2 flex items-center gap-2 text-xs text-white/75"><MapPin size={13} aria-hidden />{event.location}</p></div></div>
+                  <Link key={event.id} href={`/network/events/${event.slug}`} className="group min-w-0 overflow-hidden rounded-2xl border border-white/15 bg-surface-1/90 shadow-2xl backdrop-blur transition hover:-translate-y-1 hover:border-accent/60 md:rounded-3xl">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-surface-2">{event.coverImageKey && <img src={`/api/network/media/${event.coverImageKey.split("/").map(encodeURIComponent).join("/")}`} alt={event.coverImageAlt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />}<div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" /><div className="absolute inset-x-0 bottom-0 p-3 text-white sm:p-4 lg:p-5"><p className="flex items-center gap-1.5 text-[0.65rem] font-bold text-accent sm:text-xs"><CalendarDays size={12} aria-hidden className="shrink-0 sm:size-3.5" />{event.startsAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Europe/London" })}</p><h3 className="mt-1.5 text-base font-semibold leading-tight sm:mt-2 sm:text-xl lg:text-2xl">{event.title}</h3><p className="mt-1.5 flex items-center gap-1.5 truncate text-[0.65rem] text-white/75 sm:mt-2 sm:text-xs"><MapPin size={11} aria-hidden className="shrink-0 sm:size-[13px]" /><span className="truncate">{event.location}</span></p></div></div>
                   </Link>
                 ))}
               </div>
@@ -217,18 +218,18 @@ export default async function NetworkDirectoryPage() {
       ))}
 
       <section className="bg-surface-1/35 py-16 md:py-20">
-        <div className="container-shell space-y-14 text-center md:space-y-16 md:text-left">
+        <div className="container-shell space-y-14 text-center md:space-y-16">
           <div>
             <p className="mono-label text-accent">Around the North East</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Find people near you</h2>
-            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
               {["Newcastle", "Gateshead", "Sunderland", "County Durham", "North Tyneside", "Northumberland"].map((area) => <Link key={area} href={`/network/directory/all?area=${encodeURIComponent(area)}`} className="rounded-full border border-line bg-surface-0 px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent">{area} <ArrowUpRight size={14} className="inline" aria-hidden /></Link>)}
             </div>
           </div>
 
           {otherGroups.length > 0 && <div>
             <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">There’s more to explore</h2>
-            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
               {otherGroups.map((group) => <Link key={group.slug} href={`/network/directory/${group.slug}`} className="rounded-full border border-line px-5 py-3 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent">{group.label} <ArrowUpRight size={14} className="inline" aria-hidden /></Link>)}
             </div>
           </div>}

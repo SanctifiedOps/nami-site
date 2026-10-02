@@ -339,10 +339,6 @@ export function NetworkForm() {
         />
       </div>
 
-      <p className="mt-2 text-xs leading-relaxed text-fg-subtle">
-        This is exactly how your name will appear on your NAMI network profile. For example: Joe / Nami Creative.
-      </p>
-
       <div className="mt-5">
         <Field
           label="Email"
@@ -420,7 +416,7 @@ export function NetworkForm() {
           required
         />
         <p className="mt-2 text-xs leading-relaxed text-fg-subtle">
-          This becomes a short bio on your NAMI network profile. Write it in your own words. I&apos;ll keep the meaning and tidy it up for the directory.
+          This becomes the short bio on your profile. Write it in your own words. You can edit it after you claim your profile.
         </p>
       </div>
 
@@ -482,9 +478,9 @@ export function NetworkForm() {
           />
           <span>
             I agree to NAMI publishing my directory display name, category, city or area,
-            Instagram, submitted link, and a short NAMI-written description in
-            the public Creative Network directory. I can ask for my NAMI network profile to
-            be updated or removed at any time.
+            Instagram, submitted link, and the description I submit in
+            the public Creative Network directory. I can edit my profile after I claim it,
+            or ask for it to be removed at any time.
           </span>
         </label>
 

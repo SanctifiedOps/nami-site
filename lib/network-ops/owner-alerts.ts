@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
 import { getNetworkDb, schema } from "@/lib/network-db";
 
-type OwnerAlertKind = "application" | "ticket" | "event";
+type OwnerAlertKind = "application" | "ticket" | "event" | "contribution";
 
 type OwnerAlertInput = {
   kind: OwnerAlertKind;

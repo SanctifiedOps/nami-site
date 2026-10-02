@@ -9,7 +9,8 @@ type NetworkEmailTemplate =
   | "verify-account"
   | "reset-password"
   | "password-changed"
-  | "account-attempt";
+  | "account-attempt"
+  | "contribution-review";
 
 type SendNetworkEmailInput = {
   memberId?: string;
