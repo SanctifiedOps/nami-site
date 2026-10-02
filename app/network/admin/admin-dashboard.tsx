@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
-import { Activity, AlertTriangle, ArrowLeft, BarChart3, BookOpen, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
+import { Activity, AlertTriangle, ArrowLeft, BarChart3, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
 import type { GaSnapshot, InstagramSnapshot, MailchimpSnapshot } from "@/lib/network-admin/external-data";
 import { suggestDirectoryBio } from "@/lib/network-profile/directory-bio";
@@ -230,13 +230,6 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
           <h1 className="mt-2 text-4xl md:mt-3 md:text-7xl">Network control centre</h1>
           <p className="mt-3 max-w-2xl text-sm text-fg-muted md:mt-4 md:text-base">Welcome back, {adminName}. Growth, members and daily operations in one place.</p>
         </div>
-        <div className="hidden items-end gap-3 md:flex">
-          <Link href="/network/admin/contributions" className="inline-flex items-center gap-2 rounded-full border border-accent px-5 py-3 text-sm font-bold text-accent transition hover:bg-accent hover:text-white"><BookOpen size={17} /> Contribution review</Link>
-          <div className="rounded-2xl border border-emerald-400/25 bg-emerald-400/8 px-5 py-4 text-sm">
-            <span className="flex items-center gap-2 font-bold text-emerald-300"><ShieldCheck size={18} /> Admin access verified</span>
-            <span className="mt-1 block text-fg-muted">Member invitations, profile emails and owner notifications are live.</span>
-          </div>
-        </div>
       </div>
 
       {message && <p role="status" className="mt-6 rounded-xl border border-accent/30 bg-accent/8 p-4 text-sm">{message}</p>}
@@ -269,7 +262,7 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
           <ExternalMetric icon={<MousePointerClick size={20} />} label="Profile clicks" value={ga.profileClicks} note="Directory profile visits" tone="pink" />
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 [&>a]:!p-3 [&>a_p]:!mt-2 [&>a_p]:line-clamp-1 [&>a_strong]:!mt-2 [&>a_strong]:!text-3xl md:mt-5 md:gap-4 md:[&>a]:!p-5 md:[&>a_p]:!mt-5 md:[&>a_p]:line-clamp-none md:[&>a_strong]:!mt-5 md:[&>a_strong]:!text-4xl xl:grid-cols-4">
-          <Metric onClick={() => openSection("members", "applications")} icon={<Users size={20} />} label="Applications waiting" value={pendingApplications.length} note="Ready for your review" tone="pink" />
+          <Metric onClick={() => openSection("tasks", "applications")} icon={<Users size={20} />} label="Applications waiting" value={pendingApplications.length} note="Ready for your review" tone="pink" />
           <Metric onClick={() => openSection("tasks", "tickets")} icon={<TicketCheck size={20} />} label="Open tickets" value={openTickets.length} note="Member support requests" tone="amber" />
           <Metric onClick={() => openSection("tasks", "events")} icon={<CalendarDays size={20} />} label="Events waiting" value={pendingEvents.length} note="Approval queue" tone="blue" />
           <Metric onClick={() => openSection("tasks", "failed-jobs")} icon={<AlertTriangle size={20} />} label="Failed jobs" value={failedJobs.length} note="Open the failure details" tone="red" />
@@ -301,8 +294,8 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
         <div className="mt-3 md:mt-4"><SectionHeading title="Search intelligence" note="" /><div className="mt-3 grid grid-cols-3 gap-2.5 md:grid-cols-3 md:gap-4"><SmallMetric label="Recorded searches" value={searchIntelligence.total} /><SmallMetric label="No results" value={searchIntelligence.zeroResults} /><SmallMetric label="Profile click rate (%)" value={searchIntelligence.clickRate} /></div><div className="mt-3 grid grid-cols-2 gap-2.5 md:gap-4 lg:grid-cols-3"><Breakdown title="Top search terms" items={searchIntelligence.terms} /><Breakdown title="Category demand" items={searchIntelligence.categories} /><Breakdown title="Location demand" items={searchIntelligence.locations} /></div></div>
       </section>}
 
-      {activeView === "members" && <><section id="applications" className="pt-2 md:pt-10">
-        <SectionHeading title="Applications" count={pendingApplications.length} note="" />
+      {activeView === "tasks" && <section id="applications" className="scroll-mt-28 pt-2 md:pt-10">
+        <SectionHeading title="Member profile approvals" count={pendingApplications.length} note="Review and publish new Network profiles." />
         <div className="mt-3 grid gap-2.5 md:mt-5 md:gap-4 [&>article]:!p-4 md:[&>article]:!p-6">
           {pendingApplications.map((item) => {
             const option = applicationOptions[item.id] ?? { primaryGroup: directoryGroups.find((group) => group.slug === item.requestedCategory)?.slug ?? directoryGroups[0].slug, speciality: item.requestedCategory, bio: item.suggestedBio || suggestDirectoryBio({ displayName: item.displayName, category: item.requestedCategory, location: item.location, submittedBio: item.bio }) };
@@ -319,11 +312,11 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
               </div>
             </article>;
           })}
-          {!pendingApplications.length && <Empty text="No applications are waiting for approval." />}
+          {!pendingApplications.length && <Empty text="No member profiles are waiting for approval." />}
         </div>
-      </section>
+      </section>}
 
-      <section id="members" className="pt-7 md:pt-12">
+      {activeView === "members" && <section id="members" className="pt-2 md:pt-10">
         <SectionHeading title="Members" count={members.length} note="Profile, account and sign-in status in one place." />
         <div className={`${panel} mt-3 p-4 md:mt-5 md:p-6`}>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -352,9 +345,9 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
           {!visibleMembers.length && <div className="p-8 text-center text-sm text-fg-subtle">No members match this category.</div>}
           {memberPageCount > 1 && <div className="flex items-center justify-between border-t border-line px-4 py-4"><button className={button} disabled={safeMemberPage === 1} onClick={() => setMemberPage((page) => Math.max(1, page - 1))}>Previous</button><span className="text-sm text-fg-muted">Page {safeMemberPage} of {memberPageCount}</span><button className={button} disabled={safeMemberPage === memberPageCount} onClick={() => setMemberPage((page) => Math.min(memberPageCount, page + 1))}>Next</button></div>}
         </div>
-      </section></>}
+      </section>}
 
-      {activeView === "tasks" && <><section id="featured-member-approval" className="scroll-mt-28 pt-2 md:pt-10">
+      {activeView === "tasks" && <><section id="featured-member-approval" className="scroll-mt-28 pt-7 md:pt-12">
         <SectionHeading title="Featured member" count={featuredApproval ? 1 : 0} note="Sunday's selection stays private until you approve it." />
         <div className="mt-3 md:mt-5">
           {featuredApproval ? <article className={`${panel} p-5 md:p-6`}>
