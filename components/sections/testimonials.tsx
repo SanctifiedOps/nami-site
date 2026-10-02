@@ -17,6 +17,8 @@ type Props = {
   title?: React.ReactNode;
   lead?: string;
   className?: string;
+  backgroundImage?: string;
+  uniform?: boolean;
 };
 
 /** Diagonal vertical offsets per column so the row reads editorial, not grid. */
@@ -28,15 +30,27 @@ export function Testimonials({
   title,
   lead,
   className,
+  backgroundImage,
+  uniform = false,
 }: Props) {
   return (
     <section
       className={cn(
-        "relative border-t border-line bg-surface-1/40 py-24 md:py-32",
+        "relative overflow-hidden border-t border-line bg-surface-1/40 py-24 md:py-32",
         className,
       )}
     >
-      <div className="container-shell">
+      {backgroundImage ? (
+        <div aria-hidden className="absolute inset-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-35"
+            style={{ backgroundImage: `url(${backgroundImage})` }}
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,8,10,.82),rgba(8,8,10,.94))]" />
+        </div>
+      ) : null}
+
+      <div className="container-shell relative z-10">
         <SectionHeading
           align="center"
           eyebrow={eyebrow}
@@ -60,13 +74,19 @@ export function Testimonials({
           whileInView="show"
           viewport={{ once: true, amount: 0.15 }}
           variants={stageFast}
-          className="grid gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:items-start"
+          className={cn(
+            "grid gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3",
+            uniform ? "lg:items-stretch" : "lg:items-start",
+          )}
         >
           {items.map((t, i) => (
             <motion.li
               key={t.author}
               variants={cardIn}
-              className={cn(OFFSETS[i % OFFSETS.length])}
+              className={cn(
+                uniform && "h-full",
+                !uniform && OFFSETS[i % OFFSETS.length],
+              )}
             >
               <SpotlightCard
                 tilt={0}

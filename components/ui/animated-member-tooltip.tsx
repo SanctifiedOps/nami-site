@@ -30,7 +30,7 @@ export function AnimatedMemberTooltip({
 }: {
   items: TooltipMember[];
   memberCount: number;
-  context?: "join" | "directory";
+  context?: "join" | "directory" | "contact";
   className?: string;
 }) {
   const candidates = useMemo(() => {
@@ -94,6 +94,16 @@ export function AnimatedMemberTooltip({
       <p className="text-sm text-fg-muted">
         {context === "directory" ? (
           <><span className="font-semibold text-white">{memberCount} North East creatives</span> doing proper work</>
+        ) : context === "contact" ? (
+          <>
+            Join our network of{" "}
+            <Link
+              href="/network#join-network"
+              className="font-semibold text-accent transition-colors hover:text-accent-soft focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              {memberCount} North East creatives
+            </Link>
+          </>
         ) : (
           <>Join our network of <span className="font-semibold text-white">{memberCount} North East creatives</span></>
         )}

@@ -340,6 +340,8 @@ export default async function NetworkPage() {
         eyebrow="From the Network"
         title="What our members think"
         lead="Three members on what it feels like to be part of the NAMI Creative Network."
+        backgroundImage="/images/north-east/3.jpg"
+        uniform
         className="bg-surface-0"
       />
 

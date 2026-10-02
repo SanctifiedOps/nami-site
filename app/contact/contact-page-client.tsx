@@ -94,14 +94,14 @@ export function ContactPageClient({
           <AnimatedMemberTooltip
             items={tooltipMembers}
             memberCount={memberCount}
-            context="join"
+            context="contact"
           />
         }
         title={
           <>
-            Bring me the problem.{" "}
+            Tell me about your vision{" "}
             <span className="text-gradient sm:block">
-              Let&apos;s get it working
+              and let&apos;s go from there
             </span>
           </>
         }
