@@ -17,7 +17,7 @@ const packageOptions = [
 const painOptions = [
   "Not finding commissions",
   "Attention but no conversion",
-  "I have not got the time",
+  "I haven't got the time",
   "Need a clear path for buyers",
   "My website or shop feels messy",
 ];
@@ -170,7 +170,7 @@ export function CreatorWaveForm() {
         };
 
         if (!res.ok || !data.ok) {
-          throw new Error(data.error ?? "That did not send.");
+      throw new Error(data.error ?? "That didn't send.");
         }
 
         trackEvent("creator_wave_form_submitted", {
@@ -252,7 +252,7 @@ export function CreatorWaveForm() {
         </h2>
         <p className="mt-4 text-sm leading-relaxed text-fg-muted md:text-base">
           Keep it rough if you need to. Send the links, pick the option that
-          feels closest, and I will come back with the sensible next step.
+          feels closest, and I&apos;ll come back with the sensible next step.
         </p>
       </div>
 
@@ -379,7 +379,7 @@ export function CreatorWaveForm() {
           >
             <Check size={18} className="mt-0.5 shrink-0 text-accent" aria-hidden />
             <p>
-              Nice one. That landed with me. I will take a look and come back
+              Nice one. That landed with me. I&apos;ll take a look and come back
               with the most sensible next step.
             </p>
           </div>

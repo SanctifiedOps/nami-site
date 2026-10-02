@@ -16,7 +16,7 @@ export default async function ReportAProblemPage() {
         <p className="font-bold uppercase tracking-[0.16em] text-accent">NAMI Creative Network</p>
         <h1 className="mt-4 text-4xl sm:text-6xl">Something not working?</h1>
         <p className="mt-5 max-w-xl text-fg-muted">
-          Send the details here. This page works separately from the member dashboard, so you can still report a problem if you cannot sign in.
+          Send the details here. This page works separately from the member dashboard, so you can still report a problem if you can&apos;t sign in.
         </p>
         <TicketForm turnstileSiteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""} />
       </div>

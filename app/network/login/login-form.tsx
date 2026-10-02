@@ -21,13 +21,13 @@ export function LoginForm() {
       if (signUp.error) result = await networkAuthClient.signIn.email(credentials);
     }
     if (result.error) {
-      setError("The local account could not be opened.");
+      setError("The local account couldn't be opened.");
       setBusy(false);
       return;
     }
     const bootstrap = await fetch("/api/network/dev-bootstrap", { method: "POST" });
     if (!bootstrap.ok) {
-      setError("The local member profile could not be prepared.");
+      setError("The local member profile couldn't be prepared.");
       setBusy(false);
       return;
     }
@@ -47,14 +47,14 @@ export function LoginForm() {
         rememberMe: true,
       });
       if (result.error) {
-        setError("That email and password combination was not recognised.");
+        setError("That email and password combination wasn't recognised.");
         setBusy(false);
         return;
       }
       router.push(search.get("next") || "/network/dashboard");
       router.refresh();
     } catch {
-      setError("Sign in could not connect. Please try again.");
+      setError("Sign in couldn't connect. Please try again.");
       setBusy(false);
     }
   }

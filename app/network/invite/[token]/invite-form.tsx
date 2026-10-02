@@ -60,7 +60,7 @@ export function InviteForm({ token, turnstileSiteKey }: { token: string; turnsti
         "error-callback": () => {
           setTurnstileToken("");
           setTurnstileReady(false);
-          setError("The security check could not load. Please refresh the page and try again.");
+          setError("The security check couldn't load. Please refresh the page and try again.");
         },
       });
     };
@@ -91,7 +91,7 @@ export function InviteForm({ token, turnstileSiteKey }: { token: string; turnsti
     const data = new FormData(event.currentTarget);
     const password = String(data.get("password") ?? "");
     if (password !== String(data.get("confirmPassword") ?? "")) {
-      setError("The passwords do not match."); setBusy(false); return;
+      setError("The passwords don't match."); setBusy(false); return;
     }
     if (turnstileSiteKey && !turnstileToken) {
       setError("Please complete the security check and try again."); setBusy(false); return;
@@ -102,7 +102,7 @@ export function InviteForm({ token, turnstileSiteKey }: { token: string; turnsti
     });
     const result = await response.json() as { error?: string };
     if (!response.ok) {
-      setError(result.error || "The account could not be created.");
+      setError(result.error || "The account couldn't be created.");
       setBusy(false);
       setTurnstileToken("");
       setTurnstileReady(false);

@@ -41,7 +41,7 @@ export default function ThankYouPage() {
 
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-fg-muted md:text-xl">
             Your message has landed. I usually respond within one working day.
-            If I can help, I&apos;ll suggest a clear next step. If it is not the
+          If I can help, I&apos;ll suggest a clear next step. If it isn&apos;t the
             right fit, I&apos;ll be straight with you.
           </p>
         </div>

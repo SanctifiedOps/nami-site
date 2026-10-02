@@ -37,7 +37,7 @@ const DEFAULT_TITLE = (
 export function ProcessScroll({
   index = "02 / How I work",
   title = DEFAULT_TITLE,
-  lead = "I work out what is causing the problem, agree what needs doing with you and get it sorted. You will always know what is happening and what comes next.",
+  lead = "I work out what's causing the problem, agree what needs doing with you and get it sorted. You'll always know what's happening and what comes next.",
 }: Props = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();

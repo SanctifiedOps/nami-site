@@ -410,7 +410,7 @@ export function NetworkForm() {
         <TextArea
           label="What should people know about your work?"
           name="note"
-          placeholder="What do you make or do? Who is it for? What would you like people to know?"
+          placeholder="What do you make or do? Who's it for? What would you like people to know?"
           rows={6}
           maxLength={1600}
           required
@@ -443,7 +443,7 @@ export function NetworkForm() {
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-fg">{profilePicture?.name}</p>
               <p className="mt-1 text-xs leading-relaxed text-fg-subtle">
-                I will centre-crop this into a square image for your NAMI network profile.
+                I&apos;ll centre-crop this into a square image for your NAMI network profile.
               </p>
               <button
                 type="button"

@@ -11,7 +11,7 @@ type Props = {
 export function PressurePaths({
   title = (
     <>
-      What is getting{" "}
+            What&apos;s getting{" "}
       <span className="text-gradient sm:block">in the way?</span>
     </>
   ),

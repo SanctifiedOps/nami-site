@@ -126,7 +126,7 @@ export const services: Service[] = [
       "You know you should post, but deciding what to say takes too long.",
       "Content only happens when somebody finds a spare hour.",
       "Every post looks and sounds different from the last one.",
-      "You are putting time into content without knowing what is worth repeating.",
+      "You're putting time into content without knowing what's worth repeating.",
     ],
     help: [
       {
@@ -139,7 +139,7 @@ export const services: Service[] = [
       },
       {
         title: "Make it sound like you",
-        body: "I set a clear voice and write real examples so the content does not read like generic marketing copy.",
+    body: "I set a clear voice and write real examples so the content doesn't read like generic marketing copy.",
       },
       {
         title: "Build a realistic routine",
@@ -152,7 +152,7 @@ export const services: Service[] = [
       "Writing and tone guidance",
       "A realistic publishing plan",
       "Templates and example content",
-      "A simple way to review what is working",
+      "A simple way to review what's working",
     ],
     deliverableGroups: [
       {
@@ -165,13 +165,13 @@ export const services: Service[] = [
       },
       {
         title: "Keep improving it",
-        items: ["Templates and example content", "A simple way to review what is working"],
+    items: ["Templates and example content", "A simple way to review what's working"],
       },
     ],
     steps: [
       {
-        title: "See what is worth keeping",
-        body: "I review your existing content, customer questions and the subjects you are best placed to talk about.",
+    title: "See what's worth keeping",
+    body: "I review your existing content, customer questions and the subjects you're best placed to talk about.",
       },
       {
         title: "Build the useful formats",
@@ -205,8 +205,8 @@ export const services: Service[] = [
       "website copywriting Newcastle",
     ],
     problems: [
-      "People visit the website but do not get in touch.",
-      "The site does not explain clearly what you offer or who it is for.",
+      "People visit the website but don't get in touch.",
+      "The site doesn't explain clearly what you offer or who it's for.",
       "It looks dated, loads slowly or is awkward to use on a phone.",
       "Changing a price, service or piece of content has become a job in itself.",
     ],
@@ -221,7 +221,7 @@ export const services: Service[] = [
       },
       {
         title: "Design and build the whole site",
-        body: "You do not need to coordinate a copywriter, designer and developer. I take the agreed site through to launch.",
+    body: "You don't need to coordinate a copywriter, designer and developer. I take the agreed site through to launch.",
       },
       {
         title: "Make it fast and easy to use",
@@ -265,7 +265,7 @@ export const services: Service[] = [
       },
     ],
     outcome:
-      "Visitors understand the business, find the information they need and have a clear reason to contact you. You also get a site that is simpler to maintain.",
+      "Visitors understand the business, find the information they need and have a clear reason to contact you. You also get a site that's simpler to maintain.",
   },
   {
     slug: "automation-growth",
@@ -287,7 +287,7 @@ export const services: Service[] = [
       "CRM setup small business UK",
     ],
     problems: [
-      "Enquiries arrive in different places and some do not get answered quickly enough.",
+      "Enquiries arrive in different places and some don't get answered quickly enough.",
       "You copy the same information between forms, emails and spreadsheets.",
       "Routine reminders and follow-ups depend on somebody remembering them.",
       "You spend part of every week producing the same updates or reports by hand.",

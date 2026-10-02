@@ -86,7 +86,7 @@ export function TicketForm({ turnstileSiteKey }: { turnstileSiteKey: string }) {
       form.reset();
       setTurnstileToken("");
       window.turnstile?.reset(widgetId.current);
-    } else setMessage(result.error || "The ticket could not be saved. Email hello@namicreative.co.uk if the problem continues.");
+    } else setMessage(result.error || "The ticket couldn't be saved. Email hello@namicreative.co.uk if the problem continues.");
     setBusy(false);
   }
 
@@ -104,10 +104,10 @@ export function TicketForm({ turnstileSiteKey }: { turnstileSiteKey: string }) {
         <label className="block text-sm font-semibold">Your name<input name="name" required maxLength={100} className={fieldClass} /></label>
         <label className="block text-sm font-semibold">Email address<input name="email" type="email" autoComplete="email" required maxLength={200} className={fieldClass} /></label>
       </div>
-      <label className="block text-sm font-semibold">What is the problem?<input name="subject" required maxLength={140} className={fieldClass} /></label>
+      <label className="block text-sm font-semibold">What&apos;s the problem?<input name="subject" required maxLength={140} className={fieldClass} /></label>
       <label className="block text-sm font-semibold">Tell me what happened<textarea name="description" required minLength={20} maxLength={3000} rows={7} className={fieldClass} /></label>
       <label className="block text-sm font-semibold">Page address, if you have it<input name="pageUrl" type="url" maxLength={500} placeholder="https://namicreative.co.uk/..." className={fieldClass} /></label>
-      <label className="block text-sm font-semibold">How much is it affecting you?<select name="priority" className={fieldClass}><option value="normal">I can still use the site</option><option value="urgent">I cannot use my account or profile</option></select></label>
+      <label className="block text-sm font-semibold">How much is it affecting you?<select name="priority" className={fieldClass}><option value="normal">I can still use the site</option><option value="urgent">I can&apos;t use my account or profile</option></select></label>
       <label className="sr-only">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
       {turnstileSiteKey && <div ref={container} />}
       {message && <p role="alert" className="text-sm text-red-300">{message}</p>}

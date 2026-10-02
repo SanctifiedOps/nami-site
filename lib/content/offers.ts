@@ -202,7 +202,7 @@ export const flowFunnel: Offer = {
   diagnosis: {
     eyebrow: "Why this keeps happening",
     headline: {
-      lead: "You have the people. You don't have",
+      lead: "You've got the people. You don't have",
       accent: "the path.",
     },
     paragraphs: [
@@ -214,7 +214,7 @@ export const flowFunnel: Offer = {
     eyebrow: "Be honest with yourself",
     forYou: [
       "You're a UK service operator, £80k to £300k revenue, selling time at a premium price.",
-      "You have a real audience or referral base. Bookings come through DMs, replies, and word of mouth.",
+      "You've got a real audience or referral base. Bookings come through DMs, replies, and word of mouth.",
       "You can't tell which post, ad, or introduction sent your last paying client.",
       "You're ready to stop being the bottleneck between interest and revenue.",
     ],
@@ -295,7 +295,7 @@ export const flowFunnel: Offer = {
     {
       day: "Day 0",
       title: "15-min fit-call",
-      body: "I check that the job is a fit, scope the brief, and answer your questions. No pitch deck, no high-pressure close. If I am not the right person for it, I will say so on the call.",
+      body: "I check that the job is a fit, scope the brief, and answer your questions. No pitch deck, no high-pressure close. If I'm not the right person for it, I'll say so on the call.",
     },
     {
       day: "Day 1",
@@ -410,7 +410,7 @@ export const flowFunnel: Offer = {
       accent: "The next is yours.",
     },
     body:
-      "Fifteen minutes, no pitch. If I am not the right fit, I will say so on the call. Either way, you leave with a clearer idea of what you need.",
+      "Fifteen minutes, no pitch. If I'm not the right fit, I'll say so on the call. Either way, you leave with a clearer idea of what you need.",
     button: { label: "Book the fit-call", href: CALENDLY_URL },
   },
   faq: [
@@ -432,7 +432,7 @@ export const flowFunnel: Offer = {
     {
       question: "The 6-month minimum, am I locked into paying you for 6 months?",
       answer:
-        "No. The minimum locks the rate (£50 per qualified lead, £750/mo cap) in your favour for 6 months. It is not a payment floor. If zero qualified leads land in a month, that month's invoice is zero. You're committing to the pricing structure, not to spend.",
+        "No. The minimum locks the rate (£50 per qualified lead, £750/mo cap) in your favour for 6 months. It isn't a payment floor. If zero qualified leads land in a month, that month's invoice is zero. You're committing to the pricing structure, not to spend.",
     },
     {
       question: "Do I own the page, the dashboard, and the lead data?",

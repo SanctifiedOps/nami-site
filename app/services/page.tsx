@@ -42,11 +42,11 @@ export default function ServicesPage() {
       <PressurePaths
         title={
           <>
-            Tell me what is{" "}
+            Tell me what&apos;s{" "}
             <span className="text-gradient sm:block">not working</span>
           </>
         }
-        lead="Your website might be quiet, your marketing might feel messy, or too much admin might keep falling back on you. Start there and I will help work out what needs fixing."
+        lead="Your website might be quiet, your marketing might feel messy, or too much admin might keep falling back on you. Start there and I'll help work out what needs fixing."
         className="border-t-0"
       />
 
@@ -62,7 +62,7 @@ export default function ServicesPage() {
               </span>
             </>
           }
-          lead="Choose the job that needs attention now. I will make sure it works with everything you already have and is practical to keep using."
+        lead="Choose the job that needs attention now. I'll make sure it works with everything you already have and is practical to keep using."
           className="mx-auto mb-16 md:mb-20"
         />
         <ServicesGrid />
@@ -83,7 +83,7 @@ export default function ServicesPage() {
                 <span className="text-gradient sm:block">understands the whole job</span>
               </>
             }
-            lead="You should not have to explain the business again every time the work moves from words to design, the website or the follow-up emails."
+        lead="You shouldn't have to explain the business again every time the work moves from words to design, the website or the follow-up emails."
             className="mb-14 md:mb-16"
           />
           <IntegratedSystem />
@@ -101,7 +101,7 @@ export default function ServicesPage() {
                   <span className="text-gradient sm:block">you might want to know</span>
                 </>
               }
-              lead="If your question is not here, send me a message and I will give you a straight answer."
+        lead="If your question isn't here, send me a message and I'll give you a straight answer."
             />
           </div>
           <FAQAccordion />

@@ -6,7 +6,7 @@ export type Value = {
 export const values: Value[] = [
   {
     title: "Straight answers",
-    body: "I will tell you what needs fixing, what can wait and whether I am the right person for the job.",
+    body: "I'll tell you what needs fixing, what can wait and whether I'm the right person for the job.",
   },
   {
     title: "One person who knows the whole job",
@@ -14,6 +14,6 @@ export const values: Value[] = [
   },
   {
     title: "Work you can keep using",
-    body: "I build things to work in the real business, then make sure you know how to use them when I am finished.",
+    body: "I build things to work in the real business, then make sure you know how to use them when I'm finished.",
   },
 ];

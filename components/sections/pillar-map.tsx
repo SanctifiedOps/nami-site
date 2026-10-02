@@ -63,7 +63,7 @@ export function PillarMap({ currentSlug }: { currentSlug: string }) {
                 active ? "text-accent/80" : "text-fg-subtle/70",
               )}
             >
-              {active ? "You are here" : "View"}
+                    {active ? "You're here" : "View"}
             </span>
           </div>
         );

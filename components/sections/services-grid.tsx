@@ -61,13 +61,13 @@ function ServicesCtaCard() {
               Not sure <span className="text-gradient">where to start?</span>
             </h3>
             <p className="leading-relaxed text-fg-muted">
-              Tell me what feels messy, slow or unclear. I will help you work
+                  Tell me what feels messy, slow or unclear. I&apos;ll help you work
               out what needs fixing first.
             </p>
           </div>
 
           <div className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-shadow duration-500 group-hover:shadow-[0_8px_32px_rgb(255_0_188/0.5)]">
-            Tell me what is not working
+                  Tell me what isn&apos;t working
             <ArrowUpRight
               size={14}
               aria-hidden

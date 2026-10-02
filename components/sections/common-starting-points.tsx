@@ -6,7 +6,7 @@ export function CommonStartingPoints() {
       <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
         <div className="max-w-xl">
           <h2 className="type-section-title">
-            You do not need to{" "}
+          You don&apos;t need to{" "}
             <span className="text-gradient sm:block">fix everything at once</span>
           </h2>
           <p className="type-lead mt-6">

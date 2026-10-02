@@ -17,6 +17,8 @@ import { AnimatedMemberTooltip } from "@/components/ui/animated-member-tooltip";
 import { RotatingMemberCards } from "@/components/ui/rotating-member-cards";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { Testimonials } from "@/components/sections/testimonials";
+import type { Testimonial } from "@/lib/content/testimonials";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 import { isShowcaseReadyMember } from "@/lib/content/network-directory";
 import { NetworkForm } from "./network-form";
@@ -76,7 +78,7 @@ const reasons = [
 
 const joinSteps = [
   "Send the form so I can review your details and add you to the Network",
-  "Once approved, you will receive an email with a secure link to claim your profile",
+  "Once approved, you'll receive an email with a secure link to claim your profile",
   "Create your login, then edit your profile picture, information and links whenever you need to",
   "Upload portfolio work with links to the full projects behind it",
   "Submit your own events for approval and inclusion in the Network calendar",
@@ -101,6 +103,30 @@ const futureAccess = [
     icon: MapPin,
     title: "Local referrals",
     body: "A NAMI network profile I can pass on when someone is looking for what you do.",
+  },
+];
+
+const networkReviews: Testimonial[] = [
+  {
+    quote:
+      "Joe has really reinvigorated the creative community in the North East with his passion for promoting and supporting local creatives. Being part of the network has led to feeling more secure and inspired in what I do.",
+    author: "cgicentralncl",
+    role: "Google review",
+    href: "https://maps.app.goo.gl/qtpGjDZMwHVxmwpo6",
+  },
+  {
+    quote:
+      "Joe is putting together a REALLY supportive network and even though I'm slightly further afield than the North East, I've still been welcomed warmly and Joe's enthusiasm is honestly second to none! Keep going my man!",
+    author: "Sam Aylard",
+    role: "Google review",
+    href: "https://maps.app.goo.gl/3XssNZ7LZYfVfpK49",
+  },
+  {
+    quote:
+      "Amazing collective of networked creatives. Joe has done an amazing job of bringing us all together into a vibrant community. Prior to this, I really had no idea how much talent there was in the region. The one-stop resource for anyone looking for a North-East based creative.",
+    author: "neil johnson",
+    role: "Google review",
+    href: "https://maps.app.goo.gl/TRuYhj6YKE4M8GPV6",
   },
 ];
 
@@ -308,6 +334,14 @@ export default async function NetworkPage() {
           </div>
         </div>
       </section>
+
+      <Testimonials
+        items={networkReviews}
+        eyebrow="From the Network"
+        title="What our members think"
+        lead="Three members on what it feels like to be part of the NAMI Creative Network."
+        className="bg-surface-0"
+      />
 
       <section
         data-network-section="join_form"

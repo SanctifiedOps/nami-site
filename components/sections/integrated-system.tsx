@@ -94,7 +94,7 @@ export function IntegratedSystem() {
         </ol>
         <p className="mt-6 text-sm leading-relaxed text-fg-muted">
           I understand how the whole job fits together. The words match the
-          design, the website supports the offer and the follow-ups do not get
+              design, the website supports the offer and the follow-ups don&apos;t get
           forgotten.
         </p>
       </motion.div>

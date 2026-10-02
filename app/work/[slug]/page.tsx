@@ -155,7 +155,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
         <div className="container-shell flex flex-col gap-7 md:flex-row md:items-center md:justify-between">
           <div className="max-w-2xl">
             <h2 className="type-subsection-title">Something similar getting in the way?</h2>
-            <p className="mt-3 leading-relaxed text-fg-muted">Tell me what is not working and I will tell you whether I can help.</p>
+            <p className="mt-3 leading-relaxed text-fg-muted">Tell me what isn&apos;t working and I&apos;ll tell you whether I can help.</p>
           </div>
           <Link href="/contact" className="group inline-flex w-fit items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-500 hover:bg-accent-soft">
             Work with me <ArrowUpRight size={15} aria-hidden className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

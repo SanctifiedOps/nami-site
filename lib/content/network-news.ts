@@ -51,7 +51,7 @@ const networkArticles: NetworkNewsItem[] = [
     featured: true,
     body: [
       "Materials carry a history before a maker ever touches them. These five Network members use that history as part of the work, whether they are shaping recycled silver, rolling paper into sculpture or giving discarded objects another life.",
-      "This is not a definitive list. It is a starting point for finding more of the independent work being made across the North East.",
+      "This isn't a definitive list. It's a starting point for finding more of the independent work being made across the North East.",
       "Follow their work, visit their sites and remember their names when the right commission, collaboration or conversation comes up.",
     ],
     memberIds: ["amanda-mulholland", "melanie-heaps", "varie-freyne", "brittania-douglas", "lucy-minta-reeves-b4807ed3"],
@@ -69,10 +69,10 @@ const networkArticles: NetworkNewsItem[] = [
     image: "/network-news/north-east-creative.jpg",
     source: "network",
     body: [
-      "I kept seeing brilliant North East work once, usually in a post or story, and then losing it again. The problem was not a lack of talent. It was that there was no useful place to keep track of everybody.",
+      "I kept seeing brilliant North East work once, usually in a post or story, and then losing it again. The problem wasn't a lack of talent. It was that there was no useful place to keep track of everybody.",
       "The NAMI Creative Network began as a list. It has grown into a public directory where businesses, venues, councils and other creatives can search by discipline and location. A name in the directory can now lead somewhere after the original post has gone.",
-      "I am building the wider Network around that same principle. Features should have a longer life. Introductions should be easier. Opportunities should reach people who would otherwise miss them.",
-      "There is plenty still to build, and I am doing it around client work, family and the rest of real life. But every new member makes the picture of North East creativity a little clearer.",
+      "I'm building the wider Network around that same principle. Features should have a longer life. Introductions should be easier. Opportunities should reach people who'd otherwise miss them.",
+      "There's plenty still to build, and I'm doing it around client work, family and the rest of real life. But every new member makes the picture of North East creativity a little clearer.",
     ],
     memberIds: ["joe-wilson-nami-creative"],
   },
@@ -108,7 +108,7 @@ const networkArticles: NetworkNewsItem[] = [
     image: "/network-news/feature-project.jpg",
     source: "network",
     body: [
-      "Small businesses do not need to sound like everybody else to be taken seriously. A clear personality helps the right people recognise themselves in the offer.",
+      "Small businesses don't need to sound like everybody else to be taken seriously. A clear personality helps the right people recognise themselves in the offer.",
       "The businesses below work in completely different fields. What connects them is specificity: a distinct product, audience, point of view or way of making people feel welcome.",
       "That clarity is worth paying attention to if you are building an independent business of your own.",
     ],
@@ -173,9 +173,9 @@ const networkArticles: NetworkNewsItem[] = [
   },
   {
     slug: "algorithm-is-not-a-measure-of-your-talent",
-    title: "The algorithm is not a measure of your talent",
+    title: "The algorithm isn't a measure of your talent",
     summary:
-      "Good work can be quiet online. That is exactly why the Network needs more than a feed.",
+      "Good work can be quiet online. That's exactly why the Network needs more than a feed.",
     kicker: "From Joe",
     category: "Marketing Notes",
     date: "2026-09-02",
@@ -184,9 +184,9 @@ const networkArticles: NetworkNewsItem[] = [
     image: "/network-news/local-work-2.avif",
     source: "network",
     body: [
-      "Reach is useful, but it is a poor judge of the work. A post can stall because of timing, format, audience history or plain bad luck. None of those things changes the care, skill or thought inside what you made.",
+      "Reach is useful, but it's a poor judge of the work. A post can stall because of timing, format, audience history or plain bad luck. None of those things changes the care, skill or thought inside what you made.",
       "The danger begins when the numbers start editing the practice. You make what performed last time, use the format everybody else is using and slowly move away from the reason people cared in the first place.",
-      "Learn how to present your work clearly. Give people enough context to understand it. Keep showing up. But do not hand an algorithm the job of deciding whether you are any good.",
+      "Learn how to present your work clearly. Give people enough context to understand it. Keep showing up. But don't hand an algorithm the job of deciding whether you're any good.",
       "The directory, roundups and future NAMI events are being built to create more routes into the work. A useful creative network should remember people after the feed has moved on.",
     ],
   },

@@ -185,7 +185,7 @@ export function MemberArticle({
             <section className="mt-10 border-y border-accent py-6">
               <p className="text-xs font-bold uppercase tracking-[0.17em] text-accent">Member voice</p>
               <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-                This contribution is published in the member&apos;s own words. NAMI checks submissions but does not generate or rewrite them.
+              This contribution is published in the member&apos;s own words. NAMI checks submissions but doesn&apos;t generate or rewrite them.
               </p>
             </section>
           </aside>

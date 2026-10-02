@@ -150,7 +150,7 @@ export default async function ServiceDetailPage({
                 <span className="text-gradient sm:block">sound familiar?</span>
               </>
             }
-            lead="You do not need to diagnose the marketing problem before getting in touch. These are some of the signs I usually see."
+        lead="You don't need to diagnose the marketing problem before getting in touch. These are some of the signs I usually see."
             className="mx-auto mb-14 md:mb-16"
           />
           <ScrollReveal>
@@ -178,7 +178,7 @@ export default async function ServiceDetailPage({
               <span className="text-gradient sm:block">you put right</span>
             </>
           }
-        lead="The exact job depends on what you already have and what is causing the problem. I will agree that with you before any work starts."
+        lead="The exact job depends on what you already have and what's causing the problem. I'll agree that with you before any work starts."
           className="mx-auto mb-14 md:mb-20"
         />
         <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-12">
@@ -230,7 +230,7 @@ export default async function ServiceDetailPage({
               <span className="text-gradient sm:block">usually includes</span>
             </>
           }
-          lead="You may need all of this or only part of it. Your proposal will show exactly what is included in your job."
+        lead="You may need all of this or only part of it. Your proposal will show exactly what's included in your job."
           className="mx-auto mb-14 md:mb-16"
         />
         <ScrollReveal className="mx-auto grid max-w-6xl gap-4 md:grid-cols-12">
@@ -314,7 +314,7 @@ export default async function ServiceDetailPage({
                   <span className="text-gradient sm:block">this kind of work</span>
                 </>
               }
-              lead="If your question is not here, send me a message and I will give you a straight answer."
+        lead="If your question isn't here, send me a message and I'll give you a straight answer."
             />
           </div>
           <FAQAccordion items={serviceFaq} />
@@ -327,7 +327,7 @@ export default async function ServiceDetailPage({
             <div>
               <h2 className="type-subsection-title">Need help with this?</h2>
               <p className="mt-3 text-fg-muted">
-                Tell me what is not working and I will help you find the right place to start.
+              Tell me what isn&apos;t working and I&apos;ll help you find the right place to start.
               </p>
             </div>
             <Link

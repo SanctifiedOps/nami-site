@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Quote } from "lucide-react";
+import { ArrowUpRight, Quote } from "lucide-react";
 import {
   testimonials as defaultTestimonials,
   type Testimonial,
@@ -87,6 +87,22 @@ export function Testimonials({
                       {t.author}
                     </p>
                     <p className="mt-1 text-sm text-fg-subtle">{t.role}</p>
+                    {t.href ? (
+                      <a
+                        href={t.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-accent transition-colors hover:text-accent-soft"
+                        aria-label={`Read ${t.author}'s review on Google`}
+                      >
+                        Read on Google
+                        <ArrowUpRight
+                          size={13}
+                          aria-hidden
+                          className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        />
+                      </a>
+                    ) : null}
                   </figcaption>
                 </figure>
               </SpotlightCard>

@@ -20,7 +20,7 @@ export default function PricingPage() {
             <span className="text-gradient sm:block">of help for the job</span>
           </>
         }
-        lead="Some jobs need a focused fix. Others need regular support. I will agree the scope, cost and timescale with you before I begin."
+        lead="Some jobs need a focused fix. Others need regular support. I'll agree the scope, cost and timescale with you before I begin."
       />
 
       {/* How I price the work */}
@@ -45,9 +45,9 @@ export default function PricingPage() {
                 what will actually solve the problem.
               </p>
               <p className="mx-auto max-w-2xl text-fg-muted md:text-lg leading-relaxed">
-                You will see exactly what is included, what it will cost and the
-                expected timescale. If I am not the right person for the job, I
-                will tell you before you spend anything.
+                You&apos;ll see exactly what&apos;s included, what it will cost and the
+                expected timescale. If I&apos;m not the right person for the job, I&apos;ll
+                tell you before you spend anything.
               </p>
             </motion.div>
           </motion.div>
@@ -107,7 +107,7 @@ export default function PricingPage() {
                     <dd className="mt-1 text-sm font-medium text-fg">{e.timeline}</dd>
                   </div>
                   <div>
-                    <dt className="text-sm text-fg-subtle">How it is priced</dt>
+                  <dt className="text-sm text-fg-subtle">How it&apos;s priced</dt>
                     <dd className="mt-1 text-sm font-medium text-fg">{e.starting}</dd>
                   </div>
                 </dl>

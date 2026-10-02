@@ -34,7 +34,7 @@ export function EventForm() {
     if (response.ok) {
       setSubmitted(true);
       form.reset();
-    } else setMessage(result.error || "The event could not be submitted.");
+    } else setMessage(result.error || "The event couldn't be submitted.");
     setBusy(false);
   }
 
@@ -44,7 +44,7 @@ export function EventForm() {
     <h2 className="text-3xl">Add an event</h2>
     <p className="text-fg-muted">Member listings are checked before they appear publicly.</p>
     <label className="block text-sm font-semibold">Event name<input name="title" required maxLength={140} className={fieldClass} /></label>
-    <label className="block text-sm font-semibold">What is happening?<textarea name="summary" required minLength={20} maxLength={1200} rows={6} className={fieldClass} /></label>
+      <label className="block text-sm font-semibold">What&apos;s happening?<textarea name="summary" required minLength={20} maxLength={1200} rows={6} className={fieldClass} /></label>
     <div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-semibold">Venue<input name="venue" required maxLength={140} className={fieldClass} /></label><label className="block text-sm font-semibold">Town or area<input name="location" required maxLength={140} className={fieldClass} /></label></div>
     <div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-semibold">Starts<input name="startsAt" type="datetime-local" required className={fieldClass} /></label><label className="block text-sm font-semibold">Ends, if known<input name="endsAt" type="datetime-local" className={fieldClass} /></label></div>
     <label className="block text-sm font-semibold">Booking or information link<input name="bookingUrl" type="url" maxLength={500} className={fieldClass} /></label>

@@ -9,14 +9,14 @@ export const pressurePaths: PressurePath[] = [
   {
     problem: "Your business looks different everywhere",
     detail:
-      "Your website, social posts and sales materials do not feel like the same business. I can bring them together so customers recognise and trust you.",
+      "Your website, social posts and sales materials don't feel like the same business. I can bring them together so customers recognise and trust you.",
     href: "/contact",
     cta: "Sort out the brand",
   },
   {
-    problem: "Your website is not bringing in enquiries",
+    problem: "Your website isn't bringing in enquiries",
     detail:
-      "People visit the site but do not get in touch. I can make your offer clearer and give visitors an obvious next step.",
+      "People visit the site but don't get in touch. I can make your offer clearer and give visitors an obvious next step.",
     href: "/contact",
     cta: "Improve the website",
   },
@@ -51,9 +51,9 @@ export const commonStartingPoints: StartingPoint[] = [
       "Clearer wording, an updated look and a website that makes it easier for customers to choose you.",
   },
   {
-    name: "People visit the website but do not get in touch",
+    name: "People visit the website but don't get in touch",
     when:
-      "You are getting attention, but too many potential customers disappear without enquiring.",
+      "You're getting attention, but too many potential customers disappear without enquiring.",
     includes:
       "Clearer pages, better calls to action, simpler forms and reliable follow-ups.",
   },

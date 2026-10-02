@@ -95,10 +95,10 @@ export default function FlowFunnelPage() {
       </PageHero>
 
       {/* 1b. DEFINITION SNIPPET (40-60 words, AI-extractable. Search engines
-          and AI Overviews lift this as the answer to "what is a Flow Funnel?".
+            and AI Overviews lift this as the answer to "what&apos;s a Flow Funnel?".
           Lives near the top of the rendered HTML for early crawl extraction.) */}
       <section
-        aria-label="What is a Flow Funnel"
+            aria-label="What's a Flow Funnel"
         className="border-b border-line py-14 md:py-20"
       >
         <motion.div
@@ -109,7 +109,7 @@ export default function FlowFunnelPage() {
           className="container-shell mx-auto max-w-3xl text-center"
         >
           <motion.p className="eyebrow mb-6" variants={fadeUp}>
-            What is a Flow Funnel
+              What&apos;s a Flow Funnel
           </motion.p>
           <motion.p
             className="text-balance text-fg-muted leading-relaxed md:text-lg"

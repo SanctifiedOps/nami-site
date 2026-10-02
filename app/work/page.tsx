@@ -47,7 +47,7 @@ export default function WorkPage() {
               </span>
             </p>
             <p className="mt-4 max-w-lg leading-relaxed text-fg-muted">
-              Tell me what is getting in the way. I will tell you whether I can help.
+            Tell me what&apos;s getting in the way. I&apos;ll tell you whether I can help.
             </p>
           </div>
           <Link

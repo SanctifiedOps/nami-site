@@ -7,17 +7,17 @@ export const faq: FAQ[] = [
   {
     question: "How is NAMI different from a typical agency?",
     answer:
-      "You work directly with me throughout the job. Because I can handle the brand, website, content and automation together, you do not have to manage several different people or keep repeating the brief.",
+      "You work directly with me throughout the job. Because I can handle the brand, website, content and automation together, you don't have to manage several different people or keep repeating the brief.",
   },
   {
     question: "Who do you work with?",
     answer:
-      "I mainly work with small businesses, founders and independent teams. They are usually good at what they do but need help explaining it, presenting it properly or taking repetitive marketing jobs off their plate.",
+      "I mainly work with small businesses, founders and independent teams. They're usually good at what they do but need help explaining it, presenting it properly or taking repetitive marketing jobs off their plate.",
   },
   {
     question: "How long does a typical engagement run?",
     answer:
-      "A brand and website project usually takes six to eight weeks. Smaller jobs can be quicker. Some clients keep me involved each month for content, improvements and ongoing support. I will give you a realistic timescale before you agree to the work.",
+      "A brand and website project usually takes six to eight weeks. Smaller jobs can be quicker. Some clients keep me involved each month for content, improvements and ongoing support. I'll give you a realistic timescale before you agree to the work.",
   },
   {
     question: "Do you only work on websites and digital marketing?",
@@ -27,12 +27,12 @@ export const faq: FAQ[] = [
   {
     question: "What does it cost?",
     answer:
-      "It depends on what you need. A single landing page is a different job from a new brand and website. I talk through the job with you first, then give you a clear price for the agreed work. If I am not the right fit for your budget or the job, I will tell you early.",
+      "It depends on what you need. A single landing page is a different job from a new brand and website. I talk through the job with you first, then give you a clear price for the agreed work. If I'm not the right fit for your budget or the job, I'll tell you early.",
   },
   {
     question: "Can you work with an existing brand?",
     answer:
-      "Yes. I will look at what you already have and keep anything that is still doing its job. Sometimes the brand is fine and only needs to be used more consistently. I will not recommend starting again unless there is a good reason.",
+      "Yes. I'll look at what you already have and keep anything that's still doing its job. Sometimes the brand is fine and only needs to be used more consistently. I won't recommend starting again unless there's a good reason.",
   },
 ];
 
@@ -50,12 +50,12 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Do you do naming?",
       answer:
-      "Yes. I can help name a business, service or product. I will only recommend changing an existing name when there is a clear reason to do it.",
+      "Yes. I can help name a business, service or product. I'll only recommend changing an existing name when there's a clear reason to do it.",
     },
     {
       question: "We already have a logo and some assets. Do we start over?",
       answer:
-      "No. I review what you already have and keep anything that is still useful. A complete redesign only makes sense when the current identity is actively holding the business back.",
+      "No. I review what you already have and keep anything that's still useful. A complete redesign only makes sense when the current identity is actively holding the business back.",
     },
     {
       question: "How long does a brand build take?",
@@ -78,7 +78,7 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "How does AI fit in?",
       answer:
-      "I use AI where it saves useful time, such as organising research or developing early drafts. It does not replace your point of view, and I check anything intended for publication.",
+      "I use AI where it saves useful time, such as organising research or developing early drafts. It doesn't replace your point of view, and I check anything intended for publication.",
     },
     {
       question: "Can you take over an existing content function?",
@@ -101,12 +101,12 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Rebuild on top of our current site, or full restart?",
       answer:
-      "I check the current website before recommending a rebuild. If the foundations are sound, I can improve what is there. If the existing setup makes every change harder, rebuilding may be the more sensible option.",
+      "I check the current website before recommending a rebuild. If the foundations are sound, I can improve what's there. If the existing setup makes every change harder, rebuilding may be the more sensible option.",
     },
     {
       question: "Will the site be fast and SEO-ready?",
       answer:
-      "Yes. Clear page structure, speed, page titles, descriptions, structured data and visitor tracking are considered during the build. Search visibility still depends on competition, content and reputation, so I do not promise rankings.",
+      "Yes. Clear page structure, speed, page titles, descriptions, structured data and visitor tracking are considered during the build. Search visibility still depends on competition, content and reputation, so I don't promise rankings.",
     },
   ],
 
@@ -124,10 +124,10 @@ export const serviceFaq: Record<string, FAQ[]> = {
     {
       question: "Do you do custom integrations or only no-code?",
       answer:
-      "Both. I keep standard jobs as simple as possible and only use custom code when ordinary platforms cannot handle the work reliably.",
+      "Both. I keep standard jobs as simple as possible and only use custom code when ordinary platforms can't handle the work reliably.",
     },
     {
-    question: "How do you decide what is worth automating?",
+    question: "How do you decide what's worth automating?",
     answer:
       "The best candidates are repetitive jobs with a clear starting point and a predictable result. I also consider how often the job happens, how much time it takes and what could go wrong. Some tasks are safer and quicker to leave manual.",
     },

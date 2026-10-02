@@ -18,7 +18,7 @@ export function ResetForm() {
     const data = new FormData(event.currentTarget);
     const password = String(data.get("password") ?? "");
     if (password !== String(data.get("confirmPassword") ?? "")) {
-      setMessage("The passwords do not match.");
+      setMessage("The passwords don't match.");
       setBusy(false);
       return;
     }

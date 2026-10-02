@@ -176,7 +176,7 @@ export const work: CaseStudy[] = [
       approach: [
         { title: "Make the product feel credible", body: "The brand is confident, technical and open about how the service works. It focuses on the quality of the data rather than the noise common in trading groups." },
         { title: "Put the signals in one place", body: "The dashboard brings wallet tracking, developer scoring, cluster detection and funding activity together. Rankings update continuously as wallet behaviour changes." },
-        { title: "Send alerts where people are", body: "Subscribers receive alerts through Discord and Telegram in under a second, so they do not need to keep refreshing another screen." },
+      { title: "Send alerts where people are", body: "Subscribers receive alerts through Discord and Telegram in under a second, so they don't need to keep refreshing another screen." },
       ],
       deliverables: [
         "Brand identity and voice",

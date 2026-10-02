@@ -67,13 +67,13 @@ export default function AboutPage() {
                 leaving people with something they can use.
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                I have spent 20 years working in branding and design. I previously
+                I&apos;ve spent 20 years working in branding and design. I previously
                 led a department at the UK&apos;s leading trade body for energy
                 consultants, where I helped build a brand that was represented in
                 Westminster. BBC Radio has also featured my Nami Up North project.
               </p>
               <p className="text-fg-muted md:text-lg leading-relaxed">
-                I am a proud dad and a Newcastle lad. I care about doing the work
+                I&apos;m a proud dad and a Newcastle lad. I care about doing the work
                 properly, being straightforward with people and helping good ideas
                 make it out into the world.
               </p>
@@ -152,11 +152,11 @@ export default function AboutPage() {
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
               I kept meeting people who were brilliant at what they did, but
-              their brand, website or content did not show it. Customers could
-              not quickly understand why they should choose them.
+              their brand, website or content didn&apos;t show it. Customers couldn&apos;t
+              quickly understand why they should choose them.
             </p>
             <p className="text-fg-muted md:text-lg leading-relaxed">
-              That is the part I help fix. I bring the words, design, website,
+              That&apos;s the part I help fix. I bring the words, design, website,
               content and repetitive admin together so the business is easier
               to understand and easier to run.
             </p>
@@ -234,7 +234,7 @@ export default function AboutPage() {
               </p>
               <p className="mt-5 text-fg-muted md:text-lg leading-relaxed">
                 I also use it to share member work, send useful opportunities
-                and make introductions when somebody asks who I would recommend.
+                and make introductions when somebody asks who I&apos;d recommend.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link

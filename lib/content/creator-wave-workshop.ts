@@ -17,13 +17,13 @@ export const creatorWaveWorkshop = {
       title: "30 minute Creator Check-in",
       body:
         "A quick look at your current setup and a call to talk through the most obvious fixes. Good if you know something feels off but you need an outside view before spending more time on it.",
-      note: "Best starting point for most people. Bring the links, I will help you work out what needs sorting first.",
+      note: "Best starting point for most people. Bring the links, I'll help you work out what needs sorting first.",
     },
     {
       label: "\u00a329",
       title: "Full Creator Funnel Report",
       body:
-        "I go through your social profile, content, website, shop, booking route, offer, and follow-up. You get a clear report on what is working, what is putting people off, and what to sort first.",
+        "I go through your social profile, content, website, shop, booking route, offer, and follow-up. You get a clear report on what's working, what's putting people off, and what to sort first.",
       note: "The do-it-yourself option. Take the report, make the changes, and see how you go.",
     },
     {
@@ -35,9 +35,9 @@ export const creatorWaveWorkshop = {
     },
   ],
   symptoms: [
-    "You are not finding enough commissions, bookings, or proper enquiries.",
-    "People like the work, but that attention is not turning into paid work.",
-    "You have not got the time to keep explaining the same thing in DMs.",
+    "You aren't finding enough commissions, bookings, or proper enquiries.",
+    "People like the work, but that attention isn't turning into paid work.",
+    "You haven't got the time to keep explaining the same thing in DMs.",
     "Your buyers need a clearer path from finding you to trusting you.",
     "Your website, shop, or booking route asks people to figure too much out themselves.",
   ],
@@ -64,12 +64,12 @@ export const creatorWaveWorkshop = {
     "A full marketplace, advanced booking platform, custom Shopify build, or complex directory would be quoted separately. Ongoing hosting, tweaks, and small maintenance are \u00a39.99/month after launch.",
   faq: [
     {
-      question: "Who is this for?",
+      question: "Who's this for?",
       answer:
         "Creative Network members, freelancers, artists, makers, photographers, musicians, small businesses, and independent brands who already have some attention, but need a clearer route from that attention to enquiries, bookings, sales, or commissions.",
     },
     {
-      question: "What is the difference between the free call and the \u00a329 report?",
+      question: "What's the difference between the free call and the \u00a329 report?",
       answer:
       "The free check-in is a quick outside view and a short call so I can recommend the best next step. The \u00a329 report is a deeper review of your content, website, shop, booking route, offer, and follow-up with a written action plan you can work through yourself.",
     },
@@ -84,9 +84,9 @@ export const creatorWaveWorkshop = {
         "No. You need enough activity for me to understand how people currently find you. This is about making the route clearer, not pretending a page can replace the graft of building trust.",
     },
     {
-      question: "What if I do not have a website yet?",
+      question: "What if I don't have a website yet?",
       answer:
-        "That is fine. I can review your social profile, link-in-bio setup, booking route, portfolio, shop page, or current enquiry process. If you need a focused page built, that is what the Creator Website and Funnel Build is for.",
+        "That's fine. I can review your social profile, link-in-bio setup, booking route, portfolio, shop page, or current enquiry process. If you need a focused page built, that's what the Creator Website and Funnel Build is for.",
     },
   ],
 };

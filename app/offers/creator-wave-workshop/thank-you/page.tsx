@@ -40,7 +40,7 @@ export default function CreatorWaveWorkshopThankYouPage() {
           </h1>
 
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-fg-muted md:text-xl">
-            Your Creator Wave enquiry has landed. I&apos;ll look at what you sent and come back with the most sensible next step, whether that is a free check-in, the written report, or leaving it alone until the timing is right.
+            Your Creator Wave enquiry has landed. I&apos;ll look at what you sent and come back with the most sensible next step, whether that&apos;s a free check-in, the written report, or leaving it alone until the timing is right.
           </p>
         </div>
 
@@ -50,10 +50,10 @@ export default function CreatorWaveWorkshopThankYouPage() {
               What happens next
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-pretty leading-relaxed text-accent">
-              I will take a look through the links, your content, and the customer journey before the call, so I can give you the clearest read on where people might be getting stuck and what you can do to improve it.
+              I&apos;ll take a look through the links, your content, and the customer journey before the call, so I can give you the clearest read on where people might be getting stuck and what you can do to improve it.
             </p>
             <p className="mx-auto mt-5 max-w-2xl leading-relaxed text-fg-subtle">
-              You do not need to have everything polished before the call. Send what you have, and I will come into the conversation with a proper view of the route people are taking.
+              You don&apos;t need to have everything polished before the call. Send what you have, and I&apos;ll come into the conversation with a proper view of the route people are taking.
             </p>
           </div>
 

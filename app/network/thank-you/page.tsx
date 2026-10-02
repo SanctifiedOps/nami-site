@@ -18,7 +18,7 @@ const whatsappUrl = "https://chat.whatsapp.com/Fq8MpjoXZTo7FFGM9KUiOr";
 const instagramUrl = "https://www.instagram.com/namicreativeuk/";
 
 export const metadata: Metadata = {
-  title: "You are in - NAMI Creative Network",
+  title: "You're in - NAMI Creative Network",
   description:
     "Thanks for joining NAMI Creative Network. Share your work, join the community spaces, and tag NAMI in your latest projects.",
   alternates: {
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 const nextSteps = [
   {
     icon: Users,
-    title: "Show the group what you are making",
+    title: "Show the group what you're making",
     body: "Use the Facebook group to post new projects, recent work, launches, offers, events, and anything you want more local people to see.",
   },
   {
@@ -62,16 +62,16 @@ export default function NetworkThankYouPage() {
             <Check size={28} className="text-accent" aria-hidden />
           </div>
 
-          <p className="mono-label mt-8 text-accent">You are in the Network</p>
+          <p className="mono-label mt-8 text-accent">You&apos;re in the Network</p>
           <h1 className="mt-5 text-[clamp(1.8rem,3.7vw,3.15rem)] font-semibold leading-[1.03] tracking-tight md:leading-[1]">
             Your welcome email is on its way
           </h1>
 
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-fg md:text-xl">
-            Check your inbox for a message from NAMI Creative. If it is not
+            Check your inbox for a message from NAMI Creative. If it isn&apos;t
             there, have a look in your spam or junk folder and move it to your
             inbox. Add <strong className="font-semibold text-accent">hello@namicreative.co.uk</strong> to
-            your contacts so you do not miss future updates from me.
+            your contacts so you don&apos;t miss future updates from me.
           </p>
         </div>
 
@@ -79,9 +79,9 @@ export default function NetworkThankYouPage() {
           <p className="mono-label text-accent">Your place in the Network</p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">Your directory profile is next</h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-fg-muted md:text-lg">
-            I will add your profile to the Creative Directory shortly. It is
+            I&apos;ll add your profile to the Creative Directory shortly. It&apos;s
             where people across the North East can find your work, follow what
-            you are making and get in touch. Have a look around while I get
+            you&apos;re making and get in touch. Have a look around while I get
             yours ready.
           </p>
           <Link href="/network/directory" className="group mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]">

@@ -24,7 +24,7 @@ export function ClaimProfileForm() {
       if (!response.ok) setError(result.error || "Check your email address and try again.");
       else setMessage(result.message || "Check your inbox for the next step.");
     } catch {
-      setError("The request could not connect. Please try again.");
+      setError("The request couldn't connect. Please try again.");
     } finally {
       setBusy(false);
     }

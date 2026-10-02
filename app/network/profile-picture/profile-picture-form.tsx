@@ -85,7 +85,7 @@ export function ProfilePictureForm({
         body,
       });
       const result = (await response.json().catch(() => ({}))) as { error?: string };
-      if (!response.ok) throw new Error(result.error || "The image could not be uploaded.");
+      if (!response.ok) throw new Error(result.error || "The image couldn't be uploaded.");
 
       setStatus("success");
       setMessage("Nice one. Your picture has landed and is ready for the directory.");

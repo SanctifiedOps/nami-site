@@ -134,14 +134,14 @@ export default function CreatorWaveWorkshopPage() {
               hire you
             </p>
             <p className="leading-relaxed text-fg-muted md:text-lg">
-              That is usually where the money leaks. People see the post, like
+            That&apos;s usually where the money leaks. People see the post, like
               the work, maybe even save it, then get stuck when they try to work
               out what you sell, what it costs, how to enquire, or whether you
               are the right fit.
             </p>
             <p className="leading-relaxed text-fg-muted md:text-lg">
               This is a small, practical offer to sort that path out. No big
-              strategy theatre. Just a clear look at what is happening now, what
+            strategy theatre. Just a clear look at what&apos;s happening now, what
               is getting in the way, and what needs doing next.
             </p>
           </div>
@@ -212,7 +212,7 @@ export default function CreatorWaveWorkshopPage() {
             Want a quick outside view before you decide what to do?
           </p>
           <p className="max-w-2xl leading-relaxed text-fg-muted md:text-lg">
-              Book a free call with me. I will look at where people are finding you, where they might be dropping off, and whether the report or build makes sense.
+              Book a free call with me. I&apos;ll look at where people are finding you, where they might be dropping off, and whether the report or build makes sense.
           </p>
           <PrimaryCta>Book a call with me</PrimaryCta>
         </div>
@@ -330,7 +330,7 @@ export default function CreatorWaveWorkshopPage() {
               A practical report you can actually use
             </h2>
             <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
-              This is not a brand deck. It is a clear set of observations and
+              This isn&apos;t a brand deck. It&apos;s a clear set of observations and
               fixes around the path people take before they enquire, book, buy,
               or commission you.
             </p>
@@ -384,11 +384,11 @@ export default function CreatorWaveWorkshopPage() {
         <div className="container-shell grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <div>
             <h2 className="text-4xl font-semibold leading-[1] tracking-tight md:text-5xl md:leading-[0.98]">
-              Send me the links and I will tell you where to start
+            Send me the links and I&apos;ll tell you where to start
             </h2>
             <p className="mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg">
-              You do not need to have it all polished. If the work is good but
-              the route feels messy, send it over and I will help you find the
+            You don&apos;t need to have it all polished. If the work is good but
+            the route feels messy, send it over and I&apos;ll help you find the
               cleanest next move.
             </p>
             <ul className="mt-8 space-y-4">
