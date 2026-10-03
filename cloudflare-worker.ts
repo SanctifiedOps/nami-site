@@ -7,8 +7,9 @@ export default {
     let response: Response;
 
     if (request.method === "GET" && /^\/sitemap(?:-(?:core|members))?\.xml$/.test(url.pathname)) {
-      const cache = await caches.open("nami-sitemap");
-      const cached = await cache.match(request);
+      const cache = await caches.open("nami-sitemap-v2");
+      const cacheKey = new Request(`${url.origin}${url.pathname}?sitemap-cache=v2`, request);
+      const cached = await cache.match(cacheKey);
       if (cached) return cached;
 
       const generated = await openNextHandler.fetch(request, env, ctx);
@@ -22,7 +23,7 @@ export default {
           statusText: generated.statusText,
           headers,
         });
-        ctx.waitUntil(cache.put(request, response.clone()));
+        ctx.waitUntil(cache.put(cacheKey, response.clone()));
       } else {
         response = generated;
       }
