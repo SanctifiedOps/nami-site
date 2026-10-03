@@ -6,7 +6,7 @@ export default {
     const url = new URL(request.url);
     let response: Response;
 
-    if (request.method === "GET" && url.pathname === "/sitemap.xml") {
+    if (request.method === "GET" && /^\/sitemap(?:-(?:core|members))?\.xml$/.test(url.pathname)) {
       const cache = await caches.open("nami-sitemap");
       const cached = await cache.match(request);
       if (cached) return cached;
