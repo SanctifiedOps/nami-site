@@ -1,0 +1,106 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: GPTBot
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: ClaudeBot
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: Claude-Web
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: anthropic-ai
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: Google-Extended
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: Perplexity-User
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: BingPreview
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: Applebot
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: Applebot-Extended
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+User-Agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /network/thank-you
+Disallow: /offers/creator-wave-workshop/thank-you
+
+Sitemap: https://namicreative.co.uk/sitemap.xml
