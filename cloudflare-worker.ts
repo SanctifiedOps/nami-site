@@ -6,18 +6,29 @@ export default {
     const url = new URL(request.url);
     let response: Response;
 
-    if (request.method === "GET" && /^\/sitemap(?:-(?:core|members))?\.xml$/.test(url.pathname)) {
-      const cache = await caches.open("nami-sitemap-v2");
-      const cacheKey = new Request(`${url.origin}${url.pathname}?sitemap-cache=v2`, request);
+    if (
+      (request.method === "GET" || request.method === "HEAD") &&
+      (url.pathname === "/sitemap.xml" || url.pathname === "/sitemap-core.xml")
+    ) {
+      response = await env.ASSETS!.fetch(request);
+    } else if (
+      (request.method === "GET" || request.method === "HEAD") &&
+      url.pathname === "/sitemap-members.xml"
+    ) {
+      const cache = await caches.open("nami-sitemap-v3");
+      const cacheKey = new Request(`${url.origin}${url.pathname}?sitemap-cache=v3`, request);
       const cached = await cache.match(cacheKey);
       if (cached) return cached;
 
       const generated = await openNextHandler.fetch(request, env, ctx);
       if (generated.ok) {
         const body = await generated.arrayBuffer();
-        const headers = new Headers(generated.headers);
-        headers.set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
-        headers.set("Content-Length", String(body.byteLength));
+        const headers = new Headers({
+          "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400, no-transform",
+          "Content-Length": String(body.byteLength),
+          "Content-Type": "application/xml",
+          "X-Content-Type-Options": "nosniff",
+        });
         response = new Response(body, {
           status: generated.status,
           statusText: generated.statusText,
