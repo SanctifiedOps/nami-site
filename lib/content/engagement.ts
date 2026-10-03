@@ -16,7 +16,7 @@ export const engagements: EngagementModel[] = [
     name: "One-off project",
     best: "For one clear job with an agreed finish point.",
     description:
-      "I agree the scope, price and timescale with you before I start. This works well when your brand, website or another part of the business needs focused attention.",
+      "I agree what I'm doing, the price and the timescale with you before I start. This works well when your brand, website or another part of the business needs focused attention.",
     scope: [
       "Branding and visual identity",
       "A new or improved website",

@@ -295,7 +295,7 @@ export const flowFunnel: Offer = {
     {
       day: "Day 0",
       title: "15-min fit-call",
-      body: "I check that the job is a fit, scope the brief, and answer your questions. No pitch deck, no high-pressure close. If I'm not the right person for it, I'll say so on the call.",
+      body: "I check that the job is a fit, agree what needs doing and answer your questions. No pitch deck, no high-pressure close. If I'm not the right person for it, I'll say so on the call.",
     },
     {
       day: "Day 1",

@@ -792,7 +792,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "instagram": "@katierzedzianart",
     "instagramUrl": "https://www.instagram.com/katierzedzianart/",
     "websiteUrl": "https://folksy.com/shops/katierzedzianart",
-    "description": "A self-taught Whitley Bay artist creating landscapes and seascapes shaped by a love of the outdoors.",
+    "description": "A self-taught Whitley Bay artist creating landscapes and seascapes inspired by a love of the outdoors.",
     "featured": false
   },
   {
@@ -1166,7 +1166,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "instagram": "@nicefaceappareluk",
     "instagramUrl": "https://www.instagram.com/nicefaceappareluk/",
     "websiteUrl": "https://nicefaceapparel.co.uk/",
-    "description": "Nice Face Apparel is an independent clothing brand shaped by tattoo art and culture.",
+    "description": "Nice Face Apparel is an independent clothing brand inspired by tattoo art and culture.",
     "featured": false
   },
   {
@@ -1331,7 +1331,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "instagram": "@sarahpavlou_art",
     "instagramUrl": "https://www.instagram.com/sarahpavlou_art/",
     "websiteUrl": "https://www.sarahpavlouart.com",
-    "description": "An abstract artist whose practice draws on a former fashion-design career, years spent living in Cyprus and a life shaped by travel and change.",
+    "description": "An abstract artist whose practice draws on a former fashion-design career, years spent living in Cyprus and a life influenced by travel and change.",
     "featured": false
   },
   {
@@ -1507,7 +1507,7 @@ export const networkDirectoryMembers: NetworkDirectoryMember[] = [
     "instagram": "@twistedfigments",
     "instagramUrl": "https://www.instagram.com/twistedfigments/",
     "websiteUrl": "https://www.instagram.com/twistedfigments",
-    "description": "A professional pixel artist designing a video game shaped by horror, 1980s and 1990s culture and nostalgia.",
+    "description": "A professional pixel artist designing a video game inspired by horror, 1980s and 1990s culture and nostalgia.",
     "featured": false
   },
   {

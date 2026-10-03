@@ -20,7 +20,7 @@ export default function PricingPage() {
             <span className="text-gradient sm:block">of help for the job</span>
           </>
         }
-        lead="Some jobs need a focused fix. Others need regular support. I'll agree the scope, cost and timescale with you before I begin."
+        lead="Some jobs need a focused fix. Others need regular support. I'll agree what I'm doing, what it costs and how long it will take before I begin."
       />
 
       {/* How I price the work */}

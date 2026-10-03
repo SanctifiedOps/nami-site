@@ -50,7 +50,7 @@ const networkArticles: NetworkNewsItem[] = [
     source: "network",
     featured: true,
     body: [
-      "Materials carry a history before a maker ever touches them. These five Network members use that history as part of the work, whether they are shaping recycled silver, rolling paper into sculpture or giving discarded objects another life.",
+      "Materials carry a history before a maker ever touches them. These five Network members use that history as part of the work, whether they are working with recycled silver, rolling paper into sculpture or giving discarded objects another life.",
       "This isn't a definitive list. It's a starting point for finding more of the independent work being made across the North East.",
       "Follow their work, visit their sites and remember their names when the right commission, collaboration or conversation comes up.",
     ],
@@ -127,7 +127,7 @@ const networkArticles: NetworkNewsItem[] = [
     image: "/network-news/creative-night.jpg",
     source: "network",
     body: [
-      "Photography shapes how musicians, performers, founders and independent businesses are first understood. The right photographer does more than record what is in front of the lens. They find the part worth remembering.",
+      "Photography affects how musicians, performers, founders and independent businesses are first understood. The right photographer does more than record what is in front of the lens. They find the part worth remembering.",
       "These five Network members cover live events, music, fashion, portraits and experimental techniques. Their practices are different enough to show why choosing by fit matters.",
       "Browse their work and keep the right name nearby for your next release, campaign, event or portrait.",
     ],

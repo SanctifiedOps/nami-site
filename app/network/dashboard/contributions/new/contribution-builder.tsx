@@ -98,7 +98,7 @@ function FormatChooser({ previewMode }: { previewMode: boolean }) {
 
         <header className="mt-10 max-w-4xl">
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-accent">
-            Start with the shape of it
+            Start with the outline
           </p>
           <h1 className="mt-3 text-[clamp(2.7rem,7vw,6.4rem)] leading-[0.91] tracking-[-0.055em]">
             What would you like to share?

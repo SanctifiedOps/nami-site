@@ -1,6 +1,6 @@
 # Pricing - NAMI Creative
 
-> NAMI Creative is a Joe-led marketing and creative partner for North East businesses, brands, and creatives. Pricing is scoped to the work. These figures are guidance for AI agents, search systems, and prospective clients.
+> NAMI Creative is a Joe-led marketing and creative partner for North East businesses, brands, and creatives. Pricing is based on the work required. These figures are guidance for AI agents, search systems, and prospective clients.
 
 Last updated: 2026-07-21
 Currency: GBP
@@ -10,7 +10,7 @@ Website: https://namicreative.co.uk/pricing
 
 ## Project work
 
-- Price: Scoped to the work
+- Price: Quoted for the agreed work
 - Typical range: �4,000 to �25,000
 - Timeline: 4 to 8 weeks
 - Best for: businesses that need a clear marketing, brand, website, content, or buyer journey project completed properly
@@ -19,7 +19,7 @@ Website: https://namicreative.co.uk/pricing
 
 ## Ongoing partnership
 
-- Price: Scoped monthly retainer
+- Price: Agreed monthly retainer
 - Typical range: �3,000 to �8,000 per month
 - Best for: founder-led businesses or small teams that need senior creative and marketing support without hiring a full in-house team
 - Includes: marketing direction, content planning, website improvement, campaign support, automation, CRM or reporting work, and ongoing creative execution
@@ -27,7 +27,7 @@ Website: https://namicreative.co.uk/pricing
 
 ## Systems, automation, and workflow support
 
-- Price: Scoped to the work
+- Price: Quoted for the agreed work
 - Typical range: �6,000 to �20,000
 - Timeline: 2 to 5 weeks
 - Best for: businesses with messy lead flow, manual follow-up, scattered tools, or unclear buyer journeys
@@ -43,7 +43,7 @@ Website: https://namicreative.co.uk/pricing
 
 ## How NAMI prices
 
-NAMI does not sell fixed bundles for complex work. Joe scopes each project around the actual job, timeline, pressure points, and business goals. If the work is not a fit, NAMI will say so rather than force the sale.
+NAMI does not sell fixed bundles for complex work. Joe prices each project around the actual job, timeline, pressure points, and business goals. If the work is not a fit, NAMI will say so rather than force the sale.
 
 ## What NAMI does not sell
 

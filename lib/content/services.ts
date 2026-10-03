@@ -93,7 +93,7 @@ export const services: Service[] = [
       },
       {
         title: "Set the direction",
-        body: "I shape the wording and visual direction, then show you how it works on things your customers will actually see.",
+        body: "I write the wording and set the visual direction, then show you how it works on things your customers will actually see.",
       },
       {
         title: "Put it to work",

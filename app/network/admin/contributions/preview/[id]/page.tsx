@@ -23,7 +23,7 @@ export default async function ReviewContributionPreviewPage({
     format: "project_story",
     title: "What painting a studio wall taught me about working in public",
     summary:
-      "A short account of making a mural while the building stayed open, and what changed when people could watch it take shape.",
+      "A short account of making a mural while the building stayed open, and what changed when people could watch it develop.",
     content: {
       version: 1,
       blocks: [
