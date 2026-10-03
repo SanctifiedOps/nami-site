@@ -24,11 +24,13 @@ function matchesPath(pathname: string, href: string) {
 export function MobileDrawer({ member }: { member: HeaderMember | null }) {
   const [open, setOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [openNestedSubmenu, setOpenNestedSubmenu] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
     setOpen(false);
     setOpenSubmenu(null);
+    setOpenNestedSubmenu(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -185,16 +187,65 @@ export function MobileDrawer({ member }: { member: HeaderMember | null }) {
                                   className="overflow-hidden"
                                 >
                                   <div className="border-t border-line py-2">
-                                    {item.children.map((child) => (
-                                      <Link
-                                        key={child.href}
-                                        href={child.href}
-                                        className="flex items-center justify-between rounded-md px-6 py-3 text-lg font-medium tracking-tight text-fg-muted transition-colors hover:bg-white/3 hover:text-fg"
-                                      >
-                                        {child.label}
-                                        <ArrowUpRight size={17} aria-hidden className="opacity-40" />
-                                      </Link>
-                                    ))}
+                                    {item.children.map((child) =>
+                                      child.children ? (
+                                        <div key={child.href}>
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              setOpenNestedSubmenu((current) =>
+                                                current === child.href ? null : child.href,
+                                              )
+                                            }
+                                            aria-expanded={openNestedSubmenu === child.href}
+                                            className="flex w-full items-center justify-between rounded-md px-6 py-3 text-left text-lg font-medium tracking-tight text-fg-muted transition-colors hover:bg-white/3 hover:text-fg"
+                                          >
+                                            {child.label}
+                                            <ChevronDown
+                                              size={17}
+                                              aria-hidden
+                                              className={cn(
+                                                "opacity-40 transition-transform duration-300",
+                                                openNestedSubmenu === child.href && "rotate-180",
+                                              )}
+                                            />
+                                          </button>
+                                          <AnimatePresence initial={false}>
+                                            {openNestedSubmenu === child.href && (
+                                              <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: "auto", opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                                                className="overflow-hidden"
+                                              >
+                                                <div className="ml-6 border-l border-line pl-3">
+                                                  {child.children.map((service) => (
+                                                    <Link
+                                                      key={service.href}
+                                                      href={service.href}
+                                                      className="flex items-center justify-between rounded-md px-4 py-2.5 text-base font-medium text-fg-muted transition-colors hover:bg-white/3 hover:text-fg"
+                                                    >
+                                                      {service.label}
+                                                      <ArrowUpRight size={15} aria-hidden className="opacity-40" />
+                                                    </Link>
+                                                  ))}
+                                                </div>
+                                              </motion.div>
+                                            )}
+                                          </AnimatePresence>
+                                        </div>
+                                      ) : (
+                                        <Link
+                                          key={child.href}
+                                          href={child.href}
+                                          className="flex items-center justify-between rounded-md px-6 py-3 text-lg font-medium tracking-tight text-fg-muted transition-colors hover:bg-white/3 hover:text-fg"
+                                        >
+                                          {child.label}
+                                          <ArrowUpRight size={17} aria-hidden className="opacity-40" />
+                                        </Link>
+                                      ),
+                                    )}
                                   </div>
                                 </motion.div>
                               )}

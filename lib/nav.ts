@@ -10,7 +10,16 @@ export const primaryNav: NavItem[] = [
     label: "Work with me",
     href: "/services",
     children: [
-      { label: "Services", href: "/services" },
+      {
+        label: "Services",
+        href: "/services",
+        children: [
+          { label: "Brand strategy", href: "/services/brand-strategy" },
+          { label: "Content strategy", href: "/services/content-systems" },
+          { label: "Website development", href: "/services/website-funnel" },
+          { label: "Automation", href: "/services/automation-growth" },
+        ],
+      },
       { label: "Work", href: "/work" },
       { label: "Process", href: "/process" },
       { label: "Pricing", href: "/pricing" },

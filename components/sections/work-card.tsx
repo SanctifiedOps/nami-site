@@ -12,9 +12,10 @@ import { cn } from "@/lib/utils";
 type Props = {
   study: CaseStudy;
   className?: string;
+  compact?: boolean;
 };
 
-export function WorkCard({ study, className }: Props) {
+export function WorkCard({ study, className, compact = false }: Props) {
   const Icon = study.icon;
   const accent = ACCENT_GRADIENTS[study.accent];
 
@@ -41,25 +42,29 @@ export function WorkCard({ study, className }: Props) {
               aria-hidden
               className="absolute inset-0 bg-linear-to-b from-surface-0/55 via-transparent to-surface-0/45"
             />
-            <div className="absolute inset-0 flex items-start justify-between p-6">
-              <span className="inline-flex items-center rounded-full border border-line bg-surface-0/70 px-3 py-1 font-mono text-[10px] tracking-widest text-fg-muted backdrop-blur-md">
-                {study.index}
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-0/70 px-3 py-1 text-[10px] uppercase tracking-widest text-fg-muted backdrop-blur-md">
-                <span
-                  className="size-1.5 rounded-full bg-accent"
-                  style={{ boxShadow: `0 0 12px ${accent.glow}` }}
-                />
-                {study.status}
-              </span>
-            </div>
-            <div className="absolute bottom-6 left-6 inline-grid size-12 place-items-center rounded-xl border border-line bg-surface-0/70 backdrop-blur-md transition-transform duration-500 ease-out-expo group-hover:-translate-y-0.5">
-              <Icon size={20} className="text-accent" aria-hidden />
-            </div>
+            {!compact && (
+              <>
+                <div className="absolute inset-0 flex items-start justify-between p-6">
+                  <span className="inline-flex items-center rounded-full border border-line bg-surface-0/70 px-3 py-1 font-mono text-[10px] tracking-widest text-fg-muted backdrop-blur-md">
+                    {study.index}
+                  </span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-0/70 px-3 py-1 text-[10px] uppercase tracking-widest text-fg-muted backdrop-blur-md">
+                    <span
+                      className="size-1.5 rounded-full bg-accent"
+                      style={{ boxShadow: `0 0 12px ${accent.glow}` }}
+                    />
+                    {study.status}
+                  </span>
+                </div>
+                <div className="absolute bottom-6 left-6 inline-grid size-12 place-items-center rounded-xl border border-line bg-surface-0/70 backdrop-blur-md transition-transform duration-500 ease-out-expo group-hover:-translate-y-0.5">
+                  <Icon size={20} className="text-accent" aria-hidden />
+                </div>
+              </>
+            )}
           </div>
 
           {/* Body */}
-          <div className="relative flex flex-1 flex-col gap-5 p-8">
+          <div className={cn("relative flex flex-1 flex-col", compact ? "gap-4 p-6" : "gap-5 p-8")}>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent/80">
                 {study.client}
@@ -74,7 +79,7 @@ export function WorkCard({ study, className }: Props) {
 
             <p className="leading-relaxed text-fg-muted">{study.oneLiner}</p>
 
-            {study.outcomes && study.outcomes.length > 0 && (
+            {!compact && study.outcomes && study.outcomes.length > 0 && (
               <dl className="grid gap-3 border-y border-line py-4 sm:grid-cols-2">
                 {study.outcomes.slice(0, 2).map((outcome) => (
                   <div key={outcome.label}>

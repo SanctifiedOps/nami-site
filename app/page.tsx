@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowUpRight, Handshake, Mail, Users } from "lucide-react";
 import { HomeHero } from "@/components/hero/home-hero";
 import { SectionIntro } from "@/components/sections/section-intro";
-import { ServicesGrid } from "@/components/sections/services-grid";
 import { ProcessScroll } from "@/components/sections/process-scroll";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
 import { PositioningBand } from "@/components/sections/positioning-band";
@@ -14,6 +13,16 @@ import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 import { isShowcaseReadyMember } from "@/lib/content/network-directory";
+import { work } from "@/lib/content/work";
+
+const homeWork = work.filter((study) =>
+  [
+    "whittaker-property-group",
+    "the-league",
+    "millions",
+    "energy-consultants-association",
+  ].includes(study.slug),
+);
 
 export default async function Home() {
   const members = await getNetworkDirectoryMembers();
@@ -36,33 +45,6 @@ export default async function Home() {
       <PressurePaths />
 
 
-      {/* SERVICES */}
-      <section className="relative isolate overflow-hidden py-28 md:py-40">
-        <ParallaxBackdrop
-          src="/images/north-east/6.jpg"
-          position="center 52%"
-          overlay={0.84}
-        />
-        <div className="container-shell relative z-10">
-          <SectionIntro
-            align="center"
-            index="01 / What I build"
-            title={
-              <>
-                The jobs you know need sorting{" "}
-                <span className="text-gradient sm:block">
-                  but never get time to fix
-                </span>
-              </>
-            }
-            lead="Bring me one problem or the whole list. I can sort the brand, website, content and repetitive admin, then leave you with something you can actually use."
-          />
-          <div className="mt-16 md:mt-20">
-            <ServicesGrid />
-          </div>
-        </div>
-      </section>
-
       {/* PROCESS */}
       <section className="border-t border-line bg-surface-1/30 py-28 md:py-40">
         <div className="container-shell">
@@ -74,7 +56,7 @@ export default async function Home() {
       <section className="container-shell border-t border-line py-28 md:py-40">
         <SectionIntro
           align="center"
-          index="03 / Selected work"
+          index="01 / Selected work"
           title={
             <>
               What I helped{" "}
@@ -85,7 +67,7 @@ export default async function Home() {
           className="mb-16 md:mb-20"
         />
 
-        <WorkGrid />
+        <WorkGrid items={homeWork} compact />
 
         <div className="mt-16 flex items-center justify-center md:mt-20">
           <Link

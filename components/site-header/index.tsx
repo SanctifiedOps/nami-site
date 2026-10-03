@@ -171,17 +171,43 @@ export function SiteHeader() {
                         transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                         className="absolute left-1/2 top-full z-30 w-72 -translate-x-1/2 border border-line bg-surface-0/95 p-2 shadow-[0_18px_45px_rgb(0_0_0/0.45)] backdrop-blur-xl"
                       >
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            onClick={() => setOpenMenu(null)}
-                            className="flex items-center justify-between border-b border-line px-4 py-3 text-sm text-fg-muted transition-colors last:border-b-0 hover:bg-white/5 hover:text-fg"
-                          >
-                            {child.label}
-                            <ArrowUpRight size={14} aria-hidden className="opacity-50" />
-                          </Link>
-                        ))}
+                        {item.children.map((child) =>
+                          child.children ? (
+                            <div key={child.href} className="group/submenu relative border-b border-line last:border-b-0">
+                              <button
+                                type="button"
+                                aria-haspopup="true"
+                                className="flex w-full items-center justify-between px-4 py-3 text-left text-sm text-fg-muted transition-colors group-hover/submenu:bg-white/5 group-hover/submenu:text-fg group-focus-within/submenu:bg-white/5 group-focus-within/submenu:text-fg"
+                              >
+                                {child.label}
+                                <ChevronDown size={14} aria-hidden className="-rotate-90 opacity-50" />
+                              </button>
+                              <div className="invisible absolute left-full top-0 w-64 translate-x-1 border border-line bg-surface-0/95 p-2 opacity-0 shadow-[0_18px_45px_rgb(0_0_0/0.45)] backdrop-blur-xl transition-all duration-150 group-hover/submenu:visible group-hover/submenu:translate-x-0 group-hover/submenu:opacity-100 group-focus-within/submenu:visible group-focus-within/submenu:translate-x-0 group-focus-within/submenu:opacity-100">
+                                {child.children.map((service) => (
+                                  <Link
+                                    key={service.href}
+                                    href={service.href}
+                                    onClick={() => setOpenMenu(null)}
+                                    className="flex items-center justify-between border-b border-line px-4 py-3 text-sm text-fg-muted transition-colors last:border-b-0 hover:bg-white/5 hover:text-fg"
+                                  >
+                                    {service.label}
+                                    <ArrowUpRight size={14} aria-hidden className="opacity-50" />
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ) : (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => setOpenMenu(null)}
+                              className="flex items-center justify-between border-b border-line px-4 py-3 text-sm text-fg-muted transition-colors last:border-b-0 hover:bg-white/5 hover:text-fg"
+                            >
+                              {child.label}
+                              <ArrowUpRight size={14} aria-hidden className="opacity-50" />
+                            </Link>
+                          ),
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>

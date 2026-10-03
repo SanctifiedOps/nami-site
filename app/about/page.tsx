@@ -66,10 +66,8 @@ export default function AboutPage() {
                   their work seen.
                 </p>
                 <p className="text-fg-muted md:text-lg leading-relaxed">
-                  That can mean developing the brand strategy and visual identity,
-                  designing and building a website, writing the copy, planning
-                  content, directing campaigns, or setting up lead flows and
-                  automation so enquiries don&apos;t get missed.
+                  That can mean anything from design and content to web development
+                  and automation.
                 </p>
                 <p className="text-fg-muted md:text-lg leading-relaxed">
                   I help make all those parts connect.
@@ -175,84 +173,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Story */}
-      <section className="container-shell py-24 md:py-32">
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={stage}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <motion.p className="mono-label md:mt-2" variants={fadeUp}>
-            02 / The story
-          </motion.p>
-          <motion.div variants={fadeUp} className="space-y-6">
-            <p className="type-subsection-title">
-              NAMI started with a simple frustration: too much good work gets overlooked.
-            </p>
-            <p className="text-fg-muted md:text-lg leading-relaxed">
-              I kept meeting people who were brilliant at what they did, but
-              their brand, website or content didn&apos;t show it. Customers couldn&apos;t
-              quickly understand why they should choose them.
-            </p>
-            <p className="text-fg-muted md:text-lg leading-relaxed">
-              That&apos;s the part I help fix. I bring the words, design, website,
-              content and repetitive admin together so the business is easier
-              to understand and easier to run.
-            </p>
-            <p className="text-fg-muted md:text-lg leading-relaxed">
-              The Network grew from the same idea. There are talented people
-              across the North East who deserve a proper place to be found.
-            </p>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* North East */}
-      <section className="relative isolate overflow-hidden border-y border-line py-24 md:py-32">
-        <ParallaxBackdrop
-          src="/images/north-east/4.jpg"
-          position="center 48%"
-          overlay={0.84}
-        />
-        <div className="container-shell relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={stage}
-            className="mx-auto max-w-3xl text-center"
-          >
-            <motion.p className="mono-label md:mt-2" variants={fadeUp}>
-              03 / The North East
-            </motion.p>
-            <motion.div variants={fadeUp} className="space-y-6">
-              <p className="type-subsection-title">
-                I want more North East people to get the attention their work deserves.
-              </p>
-              <p className="text-fg-muted md:text-lg leading-relaxed">
-                I was born and raised in Newcastle. I know how much talent is
-                here, from artists and makers to freelancers, shops and growing
-                businesses. Plenty of them are doing excellent work without
-                getting enough attention for it.
-              </p>
-              <p className="text-fg-muted md:text-lg leading-relaxed">
-                My client work helps businesses present themselves clearly and
-                turn more interest into enquiries. The Network helps local
-                people get discovered, featured and recommended.
-              </p>
-              <p className="text-fg-muted md:text-lg leading-relaxed">
-                Both sides support each other. Local businesses need good people
-                to work with, and local creatives need more chances to be seen
-                and paid for what they do.
-              </p>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-
       {/* Creative Network */}
       <section className="border-t border-line py-24 md:py-32">
         <div className="container-shell">
@@ -264,7 +184,7 @@ export default function AboutPage() {
             className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20"
           >
             <motion.div variants={fadeUp} className="max-w-2xl">
-              <p className="mono-label mb-5">04 / NAMI Creative Network</p>
+              <p className="mono-label mb-5">02 / NAMI Creative Network</p>
               <h2 className="type-section-title">
                 One place to find creative people across the North East
               </h2>

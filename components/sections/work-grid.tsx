@@ -8,9 +8,10 @@ import { WorkCard } from "./work-card";
 type Props = {
   items?: CaseStudy[];
   columns?: 2 | 3;
+  compact?: boolean;
 };
 
-export function WorkGrid({ items = work, columns = 2 }: Props) {
+export function WorkGrid({ items = work, columns = 2, compact = false }: Props) {
   return (
     <motion.div
       initial="hidden"
@@ -24,7 +25,7 @@ export function WorkGrid({ items = work, columns = 2 }: Props) {
       }
     >
       {items.map((study) => (
-        <WorkCard key={study.slug} study={study} />
+        <WorkCard key={study.slug} study={study} compact={compact} />
       ))}
     </motion.div>
   );

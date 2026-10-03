@@ -13,7 +13,6 @@ import {
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { Magnetic } from "@/components/motion/magnetic";
 import { VideoBackground } from "@/components/hero/video-background";
-import { HeroParticles } from "@/components/hero/particles";
 import { LetterReveal } from "@/components/motion/letter-reveal";
 import {
   AnimatedMemberTooltip,
@@ -101,8 +100,6 @@ export function HomeHero({
           <div className="h-full w-full rounded-full bg-[radial-gradient(circle,rgb(100_200_255/0.34),transparent_68%)]" />
         </motion.div>
       </motion.div>
-
-      <HeroParticles />
 
       {/* Blend the hero into the section below */}
       <div
