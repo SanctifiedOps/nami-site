@@ -13,16 +13,6 @@ import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 import { isShowcaseReadyMember } from "@/lib/content/network-directory";
-import { work } from "@/lib/content/work";
-
-const homeWork = work.filter((study) =>
-  [
-    "whittaker-property-group",
-    "the-league",
-    "millions",
-    "energy-consultants-association",
-  ].includes(study.slug),
-);
 
 export default async function Home() {
   const members = await getNetworkDirectoryMembers();
@@ -67,7 +57,15 @@ export default async function Home() {
           className="mb-16 md:mb-20"
         />
 
-        <WorkGrid items={homeWork} compact />
+        <WorkGrid
+          slugs={[
+            "whittaker-property-group",
+            "the-league",
+            "millions",
+            "energy-consultants-association",
+          ]}
+          compact
+        />
 
         <div className="mt-16 flex items-center justify-center md:mt-20">
           <Link
