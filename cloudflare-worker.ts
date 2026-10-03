@@ -8,9 +8,18 @@ export default {
 
     if (
       (request.method === "GET" || request.method === "HEAD") &&
-      (url.pathname === "/sitemap.xml" || url.pathname === "/sitemap-core.xml")
+      (url.pathname === "/sitemap.xml" ||
+        url.pathname === "/sitemap-core.xml" ||
+        url.pathname === "/sitemap-index.xml")
     ) {
       response = await env.ASSETS!.fetch(request);
+    } else if (
+      (request.method === "GET" || request.method === "HEAD") &&
+      url.pathname === "/sitemap-pages.xml"
+    ) {
+      const assetUrl = new URL(request.url);
+      assetUrl.pathname = "/sitemap-core.xml";
+      response = await env.ASSETS!.fetch(new Request(assetUrl, request));
     } else if (
       (request.method === "GET" || request.method === "HEAD") &&
       url.pathname === "/sitemap-members.xml"

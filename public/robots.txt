@@ -103,4 +103,4 @@ Disallow: /thank-you
 Disallow: /network/thank-you
 Disallow: /offers/creator-wave-workshop/thank-you
 
-Sitemap: https://namicreative.co.uk/sitemap.xml
+Sitemap: https://namicreative.co.uk/sitemap-index.xml
