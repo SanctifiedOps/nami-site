@@ -165,7 +165,7 @@ export default async function NetworkPage() {
         lead="Meet North East creatives. Give people a way to discover your work, hire you, buy from you or get in touch."
         aboveTitle={
           <AnimatedMemberTooltip
-            memberCount={218}
+            memberCount={members.length}
             context="join"
             items={showcaseMembers.map((member) => ({
               id: member.id,
