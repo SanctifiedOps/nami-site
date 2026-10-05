@@ -112,12 +112,12 @@ export default async function NetworkDirectoryPage() {
                   <div aria-hidden className="pointer-events-none absolute inset-0 rounded-full bg-[linear-gradient(145deg,rgba(255,0,188,.58),rgba(255,0,188,.10)_48%,rgba(0,0,0,.35))] opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none" />
                 </div>
                 <div className="max-w-3xl text-center md:text-left">
-                  <p className="mono-label text-accent">Featured member</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Featured Creative of the Week</p>
+                  <h2 className="mt-3 text-4xl font-semibold leading-[0.96] tracking-tight md:text-6xl">{featured.name}</h2>
                   <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-sm text-fg-subtle md:justify-start">
                     <span className="rounded-full border border-line px-3 py-1.5">{featured.category}</span>
                     <span className="inline-flex items-center gap-2"><MapPin size={14} aria-hidden />{featured.location}</span>
                   </div>
-                  <h2 className="mt-4 text-4xl font-semibold leading-[0.96] tracking-tight md:text-5xl">{featured.name}</h2>
                   <p className="mt-3 max-w-2xl text-base leading-6 text-fg-muted md:text-lg">{featured.description}</p>
                   <div className="mt-5 flex flex-wrap justify-center gap-4 md:justify-start">
                     <Link href={`/network/directory/member/${featured.id}`} className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-soft">
