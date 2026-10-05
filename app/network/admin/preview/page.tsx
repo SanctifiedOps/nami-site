@@ -56,7 +56,7 @@ export default function NetworkAdminPreviewPage() {
       { id: "search-5", eventType: "search", anonymousSessionId: "preview-e", searchQuery: "videographer", categoryFilter: "Film and video", locationFilter: "Sunderland", resultCount: 2, selectedMemberId: null, sourcePath: "/network/directory/all", createdAt: iso(5) },
     ]}
     ga={{ connected: true, users: 557, sessions: 920, views: 2423, usersChange: 218, directorySearches: 167, profileClicks: 232, daily: gaDaily }}
-    instagram={{ connected: true, username: "namicreativeuk", followers: 3090, mediaCount: 49 }}
+    instagram={{ connected: true, username: "namicreativeuk", followers: 3090, mediaCount: 49, topPosts: [] }}
     mailchimp={{ connected: true, audienceName: "Nami Creative", subscribers: 196, openRate: 52.5, clickRate: 7.9, campaignCount: 7, latestCampaign: "Latest NAMI campaign" }}
   />;
 }

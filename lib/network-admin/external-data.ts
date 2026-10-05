@@ -20,6 +20,7 @@ export type InstagramSnapshot = {
   username: string | null;
   followers: number | null;
   mediaCount: number | null;
+  topPosts: Array<{ id: string; permalink: string; thumbnailUrl: string | null; caption: string; views: number }>;
   error?: string;
 };
 
@@ -129,17 +130,33 @@ export async function getInstagramSnapshot(): Promise<InstagramSnapshot> {
   const env = await getRuntimeEnvironment();
   const accountId = env.INSTAGRAM_ACCOUNT_ID;
   const token = env.INSTAGRAM_ACCESS_TOKEN;
-  if (!accountId || !token) return { connected: false, username: null, followers: null, mediaCount: null, error: "Instagram account connection needs moving" };
+  if (!accountId || !token) return { connected: false, username: null, followers: null, mediaCount: null, topPosts: [], error: "Instagram account connection needs moving" };
   try {
     const url = new URL(`https://graph.instagram.com/v23.0/${accountId}`);
     url.searchParams.set("fields", "username,followers_count,media_count");
     url.searchParams.set("access_token", token);
-    const response = await fetch(url, { cache: "no-store" });
+    const mediaUrl = new URL(`https://graph.instagram.com/v23.0/${accountId}/media`);
+    mediaUrl.searchParams.set("fields", "id,caption,media_type,media_url,permalink,thumbnail_url,timestamp");
+    mediaUrl.searchParams.set("limit", "12");
+    mediaUrl.searchParams.set("access_token", token);
+    const [response, mediaResponse] = await Promise.all([fetch(url, { cache: "no-store" }), fetch(mediaUrl, { cache: "no-store" })]);
     if (!response.ok) throw new Error(`Instagram returned ${response.status}`);
     const data = (await response.json()) as { username?: string; followers_count?: number; media_count?: number };
-    return { connected: true, username: data.username ?? null, followers: data.followers_count ?? null, mediaCount: data.media_count ?? null };
+    const media = mediaResponse.ok ? await mediaResponse.json() as { data?: Array<{ id: string; caption?: string; media_type?: string; media_url?: string; permalink?: string; thumbnail_url?: string }> } : { data: [] };
+    const posts = await Promise.all((media.data ?? []).map(async (post) => {
+      const insightsUrl = new URL(`https://graph.instagram.com/v23.0/${post.id}/insights`);
+      insightsUrl.searchParams.set("metric", "views");
+      insightsUrl.searchParams.set("access_token", token);
+      const insightsResponse = await fetch(insightsUrl, { cache: "no-store" });
+      if (!insightsResponse.ok) return null;
+      const insights = await insightsResponse.json() as { data?: Array<{ name?: string; values?: Array<{ value?: number }> }> };
+      const views = Number(insights.data?.find((metric) => metric.name === "views")?.values?.[0]?.value ?? 0);
+      if (!views || !post.permalink) return null;
+      return { id: post.id, permalink: post.permalink, thumbnailUrl: post.thumbnail_url ?? post.media_url ?? null, caption: post.caption ?? "Instagram post", views };
+    }));
+    return { connected: true, username: data.username ?? null, followers: data.followers_count ?? null, mediaCount: data.media_count ?? null, topPosts: posts.filter((post): post is NonNullable<typeof post> => post !== null).sort((a, b) => b.views - a.views).slice(0, 3) };
   } catch (error) {
-    return { connected: false, username: null, followers: null, mediaCount: null, error: error instanceof Error ? error.message : "Instagram is unavailable" };
+    return { connected: false, username: null, followers: null, mediaCount: null, topPosts: [], error: error instanceof Error ? error.message : "Instagram is unavailable" };
   }
 }
 
