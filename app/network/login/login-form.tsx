@@ -42,7 +42,7 @@ export function LoginForm() {
     const data = new FormData(event.currentTarget);
     try {
       const result = await networkAuthClient.signIn.email({
-        email: String(data.get("email") ?? "").trim(),
+        email: String(data.get("email") ?? "").trim().toLowerCase(),
         password: String(data.get("password") ?? ""),
         rememberMe: true,
       });
