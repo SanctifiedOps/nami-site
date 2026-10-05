@@ -16,12 +16,21 @@ export function ForgotForm() {
     const email = String(data.get("email") ?? "").trim().toLowerCase();
 
     try {
-      const result = await networkAuthClient.requestPasswordReset({
-        email,
-        redirectTo: "/network/reset-password",
-      });
-      if (result.error) {
-        setError("The reset request couldn't be sent. Please try again.");
+      const [claimResult, resetResult] = await Promise.allSettled([
+        fetch("/api/network/claim-profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }),
+        networkAuthClient.requestPasswordReset({
+          email,
+          redirectTo: "/network/reset-password",
+        }),
+      ]);
+      const claimRequestAccepted = claimResult.status === "fulfilled" && claimResult.value.ok;
+      const resetRequestAccepted = resetResult.status === "fulfilled" && !resetResult.value.error;
+      if (!claimRequestAccepted && !resetRequestAccepted) {
+        setError("The account recovery request couldn't be sent. Please try again.");
         setBusy(false);
         return;
       }
@@ -35,9 +44,12 @@ export function ForgotForm() {
   if (sent) {
     return (
       <div className="mt-8 rounded-xl border border-accent/30 bg-accent/5 p-5 text-fg-muted">
-        <p>If that email has an active Network account, a reset link is on its way.</p>
+        <p>If that email matches a Network profile, the right secure link is on its way.</p>
         <p className="mt-3 text-sm">
-          Allow a few minutes and check your spam folder. If you haven't claimed your profile yet, use the link in your invitation email instead.
+          Already claimed your profile? You&apos;ll receive a password reset link. Haven&apos;t claimed it yet? You&apos;ll receive a link to create your password and activate your account.
+        </p>
+        <p className="mt-3 text-sm">
+          Allow a few minutes and check your spam folder too.
         </p>
         <p className="mt-3 text-sm">
           Still nothing? Email <a className="font-semibold text-accent underline underline-offset-4" href="mailto:hello@namicreative.co.uk">hello@namicreative.co.uk</a> and I'll check your account.
@@ -54,7 +66,7 @@ export function ForgotForm() {
       </label>
       {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
       <button disabled={busy} className="w-full rounded-full bg-accent px-6 py-3 font-bold text-white disabled:opacity-60">
-        {busy ? "Sending..." : "Send reset link"}
+        {busy ? "Sending..." : "Send account recovery link"}
       </button>
     </form>
   );
