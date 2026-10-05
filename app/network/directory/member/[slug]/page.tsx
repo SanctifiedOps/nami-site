@@ -186,7 +186,6 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
     url: memberUrl,
     name: `${member.name} on the NAMI Creative Network`,
     description: member.description,
-    mainEntityOfPage: memberUrl,
     mainEntity,
     isPartOf: { "@id": `${SITE_URL}/#website` },
   };
