@@ -37,7 +37,7 @@ const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35p
 const button = "rounded-full border border-line-strong px-4 py-2 text-xs font-bold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
 const membersPerPage = 10;
 type DashboardView = "home" | "growth" | "members" | "tasks" | "more";
-const disconnectedGa: GaSnapshot = { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, error: "GA4 connection needed" };
+const disconnectedGa: GaSnapshot = { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, daily: [], error: "GA4 connection needed" };
 const disconnectedInstagram: InstagramSnapshot = { connected: false, username: null, followers: null, mediaCount: null, error: "Instagram connection needed" };
 const disconnectedMailchimp: MailchimpSnapshot = { connected: false, audienceName: null, subscribers: null, openRate: null, clickRate: null, campaignCount: null, latestCampaign: null, error: "Mailchimp connection needed" };
 
@@ -48,6 +48,33 @@ function formatDate(value: string | null) {
 
 function validUrl(value: string) {
   try { return ["http:", "https:"].includes(new URL(value).protocol); } catch { return false; }
+}
+
+function dateKey(date: Date) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+}
+
+function readableDay(value: string) {
+  const normalised = value.length === 8 ? `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}` : value;
+  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" }).format(new Date(`${normalised}T12:00:00Z`));
+}
+
+function memberGrowthSeries(members: Member[], days: number) {
+  const today = new Date();
+  const start = new Date(today); start.setDate(today.getDate() - days + 1);
+  const startKey = dateKey(start);
+  let total = members.filter((member) => dateKey(new Date(member.joinedAt)) < startKey).length;
+  const joins = members.reduce<Record<string, number>>((counts, member) => {
+    const key = dateKey(new Date(member.joinedAt));
+    counts[key] = (counts[key] ?? 0) + 1;
+    return counts;
+  }, {});
+  return Array.from({ length: days }, (_, index) => {
+    const date = new Date(start); date.setDate(start.getDate() + index);
+    const key = dateKey(date);
+    total += joins[key] ?? 0;
+    return { date: key, value: total };
+  });
 }
 
 export function AdminDashboard({ adminName, featuredApproval, applications, members, tickets, events, eventRevisions = [], operations, failedJobs = [], searchEvents = [], eventAnalytics = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
@@ -83,6 +110,9 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
   const archivedTickets = tickets.filter((item) => item.status === "resolved");
   const visibleTickets = ticketView === "active" ? openTickets : archivedTickets;
   const activeMembers = members.filter((item) => item.published && item.accountStatus !== "disabled");
+  const memberGrowth = useMemo(() => memberGrowthSeries(activeMembers, growthDays), [activeMembers, growthDays]);
+  const membersAdded = activeMembers.filter((member) => new Date(member.joinedAt).getTime() >= Date.now() - growthDays * 86400000).length;
+  const websiteGrowth = useMemo(() => growthGa.daily.map((point) => ({ date: point.date, value: point.users })), [growthGa.daily]);
   const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
   const newThisMonth = members.filter((item) => new Date(item.joinedAt) >= monthStart).length;
   const missingImages = members.filter((item) => item.published && !item.profileImageKey).length;
@@ -287,7 +317,7 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
           <ExternalMetric icon={<Mail size={20} />} label="Email audience" value={mailchimp.subscribers} note={mailchimp.connected ? `Current total · ${mailchimp.audienceName ?? "Mailchimp"}` : mailchimp.error ?? "Mailchimp unavailable"} tone="amber" />
         </div>
         <div className="mt-3 grid gap-3 md:mt-4 md:gap-4 lg:grid-cols-2">
-          <article className={`${panel} min-h-48 p-3 md:min-h-64 md:p-6`}><div className="flex items-center justify-between"><div><h3 className="text-sm md:text-xl">Network growth</h3><p className="mt-1 text-[10px] text-fg-subtle md:text-xs">Member, website and channel growth over time</p></div><TrendingUp size={18} className="text-accent md:h-6 md:w-6" /></div><div className="mt-3 flex min-h-24 items-center justify-center rounded-xl border border-dashed border-line px-3 text-center text-[10px] text-fg-subtle md:mt-8 md:min-h-36 md:rounded-2xl md:text-sm">Historical trend collection will populate this chart.</div></article>
+          <article className={`${panel} min-h-48 p-3 md:min-h-64 md:p-6`}><div className="flex items-center justify-between"><div><h3 className="text-sm md:text-xl">Network growth</h3><p className="mt-1 text-[10px] text-fg-subtle md:text-xs">Members and website users across the selected period</p></div><TrendingUp size={18} className="text-accent md:h-6 md:w-6" /></div><div className="mt-3 grid gap-3 md:mt-5"><GrowthTrend title="Network members" note={`Cumulative published members over ${growthDays} days`} series={memberGrowth} current={activeMembers.length} change={`+${membersAdded} joined`} tone="pink" /><GrowthTrend title="Daily website users" note={`Google Analytics daily users over ${growthDays} days`} series={websiteGrowth} current={growthGa.users} change={growthGa.usersChange === null ? "Awaiting GA4" : `${growthGa.usersChange >= 0 ? "+" : ""}${growthGa.usersChange}% vs previous period`} tone="blue" /></div><div className="mt-3 grid grid-cols-2 gap-2"><SmallMetric label="Instagram now" value={instagram.followers} /><SmallMetric label="Email audience now" value={mailchimp.subscribers} /></div></article>
           <article className={`${panel} min-h-48 p-3 md:min-h-64 md:p-6`}><div className="flex items-center justify-between"><div><h3 className="text-sm md:text-xl">Audience engagement</h3><p className="mt-1 text-[10px] text-fg-subtle md:text-xs">Searches, visits, email and social activity</p></div><MousePointerClick size={18} className="text-sky-300 md:h-6 md:w-6" /></div><div className="mt-3 grid grid-cols-2 gap-2 [&>div]:!p-2 [&>div_span]:text-[9px] [&>div_strong]:!mt-1 [&>div_strong]:!text-xl md:mt-5 md:gap-3 md:[&>div]:!p-4 md:[&>div_span]:text-xs md:[&>div_strong]:!mt-2 md:[&>div_strong]:!text-2xl"><SmallMetric label="Directory searches" value={ga.directorySearches} /><SmallMetric label="Profile visits" value={ga.profileClicks} /><SmallMetric label="Email open rate (%)" value={mailchimp.openRate} /><SmallMetric label="Email click rate (%)" value={mailchimp.clickRate} /></div></article>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2.5 md:mt-4 md:gap-4 lg:grid-cols-2"><Breakdown title="Member categories" items={categoryCounts.map(([name, count]) => [groupLabels.get(name) ?? name, count])} /><Breakdown title="Member locations" items={locationCounts} /></div>
@@ -460,6 +490,45 @@ function Status({ value }: { value: string }) {
 
 function OperationCard({ icon, title, pending, failed }: { icon: React.ReactNode; title: string; pending: number; failed: number }) {
   return <article className={`${panel} p-3 md:p-5`}><div className="flex items-start justify-between gap-2"><h3 className="text-sm md:text-lg">{title}</h3><span className="scale-75 text-accent md:scale-100">{icon}</span></div><div className="mt-3 grid grid-cols-2 gap-1.5 md:mt-5 md:gap-3"><div className="rounded-lg bg-surface-0 p-2 md:rounded-xl md:p-3"><span className="text-[9px] text-fg-subtle md:text-xs">Pending</span><strong className="mt-0.5 block text-xl md:mt-1 md:text-2xl">{pending}</strong></div><div className="rounded-lg bg-surface-0 p-2 md:rounded-xl md:p-3"><span className="text-[9px] text-fg-subtle md:text-xs">Failed</span><strong className="mt-0.5 block text-xl md:mt-1 md:text-2xl">{failed}</strong></div></div></article>;
+}
+
+function GrowthTrend({ title, note, series, current, change, tone = "pink" }: {
+  title: string;
+  note: string;
+  series: Array<{ date: string; value: number }>;
+  current: number | null;
+  change: string;
+  tone?: "pink" | "blue";
+}) {
+  const width = 520;
+  const height = 150;
+  const padding = 10;
+  const values = series.map((point) => point.value);
+  const min = values.length ? Math.min(...values) : 0;
+  const max = values.length ? Math.max(...values) : 0;
+  const range = Math.max(1, max - min);
+  const points = series.map((point, index) => {
+    const x = padding + (index / Math.max(1, series.length - 1)) * (width - padding * 2);
+    const y = height - padding - ((point.value - min) / range) * (height - padding * 2);
+    return `${x},${y}`;
+  }).join(" ");
+  const stroke = tone === "pink" ? "#ff00bc" : "#7dd3fc";
+  const first = series[0];
+  const last = series.at(-1);
+
+  return <div className="rounded-xl border border-line bg-surface-0/70 p-3 md:rounded-2xl md:p-4">
+    <div className="flex items-start justify-between gap-3">
+      <div><p className="text-xs font-bold text-fg md:text-sm">{title}</p><p className="mt-1 text-[10px] text-fg-subtle md:text-xs">{note}</p></div>
+      <div className="text-right"><strong className="block text-2xl tabular-nums md:text-3xl">{current === null ? "—" : current.toLocaleString("en-GB")}</strong><span className={`text-[10px] font-bold md:text-xs ${tone === "pink" ? "text-accent" : "text-sky-300"}`}>{change}</span></div>
+    </div>
+    {series.length > 1 ? <>
+      <svg role="img" aria-label={`${title} trend`} viewBox={`0 0 ${width} ${height}`} className="mt-4 h-28 w-full overflow-visible md:h-36" preserveAspectRatio="none">
+        <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="currentColor" className="text-line" strokeWidth="1" />
+        <polyline points={points} fill="none" stroke={stroke} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+      </svg>
+      <div className="mt-1 flex justify-between text-[9px] text-fg-subtle md:text-[10px]"><span>{first ? readableDay(first.date) : ""}</span><span>{last ? readableDay(last.date) : ""}</span></div>
+    </> : <div className="mt-4 flex h-28 items-center justify-center rounded-xl border border-dashed border-line text-center text-xs text-fg-subtle md:h-36">Trend data is not available for this period.</div>}
+  </div>;
 }
 
 function SmallMetric({ label, value }: { label: string; value: number | null }) { return <div className="rounded-xl border border-line bg-surface-0 p-4"><span className="text-xs text-fg-subtle">{label}</span><strong className="mt-2 block text-2xl tabular-nums">{value === null ? "—" : value.toLocaleString("en-GB")}</strong></div>; }

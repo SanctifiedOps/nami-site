@@ -11,6 +11,7 @@ export type GaSnapshot = {
   usersChange: number | null;
   directorySearches: number | null;
   profileClicks: number | null;
+  daily: Array<{ date: string; users: number; views: number }>;
   error?: string;
 };
 
@@ -81,13 +82,13 @@ function percentChange(current: number, previous: number) {
 export async function getGaSnapshot(days = 30): Promise<GaSnapshot> {
   const env = await getRuntimeEnvironment();
   const propertyId = env.GA4_PROPERTY_ID;
-  if (!propertyId) return { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, error: "GA4 property ID needs connecting" };
+  if (!propertyId) return { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, daily: [], error: "GA4 property ID needs connecting" };
   try {
     const token = await googleAccessToken();
     if (!token) throw new Error("Google service account is not configured");
     const safeDays = [7, 30, 60, 90].includes(days) ? days : 30;
     const metrics = [{ name: "totalUsers" }, { name: "sessions" }, { name: "screenPageViews" }];
-    const [current, previous, events] = await Promise.all([
+    const [current, previous, events, daily] = await Promise.all([
       gaReport(token, propertyId, { dateRanges: [{ startDate: `${safeDays}daysAgo`, endDate: "yesterday" }], metrics }),
       gaReport(token, propertyId, { dateRanges: [{ startDate: `${safeDays * 2}daysAgo`, endDate: `${safeDays + 1}daysAgo` }], metrics }),
       gaReport(token, propertyId, {
@@ -95,6 +96,12 @@ export async function getGaSnapshot(days = 30): Promise<GaSnapshot> {
         dimensions: [{ name: "eventName" }],
         metrics: [{ name: "eventCount" }],
         dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["network_directory_searched", "network_member_profile_clicked"] } } },
+      }),
+      gaReport(token, propertyId, {
+        dateRanges: [{ startDate: `${safeDays}daysAgo`, endDate: "yesterday" }],
+        dimensions: [{ name: "date" }],
+        metrics: [{ name: "totalUsers" }, { name: "screenPageViews" }],
+        orderBys: [{ dimension: { dimensionName: "date" } }],
       }),
     ]);
     const eventCounts = new Map((events.rows ?? []).map((row) => [row.dimensionValues?.[0]?.value, Number(row.metricValues?.[0]?.value ?? 0)]));
@@ -107,9 +114,14 @@ export async function getGaSnapshot(days = 30): Promise<GaSnapshot> {
       usersChange: percentChange(users, numberAt(previous, 0)),
       directorySearches: eventCounts.get("network_directory_searched") ?? 0,
       profileClicks: eventCounts.get("network_member_profile_clicked") ?? 0,
+      daily: (daily.rows ?? []).map((row) => ({
+        date: row.dimensionValues?.[0]?.value ?? "",
+        users: Number(row.metricValues?.[0]?.value ?? 0),
+        views: Number(row.metricValues?.[1]?.value ?? 0),
+      })).filter((row) => row.date.length === 8),
     };
   } catch (error) {
-    return { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, error: error instanceof Error ? error.message : "GA4 is unavailable" };
+    return { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, daily: [], error: error instanceof Error ? error.message : "GA4 is unavailable" };
   }
 }
 

@@ -8,6 +8,10 @@ export default function NetworkAdminPreviewPage() {
 
   const now = new Date();
   const iso = (daysAgo: number) => new Date(now.getTime() - daysAgo * 86400000).toISOString();
+  const gaDaily = Array.from({ length: 30 }, (_, index) => {
+    const date = new Date(now.getTime() - (29 - index) * 86400000);
+    return { date: date.toISOString().slice(0, 10).replaceAll("-", ""), users: 9 + ((index * 7) % 23), views: 24 + ((index * 11) % 51) };
+  });
   const member = (id: string, name: string, group: string, location: string, daysAgo: number) => ({
     id, firstName: name.split(" ")[0], email: `${id}@preview.local`, accountStatus: "active", role: "member", joinedAt: iso(daysAgo), lastLoginAt: iso(Math.min(daysAgo, 2)),
     displayName: name, location, primaryGroup: group, speciality: group === "artists" ? "Visual artist" : "Creative business", profileImageKey: `${id}.webp`, published: true, links: [`https://example.com/${id}`],
@@ -51,7 +55,7 @@ export default function NetworkAdminPreviewPage() {
       { id: "search-4", eventType: "search", anonymousSessionId: "preview-d", searchQuery: "illustrator", categoryFilter: "Artists", locationFilter: "Newcastle", resultCount: 7, selectedMemberId: null, sourcePath: "/network/directory/all", createdAt: iso(4) },
       { id: "search-5", eventType: "search", anonymousSessionId: "preview-e", searchQuery: "videographer", categoryFilter: "Film and video", locationFilter: "Sunderland", resultCount: 2, selectedMemberId: null, sourcePath: "/network/directory/all", createdAt: iso(5) },
     ]}
-    ga={{ connected: true, users: 557, sessions: 920, views: 2423, usersChange: 218, directorySearches: 167, profileClicks: 232 }}
+    ga={{ connected: true, users: 557, sessions: 920, views: 2423, usersChange: 218, directorySearches: 167, profileClicks: 232, daily: gaDaily }}
     instagram={{ connected: true, username: "namicreativeuk", followers: 3090, mediaCount: 49 }}
     mailchimp={{ connected: true, audienceName: "Nami Creative", subscribers: 196, openRate: 52.5, clickRate: 7.9, campaignCount: 7, latestCampaign: "Latest NAMI campaign" }}
   />;
