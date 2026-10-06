@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
-import { Activity, AlertTriangle, ArrowLeft, BarChart3, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
+import { Activity, AlertTriangle, ArrowLeft, BarChart3, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, FileText, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
 import type { GaSnapshot, InstagramSnapshot, MailchimpSnapshot } from "@/lib/network-admin/external-data";
 import { suggestDirectoryBio } from "@/lib/network-profile/directory-bio";
@@ -32,6 +32,7 @@ type EventAnalyticsRecord = { id: string; eventId: string | null; eventType: str
 type EventRevision = { id:string; eventId:string; memberId:string; payload:Record<string,unknown>; status:string; adminFeedback:string|null; submittedAt:string; reviewedAt:string|null; reviewerId:string|null };
 type InvitationPreview = { eligible:number; active:number; invited:number; disabled:number; outstanding:number; inviteDays:number; batch:Array<{id:string;name:string;email:string}> };
 type FeaturedApproval = { memberId:string; displayName:string; speciality:string; location:string; proposedAt:string; currentFeaturedName:string|null };
+type Contribution = { id:string; title:string; summary:string; format:string; status:string; memberName:string; submittedAt:string|null; updatedAt:string };
 
 const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35px_rgb(0_0_0/0.16)] md:rounded-[1.5rem] md:shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
 const button = "rounded-full border border-line-strong px-4 py-2 text-xs font-bold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
@@ -77,8 +78,8 @@ function memberGrowthSeries(members: Member[], days: number) {
   });
 }
 
-export function AdminDashboard({ adminName, featuredApproval, applications, members, tickets, events, eventRevisions = [], operations, failedJobs = [], searchEvents = [], eventAnalytics = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
-  adminName: string; featuredApproval: FeaturedApproval|null; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; eventRevisions?: EventRevision[]; operations: Operations; failedJobs?: FailedJob[]; searchEvents?: SearchEvent[]; eventAnalytics?: EventAnalyticsRecord[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
+export function AdminDashboard({ adminName, featuredApproval, applications, members, tickets, events, eventRevisions = [], contributions = [], operations, failedJobs = [], searchEvents = [], eventAnalytics = [], ga = disconnectedGa, instagram = disconnectedInstagram, mailchimp = disconnectedMailchimp }: {
+  adminName: string; featuredApproval: FeaturedApproval|null; applications: Application[]; members: Member[]; tickets: Ticket[]; events: NetworkEvent[]; eventRevisions?: EventRevision[]; contributions?: Contribution[]; operations: Operations; failedJobs?: FailedJob[]; searchEvents?: SearchEvent[]; eventAnalytics?: EventAnalyticsRecord[]; ga?: GaSnapshot; instagram?: InstagramSnapshot; mailchimp?: MailchimpSnapshot;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -247,7 +248,7 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
     { id: "home", label: "Home", icon: <Home size={20} /> },
     { id: "growth", label: "Growth", icon: <TrendingUp size={20} /> },
     { id: "members", label: "Members", icon: <Users size={20} /> },
-    { id: "tasks", label: "Tasks", icon: <TicketCheck size={20} />, badge: pendingApplications.length + openTickets.length + pendingEvents.length + pendingEventRevisions.length + failedJobs.length + (featuredApproval ? 1 : 0) },
+    { id: "tasks", label: "Tasks", icon: <TicketCheck size={20} />, badge: pendingApplications.length + contributions.length + openTickets.length + pendingEvents.length + pendingEventRevisions.length + failedJobs.length + (featuredApproval ? 1 : 0) },
     { id: "more", label: "More", icon: <MoreHorizontal size={20} /> },
   ];
 
@@ -291,8 +292,9 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
           <ExternalMetric icon={<Search size={20} />} label="Directory searches" value={ga.directorySearches} note="Tracked search activity" tone="amber" />
           <ExternalMetric icon={<MousePointerClick size={20} />} label="Profile clicks" value={ga.profileClicks} note="Directory profile visits" tone="pink" />
         </div>
-        <div className="mt-3 grid grid-cols-2 gap-2.5 [&>a]:!p-3 [&>a_p]:!mt-2 [&>a_p]:line-clamp-1 [&>a_strong]:!mt-2 [&>a_strong]:!text-3xl md:mt-5 md:gap-4 md:[&>a]:!p-5 md:[&>a_p]:!mt-5 md:[&>a_p]:line-clamp-none md:[&>a_strong]:!mt-5 md:[&>a_strong]:!text-4xl xl:grid-cols-4">
+        <div className="mt-3 grid grid-cols-2 gap-2.5 [&>a]:!p-3 [&>a_p]:!mt-2 [&>a_p]:line-clamp-1 [&>a_strong]:!mt-2 [&>a_strong]:!text-3xl md:mt-5 md:gap-4 md:[&>a]:!p-5 md:[&>a_p]:!mt-5 md:[&>a_p]:line-clamp-none md:[&>a_strong]:!mt-5 md:[&>a_strong]:!text-4xl xl:grid-cols-5">
           <Metric onClick={() => openSection("tasks", "applications")} icon={<Users size={20} />} label="Applications waiting" value={pendingApplications.length} note="Ready for your review" tone="pink" />
+          <Metric onClick={() => openSection("tasks", "contributions")} icon={<FileText size={20} />} label="Articles waiting" value={contributions.length} note="Member contributions" tone="pink" />
           <Metric onClick={() => openSection("tasks", "tickets")} icon={<TicketCheck size={20} />} label="Open tickets" value={openTickets.length} note="Member support requests" tone="amber" />
           <Metric onClick={() => openSection("tasks", "events")} icon={<CalendarDays size={20} />} label="Events waiting" value={pendingEvents.length} note="Approval queue" tone="blue" />
           <Metric onClick={() => openSection("tasks", "failed-jobs")} icon={<AlertTriangle size={20} />} label="Failed jobs" value={failedJobs.length} note="Open the failure details" tone="red" />
@@ -343,6 +345,24 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
             </article>;
           })}
           {!pendingApplications.length && <Empty text="No member profiles are waiting for approval." />}
+        </div>
+      </section>}
+
+      {activeView === "tasks" && <section id="contributions" className="scroll-mt-28 pt-7 md:pt-12">
+        <SectionHeading title="Article contributions" count={contributions.length} note="Member stories and articles waiting for your review." />
+        <div className="mt-3 grid gap-2.5 md:mt-5 md:gap-4">
+          {contributions.map((contribution) => <article key={contribution.id} className={`${panel} p-5 md:p-6`}>
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2"><span className="text-xs font-bold uppercase tracking-[0.14em] text-accent">{contribution.format.replaceAll("_", " ")}</span><Status value={contribution.status} /></div>
+                <h3 className="mt-2 text-xl md:text-2xl">{contribution.title}</h3>
+                <p className="mt-2 line-clamp-2 max-w-3xl text-sm leading-6 text-fg-muted">{contribution.summary}</p>
+                <p className="mt-3 text-xs text-fg-subtle">By {contribution.memberName} · {contribution.submittedAt ? `Submitted ${formatDate(contribution.submittedAt)}` : `Updated ${formatDate(contribution.updatedAt)}`}</p>
+              </div>
+              <Link href={`/network/admin/contributions/${contribution.id}`} className="shrink-0 rounded-full bg-accent px-5 py-3 text-center text-xs font-bold text-white transition hover:brightness-110">Review article ↗</Link>
+            </div>
+          </article>)}
+          {!contributions.length && <Empty text="No articles are waiting for review." />}
         </div>
       </section>}
 

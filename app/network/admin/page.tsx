@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { desc, eq, gte, like } from "drizzle-orm";
+import { desc, eq, gte, inArray, like } from "drizzle-orm";
 import { requireNetworkAdminSession } from "@/lib/network-auth/session";
 import { getNetworkDb, schema } from "@/lib/network-db";
 import { getGaSnapshot, getInstagramSnapshot, getMailchimpSnapshot } from "@/lib/network-admin/external-data";
@@ -15,7 +15,7 @@ export default async function NetworkAdminPage() {
   const admin = await requireNetworkAdminSession();
   const db = await getNetworkDb();
   const searchCutoff = new Date(Date.now() - 90 * 86400000);
-  const [applications, memberRows, tickets, events, eventRevisions, alerts, emailJobs, syncJobs, eventSyncJobs, mailchimpJobs, bioJobs, dismissedJobRows, searchEvents, eventAnalytics, ga, instagram, mailchimp, featuredProposalRows] = await Promise.all([
+  const [applications, memberRows, tickets, events, eventRevisions, alerts, emailJobs, syncJobs, eventSyncJobs, mailchimpJobs, bioJobs, dismissedJobRows, searchEvents, eventAnalytics, ga, instagram, mailchimp, featuredProposalRows, contributionRows] = await Promise.all([
     db.select().from(schema.networkApplications).orderBy(desc(schema.networkApplications.submittedAt)),
     db.select({ member: schema.members, profile: schema.memberProfiles }).from(schema.members)
       .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id)).orderBy(desc(schema.members.joinedAt)),
@@ -35,6 +35,12 @@ export default async function NetworkAdminPage() {
     getInstagramSnapshot(),
     getMailchimpSnapshot(),
     db.select().from(schema.systemState).where(eq(schema.systemState.key, "featured-member-proposal")).limit(1),
+    db.select({ contribution: schema.contributions, member: schema.members, profile: schema.memberProfiles })
+      .from(schema.contributions)
+      .innerJoin(schema.members, eq(schema.members.id, schema.contributions.memberId))
+      .leftJoin(schema.memberProfiles, eq(schema.memberProfiles.memberId, schema.members.id))
+      .where(inArray(schema.contributions.status, ["submitted", "under_review"]))
+      .orderBy(desc(schema.contributions.submittedAt)),
   ]);
 
   const featuredProposal = parseFeaturedMemberProposal(featuredProposalRows[0]?.value);
@@ -84,6 +90,16 @@ export default async function NetworkAdminPage() {
     tickets={tickets.map((item) => ({ ...item, createdAt: iso(item.createdAt)!, updatedAt: iso(item.updatedAt)!, resolvedAt: iso(item.resolvedAt) }))}
     events={events.map((item) => ({ ...item, startsAt: iso(item.startsAt)!, endsAt: iso(item.endsAt), submittedAt: iso(item.submittedAt)!, reviewedAt: iso(item.reviewedAt), publishedAt: iso(item.publishedAt), updatedAt: iso(item.updatedAt)! }))}
     eventRevisions={eventRevisions.map((item) => ({ ...item, submittedAt: iso(item.submittedAt)!, reviewedAt: iso(item.reviewedAt) }))}
+    contributions={contributionRows.map(({ contribution, member, profile }) => ({
+      id: contribution.id,
+      title: contribution.title,
+      summary: contribution.summary,
+      format: contribution.format,
+      status: contribution.status,
+      memberName: profile?.displayName || member.firstName || member.email,
+      submittedAt: iso(contribution.submittedAt),
+      updatedAt: iso(contribution.updatedAt)!,
+    }))}
     operations={{
       failedAlerts: alerts.filter((item) => item.status === "failed" && !isDismissed("owner-alert", item.id)).length,
       pendingAlerts: alerts.filter((item) => item.status === "pending").length,
