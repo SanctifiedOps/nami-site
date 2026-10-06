@@ -87,6 +87,7 @@ export default async function MemberContributionReaderPreviewPage({
       article={article}
       previewMode
       previewBackHref="/network/dashboard/contributions"
+      previewBackLabel="Back to contributions"
       previewNotice="Reader preview. This is how your contribution will look when it is published."
     />
   );

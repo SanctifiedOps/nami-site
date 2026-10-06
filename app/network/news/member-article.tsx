@@ -49,11 +49,13 @@ export function MemberArticle({
   article,
   previewMode = false,
   previewBackHref = "/network/admin/contributions/preview",
+  previewBackLabel = "Back to stories",
   previewNotice = "Publication preview. This is how an approved member contribution will read.",
 }: {
   article: MemberArticleView;
   previewMode?: boolean;
   previewBackHref?: string;
+  previewBackLabel?: string;
   previewNotice?: string;
 }) {
   const format = contributionFormatDetails[article.format];
@@ -76,7 +78,7 @@ export function MemberArticle({
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.13em] text-fg-muted transition hover:text-accent"
           >
             <ArrowLeft size={14} aria-hidden />
-            Back to stories
+            {previewBackLabel}
           </Link>
 
           <div className="mt-9 grid gap-8 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-end lg:gap-16">
