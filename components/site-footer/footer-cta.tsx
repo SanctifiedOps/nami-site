@@ -30,9 +30,20 @@ export function FooterCta() {
     if (!isNetworkPage || networkTooltip) return;
     const controller = new AbortController();
     fetch("/api/network/tooltip", { signal: controller.signal })
-      .then((response) => (response.ok ? response.json() : null))
+      .then((response) =>
+        response.ok
+          ? (response.json() as Promise<{
+              items: TooltipMember[];
+              memberCount: number;
+            }>)
+          : null,
+      )
       .then((payload) => {
-        if (payload?.items?.length && typeof payload.memberCount === "number") {
+        if (
+          Array.isArray(payload?.items) &&
+          payload.items.length > 0 &&
+          typeof payload.memberCount === "number"
+        ) {
           setNetworkTooltip(payload);
         }
       })
