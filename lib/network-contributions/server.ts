@@ -6,13 +6,15 @@ import {
   type ContributionAssetSnapshot,
   type ContributionDocument,
 } from "@/lib/network-contributions/types";
+import { normaliseContributionUrl } from "@/lib/network-contributions/links";
 
 const contributionBlockSchema = z.object({
   id: z.string().trim().min(1).max(100),
-  type: z.enum(["paragraph", "heading", "quote", "image"]),
+  type: z.enum(["paragraph", "heading", "quote", "image", "link", "video"]),
   text: z.string().max(12000),
   assetId: z.string().uuid().optional(),
   altText: z.string().max(180).optional(),
+  url: z.string().max(2048).optional(),
 });
 
 export const contributionDocumentSchema = z.object({
@@ -83,6 +85,15 @@ export function validateContributionForSubmission(input: {
     return "Add a short introduction before submitting.";
   if (contributionPlainText(input.content).length < 20)
     return "Add some writing before submitting.";
+  if (
+    input.content.blocks.some(
+      (block) =>
+        (block.type === "link" || block.type === "video") &&
+        !normaliseContributionUrl(block.url),
+    )
+  ) {
+    return "Check the web and video links before submitting.";
+  }
   if (!input.originalWorkConfirmed)
     return "Confirm that this is your work before submitting.";
   if (!input.noGeneratedTextConfirmed)

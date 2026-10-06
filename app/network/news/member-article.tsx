@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, Calendar, Clock3, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Calendar, Clock3, ExternalLink, MapPin, Play } from "lucide-react";
+import {
+  contributionVideoSource,
+  normaliseContributionUrl,
+} from "@/lib/network-contributions/links";
 import {
   contributionFormatDetails,
   type ContributionAssetView,
@@ -133,6 +137,55 @@ export function MemberArticle({
               block.type === "image" ? (() => {
                 const asset = inlineAssets.find((item) => item.id === block.assetId);
                 return asset ? <figure key={block.id} className="my-10"><img src={asset.url} alt={block.altText || asset.altText} className="max-h-[46rem] w-full object-contain" />{block.text && <figcaption className="mt-3 text-sm text-fg-subtle">{block.text}</figcaption>}</figure> : null;
+              })() : block.type === "link" ? (() => {
+                const url = normaliseContributionUrl(block.url);
+                return url ? (
+                  <a
+                    key={block.id}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between gap-5 border border-line bg-surface-1 px-5 py-4 text-base font-semibold text-fg transition hover:border-accent hover:text-accent"
+                  >
+                    <span>{block.text || url}</span>
+                    <ExternalLink size={18} className="shrink-0" aria-hidden />
+                  </a>
+                ) : null;
+              })() : block.type === "video" ? (() => {
+                const source = contributionVideoSource(block.url);
+                if (!source) return null;
+                return (
+                  <figure key={block.id} className="my-10">
+                    {source.kind === "embed" ? (
+                      <div className="aspect-video overflow-hidden bg-black">
+                        <iframe
+                          src={source.url}
+                          title={block.text || source.title}
+                          loading="lazy"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          className="h-full w-full border-0"
+                        />
+                      </div>
+                    ) : source.kind === "file" ? (
+                      <video src={source.url} controls preload="metadata" className="w-full bg-black">
+                        Your browser cannot play this video.
+                      </video>
+                    ) : (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex aspect-video items-center justify-center gap-3 bg-surface-1 text-lg font-semibold text-fg transition hover:text-accent"
+                      >
+                        <Play size={24} aria-hidden />
+                        Watch video
+                      </a>
+                    )}
+                    {block.text && <figcaption className="mt-3 text-sm text-fg-subtle">{block.text}</figcaption>}
+                  </figure>
+                );
               })() : block.type === "heading" ? (
                 <h2
                   key={block.id}

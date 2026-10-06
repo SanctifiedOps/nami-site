@@ -291,15 +291,15 @@ export function ContributionDashboard({
                           : "View"}
                         <ArrowUpRight size={14} aria-hidden />
                       </Link>
+                      <Link
+                        href={previewMode ? "/network/news/preview/member-article" : `/network/dashboard/contributions/${item.id}/reader-preview`}
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-fg-muted transition hover:text-accent"
+                      >
+                        <Eye size={15} aria-hidden />
+                        View reader preview
+                      </Link>
                       {item.status === "draft" && (
                         <>
-                          <Link
-                            href={previewMode ? "/network/news/preview/member-article" : `/network/dashboard/contributions/${item.id}/reader-preview`}
-                            className="inline-flex items-center gap-2 text-sm font-semibold text-fg-muted transition hover:text-accent"
-                          >
-                            <Eye size={15} aria-hidden />
-                            View reader preview
-                          </Link>
                           <button
                             type="button"
                             disabled={deletingId === item.id}

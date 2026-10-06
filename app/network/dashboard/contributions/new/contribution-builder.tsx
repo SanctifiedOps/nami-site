@@ -11,6 +11,7 @@ import {
   Eye,
   FileText,
   ImagePlus,
+  Link2,
   ListPlus,
   Plus,
   Quote,
@@ -18,6 +19,8 @@ import {
   Send,
   Trash2,
   Type,
+  Video,
+  X,
 } from "lucide-react";
 import {
   contributionFormatDetails,
@@ -29,6 +32,10 @@ import {
   type ContributionDraft,
   type ContributionFormat,
 } from "@/lib/network-contributions/types";
+import {
+  contributionVideoSource,
+  normaliseContributionUrl,
+} from "@/lib/network-contributions/links";
 import {
   friendlyDashboardImageError,
   prepareFullImageForUpload,
@@ -45,13 +52,6 @@ type BuilderState = {
 
 const inputClass =
   "w-full rounded-2xl border border-line-strong bg-surface-0 px-4 py-3.5 text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none";
-
-const blockLabels: Record<ContributionBlockType, string> = {
-  paragraph: "Text",
-  heading: "Heading",
-  quote: "Quote",
-  image: "Image",
-};
 
 export function ContributionBuilder({
   format,
@@ -197,7 +197,7 @@ function Writer({
   const [assetMessage, setAssetMessage] = useState("");
   const [assetMessageTarget, setAssetMessageTarget] = useState<"cover" | string>("cover");
   const [error, setError] = useState("");
-  const [showPreview, setShowPreview] = useState(false);
+  const [showMobileWidgets, setShowMobileWidgets] = useState(false);
   const dirty = JSON.stringify(state) !== JSON.stringify(savedState);
   const wordCount = useMemo(() => {
     const words = [state.title, state.summary, ...state.content.blocks.map((block) => block.text)]
@@ -257,6 +257,7 @@ function Writer({
         ],
       },
     }));
+    setShowMobileWidgets(false);
   }
 
   function moveBlock(index: number, direction: -1 | 1) {
@@ -305,6 +306,7 @@ function Writer({
   async function persistDraft(
     intent: "save" | "submit",
     snapshot: BuilderState = state,
+    replaceAfterCreate = true,
   ) {
     if (previewMode) {
       setSavedState(snapshot);
@@ -341,7 +343,7 @@ function Writer({
       }
 
       setSaveMessage(result?.warning || "Draft saved");
-      if (!draftId) {
+      if (!draftId && replaceAfterCreate) {
         router.replace(`/network/dashboard/contributions/${contributionId}`);
       }
       return contributionId;
@@ -355,6 +357,20 @@ function Writer({
       return undefined;
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function openReaderPreview() {
+    if (previewMode) {
+      router.push("/network/news/preview/member-article");
+      return;
+    }
+
+    const contributionId = editable
+      ? await persistDraft("save", state, false)
+      : initialDraft?.id;
+    if (contributionId) {
+      router.push(`/network/dashboard/contributions/${contributionId}/reader-preview`);
     }
   }
 
@@ -549,6 +565,11 @@ function Writer({
     state.title.trim().length >= 5 &&
     state.summary.trim().length >= 20 &&
     state.content.blocks.some((block) => block.text.trim().length >= 20) &&
+    state.content.blocks.every((block) =>
+      block.type === "link" || block.type === "video"
+        ? Boolean(normaliseContributionUrl(block.url))
+        : true,
+    ) &&
     state.originalWorkConfirmed &&
     state.imageRightsConfirmed &&
     state.noGeneratedTextConfirmed;
@@ -558,7 +579,7 @@ function Writer({
     : "/network/dashboard/contributions";
 
   return (
-    <main className="min-h-screen bg-surface-0 pt-24 md:pt-28">
+    <main className="min-h-screen bg-surface-0 pb-28 pt-24 lg:pb-0 md:pt-28">
       <div className="container-shell pb-24">
         {previewMode && <PreviewNotice />}
 
@@ -588,7 +609,10 @@ function Writer({
               Write it in your words
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-fg-muted">
-              Use the text, heading, image and quote tools below. You can paste a full draft into a text section and leave a blank line between paragraphs, or add sections one at a time. Use the arrow buttons to rearrange them.
+              Use the blocks below to add text, headings, quotes, images, links
+              and video. You can paste a full draft into a text block and leave
+              a blank line between paragraphs, or build it one section at a
+              time. Use the arrow buttons to rearrange the finished blocks.
             </p>
           </div>
           <div className="border-l border-accent pl-4 text-sm leading-relaxed text-fg-muted">
@@ -597,7 +621,7 @@ function Writer({
           </div>
         </header>
 
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_19rem] xl:items-start">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start xl:grid-cols-[minmax(0,1fr)_20rem]">
           <div>
             <section className="border border-line bg-surface-1 p-5 md:p-8">
               <label className="block text-sm font-semibold">
@@ -733,6 +757,8 @@ function Writer({
                         <option value="heading">Heading</option>
                         <option value="quote">Quote</option>
                         <option value="image">Image</option>
+                        <option value="link">Link</option>
+                        <option value="video">Video</option>
                       </select>
                       <span className="text-xs text-fg-subtle">Section {index + 1}</span>
                     </div>
@@ -759,7 +785,71 @@ function Writer({
                     {editable && <div className="flex flex-wrap items-center gap-3"><label className={`inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white ${assetBusy ? "pointer-events-none opacity-40" : ""}`}><ImagePlus size={16} aria-hidden />{assetBusy ? "Working..." : inlineAsset ? "Replace image" : "Choose image"}<input type="file" accept="image/*,.heic,.heif,.avif,.jfif" disabled={assetBusy} onChange={(event) => void uploadInlineImage(block, index, event)} className="sr-only" /></label>{inlineAsset && <button type="button" disabled={assetBusy || (block.altText ?? "").trim().length < 4} onClick={() => void saveInlineImageDetails(block)} className="rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent disabled:opacity-40">Save image details</button>}</div>}
                     <p className="text-xs leading-5 text-fg-subtle">Add the image description first, then choose a picture from your device. We will resize and compress it for you.</p>
                     {assetMessage && assetMessageTarget === block.id && <p role="status" className="text-sm text-fg-muted">{assetMessage}</p>}
-                  </div> : <textarea
+                  </div> : block.type === "link" ? (
+                    <div className="grid gap-4">
+                      <label className="text-sm font-semibold">
+                        Link text
+                        <input
+                          value={block.text}
+                          onChange={(event) => updateBlock(block.id, { text: event.target.value })}
+                          disabled={!editable}
+                          maxLength={180}
+                          placeholder="What should readers click?"
+                          className={`${inputClass} mt-2 font-normal`}
+                        />
+                      </label>
+                      <label className="text-sm font-semibold">
+                        Web address
+                        <input
+                          type="url"
+                          inputMode="url"
+                          value={block.url ?? ""}
+                          onChange={(event) => updateBlock(block.id, { url: event.target.value })}
+                          disabled={!editable}
+                          maxLength={2048}
+                          placeholder="https://example.com"
+                          className={`${inputClass} mt-2 font-normal`}
+                        />
+                      </label>
+                      {block.url && !normaliseContributionUrl(block.url) && (
+                        <p className="text-sm text-amber-200">Add a complete web address for this link.</p>
+                      )}
+                    </div>
+                  ) : block.type === "video" ? (
+                    <div className="grid gap-4">
+                      <label className="text-sm font-semibold">
+                        Video link
+                        <input
+                          type="url"
+                          inputMode="url"
+                          value={block.url ?? ""}
+                          onChange={(event) => updateBlock(block.id, { url: event.target.value })}
+                          disabled={!editable}
+                          maxLength={2048}
+                          placeholder="Paste a YouTube, Vimeo, Loom or direct video link"
+                          className={`${inputClass} mt-2 font-normal`}
+                        />
+                      </label>
+                      <label className="text-sm font-semibold">
+                        Caption <span className="font-normal text-fg-subtle">(optional)</span>
+                        <textarea
+                          value={block.text}
+                          onChange={(event) => updateBlock(block.id, { text: event.target.value })}
+                          disabled={!editable}
+                          rows={2}
+                          maxLength={300}
+                          placeholder="Add a short introduction or credit"
+                          className={`${inputClass} contribution-scrollbox mt-2 max-h-40 resize-y overflow-y-scroll font-normal`}
+                        />
+                      </label>
+                      <p className="text-xs leading-5 text-fg-subtle">
+                        YouTube, Vimeo and Loom videos play inside the article. Other video links open in a new tab.
+                      </p>
+                      {block.url && !contributionVideoSource(block.url) && (
+                        <p className="text-sm text-amber-200">Add a complete video address.</p>
+                      )}
+                    </div>
+                  ) : <textarea
                     value={block.text}
                     onChange={(event) => updateBlock(block.id, { text: event.target.value })}
                     rows={block.type === "paragraph" ? 7 : block.type === "heading" ? 2 : 4}
@@ -782,15 +872,6 @@ function Writer({
                 </article>
               })}
             </section>
-
-            {editable && (
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              <AddButton label="Text" icon={<ListPlus size={16} />} onClick={() => addBlock("paragraph")} />
-              <AddButton label="Heading" icon={<Type size={16} />} onClick={() => addBlock("heading")} />
-              <AddButton label="Quote" icon={<Quote size={16} />} onClick={() => addBlock("quote")} />
-              <AddButton label="Image" icon={<ImagePlus size={16} />} onClick={() => addBlock("image")} />
-            </div>
-            )}
 
             <section className="mt-8 border-y border-line py-7">
               <h2 className="text-2xl">Before you submit</h2>
@@ -826,23 +907,6 @@ function Writer({
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <button
                 type="button"
-                onClick={() => void persistDraft("save")}
-                disabled={busy}
-                className="inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent"
-              >
-                <Save size={16} aria-hidden />
-                Save draft
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowPreview((value) => !value)}
-                className="inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent xl:hidden"
-              >
-                <Eye size={16} aria-hidden />
-                {showPreview ? "Hide preview" : "Preview"}
-              </button>
-              <button
-                type="button"
                 onClick={() => void persistDraft("submit")}
                 disabled={!canSubmit || previewMode || busy}
                 className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-white transition hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-40"
@@ -852,7 +916,7 @@ function Writer({
               </button>
               {!canSubmit && (
                 <p className="w-full text-xs text-fg-subtle sm:w-auto">
-                  Add a title, introduction, some writing and complete all three confirmations.
+                  Add a title, introduction and some writing. Check each link and complete all three confirmations.
                 </p>
               )}
               {error && (
@@ -870,77 +934,114 @@ function Writer({
             )}
           </div>
 
-          <aside className={`${showPreview ? "block" : "hidden"} xl:sticky xl:top-28 xl:block`}>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-accent">
-              Live preview
-            </p>
-            <ArticlePreview state={state} format={format} cover={cover} inlineAssets={inlineAssets} />
+          <aside className="hidden lg:sticky lg:top-28 lg:block">
+            <div className="border border-line bg-surface-1 p-5 xl:p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.15em] text-accent">
+                Build your article
+              </p>
+              <h2 className="mt-3 text-2xl leading-tight">Add the next section</h2>
+              <p className="mt-2 text-sm leading-relaxed text-fg-muted">
+                Choose a block, then move it into place with the arrow buttons.
+              </p>
+              {editable && (
+                <div className="mt-5 grid grid-cols-2 gap-2">
+                  <WidgetButtons onAdd={addBlock} />
+                </div>
+              )}
+              {!editable && (
+                <p className="mt-5 border-l-2 border-accent pl-3 text-sm leading-relaxed text-fg-muted">
+                  This version is locked, but you can still open the reader preview.
+                </p>
+              )}
+              <div className="mt-6 space-y-2 border-t border-line pt-5">
+                {editable && (
+                  <button
+                    type="button"
+                    onClick={() => void persistDraft("save")}
+                    disabled={busy}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white transition hover:bg-accent-soft disabled:cursor-wait disabled:opacity-50"
+                  >
+                    <Save size={16} aria-hidden />
+                    {busy ? "Saving..." : "Save draft"}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => void openReaderPreview()}
+                  disabled={busy}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent disabled:cursor-wait disabled:opacity-50"
+                >
+                  <Eye size={16} aria-hidden />
+                  View reader preview
+                </button>
+                <p className="pt-2 text-center text-xs text-fg-subtle" aria-live="polite">
+                  {dirty && !previewMode ? "Unsaved changes" : saveMessage}
+                </p>
+              </div>
+            </div>
           </aside>
         </div>
       </div>
-    </main>
-  );
-}
 
-function ArticlePreview({
-  state,
-  format,
-  cover,
-  inlineAssets,
-}: {
-  state: BuilderState;
-  format: ContributionFormat;
-  cover: ContributionAssetView | null;
-  inlineAssets: ContributionAssetView[];
-}) {
-  return (
-    <div className="overflow-hidden rounded-[1.5rem] border border-line bg-surface-1">
-      <div className="relative aspect-[4/3] overflow-hidden bg-[radial-gradient(circle_at_70%_25%,rgb(255_0_188/0.28),transparent_34%),linear-gradient(145deg,#18141a,#0c0d0f)] p-5">
-        {cover && (
-          <img
-            src={cover.url}
-            alt={cover.altText}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface-0/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+        {showMobileWidgets && editable && (
+          <div className="container-shell mb-3">
+            <div className="rounded-3xl border border-line-strong bg-surface-1 p-4 shadow-2xl">
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-accent">Add a section</p>
+                  <p className="mt-1 text-sm text-fg-muted">Choose what you want to add next.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowMobileWidgets(false)}
+                  aria-label="Close section menu"
+                  className="grid size-10 place-items-center rounded-full border border-line-strong text-fg-muted"
+                >
+                  <X size={18} aria-hidden />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                <WidgetButtons onAdd={addBlock} />
+              </div>
+            </div>
+          </div>
         )}
-        {cover && <div className="absolute inset-0 bg-linear-to-t from-black/65 via-black/10 to-transparent" />}
-        <div className="flex h-full items-end">
-          <span className="relative rounded-full border border-accent/50 bg-black/30 px-3 py-1 text-[0.65rem] font-semibold text-white backdrop-blur">
-            {contributionFormatDetails[format].shortLabel}
-          </span>
-        </div>
-      </div>
-      <div className="p-5">
-        <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-accent">
-          From the Network
-        </p>
-        <h2 className="mt-3 text-2xl leading-[1] tracking-[-0.035em]">
-          {state.title || "Your title will appear here"}
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-          {state.summary || "Your short introduction will help people decide whether to read on."}
-        </p>
-        <div className="mt-6 space-y-4 border-t border-line pt-5 text-sm leading-relaxed text-fg-muted">
-          {state.content.blocks.filter((block) => block.type === "image" ? Boolean(block.assetId) : block.text.trim()).slice(0, 4).map((block) =>
-            block.type === "image" ? (() => {
-              const asset = inlineAssets.find((item) => item.id === block.assetId);
-              return asset ? <figure key={block.id}><img src={asset.url} alt={block.altText || asset.altText} className="w-full rounded-xl" />{block.text && <figcaption className="mt-2 text-xs text-fg-subtle">{block.text}</figcaption>}</figure> : null;
-            })() : block.type === "heading" ? (
-              <h3 key={block.id} className="text-lg text-fg">{block.text}</h3>
-            ) : block.type === "quote" ? (
-              <blockquote key={block.id} className="border-l-2 border-accent pl-3 italic text-fg">{block.text}</blockquote>
-            ) : (
-              block.text.split(/\n\s*\n/).filter(Boolean).slice(0, 4).map((paragraph, paragraphIndex) => (
-                <p key={`${block.id}-${paragraphIndex}`} className="whitespace-pre-line">{paragraph.trim()}</p>
-              ))
-            ),
+        <div className="container-shell flex items-center gap-2">
+          {editable && (
+            <button
+              type="button"
+              onClick={() => void persistDraft("save")}
+              disabled={busy}
+              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full bg-accent px-4 text-sm font-bold text-white disabled:cursor-wait disabled:opacity-50"
+            >
+              <Save size={16} aria-hidden />
+              {busy ? "Saving..." : "Save draft"}
+            </button>
           )}
-          {!state.content.blocks.some((block) => block.text.trim()) && (
-            <p>Your writing will appear here as you add it.</p>
+          <button
+            type="button"
+            onClick={() => void openReaderPreview()}
+            disabled={busy}
+            className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border border-line-strong bg-surface-1 px-4 text-sm font-bold text-fg disabled:cursor-wait disabled:opacity-50"
+          >
+            <Eye size={16} aria-hidden />
+            Live preview
+          </button>
+          {editable && (
+            <button
+              type="button"
+              onClick={() => setShowMobileWidgets((open) => !open)}
+              aria-label={showMobileWidgets ? "Close section menu" : "Add a section"}
+              aria-expanded={showMobileWidgets}
+              className="grid size-12 shrink-0 place-items-center rounded-full bg-accent text-white shadow-[0_5px_24px_rgb(255_0_188/0.35)]"
+            >
+              {showMobileWidgets ? <X size={22} aria-hidden /> : <Plus size={22} aria-hidden />}
+            </button>
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
@@ -972,6 +1073,19 @@ function AddButton({ label, icon, onClick }: { label: string; icon: React.ReactN
       {icon}
       {label}
     </button>
+  );
+}
+
+function WidgetButtons({ onAdd }: { onAdd: (type: ContributionBlockType) => void }) {
+  return (
+    <>
+      <AddButton label="Text" icon={<ListPlus size={16} />} onClick={() => onAdd("paragraph")} />
+      <AddButton label="Heading" icon={<Type size={16} />} onClick={() => onAdd("heading")} />
+      <AddButton label="Quote" icon={<Quote size={16} />} onClick={() => onAdd("quote")} />
+      <AddButton label="Image" icon={<ImagePlus size={16} />} onClick={() => onAdd("image")} />
+      <AddButton label="Link" icon={<Link2 size={16} />} onClick={() => onAdd("link")} />
+      <AddButton label="Video" icon={<Video size={16} />} onClick={() => onAdd("video")} />
+    </>
   );
 }
 
