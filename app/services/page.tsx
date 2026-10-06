@@ -29,6 +29,8 @@ export default function ServicesPage() {
     <>
       <JsonLd schema={buildFaqPageSchema(faq)} />
       <PageHero
+        backgroundImage="/assets/images/nami-office.webp"
+        backgroundPosition="center 48%"
         eyebrow="Services"
         title={
           <>

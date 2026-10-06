@@ -177,7 +177,7 @@ export function ContributionDashboard({
                   ? "/network/dashboard/contributions/new/preview"
                   : "/network/dashboard/contributions/new"
               }
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-white shadow-[0_10px_35px_rgb(255_0_188/0.2)] transition hover:bg-accent-soft"
+              className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-accent-soft"
             >
               <Plus size={17} aria-hidden />
               Start a contribution

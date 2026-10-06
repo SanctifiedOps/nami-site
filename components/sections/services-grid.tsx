@@ -5,7 +5,6 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { services } from "@/lib/content/services";
 import { cardIn, stageFast } from "@/lib/motion";
-import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { ServiceCard } from "./service-card";
 
 export function ServicesGrid() {
@@ -15,7 +14,7 @@ export function ServicesGrid() {
       whileInView="show"
       viewport={{ once: true, amount: 0.15 }}
       variants={stageFast}
-      className="grid gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3"
+      className="grid gap-3 md:grid-cols-2 lg:grid-cols-3"
     >
       {services.map((service) => (
         <ServiceCard key={service.slug} service={service} />
@@ -25,57 +24,25 @@ export function ServicesGrid() {
   );
 }
 
-/** Sixth-cell CTA: fills the grid without touching the "five pillars" positioning. */
 function ServicesCtaCard() {
   return (
-    <motion.div variants={cardIn} className="group">
-      <SpotlightCard
-        tilt={5}
-        glow={0.26}
-        className="glass-refractive h-full rounded-2xl border-accent/30"
+    <motion.div variants={cardIn} className="group h-full">
+      <Link
+        href="/contact"
+        className="flex min-h-72 h-full flex-col border border-accent/45 bg-accent p-7 text-white transition-colors hover:bg-accent-soft md:min-h-80 md:p-9"
       >
-        {/* Always-on ambient glow â€” this is the conversion cell, so it reads warmer */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-70"
-          style={{
-            background:
-              "radial-gradient(460px circle at 70% 100%, rgb(255 0 188 / 0.2), transparent 70%)",
-          }}
-        />
-        <Link
-          href="/contact"
-          className="relative z-10 flex h-full flex-col gap-6 rounded-2xl p-8 md:p-10"
-        >
-          <div className="flex items-start justify-between">
-            <span className="mono-label">06</span>
-            <ArrowUpRight
-              size={28}
-              aria-hidden
-              className="text-accent transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </div>
-
-          <div className="space-y-3">
-            <h3 className="type-card-title text-fg">
-              Not sure <span className="text-gradient">where to start?</span>
-            </h3>
-            <p className="leading-relaxed text-fg-muted">
-                  Tell me what feels messy, slow or unclear. I&apos;ll help you work
-              out what needs fixing first.
-            </p>
-          </div>
-
-          <div className="mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_16px_rgb(255_0_188/0.25)] transition-shadow duration-500 group-hover:shadow-[0_8px_32px_rgb(255_0_188/0.5)]">
-                  Tell me what isn&apos;t working
-            <ArrowUpRight
-              size={14}
-              aria-hidden
-              className="transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </div>
-        </Link>
-      </SpotlightCard>
+        <p className="text-sm font-medium text-white/75">Not sure where to begin?</p>
+        <h3 className="mt-8 max-w-sm text-2xl font-semibold leading-tight tracking-[-0.025em] md:text-3xl">
+          Start with what is getting in the way
+        </h3>
+        <p className="mt-4 max-w-sm leading-[1.5] text-white/82">
+          Tell me what feels messy, slow or unclear. I&apos;ll help you work out what needs fixing first.
+        </p>
+        <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold">
+          Tell me about it
+          <ArrowUpRight size={14} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </span>
+      </Link>
     </motion.div>
   );
 }

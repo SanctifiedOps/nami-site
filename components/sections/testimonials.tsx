@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import {
   testimonials as defaultTestimonials,
@@ -17,78 +18,53 @@ type Props = {
 
 export function Testimonials({
   items = defaultTestimonials,
-  eyebrow = "Client notes",
   title = <>What people say about the work</>,
-  lead = "Honest words from founders, operators and people I have worked alongside.",
+  lead = "A few words from people I have worked with.",
   className,
-  backgroundImage,
+  backgroundImage = "/images/north-east/4.jpg",
 }: Props) {
+  const visibleItems = items.slice(0, 3);
+
   return (
-    <section
-      className={cn(
-        "relative overflow-hidden border-y border-line bg-surface-1 py-24 md:py-32",
-        className,
-      )}
-    >
-      {backgroundImage ? (
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-cover bg-center opacity-10 grayscale"
-          style={{ backgroundImage: `url(${backgroundImage})` }}
-        />
-      ) : null}
-
-      <div className="container-shell relative">
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-0">
-          <header className="lg:col-span-4 lg:pr-16">
-            {eyebrow ? (
-              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-                {eyebrow}
-              </p>
+    <section className={cn("border-y border-line bg-surface-0 py-20 md:py-28", className)}>
+      <div className="container-shell">
+        <div className="grid overflow-hidden rounded-sm border border-line lg:grid-cols-12">
+          <div className="relative min-h-[24rem] lg:col-span-5 lg:min-h-[42rem]">
+            {backgroundImage ? (
+              <Image
+                src={backgroundImage}
+                alt="The Sage and NewcastleGateshead Quayside"
+                fill
+                sizes="(min-width: 1024px) 42vw, 100vw"
+                className="object-cover grayscale"
+              />
             ) : null}
-            <h2 className="type-section-title max-w-md">{title}</h2>
-            {lead ? (
-              <p className="mt-6 max-w-md text-lg leading-[1.5] text-fg-muted">
-                {lead}
-              </p>
-            ) : null}
-          </header>
+            <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black via-black/15 to-black/10" />
+            <header className="absolute inset-x-0 bottom-0 p-7 md:p-10">
+              <h2 className="type-section-title max-w-md text-white">{title}</h2>
+              {lead ? <p className="mt-5 max-w-sm text-base leading-[1.5] text-white/72">{lead}</p> : null}
+            </header>
+          </div>
 
-          <ul className="grid border-t border-line md:grid-cols-2 lg:col-span-8">
-            {items.map((testimonial, index) => (
-              <li
-                key={testimonial.author}
-                className={cn(
-                  "border-b border-line py-8 md:px-8",
-                  index % 2 === 0 && "md:border-r",
-                )}
-              >
-                <figure className="flex h-full flex-col">
-                  <span className="text-xs font-semibold tabular-nums text-accent">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <blockquote className="mt-6 flex-1 text-lg leading-[1.45] text-fg">
-                    “{testimonial.quote}”
+          <ul className="divide-y divide-line bg-surface-1 lg:col-span-7">
+            {visibleItems.map((testimonial) => (
+              <li key={testimonial.author} className="p-7 md:p-10">
+                <figure className="grid gap-7 md:grid-cols-[1fr_auto] md:items-end">
+                  <blockquote className="max-w-2xl text-lg leading-[1.5] text-fg md:text-xl">
+                    &ldquo;{testimonial.quote}&rdquo;
                   </blockquote>
-                  <figcaption className="mt-8 border-t border-line pt-5">
-                    <p className="font-medium text-fg">{testimonial.author}</p>
-                    <p className="mt-1 text-sm text-fg-subtle">
-                      {testimonial.role}
-                    </p>
+                  <figcaption className="md:min-w-48 md:text-right">
+                    <p className="font-semibold text-fg">{testimonial.author}</p>
+                    <p className="mt-1 text-sm leading-snug text-fg-subtle">{testimonial.role}</p>
                     {testimonial.href ? (
                       <a
                         href={testimonial.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-accent"
+                        className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent"
                         aria-label={`Read ${testimonial.author}'s review on Google`}
                       >
-                        Read on Google
-                        <ArrowUpRight
-                          size={13}
-                          aria-hidden
-                          className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                        />
+                        Read review <ArrowUpRight size={14} aria-hidden />
                       </a>
                     ) : null}
                   </figcaption>

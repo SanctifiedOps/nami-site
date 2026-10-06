@@ -3,11 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowUpRight, Handshake, Mail, Users } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { LinkedinIcon } from "@/components/icons/socials";
 import { PageHero } from "@/components/sections/page-hero";
 import { Testimonials } from "@/components/sections/testimonials";
-import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { values } from "@/lib/content/values";
 import { stage, stageFast, fadeUp, cardIn } from "@/lib/motion";
@@ -29,12 +28,7 @@ export default function AboutPage() {
       />
 
       {/* Founder note */}
-      <section className="relative isolate overflow-hidden border-t border-line py-24 md:py-32">
-        <ParallaxBackdrop
-          src="/images/north-east/2.jpg"
-          position="center 48%"
-          overlay={0.89}
-        />
+      <section className="border-t border-line bg-surface-0 py-20 md:py-28">
         <div className="container-shell relative z-10">
           <motion.div
             initial="hidden"
@@ -44,7 +38,7 @@ export default function AboutPage() {
             className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:items-start md:gap-16 lg:gap-20"
           >
             <motion.div variants={fadeUp}>
-              <div className="glass-refractive relative aspect-3/4 overflow-hidden rounded-2xl">
+              <div className="relative aspect-3/4 overflow-hidden border border-line">
                 <Image
                   src="/assets/images/bb.jpg"
                   alt="Joe Wilson, founder of NAMI Creative"
@@ -116,31 +110,6 @@ export default function AboutPage() {
                   North East forever!
                 </p>
               </div>
-              <dl className="grid gap-8 border-t border-line pt-6 sm:grid-cols-3">
-                <div>
-                  <dt className="mono-label">Experience</dt>
-                  <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
-                    20 years
-                  </dd>
-                  <p className="mt-1 text-sm text-fg-muted">Brand building + design</p>
-                </div>
-                <div>
-                  <dt className="mono-label">Leadership</dt>
-                  <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
-                    Head of Dept.
-                  </dd>
-                  <p className="mt-1 text-sm text-fg-muted">
-                    UK&apos;s leading energy consultants&apos; trade body
-                  </p>
-                </div>
-                <div>
-                  <dt className="mono-label">Featured</dt>
-                  <dd className="mt-2 text-lg font-medium tracking-tight text-fg">
-                    BBC Radio
-                  </dd>
-                  <p className="mt-1 text-sm text-fg-muted">Nami Up North project</p>
-                </div>
-              </dl>
               <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-2">
                 <a
                   href="https://www.linkedin.com/in/brandingbyjoewilson/"
@@ -174,8 +143,9 @@ export default function AboutPage() {
       </section>
 
       {/* Creative Network */}
-      <section className="border-t border-line py-24 md:py-32">
-        <div className="container-shell">
+      <section className="relative isolate overflow-hidden border-t border-line py-20 md:py-28">
+        <ParallaxBackdrop src="/images/north-east/2.jpg" position="center 48%" overlay={0.84} />
+        <div className="container-shell relative z-10">
           <motion.div
             initial="hidden"
             whileInView="show"
@@ -200,7 +170,7 @@ export default function AboutPage() {
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
                   href="/network"
-                  className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+                  className="group inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
                 >
                   Join the network
                   <ArrowUpRight
@@ -211,7 +181,7 @@ export default function AboutPage() {
                 </Link>
                 <Link
                   href="/contact"
-                  className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
+                  className="group inline-flex items-center gap-2 rounded-md border border-line-strong px-6 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-accent hover:bg-white/5"
                 >
                   Work with me
                   <ArrowUpRight
@@ -223,26 +193,23 @@ export default function AboutPage() {
               </div>
             </motion.div>
 
-            <motion.div variants={fadeUp} className="grid gap-5 sm:grid-cols-3 lg:grid-cols-1">
-              <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
-                <Users size={22} className="text-accent" aria-hidden />
-                <h3 className="type-card-title mt-5">Visibility</h3>
+            <motion.div variants={fadeUp} className="grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-3 lg:grid-cols-1">
+              <div className="bg-surface-0/90 p-7">
+                <h3 className="type-card-title">Visibility</h3>
                 <p className="mt-3 leading-relaxed text-fg-muted">
                   Member features and posts that put more local work in front
                   of the right people.
                 </p>
               </div>
-              <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
-                <Mail size={22} className="text-accent" aria-hidden />
-                <h3 className="type-card-title mt-5">Useful updates</h3>
+              <div className="bg-surface-0/90 p-7">
+                <h3 className="type-card-title">Useful updates</h3>
                 <p className="mt-3 leading-relaxed text-fg-muted">
                   Emails with local people to follow, events worth knowing
                   about and opportunities for members.
                 </p>
               </div>
-              <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
-                <Handshake size={22} className="text-accent" aria-hidden />
-                <h3 className="type-card-title mt-5">Introductions</h3>
+              <div className="bg-surface-0/90 p-7">
+                <h3 className="type-card-title">Introductions</h3>
                 <p className="mt-3 leading-relaxed text-fg-muted">
                   A reliable way to find the right person when somebody needs
                   a photographer, designer, maker or specialist.
@@ -281,20 +248,15 @@ export default function AboutPage() {
             className="grid gap-6 md:grid-cols-3 md:gap-8"
           >
             {values.map((value) => (
-              <motion.div key={value.title} variants={cardIn}>
-                <SpotlightCard
-                  tilt={4}
-                  className="glass-refractive glass-refractive--hover h-full rounded-2xl"
-                >
-                  <div className="relative z-10 p-8 md:p-10">
+              <motion.div key={value.title} variants={cardIn} className="h-full">
+                <article className="h-full border border-line bg-surface-1 p-8 transition-colors hover:border-accent/45 md:p-10">
                     <h3 className="type-card-title">
                       {value.title}
                     </h3>
                     <p className="mt-4 leading-relaxed text-fg-muted">
                       {value.body}
                     </p>
-                  </div>
-                </SpotlightCard>
+                </article>
               </motion.div>
             ))}
           </motion.div>

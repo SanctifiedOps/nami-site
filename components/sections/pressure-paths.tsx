@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { pressurePaths } from "@/lib/content/pathways";
@@ -14,44 +15,50 @@ export function PressurePaths({
   className = "",
 }: Props) {
   return (
-    <section className={`border-b border-line bg-surface-0 py-24 md:py-32 ${className}`}>
-      <div className="container-shell grid gap-14 lg:grid-cols-12 lg:gap-0">
-        <div className="lg:col-span-4 lg:pr-16">
-          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-            Where we can start
-          </p>
-          <h2 className="type-section-title max-w-md">{title}</h2>
-          <p className="mt-6 max-w-md text-lg leading-[1.5] text-fg-muted">
+    <section className={`border-b border-line bg-surface-0 py-20 md:py-28 ${className}`}>
+      <div className="container-shell">
+        <header className="grid gap-5 border-b border-line pb-10 md:grid-cols-2 md:items-end md:pb-12">
+          <h2 className="type-section-title max-w-xl">{title}</h2>
+          <p className="max-w-xl text-base leading-[1.5] text-fg-muted md:justify-self-end md:text-lg">
             {lead}
           </p>
-        </div>
+        </header>
 
-        <div className="border-t border-line lg:col-span-8">
-          {pressurePaths.map((path, index) => (
-            <Link
-              key={path.problem}
-              href={path.href}
-              className="group grid gap-4 border-b border-line py-7 transition-colors hover:border-accent md:grid-cols-[3rem_1fr_1fr_auto] md:items-start md:gap-6"
-            >
-              <span className="text-xs font-semibold tabular-nums text-fg-subtle">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3 className="text-xl font-medium leading-tight tracking-tight text-fg group-hover:text-accent">
-                {path.problem}
-              </h3>
-              <p className="text-sm leading-[1.5] text-fg-muted">
-                {path.detail}
-              </p>
-              <span className="inline-flex items-center gap-2 text-sm font-semibold text-fg md:justify-self-end">
-                {path.cta}
-                <ArrowUpRight
-                  size={14}
-                  aria-hidden
-                  className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </span>
-            </Link>
-          ))}
+        <div className="mt-8 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-10">
+          <figure className="relative min-h-[25rem] overflow-hidden rounded-sm border border-line md:min-h-[34rem]">
+            <Image
+              src="/assets/images/nami-office.webp"
+              alt="Joe Wilson's NAMI Creative workspace"
+              fill
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              className="object-cover object-center"
+            />
+            <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black/75 via-black/5 to-transparent" />
+            <figcaption className="absolute inset-x-0 bottom-0 p-6 text-sm font-medium text-white/90 md:p-8">
+              NAMI Creative studio, Newcastle upon Tyne
+            </figcaption>
+          </figure>
+
+          <div className="grid gap-px overflow-hidden rounded-sm border border-line bg-line sm:grid-cols-2">
+            {pressurePaths.map((path) => (
+              <Link
+                key={path.problem}
+                href={path.href}
+                className="group flex min-h-64 flex-col bg-surface-1 p-6 transition-colors hover:bg-surface-2 md:min-h-72 md:p-8"
+              >
+                <h3 className="max-w-xs text-xl font-semibold leading-tight tracking-[-0.02em] text-fg md:text-2xl">
+                  {path.problem}
+                </h3>
+                <p className="mt-4 max-w-sm text-sm leading-[1.55] text-fg-muted md:text-base">
+                  {path.detail}
+                </p>
+                <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-accent">
+                  {path.cta}
+                  <ArrowUpRight size={15} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>

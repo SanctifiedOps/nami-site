@@ -134,7 +134,7 @@ function FormAnchor({ children = "Join the network" }: { children?: string }) {
   return (
     <a
       href="/network"
-      className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+      className="group inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
     >
       {children}
       <ArrowDown
@@ -176,11 +176,11 @@ export default async function NetworkPage() {
           />
         }
       >
-        <div className="flex flex-wrap items-center justify-center gap-3">
+        <div className="flex flex-wrap items-center justify-start gap-3">
           <FormAnchor>Join the network</FormAnchor>
           <Link
             href="/network/directory"
-            className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
+            className="group inline-flex items-center gap-2 rounded-md border border-white/30 bg-black/20 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-accent"
           >
             Explore the directory
             <ArrowUpRight
@@ -224,16 +224,14 @@ export default async function NetworkPage() {
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-px overflow-hidden border border-line bg-line md:grid-cols-3">
             {reasons.map((card) => {
-              const Icon = card.icon;
               return (
                 <div
                   key={card.title}
-                  className="glass-refractive rounded-2xl p-7 text-center md:p-8 md:text-left"
+                  className="bg-surface-1 p-7 text-left md:p-9"
                 >
-                  <Icon size={22} className="mx-auto text-accent md:mx-0" aria-hidden />
-                  <h3 className="type-card-title mt-6">
+                  <h3 className="type-card-title">
                     {card.title}
                   </h3>
                   <p className="mt-4 leading-relaxed text-fg-muted">
@@ -272,21 +270,15 @@ export default async function NetworkPage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-2 gap-px overflow-hidden border border-line bg-line">
             {audience.map((item, index) => (
               <ScrollReveal key={item} delay={(index % 4) * 0.055}>
                 <div
-                  className={`group relative min-h-20 overflow-hidden border border-line bg-surface-0/70 px-5 py-5 text-sm font-medium text-fg shadow-[0_12px_36px_rgb(0_0_0/0.16)] backdrop-blur-sm transition-[transform,border-color,background-color,box-shadow] duration-700 ease-[var(--ease-out-expo)] hover:-translate-y-1.5 hover:scale-[1.012] hover:border-accent/40 hover:bg-surface-1/90 hover:shadow-[0_20px_48px_rgb(0_0_0/0.3),0_0_28px_rgb(255_0_188/0.08)] motion-reduce:transform-none ${
-                    index === 0 || index === 5
-                      ? "bg-[linear-gradient(135deg,rgb(255_0_188/0.11),rgb(12_13_16/0.78)_62%)]"
-                      : ""
-                  } text-center md:text-left`}
+                  className={`relative flex min-h-20 items-center bg-surface-0/90 px-5 py-5 text-sm font-medium text-fg transition-colors hover:bg-surface-1 ${
+                    index === 0 || index === 5 ? "text-accent" : ""
+                  }`}
                 >
-                  <span className="relative z-10">{item}</span>
-                  <span
-                    aria-hidden
-                    className="absolute -bottom-10 -right-8 h-24 w-24 rounded-full bg-accent/0 blur-2xl transition-colors duration-700 group-hover:bg-accent/15"
-                  />
+                  <span>{item}</span>
                 </div>
               </ScrollReveal>
             ))}
@@ -306,16 +298,14 @@ export default async function NetworkPage() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-12 grid gap-px overflow-hidden border border-line bg-line md:grid-cols-2 xl:grid-cols-4">
             {futureAccess.map((card) => {
-              const Icon = card.icon;
               return (
                 <div
                   key={card.title}
-                  className="rounded-2xl border border-line bg-surface-1/45 p-7 text-center md:p-8 md:text-left"
+                  className="bg-surface-1 p-7 text-left md:p-8"
                 >
-                  <Icon size={22} className="mx-auto text-accent md:mx-0" aria-hidden />
-                  <h3 className="type-card-title mt-6">
+                  <h3 className="type-card-title">
                     {card.title}
                   </h3>
                   <p className="mt-4 leading-relaxed text-fg-muted">
@@ -359,8 +349,8 @@ export default async function NetworkPage() {
             <p className="mx-auto mt-6 max-w-xl leading-relaxed text-fg-muted md:text-lg lg:mx-0">
               Tell me what you do, where you&apos;re based and how you want to appear in the directory. Once your application is approved, you can claim your profile, log in and keep it up to date yourself.
             </p>
-            <div className="mt-8 rounded-2xl border border-line bg-surface-0/60 p-6 text-left">
-              <p className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-accent">
+            <div className="mt-8 border border-line bg-surface-0/60 p-6 text-left md:p-8">
+              <p className="text-sm font-semibold text-accent">
                 What happens after you join
               </p>
               <ul className="mt-5 space-y-3">

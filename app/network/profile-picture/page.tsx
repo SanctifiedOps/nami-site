@@ -51,7 +51,7 @@ export default async function ProfilePicturePage({
               token={token}
             />
           ) : (
-            <div className="glass-refractive rounded-3xl p-7 md:p-9">
+            <div className="border border-line bg-surface-1 p-7 md:p-9">
               <h2 className="text-2xl font-semibold text-fg">This link isn&apos;t valid</h2>
               <p className="mt-3 leading-relaxed text-fg-muted">
               Use the personal link in your NAMI email. If it still doesn&apos;t work, reply to the email and I&apos;ll sort it.

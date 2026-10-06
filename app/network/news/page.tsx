@@ -23,7 +23,6 @@ import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
 import { cn } from "@/lib/utils";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
-import { HeroLights } from "@/components/hero/hero-lights";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 type MemberMap = Map<string, NetworkDirectoryMember>;
@@ -108,11 +107,10 @@ function FeatureStory({ item, members }: { item: NetworkNewsItem; members: Membe
   );
 }
 
-function LatestStory({ item, number, members }: { item: NetworkNewsItem; number: number; members: MemberMap }) {
+function LatestStory({ item, members }: { item: NetworkNewsItem; members: MemberMap }) {
   return (
     <article className="group border-t border-line py-6 first:border-t-0 first:pt-0">
-      <Link href={item.href} className="grid grid-cols-[2rem_1fr] gap-4 sm:grid-cols-[2.5rem_9rem_1fr] sm:items-start">
-        <span className="pt-0.5 font-mono text-xs text-fg-subtle">{String(number).padStart(2, "0")}</span>
+      <Link href={item.href} className="grid gap-4 sm:grid-cols-[9rem_1fr] sm:items-start">
         <StoryImage item={item} members={members} className="hidden aspect-[4/3] sm:block" />
         <div>
           <ArticleMeta item={item} />
@@ -159,27 +157,19 @@ async function NetworkNewsContent({ previewMode = false }: { previewMode?: boole
           Local Network hub preview
         </div>
       )}
-      <header className="relative isolate overflow-hidden border-b border-line pt-28 md:pt-32">
-        <ParallaxBackdrop src="/images/north-east/7.jpg" overlay={0.76} />
-        <HeroLights />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-b from-transparent to-surface-0" />
-        <div className="container-shell relative z-10 py-12 md:py-20">
-          <div className="flex items-end justify-between gap-8">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">NAMI Creative Network</p>
-              <h1 className="type-page-title mt-2">News</h1>
-            </div>
-            <p className="hidden max-w-md pb-1 text-right text-sm leading-relaxed text-fg-muted md:block">People, projects and useful ideas from across the North East creative community.</p>
+      <header className="relative isolate min-h-[68svh] overflow-hidden border-b border-line pt-28 md:pt-32">
+        <ParallaxBackdrop src="/images/north-east/7.jpg" overlay={0.72} />
+        <div className="container-shell relative z-10 flex min-h-[52svh] items-end py-12 md:py-20">
+          <div className="grid w-full gap-6 md:grid-cols-[minmax(0,1fr)_minmax(18rem,0.55fr)] md:items-end">
+            <h1 className="max-w-4xl text-[clamp(4.5rem,14vw,10rem)] font-semibold leading-[0.86] tracking-[-0.065em]">News</h1>
+            <p className="max-w-md border-l-2 border-accent pl-5 text-base leading-relaxed text-white/75 md:pb-2 md:text-lg">People, projects and useful ideas from across the North East creative community.</p>
           </div>
         </div>
-        <nav aria-label="News sections" className="relative z-10 border-y border-accent/25 bg-surface-1/90 shadow-[0_14px_40px_rgb(0_0_0/0.2)] backdrop-blur-md">
-          <div className="container-shell flex flex-col items-center gap-4 py-5 md:flex-row md:justify-between">
-            <p className="shrink-0 text-xs font-bold uppercase tracking-[0.18em] text-fg">Browse stories</p>
-            <div className="flex flex-wrap justify-center gap-2 md:justify-end">
-              <span className="rounded-full bg-accent px-4 py-2 text-[0.68rem] font-bold uppercase tracking-[0.13em] text-white">Latest</span>
-              {categories.map((category) => <span key={category} className="rounded-full border border-line-strong bg-surface-0/60 px-4 py-2 text-[0.68rem] font-bold uppercase tracking-[0.13em] text-fg-muted">{category}</span>)}
+        <nav aria-label="News sections" className="relative z-10 border-t border-white/15 bg-black/70 backdrop-blur-md">
+          <div className="container-shell flex flex-wrap gap-x-7 gap-y-3 py-5">
+              <span className="border-b-2 border-accent pb-2 text-sm font-semibold text-white">Latest</span>
+              {categories.map((category) => <span key={category} className="pb-2 text-sm font-semibold text-white/60">{category}</span>)}
             </div>
-          </div>
         </nav>
       </header>
 
@@ -240,7 +230,7 @@ async function NetworkNewsContent({ previewMode = false }: { previewMode?: boole
       <ScrollReveal><section className="container-shell grid gap-12 py-12 md:py-16 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
         <div>
           <div className="mb-6 border-b-2 border-fg pb-3"><h2 className="text-3xl font-semibold tracking-[-0.035em]">Latest stories</h2></div>
-          {latest.map((item, index) => <LatestStory key={item.href} item={item} number={index + 1} members={members} />)}
+          {latest.map((item) => <LatestStory key={item.href} item={item} members={members} />)}
         </div>
         <aside className="space-y-10 lg:border-l lg:border-line lg:pl-8">
           <section>

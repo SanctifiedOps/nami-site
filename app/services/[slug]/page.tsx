@@ -123,7 +123,7 @@ export default async function ServiceDetailPage({
       >
         <Link
           href="/contact"
-          className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft"
+          className="group inline-flex items-center gap-2 rounded-md bg-accent px-7 py-4 text-sm font-semibold text-white transition-colors duration-300 hover:bg-accent-soft"
         >
           Work with me
           <ArrowUpRight
@@ -332,7 +332,7 @@ export default async function ServiceDetailPage({
             </div>
             <Link
               href="/contact"
-              className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-md bg-accent px-7 py-4 text-sm font-semibold text-white"
             >
               Work with me
               <ArrowUpRight size={14} aria-hidden />

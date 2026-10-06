@@ -81,7 +81,6 @@ export function EventManager({initialEvents,upcomingEvents}:{initialEvents:Event
     <div className="pointer-events-none absolute inset-x-0 top-0 h-[760px] [mask-image:linear-gradient(to_bottom,black_0%,black_48%,transparent_100%)]">
       <div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-30" />
       <div className="absolute inset-0 bg-gradient-to-b from-surface-0/30 via-surface-0/75 to-surface-0" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(255,0,188,.28),transparent_42%)]" />
     </div>
     <div className="container-shell relative z-10">
     <section className="max-w-4xl pt-8 md:pt-14">
@@ -89,13 +88,13 @@ export function EventManager({initialEvents,upcomingEvents}:{initialEvents:Event
       <p className="mt-8 text-xs font-bold uppercase tracking-[.16em] text-accent">Member events</p>
       <div className="mt-3 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div><h1 className="text-5xl leading-[.95] md:text-7xl">Share what you’re<br/><span className="text-accent">putting on</span></h1><p className="mt-5 max-w-2xl text-base leading-7 text-fg-muted md:text-lg">Add your event once and we’ll prepare it for the Network calendar. You can manage updates, links and event details here.</p></div>
-        <button onClick={()=>{setEditing(null);setPriceType("free");setOpen(!open);}} className="shrink-0 rounded-full bg-accent px-6 py-3 font-bold text-white shadow-[0_12px_36px_rgba(255,0,188,.24)]">{open?"Close form":"Add an event"}</button>
+        <button onClick={()=>{setEditing(null);setPriceType("free");setOpen(!open);}} className="shrink-0 rounded-md bg-accent px-6 py-3 font-semibold text-white">{open?"Close form":"Add an event"}</button>
       </div>
       <div className="mt-10 grid gap-3 sm:grid-cols-3">
-        {[{icon:Send,title:"Submit",copy:"Add the details, image and link."},{icon:Clock3,title:"Review",copy:"NAMI checks it before publishing."},{icon:CheckCircle2,title:"Live",copy:"Approved events join the public calendar."}].map(({icon:Icon,title,copy},index)=><article key={title} className="rounded-2xl border border-line bg-surface-1/90 p-4 backdrop-blur"><div className="flex items-center gap-3"><span className="flex size-9 items-center justify-center rounded-full bg-accent/15 text-accent"><Icon size={17}/></span><div><p className="text-[10px] font-bold uppercase tracking-wider text-fg-subtle">Step {index+1}</p><h2 className="text-lg">{title}</h2></div></div><p className="mt-3 text-sm text-fg-muted">{copy}</p></article>)}
+        {[{icon:Send,title:"Submit",copy:"Add the details, image and link."},{icon:Clock3,title:"Review",copy:"NAMI checks it before publishing."},{icon:CheckCircle2,title:"Live",copy:"Approved events join the public calendar."}].map(({icon:Icon,title,copy})=><article key={title} className="border border-line bg-surface-1 p-4"><div className="flex items-center gap-3"><Icon size={18} className="text-accent"/><h2 className="text-lg">{title}</h2></div><p className="mt-3 text-sm text-fg-muted">{copy}</p></article>)}
       </div>
     </section>
-    {open&&<form key={editing?.id||"new-event"} onSubmit={submit} onInvalid={handleInvalid} className="mt-8 grid gap-4 rounded-3xl border border-line bg-surface-1 p-5 md:grid-cols-2">
+    {open&&<form key={editing?.id||"new-event"} onSubmit={submit} onInvalid={handleInvalid} className="mt-8 grid gap-4 border border-line bg-surface-1 p-5 md:grid-cols-2">
       <h2 className="text-2xl md:col-span-2">{editing?`Edit ${editing.title}`:"Add an event"}</h2>
       {basicFields.map(([name,label,type])=><label key={name} className="text-sm font-bold">{label}<input name={name} type={type||"text"} defaultValue={editing?.[name]??""} required={requiredFields.has(name)} className={field}/></label>)}
       <DateTimePicker name="startsAt" label="Starts" initialValue={editing?.startsAt} required/>
@@ -109,7 +108,7 @@ export function EventManager({initialEvents,upcomingEvents}:{initialEvents:Event
       <label className="text-sm font-bold">Cover image<input name="image" type="file" accept="image/*" required={!editing?.coverImageKey} className={field}/><span className="mt-2 block text-xs font-normal text-fg-muted">{editing?.coverImageKey?"Choose a photo only if you want to replace the current image.":"Choose a photo from your device. We'll crop, resize and optimise it for you."}</span></label>
       <label className="text-sm font-bold">Image description<input name="coverImageAlt" defaultValue={editing?.coverImageAlt||""} required minLength={4} className={field}/><span className="mt-2 block text-xs font-normal text-fg-muted">Briefly describe what is in the image for people using screen readers.</span></label>
       {message&&<p role="status" className="text-sm text-accent md:col-span-2">{message}</p>}
-      <button className="rounded-full bg-accent px-5 py-3 font-bold text-white md:col-span-2">{editing?.status==="approved"?"Submit changes for approval":"Submit for approval"}</button>
+      <button className="rounded-md bg-accent px-5 py-3 font-semibold text-white md:col-span-2">{editing?.status==="approved"?"Submit changes for approval":"Submit for approval"}</button>
     </form>}
     <section className="mt-16">
       <div className="flex items-end justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.15em] text-accent">Manage</p><h2 className="mt-2 text-3xl md:text-5xl">Your events</h2></div><span className="text-sm text-fg-muted">{events.length} {events.length===1?"event":"events"}</span></div>

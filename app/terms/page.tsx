@@ -15,6 +15,8 @@ export default function TermsPage() {
   return (
     <>
       <PageHero
+        backgroundImage="/images/north-east/6.jpg"
+        className="min-h-[52svh] md:min-h-[58svh]"
         eyebrow="Legal"
         title={
           <>

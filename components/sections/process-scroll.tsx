@@ -1,4 +1,3 @@
-import { Check } from "lucide-react";
 import { processSteps } from "@/lib/content/process";
 
 type Props = {
@@ -7,58 +6,31 @@ type Props = {
   lead?: string;
 };
 
-const DEFAULT_TITLE = <>What happens when you work with me</>;
+const DEFAULT_TITLE = <>A clear route from problem to finished work</>;
 
 export function ProcessScroll({
   title = DEFAULT_TITLE,
-  lead = "I work out what's causing the problem, agree what needs doing with you and get it sorted. You'll always know what's happening and what comes next.",
+  lead = "We agree what needs attention, I do the work, and you always know what is happening next.",
 }: Props = {}) {
   return (
-    <div className="grid gap-14 lg:grid-cols-12 lg:gap-0">
-      <div className="lg:col-span-4 lg:pr-16">
-        <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-          How I work
-        </p>
-        <h2 className="type-section-title max-w-md">{title}</h2>
-        <p className="mt-6 max-w-md text-lg leading-[1.5] text-fg-muted">
+    <div>
+      <header className="grid gap-5 md:grid-cols-2 md:items-end">
+        <h2 className="type-section-title max-w-2xl">{title}</h2>
+        <p className="max-w-xl text-base leading-[1.5] text-white/72 md:justify-self-end md:text-lg">
           {lead}
         </p>
-      </div>
+      </header>
 
-      <ol className="border-t border-line lg:col-span-8">
+      <ol className="mt-12 grid gap-px overflow-hidden rounded-sm border border-white/15 bg-white/15 md:grid-cols-2 xl:grid-cols-4">
         {processSteps.map((step) => (
-          <li
-            key={step.number}
-            className="grid gap-5 border-b border-line py-8 md:grid-cols-[4rem_1fr] md:gap-8 md:py-10"
-          >
-            <span className="text-sm font-semibold tabular-nums text-accent">
-              {step.number}
-            </span>
-            <article>
-              <div className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-baseline">
-                <h3 className="text-2xl font-medium tracking-tight md:text-3xl">
-                  {step.title}
-                </h3>
-                <p className="text-xs uppercase tracking-[0.14em] text-fg-subtle">
-                  {step.duration}
-                </p>
-              </div>
-              <p className="mt-5 max-w-2xl leading-[1.5] text-fg-muted">
-                {step.summary}
-              </p>
-              <ul className="mt-6 grid gap-x-8 gap-y-3 text-sm text-fg-muted sm:grid-cols-2">
-                {step.detail.map((line) => (
-                  <li key={line} className="flex items-start gap-2.5">
-                    <Check
-                      size={14}
-                      aria-hidden
-                      className="mt-1 shrink-0 text-accent"
-                    />
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
+          <li key={step.number} className="flex min-h-72 flex-col bg-black/55 p-6 backdrop-blur-sm md:p-8">
+            <p className="text-sm font-medium text-accent">{step.duration}</p>
+            <h3 className="mt-8 text-2xl font-semibold leading-tight tracking-[-0.025em] text-white">
+              {step.title}
+            </h3>
+            <p className="mt-4 text-sm leading-[1.55] text-white/70 md:text-base">
+              {step.summary}
+            </p>
           </li>
         ))}
       </ol>

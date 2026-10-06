@@ -78,17 +78,17 @@ export default async function NetworkDirectoryPage() {
           />
         }
       >
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="flex flex-wrap justify-start gap-3">
             <Link
               href="#directory"
-              className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+              className="group inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
             >
               Explore the directory
               <ArrowDown size={16} aria-hidden className="transition-transform group-hover:translate-y-0.5" />
             </Link>
             <Link
               href="/network"
-              className="group inline-flex items-center gap-2 rounded-full border border-accent bg-black/60 px-7 py-4 text-sm font-semibold text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-accent hover:shadow-[0_8px_32px_rgb(255_0_188/0.3)]"
+              className="group inline-flex items-center gap-2 rounded-md border border-white/30 bg-black/30 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-accent"
             >
               Join the Network
               <ArrowUpRight size={16} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -97,8 +97,7 @@ export default async function NetworkDirectoryPage() {
       </PageHero>
 
       {featured && (
-        <section className="relative isolate overflow-hidden border-b border-line bg-surface-0 py-5 md:py-7">
-          <div aria-hidden className="absolute inset-x-0 bottom-0 h-3/4 bg-[radial-gradient(ellipse_at_50%_115%,rgba(255,0,188,.12),transparent_62%)]" />
+        <section className="border-b border-line bg-surface-0 py-8 md:py-12">
           <div className="container-shell relative">
             <div className="grid gap-6 py-5 md:grid-cols-[minmax(14rem,0.68fr)_minmax(0,1.32fr)] md:items-center md:gap-9 md:py-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-12">
                 <div className="group relative mx-auto w-full max-w-[14rem] md:max-w-[16rem] lg:max-w-[17rem]">
@@ -109,18 +108,17 @@ export default async function NetworkDirectoryPage() {
                     featured
                     imageClassName="transition-[filter,transform] duration-500 ease-out group-hover:scale-[1.025] group-hover:grayscale group-hover:brightness-[.52] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                   />
-                  <div aria-hidden className="pointer-events-none absolute inset-0 rounded-full bg-[linear-gradient(145deg,rgba(255,0,188,.58),rgba(255,0,188,.10)_48%,rgba(0,0,0,.35))] opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none" />
                 </div>
                 <div className="max-w-3xl text-center md:text-left">
                   <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Featured Creative of the Week</p>
                   <h2 className="mt-3 text-4xl font-semibold leading-[0.96] tracking-tight md:text-6xl">{featured.name}</h2>
                   <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-sm text-fg-subtle md:justify-start">
-                    <span className="rounded-full border border-line px-3 py-1.5">{featured.category}</span>
+                    <span className="border-l-2 border-accent pl-3">{featured.category}</span>
                     <span className="inline-flex items-center gap-2"><MapPin size={14} aria-hidden />{featured.location}</span>
                   </div>
                   <p className="mt-3 max-w-2xl text-base leading-6 text-fg-muted md:text-lg">{featured.description}</p>
                   <div className="mt-5 flex flex-wrap justify-center gap-4 md:justify-start">
-                    <Link href={`/network/directory/member/${featured.id}`} className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-soft">
+                    <Link href={`/network/directory/member/${featured.id}`} className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-soft">
                       View member profile <ArrowUpRight size={14} aria-hidden />
                     </Link>
                   </div>

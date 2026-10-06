@@ -170,7 +170,7 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
 
   return (
     <div>
-      <div className="glass-refractive rounded-3xl p-4 md:p-5">
+      <div className="border border-line bg-surface-1 p-3 md:p-4">
         <div className={`grid gap-3 ${hideCategoryFilter ? "lg:grid-cols-[minmax(0,1fr)_15rem]" : "lg:grid-cols-[minmax(0,1fr)_15rem_15rem]"}`}>
           <label className="relative block">
             <span className="sr-only">Search the directory</span>
@@ -184,7 +184,7 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search by name, work or city"
-              className="w-full rounded-xl border border-line bg-surface-0/65 py-3.5 pl-12 pr-4 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-accent focus:ring-4 focus:ring-accent/10"
+              className="w-full rounded-md border border-line bg-surface-0 py-3.5 pl-12 pr-4 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-accent"
             />
           </label>
 
@@ -220,7 +220,7 @@ export function DirectoryBrowser({ members, previewOnly = false, hideCategoryFil
           {filtered.map((member) => <DirectoryMemberCard key={member.id} member={member} analyticsContext={{ searchQuery: query, categoryFilter: category, locationFilter: location, resultCount: filtered.length }} />)}
         </div>
       ) : (
-        <div className="mt-8 rounded-3xl border border-line bg-surface-1/40 px-6 py-16 text-center">
+        <div className="mt-8 border border-line bg-surface-1 px-6 py-16 text-center">
           <p className="text-2xl font-semibold tracking-tight">No members match those filters</p>
           <p className="mx-auto mt-3 max-w-lg text-fg-muted">Try another category, area or search term.</p>
           <button type="button" onClick={resetFilters} className="mt-6 text-sm font-semibold text-accent hover:text-accent-soft">
@@ -273,7 +273,7 @@ function FilterSelect({
         aria-expanded={open}
         aria-controls={listboxId}
         onClick={() => setOpen((current) => !current)}
-        className="flex w-full items-center justify-between gap-4 rounded-xl border border-line bg-surface-0/65 px-4 py-3.5 text-left text-sm text-fg outline-none transition-all hover:border-accent/60 focus-visible:border-accent focus-visible:ring-4 focus-visible:ring-accent/10"
+        className="flex w-full items-center justify-between gap-4 rounded-md border border-line bg-surface-0 px-4 py-3.5 text-left text-sm text-fg outline-none transition-colors hover:border-accent/60 focus-visible:border-accent"
       >
         <span>{value}</span>
         <ChevronDown size={16} aria-hidden className={`shrink-0 text-accent transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -283,7 +283,7 @@ function FilterSelect({
           id={listboxId}
           role="listbox"
           aria-labelledby={`${listboxId}-label`}
-          className="absolute inset-x-0 top-[calc(100%+.4rem)] z-50 max-h-72 overflow-y-auto rounded-xl border border-accent/60 bg-[#0c0d0f] p-1.5 shadow-[0_18px_50px_rgba(0,0,0,.65),0_0_30px_rgba(255,0,188,.14)]"
+          className="absolute inset-x-0 top-[calc(100%+.4rem)] z-50 max-h-72 overflow-y-auto rounded-md border border-line-strong bg-[#0c0d0f] p-1.5 shadow-xl"
         >
           {options.map((option) => {
             const selected = option === value;
@@ -297,7 +297,7 @@ function FilterSelect({
                   onChange(option);
                   setOpen(false);
                 }}
-                className={`flex w-full items-center justify-between gap-3 rounded-lg px-3.5 py-2.5 text-left text-sm transition-colors ${selected ? "bg-accent text-white" : "text-fg hover:bg-accent/15 hover:text-accent"}`}
+                className={`flex w-full items-center justify-between gap-3 rounded-sm px-3.5 py-2.5 text-left text-sm transition-colors ${selected ? "bg-accent text-white" : "text-fg hover:bg-white/5 hover:text-accent"}`}
               >
                 <span>{option}</span>
                 {selected && <Check size={15} aria-hidden className="shrink-0" />}

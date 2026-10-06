@@ -64,7 +64,7 @@ export default function FlowFunnelPage() {
                 href={offer.hero.primaryCta.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-shadow duration-500 hover:shadow-[0_8px_40px_rgb(255_0_188/0.55)]"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-accent px-8 py-4 text-sm font-semibold text-white transition-colors duration-300 hover:bg-accent-soft"
               >
                 <span className="absolute inset-0 -z-10 translate-y-full bg-accent-soft transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-0" />
                 {offer.hero.primaryCta.label}
@@ -213,7 +213,7 @@ export default function FlowFunnelPage() {
           >
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl border border-accent/40 bg-surface-1/60 p-8 backdrop-blur-md transition-shadow duration-700 hover:shadow-[0_0_60px_rgb(255_0_188/0.12)] md:p-10"
+              className="border border-accent/40 bg-surface-1 p-8 md:p-10"
             >
               <h3 className="text-xs font-semibold uppercase tracking-widest text-accent">
                 This is for you if
@@ -236,7 +236,7 @@ export default function FlowFunnelPage() {
             </motion.div>
             <motion.div
               variants={fadeUp}
-              className="rounded-2xl border border-line bg-surface-1/40 p-8 backdrop-blur-md md:p-10"
+              className="border border-line bg-surface-1 p-8 md:p-10"
             >
               <h3 className="text-xs font-semibold uppercase tracking-widest text-fg-subtle">
                 This isn&apos;t for you if
@@ -306,7 +306,7 @@ export default function FlowFunnelPage() {
 
               <motion.div
                 variants={cardIn}
-                className="group relative mx-auto mt-12 overflow-hidden rounded-3xl border border-line bg-surface-1/60 transition-all duration-700 ease-[var(--ease-out-expo)] hover:border-accent/40 hover:shadow-[0_0_80px_rgb(255_0_188/0.15)] md:mt-16"
+                className="group relative mx-auto mt-12 overflow-hidden border border-line bg-surface-1 transition-colors duration-300 hover:border-accent/40 md:mt-16"
               >
                 <div
                   className={cn(
@@ -408,7 +408,7 @@ export default function FlowFunnelPage() {
             whileInView="show"
             viewport={{ once: true, amount: 0.15 }}
             variants={stageFast}
-            className="mx-auto mt-16 grid max-w-4xl gap-px overflow-hidden rounded-3xl border border-line bg-line md:mt-20 md:grid-cols-2"
+            className="mx-auto mt-16 grid max-w-4xl gap-px overflow-hidden border border-line bg-line md:mt-20 md:grid-cols-2"
           >
             {offer.deliverables.items.map((item) => {
               const Icon = item.icon;
@@ -455,7 +455,7 @@ export default function FlowFunnelPage() {
             whileInView="show"
             viewport={{ once: true, amount: 0.15 }}
             variants={stageFast}
-            className="mx-auto mt-16 grid max-w-3xl gap-px overflow-hidden rounded-3xl border border-line bg-line md:mt-20"
+            className="mx-auto mt-16 grid max-w-3xl gap-px overflow-hidden border border-line bg-line md:mt-20"
           >
             {offer.flowPhases.map((phase) => (
               <motion.li
@@ -540,7 +540,7 @@ export default function FlowFunnelPage() {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
           variants={stage}
-          className="mx-auto flex max-w-2xl flex-col items-center gap-8 rounded-3xl border border-accent/30 bg-surface-1/60 p-10 text-center shadow-[0_0_80px_rgb(255_0_188/0.1)] transition-shadow duration-700 hover:shadow-[0_0_120px_rgb(255_0_188/0.16)] md:p-16"
+          className="mx-auto flex max-w-2xl flex-col items-center gap-8 border border-accent/30 bg-surface-1 p-10 text-center md:p-16"
         >
           <motion.p className="eyebrow" variants={fadeUp}>
             {offer.finalCta.eyebrow}
@@ -566,7 +566,7 @@ export default function FlowFunnelPage() {
                 href={offer.finalCta.button.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-shadow duration-500 hover:shadow-[0_8px_40px_rgb(255_0_188/0.55)]"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-accent px-8 py-4 text-sm font-semibold text-white transition-colors duration-300 hover:bg-accent-soft"
               >
                 <span className="absolute inset-0 -z-10 translate-y-full bg-accent-soft transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-0" />
                 {offer.finalCta.button.label}

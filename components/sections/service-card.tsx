@@ -5,7 +5,6 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import type { Service } from "@/lib/content/services";
 import { cardIn } from "@/lib/motion";
-import { SpotlightCard } from "@/components/motion/spotlight-card";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -14,44 +13,22 @@ type Props = {
 };
 
 export function ServiceCard({ service, className }: Props) {
-  const Icon = service.icon;
-
   return (
-    <motion.div variants={cardIn} className={cn(className)}>
-      <SpotlightCard
-        tilt={5}
-        className="glass-refractive glass-refractive--hover h-full rounded-2xl"
+    <motion.article variants={cardIn} className={cn("group h-full", className)}>
+      <Link
+        href={`/services/${service.slug}`}
+        className="flex min-h-72 h-full flex-col border border-line bg-surface-1 p-7 transition-colors hover:border-accent/55 hover:bg-surface-2 md:min-h-80 md:p-9"
       >
-        <Link
-          href={`/services/${service.slug}`}
-          className="relative z-10 flex h-full flex-col gap-6 rounded-2xl p-8 md:p-10"
-        >
-          <div className="flex items-start justify-between">
-            <span className="mono-label">{service.index}</span>
-            <Icon
-              size={28}
-              aria-hidden
-              className="text-accent transition-transform duration-500 ease-out-expo group-hover:-translate-y-0.5 group-hover:scale-110"
-            />
-          </div>
-
-          <div className="space-y-3">
-            <h3 className="type-card-title text-fg">
-              {service.title}
-            </h3>
-            <p className="leading-relaxed text-fg-muted">{service.tagline}</p>
-          </div>
-
-          <div className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-fg/80 transition-colors group-hover:text-accent">
-            Read more
-            <ArrowUpRight
-              size={14}
-              aria-hidden
-              className="transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </div>
-        </Link>
-      </SpotlightCard>
-    </motion.div>
+        <p className="text-sm font-medium text-accent">{service.pillar}</p>
+        <h3 className="mt-8 max-w-sm text-2xl font-semibold leading-tight tracking-[-0.025em] text-fg md:text-3xl">
+          {service.title}
+        </h3>
+        <p className="mt-4 max-w-sm leading-[1.5] text-fg-muted">{service.tagline}</p>
+        <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-fg transition-colors group-hover:text-accent">
+          Explore this service
+          <ArrowUpRight size={14} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </span>
+      </Link>
+    </motion.article>
   );
 }

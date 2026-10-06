@@ -13,6 +13,8 @@ export default function PricingPage() {
   return (
     <>
       <PageHero
+        backgroundImage="/images/north-east/2.jpg"
+        backgroundPosition="center 54%"
         eyebrow="Investment"
         title={
           <>
@@ -115,9 +117,9 @@ export default function PricingPage() {
                 <Link
                   href={e.cta.href}
                   className={cn(
-                    "group/link mt-8 inline-flex w-fit items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-500",
+                    "group/link mt-8 inline-flex w-fit items-center gap-2 rounded-md px-6 py-3.5 text-sm font-semibold transition-colors duration-300",
                     e.highlight
-                      ? "bg-accent text-white shadow-[0_4px_18px_rgb(255_0_188/0.25)] hover:bg-accent-soft hover:shadow-[0_8px_28px_rgb(255_0_188/0.32)]"
+                      ? "bg-accent text-white hover:bg-accent-soft"
                       : "border border-line-strong text-fg hover:border-accent hover:bg-white/5",
                   )}
                 >

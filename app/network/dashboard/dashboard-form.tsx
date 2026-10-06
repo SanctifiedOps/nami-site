@@ -36,7 +36,7 @@ type PortfolioImage = {
 };
 
 const fieldClass =
-  "mt-2 w-full rounded-xl border border-line-strong bg-surface-0 px-4 py-3 text-fg";
+  "mt-2 w-full rounded-md border border-line-strong bg-surface-0 px-4 py-3 text-fg outline-none transition-colors focus:border-accent";
 const mediaUrl = (key: string) =>
   key
     ? key.startsWith("/") ? key : `/api/network/media/${key.split("/").map(encodeURIComponent).join("/")}`

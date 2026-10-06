@@ -204,7 +204,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
       />
 
     <div className="overflow-hidden pb-24">
-        <section className="relative isolate overflow-hidden pb-4 pt-24 sm:pt-28 md:pb-24 md:pt-36">
+        <section className="relative isolate overflow-hidden border-b border-line pb-10 pt-24 sm:pt-28 md:pb-20 md:pt-36">
           <ParallaxBackdrop
             src="/images/north-east/4.jpg"
             overlay={0.88}
@@ -220,9 +220,9 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
             Back to the directory
           </Link>
 
-          <section className="relative mt-5 py-6 sm:mt-8 sm:py-7 md:py-10 lg:py-14">
-            <div className="relative grid gap-6 sm:gap-10 lg:grid-cols-[minmax(18rem,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-16">
-              <div className="mx-auto w-full max-w-[12rem] sm:max-w-xs lg:max-w-md">
+          <section className="relative mt-7 sm:mt-10">
+            <div className="relative grid gap-8 lg:grid-cols-[minmax(18rem,0.72fr)_minmax(0,1.28fr)] lg:items-end lg:gap-16">
+              <div className="w-full max-w-sm lg:max-w-md">
                 <MemberAvatar
                   name={member.name}
                   src={member.profileImage}
@@ -231,32 +231,30 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                 />
               </div>
 
-              <div className="text-center lg:text-left">
-                <p className="mono-label text-[10px] text-accent sm:text-xs">NAMI Creative Network member</p>
-                <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs text-fg-subtle sm:mt-5 sm:gap-3 sm:text-sm lg:justify-start">
-                  <span className="rounded-full border border-line bg-surface-0/50 px-2.5 py-1 sm:px-3 sm:py-1.5">{profile.role}</span>
+              <div className="pb-1 text-left lg:pb-4">
+                <p className="text-sm font-semibold text-accent">NAMI Creative Network member</p>
+                <h1 className="mt-4 max-w-4xl break-words text-[clamp(3rem,10vw,5rem)] font-semibold leading-[0.96] tracking-[-0.045em] lg:text-7xl">
+                  {profile.personName}
+                  {profile.brandName && <span className="mt-2 block text-accent">{profile.brandName}</span>}
+                </h1>
+                <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-l-2 border-accent pl-4 text-sm text-fg-muted">
+                  <span>{profile.role}</span>
                   <span className="inline-flex items-center gap-2">
                     <MapPin size={15} className="text-accent" aria-hidden />
                     {member.location}
                   </span>
                 </div>
-
-                <h1 className="mx-auto mt-4 max-w-4xl break-words text-[clamp(2.15rem,10.5vw,3rem)] font-semibold leading-[0.94] tracking-tight sm:mt-6 sm:text-6xl lg:mx-0 lg:text-7xl">
-                  {profile.personName}
-                  {profile.brandName && <span className="mt-2 block text-accent">{profile.brandName}</span>}
-                </h1>
-
-                <p className="mx-auto mt-5 max-w-2xl text-base leading-6 text-fg-muted sm:mt-7 sm:text-lg sm:leading-relaxed md:text-xl lg:mx-0">
+                <p className="mt-6 max-w-2xl text-base leading-relaxed text-fg-muted sm:text-lg md:text-xl">
                   {member.description}
                 </p>
 
-                <div className="mt-5 flex flex-wrap justify-center gap-2 sm:mt-8 sm:gap-3 lg:justify-start">
+                <div className="mt-7 flex flex-wrap gap-3">
                   {member.websiteUrl && (
                     <a
                       href={member.websiteUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-accent-soft sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm"
+                      className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
                     >
                       Visit their work <ArrowUpRight size={15} aria-hidden />
                     </a>
@@ -264,7 +262,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                   {socialLinks.length > 0 && (
                     <a
                       href="#member-socials"
-                      className="inline-flex items-center gap-1.5 rounded-full border border-accent bg-black/75 px-4 py-2.5 text-xs font-semibold text-white shadow-[0_0_0_rgba(255,0,166,0)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:text-accent hover:shadow-[0_10px_30px_rgba(255,0,166,0.2)] sm:gap-2 sm:px-6 sm:py-3.5 sm:text-sm"
+                      className="inline-flex items-center gap-2 rounded-md border border-line-strong bg-black/70 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-accent hover:text-accent"
                     >
                       View socials <ArrowUpRight size={15} aria-hidden />
                     </a>
@@ -290,7 +288,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
 
             <aside
               id="member-socials"
-              className="group self-start scroll-mt-28 rounded-3xl border border-accent/35 bg-[linear-gradient(145deg,rgba(255,0,166,0.20),rgba(18,18,22,0.96)_45%,rgba(255,0,166,0.08))] p-6 shadow-[0_18px_55px_rgba(255,0,166,0.10)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/65 hover:shadow-[0_24px_70px_rgba(255,0,166,0.20)] md:p-8"
+              className="self-start scroll-mt-28 border border-line bg-surface-1 p-6 md:p-8"
             >
               <p className="mono-label text-accent">At a glance</p>
               <dl className="mt-6 divide-y divide-line">
@@ -317,7 +315,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-accent/60 bg-black/65 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:shadow-[0_10px_26px_rgba(255,0,166,0.28)]"
+                        className="inline-flex items-center gap-2 border-b border-line-strong py-2 text-sm font-semibold text-white transition-colors hover:border-accent hover:text-accent"
                       >
                         {link.label} <ArrowUpRight size={14} aria-hidden />
                       </a>
@@ -363,7 +361,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
                   <Link
                     key={event.id}
                     href={`/network/events/${event.slug}`}
-                    className="group overflow-hidden rounded-3xl border border-accent/25 bg-surface-1/90 shadow-[0_18px_55px_rgba(0,0,0,0.3)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/65 hover:shadow-[0_24px_70px_rgba(255,0,166,0.18)]"
+                    className="group overflow-hidden border border-line bg-surface-1 transition-colors hover:border-accent/60"
                   >
                     <div className="relative aspect-[4/5] overflow-hidden bg-surface-2">
                       {event.coverImageKey && (

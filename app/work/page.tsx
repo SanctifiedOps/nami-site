@@ -37,22 +37,20 @@ export default function WorkPage() {
       <section className="container-shell py-24 md:py-32">
         <WorkGrid />
 
-        <div className="glass-refractive mt-20 flex flex-col items-start gap-6 rounded-3xl p-10 md:mt-28 md:flex-row md:items-center md:justify-between md:p-16">
+        <div className="mt-20 grid overflow-hidden border border-line bg-surface-1 md:mt-28 md:grid-cols-[1fr_auto]">
           <div className="max-w-xl">
-            <p className="mono-label mb-3">Work with me</p>
-            <p className="text-2xl font-medium tracking-tight md:text-3xl">
-              Got something{" "}
-              <span className="text-gradient">
-                that needs sorting?
-              </span>
+            <div className="p-8 md:p-12">
+            <p className="text-2xl font-semibold tracking-tight md:text-4xl">
+              Got something that needs sorting?
             </p>
             <p className="mt-4 max-w-lg leading-relaxed text-fg-muted">
             Tell me what&apos;s getting in the way. I&apos;ll tell you whether I can help.
             </p>
+            </div>
           </div>
           <Link
             href="/contact"
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
+            className="group inline-flex min-h-28 items-center justify-center gap-2 bg-accent px-8 py-6 text-sm font-semibold text-white transition-colors hover:bg-accent-soft md:min-w-64"
           >
             Tell me about the job
             <ArrowUpRight

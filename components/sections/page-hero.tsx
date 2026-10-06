@@ -1,10 +1,6 @@
 "use client";
 
 import { motion } from "motion/react";
-import { stage, fadeUp } from "@/lib/motion";
-import { LetterReveal } from "@/components/motion/letter-reveal";
-import { VideoBackground } from "@/components/hero/video-background";
-import { HeroLights } from "@/components/hero/hero-lights";
 import { NetworkHeroBackground } from "@/components/hero/network-hero-background";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { cn } from "@/lib/utils";
@@ -17,14 +13,12 @@ type Props = {
   networkBackground?: boolean;
   backgroundImage?: string;
   backgroundPosition?: string;
-  /** Optional content rendered above the title */
   aboveTitle?: React.ReactNode;
-  /** Optional content rendered below the lead, inside the hero stack */
   children?: React.ReactNode;
 };
 
-/** Inner-page hero: video background + letter-reveal title */
 export function PageHero({
+  eyebrow,
   title,
   lead,
   className,
@@ -37,56 +31,49 @@ export function PageHero({
   return (
     <section
       className={cn(
-        "relative isolate flex min-h-[calc(100svh-5rem)] items-center overflow-hidden border-b border-line",
+        "relative isolate flex min-h-[70svh] items-end overflow-hidden border-b border-line md:min-h-[76svh]",
         className,
       )}
     >
       {networkBackground ? (
         <NetworkHeroBackground />
-      ) : backgroundImage ? (
-        <ParallaxBackdrop
-          src={backgroundImage}
-          position={backgroundPosition}
-          overlay={0.72}
-        />
       ) : (
-        <VideoBackground src="wave-3.mp4" overlay={0.78} />
+        <ParallaxBackdrop
+          src={backgroundImage || "/assets/images/nami-office.webp"}
+          position={backgroundPosition || "center"}
+          overlay={0.62}
+        />
       )}
-      <HeroLights />
 
-      {/* Blend hero into the section below */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32 bg-linear-to-b from-transparent to-surface-0"
-      />
+      <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black via-black/35 to-black/55" />
 
       <motion.div
-        className="container-shell relative z-10 pt-28 pb-20 text-center md:pt-32 md:pb-24"
-        initial="hidden"
-        animate="show"
-        variants={stage}
+        className="container-shell relative z-10 grid gap-10 pb-14 pt-32 md:pb-20 lg:grid-cols-12 lg:items-end"
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       >
-        {aboveTitle && (
-          <motion.div className="mb-7 flex justify-center md:mb-9" variants={fadeUp}>
-            {aboveTitle}
-          </motion.div>
-        )}
-        <h1 className="type-page-title mx-auto max-w-4xl text-balance">
-          <LetterReveal>{title}</LetterReveal>
-        </h1>
-        {lead && (
-          <motion.p
-            className="type-lead mx-auto mt-7 max-w-2xl md:mt-8"
-            variants={fadeUp}
-          >
-            {lead}
-          </motion.p>
-        )}
-        {children && (
-          <motion.div className="mt-9 flex justify-center" variants={fadeUp}>
-            {children}
-          </motion.div>
-        )}
+        <div className="lg:col-span-8">
+          {aboveTitle ? <div className="mb-7 flex justify-start">{aboveTitle}</div> : null}
+          {eyebrow ? (
+            <p className="mb-6 flex items-center gap-3 text-sm font-semibold text-white/78">
+              <span aria-hidden className="h-px w-8 bg-accent" />
+              {eyebrow}
+            </p>
+          ) : null}
+          <h1 className="max-w-[13ch] text-balance text-[clamp(3rem,6.8vw,7rem)] font-semibold leading-[0.96] tracking-[-0.055em] text-white">
+            {title}
+          </h1>
+        </div>
+
+        <div className="lg:col-span-4 lg:pb-1">
+          {lead ? (
+            <p className="max-w-xl text-base leading-[1.5] text-white/76 md:text-lg">
+              {lead}
+            </p>
+          ) : null}
+          {children ? <div className="mt-7 flex justify-start">{children}</div> : null}
+        </div>
       </motion.div>
     </section>
   );

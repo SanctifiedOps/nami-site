@@ -25,7 +25,7 @@ export function PortfolioGallery({ images, memberName }: { images: PortfolioImag
   return <>
     <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-4">
       {images.map((image, index) => (
-        <figure key={`${image.src}-${index}`} className="group relative aspect-[3/4] overflow-hidden rounded-3xl border border-line bg-surface-0/65 shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[0_22px_60px_rgba(255,0,166,0.16)]">
+        <figure key={`${image.src}-${index}`} className="group relative aspect-[3/4] overflow-hidden border border-line bg-surface-0 transition-colors duration-300 hover:border-accent/60">
           <button type="button" onClick={() => setActiveImage(image)} className="absolute inset-0 z-10" aria-label={`Open ${image.title || `work by ${memberName}`} in gallery`} />
           <img src={image.src} alt={image.alt || `Work by ${memberName}`} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]" />
           <div className="pointer-events-none absolute inset-0 z-20 flex items-end bg-gradient-to-t from-black/95 via-black/30 to-transparent p-4 opacity-90 transition-opacity duration-400 sm:p-6 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100">
@@ -38,9 +38,8 @@ export function PortfolioGallery({ images, memberName }: { images: PortfolioImag
         </figure>
       ))}
       {Array.from({ length: Math.max(0, 4 - images.length) }, (_, index) => (
-        <div key={`portfolio-placeholder-${index}`} className="relative grid aspect-[3/4] place-items-center overflow-hidden rounded-2xl border border-dashed border-accent/35 bg-surface-0/65 px-2 py-4 text-center sm:rounded-3xl sm:p-5 md:p-8">
-          <div aria-hidden className="hairline-grid absolute inset-0 opacity-20" />
-          <div className="relative min-w-0"><span className="mx-auto grid size-9 place-items-center rounded-full border border-accent/30 bg-accent/10 text-lg leading-none text-accent sm:size-12 sm:text-2xl">+</span><p className="mx-auto mt-3 max-w-24 text-xs font-semibold leading-[1.2] text-fg-muted sm:mt-4 sm:max-w-none sm:text-sm">More work coming soon</p></div>
+        <div key={`portfolio-placeholder-${index}`} className="relative grid aspect-[3/4] place-items-center overflow-hidden border border-dashed border-line-strong bg-surface-0 px-4 py-6 text-center">
+          <div className="relative min-w-0"><span className="text-2xl leading-none text-accent">+</span><p className="mx-auto mt-3 max-w-24 text-xs font-semibold leading-[1.2] text-fg-muted sm:max-w-none sm:text-sm">More work coming soon</p></div>
         </div>
       ))}
     </div>

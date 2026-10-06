@@ -37,12 +37,12 @@ export default async function EventPage({params}:{params:Promise<{slug:string}>}
 
   return <div className="relative min-h-screen overflow-hidden pb-24 pt-24">
     <EventAnalytics eventId={event.id}/>
-    <div className="pointer-events-none absolute inset-x-0 top-0 h-[900px] [mask-image:linear-gradient(to_bottom,black_0%,black_40%,transparent_80%)]"><div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-25"/><div className="absolute inset-0 bg-gradient-to-b from-surface-0/20 via-surface-0/75 to-surface-0"/><div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,0,188,.24),transparent_42%)]"/></div>
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-[760px] [mask-image:linear-gradient(to_bottom,black_0%,black_40%,transparent_90%)]"><div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-25"/><div className="absolute inset-0 bg-gradient-to-b from-surface-0/20 via-surface-0/80 to-surface-0"/></div>
     <div className="container-shell relative z-10">
       <Link href="/network/events" className="inline-flex items-center gap-2 text-sm font-semibold text-accent"><ArrowLeft size={15}/>All events</Link>
-      <section className="mt-7 overflow-hidden rounded-[2rem] border border-accent/35 bg-surface-1/90 shadow-[0_30px_100px_rgba(0,0,0,.55)] backdrop-blur md:p-3">
+      <section className="mt-7 overflow-hidden border border-line bg-surface-1">
         <div className="grid lg:grid-cols-[.82fr_1.18fr] lg:items-stretch">
-          {event.coverImageKey&&<div className="relative min-h-[440px] overflow-hidden rounded-[1.4rem]"><img src={media(event.coverImageKey)} alt={event.coverImageAlt} className="absolute inset-0 h-full w-full object-cover"/><div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"/><div className="absolute bottom-5 left-5 rounded-2xl border border-white/20 bg-black/70 px-5 py-3 text-center backdrop-blur"><span className="block text-3xl font-bold text-accent">{event.startsAt.toLocaleDateString("en-GB",{day:"2-digit",timeZone:"Europe/London"})}</span><span className="text-xs font-bold uppercase tracking-[.16em]">{event.startsAt.toLocaleDateString("en-GB",{month:"short",timeZone:"Europe/London"})}</span></div></div>}
+          {event.coverImageKey&&<div className="relative min-h-[440px] overflow-hidden"><img src={media(event.coverImageKey)} alt={event.coverImageAlt} className="absolute inset-0 h-full w-full object-cover"/></div>}
           <div className="flex flex-col justify-center p-6 md:p-10 lg:p-12">
             <div className="flex flex-wrap gap-2"><span className="rounded-full border border-accent/40 px-3 py-1 text-xs font-bold text-accent">{past?"Past event":event.eventType}</span><span className="rounded-full border border-line px-3 py-1 text-xs capitalize text-fg-muted">{event.format.replace("_"," ")}</span></div>
             <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-[.95] tracking-tight md:text-6xl">{event.title}</h1>

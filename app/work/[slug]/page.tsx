@@ -60,6 +60,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
 
       <PageHero
         className="min-h-[72svh] md:min-h-[82svh]"
+        backgroundImage={study.cover}
         title={<>{study.heroTitle.lead}{" "}<span className="text-gradient sm:block">{study.heroTitle.accent}</span></>}
         lead={study.oneLiner}
       />

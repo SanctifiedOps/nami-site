@@ -33,9 +33,9 @@
   --color-glass: rgb(255 255 255 / 0.03);
   --color-glass-strong: rgb(255 255 255 / 0.05);
 
-  /* font family bound to next/font CSS variable exposed on <html> */
-  --font-sans: var(--font-instrument-sans), -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+  /* A crisp system face for reading, with Instrument Sans reserved for display. */
+  --font-sans: "Segoe UI", Arial, sans-serif;
+  --font-display: var(--font-instrument-sans), "Segoe UI", Arial, sans-serif;
 
   /* slightly tighter body copy throughout the site */
   --leading-relaxed: 1.5;
@@ -81,6 +81,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
     color: var(--color-fg);
     letter-spacing: -0.02em;
     font-weight: 600;
@@ -255,15 +256,15 @@
   .type-page-title {
     font-size: clamp(2.5rem, 5vw, 4.75rem);
     font-weight: 600;
-    line-height: 0.96;
-    letter-spacing: -0.04em;
+    line-height: 1;
+    letter-spacing: -0.035em;
   }
 
   .type-section-title {
     font-size: clamp(2.25rem, 4vw, 3.75rem);
     font-weight: 600;
-    line-height: 0.96;
-    letter-spacing: -0.035em;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
   }
 
   .type-subsection-title {

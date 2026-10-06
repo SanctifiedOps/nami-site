@@ -34,8 +34,8 @@ type InvitationPreview = { eligible:number; active:number; invited:number; disab
 type FeaturedApproval = { memberId:string; displayName:string; speciality:string; location:string; proposedAt:string; currentFeaturedName:string|null };
 type Contribution = { id:string; title:string; summary:string; format:string; status:string; memberName:string; submittedAt:string|null; updatedAt:string };
 
-const panel = "rounded-2xl border border-line bg-surface-1/90 shadow-[0_12px_35px_rgb(0_0_0/0.16)] md:rounded-[1.5rem] md:shadow-[0_18px_60px_rgb(0_0_0/0.18)]";
-const button = "rounded-full border border-line-strong px-4 py-2 text-xs font-bold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
+const panel = "border border-line bg-surface-1";
+const button = "rounded-md border border-line-strong px-4 py-2 text-xs font-semibold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
 const membersPerPage = 10;
 type DashboardView = "home" | "growth" | "members" | "tasks" | "more";
 const disconnectedGa: GaSnapshot = { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, daily: [], error: "GA4 connection needed" };

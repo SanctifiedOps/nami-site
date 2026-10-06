@@ -67,7 +67,7 @@ export function MemberArticle({
     <div className="min-h-screen bg-surface-0 pb-24 pt-24 text-fg md:pt-28">
       {previewMode && (
         <div className="container-shell mb-6">
-          <div className="rounded-2xl border border-accent/30 bg-accent/5 px-4 py-3 text-sm">
+          <div className="border border-accent/30 bg-accent/5 px-4 py-3 text-sm">
             {previewNotice}
           </div>
         </div>
@@ -249,7 +249,7 @@ export function MemberArticle({
               </p>
               <Link
                 href="/network/dashboard/contributions/new"
-                className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white transition hover:bg-accent/85"
+                className="mt-5 inline-flex items-center justify-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-accent/85"
               >
                 Share your story
                 <ArrowUpRight size={14} aria-hidden />

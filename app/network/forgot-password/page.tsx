@@ -1,3 +1,8 @@
+import { NetworkAccountShell } from "@/components/network/account-shell";
 import { ForgotForm } from "./forgot-form";
+
 export const metadata = { title: "Reset member password", robots: { index: false, follow: false } };
-export default function ForgotPasswordPage() { return <section className="min-h-[75vh] px-8 py-28"><div className="mx-auto max-w-md rounded-[2rem] border border-accent/30 bg-surface-1 p-8 md:p-10"><p className="font-bold uppercase tracking-[0.16em] text-accent">Member account</p><h1 className="mt-4 text-5xl">Recover your account</h1><p className="mt-4 text-fg-muted">Enter the email linked to your directory profile. We&apos;ll send a reset link if you already have an account, or a create-password link if your profile still needs claiming.</p><ForgotForm /></div></section>; }
+
+export default function ForgotPasswordPage() {
+  return <NetworkAccountShell title="Recover your account" description="Enter the email linked to your directory profile. If you have an account, we will send a reset link. If your profile still needs claiming, we will send a link to create your password."><ForgotForm /></NetworkAccountShell>;
+}

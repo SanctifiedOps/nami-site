@@ -208,7 +208,7 @@ export function ContactPageClient({
                 disabled={status === "submitting"}
                 aria-busy={status === "submitting"}
                 className={cn(
-                  "group relative inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)] disabled:opacity-60",
+                  "group relative inline-flex items-center gap-2 rounded-md bg-accent px-8 py-4 text-sm font-semibold text-white transition-colors duration-300 hover:bg-accent-soft disabled:opacity-60",
                 )}
               >
                 {status === "submitting" ? "Sending..." : "Send your enquiry"}
@@ -255,9 +255,14 @@ export function ContactPageClient({
             variants={stage}
             className="space-y-8"
           >
+            <motion.div variants={fadeUp} className="relative aspect-[4/3] overflow-hidden border border-line">
+              <div className="absolute inset-0 bg-[url('/assets/images/nami-office.webp')] bg-cover bg-center" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent" />
+              <p className="absolute inset-x-0 bottom-0 p-6 text-2xl font-semibold leading-tight text-white">Based in Newcastle. Working with people across the North East and beyond.</p>
+            </motion.div>
             <motion.div
               variants={fadeUp}
-              className="glass-refractive rounded-2xl p-6 md:p-8"
+              className="border-t border-line py-6 md:py-8"
             >
               <Mail size={20} className="text-accent" aria-hidden />
               <h3 className="mt-4 text-lg font-medium tracking-tight">
@@ -281,7 +286,7 @@ export function ContactPageClient({
 
             <motion.div
               variants={fadeUp}
-              className="glass-refractive rounded-2xl p-6 md:p-8"
+              className="border-t border-line py-6 md:py-8"
             >
               <Calendar size={20} className="text-accent" aria-hidden />
               <h3 className="mt-4 text-lg font-medium tracking-tight">
@@ -308,7 +313,7 @@ export function ContactPageClient({
 
             <motion.div
               variants={fadeUp}
-              className="glass-refractive rounded-2xl p-6 md:p-8"
+              className="border-y border-line py-6 md:py-8"
             >
               <Users size={20} className="text-accent" aria-hidden />
               <h3 className="mt-4 text-lg font-medium tracking-tight">
@@ -351,7 +356,7 @@ export function ContactPageClient({
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2.5 text-sm text-fg-muted transition-all duration-500 hover:-translate-y-0.5 hover:border-accent/50 hover:text-fg"
+                      className="group inline-flex items-center gap-2 border-b border-line px-1 py-2.5 text-sm text-fg-muted transition-colors hover:border-accent hover:text-fg"
                     >
                       <Icon size={15} aria-hidden />
                       {social.label}
@@ -401,7 +406,7 @@ function Field({
         required={required}
         autoComplete={autoComplete}
         maxLength={maxLength}
-        className="w-full rounded-xl border border-line bg-surface-1/60 px-5 py-4 text-fg placeholder:text-fg-subtle backdrop-blur-md transition-all focus:border-accent focus:bg-surface-1 focus:outline-none focus:ring-4 focus:ring-accent/15"
+        className="w-full rounded-md border border-line bg-surface-1 px-5 py-4 text-fg placeholder:text-fg-subtle transition-colors focus:border-accent focus:outline-none"
       />
     </label>
   );
@@ -426,7 +431,7 @@ function Select({
       <select
         name={name}
         required={required}
-        className="w-full rounded-xl border border-line bg-surface-1/60 px-5 py-4 text-fg backdrop-blur-md transition-all focus:border-accent focus:bg-surface-1 focus:outline-none focus:ring-4 focus:ring-accent/15"
+        className="w-full rounded-md border border-line bg-surface-1 px-5 py-4 text-fg transition-colors focus:border-accent focus:outline-none"
       >
         {children}
       </select>
@@ -460,7 +465,7 @@ function TextArea({
         placeholder={placeholder}
         required={required}
         maxLength={maxLength}
-        className="w-full rounded-xl border border-line bg-surface-1/60 px-5 py-4 text-fg placeholder:text-fg-subtle backdrop-blur-md transition-all focus:border-accent focus:bg-surface-1 focus:outline-none focus:ring-4 focus:ring-accent/15 resize-none"
+        className="w-full resize-none rounded-md border border-line bg-surface-1 px-5 py-4 text-fg placeholder:text-fg-subtle transition-colors focus:border-accent focus:outline-none"
       />
     </label>
   );

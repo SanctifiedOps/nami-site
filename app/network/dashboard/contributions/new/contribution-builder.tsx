@@ -676,7 +676,7 @@ function Writer({
               </div>
 
               {cover && (
-                <div className="mt-5 aspect-[16/8] overflow-hidden rounded-2xl border border-line bg-surface-2">
+                <div className="mt-5 aspect-[16/8] overflow-hidden border border-line bg-surface-2">
                   <img
                     src={cover.url}
                     alt={cover.altText}
@@ -703,7 +703,7 @@ function Writer({
               {editable && (
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   <label
-                    className={`inline-flex items-center gap-2 rounded-full bg-[#ff00bc] px-5 py-3 text-sm font-bold text-white shadow-[0_4px_18px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_7px_26px_rgb(255_0_188/0.45)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent ${
+                    className={`inline-flex items-center gap-2 rounded-md bg-[#ff00bc] px-5 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-accent-soft focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent ${
                       assetBusy ? "pointer-events-none opacity-50" : "cursor-pointer"
                     }`}
                   >
@@ -722,7 +722,7 @@ function Writer({
                       type="button"
                       disabled={assetBusy || coverAlt.trim().length < 4}
                       onClick={() => void saveCoverDescription()}
-                      className="rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent disabled:opacity-40"
+                      className="rounded-md border border-line-strong px-5 py-3 text-sm font-semibold transition hover:border-accent hover:text-accent disabled:opacity-40"
                     >
                       Save description
                     </button>
@@ -887,7 +887,7 @@ function Writer({
                 type="button"
                 onClick={() => void persistDraft("submit")}
                 disabled={!canSubmit || previewMode || busy}
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-white transition hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3 text-sm font-semibold text-white transition hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Send size={16} aria-hidden />
                 Submit for review
@@ -937,7 +937,7 @@ function Writer({
                     type="button"
                     onClick={() => void persistDraft("save")}
                     disabled={busy}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white transition hover:bg-accent-soft disabled:cursor-wait disabled:opacity-50"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-accent-soft disabled:cursor-wait disabled:opacity-50"
                   >
                     <Save size={16} aria-hidden />
                     {busy ? "Saving..." : "Save draft"}
@@ -947,7 +947,7 @@ function Writer({
                   type="button"
                   onClick={() => void openReaderPreview()}
                   disabled={busy}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent disabled:cursor-wait disabled:opacity-50"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-line-strong px-5 py-3 text-sm font-semibold transition hover:border-accent hover:text-accent disabled:cursor-wait disabled:opacity-50"
                 >
                   <Eye size={16} aria-hidden />
                   View reader preview
@@ -964,7 +964,7 @@ function Writer({
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface-0/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
         {showMobileWidgets && editable && (
           <div className="container-shell mb-3">
-            <div className="rounded-3xl border border-line-strong bg-surface-1 p-4 shadow-2xl">
+            <div className="border border-line-strong bg-surface-1 p-4 shadow-2xl">
               <div className="mb-4 flex items-center justify-between gap-4">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.15em] text-accent">Add a section</p>
@@ -991,7 +991,7 @@ function Writer({
               type="button"
               onClick={() => void persistDraft("save")}
               disabled={busy}
-              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full bg-accent px-4 text-sm font-bold text-white disabled:cursor-wait disabled:opacity-50"
+              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-md bg-accent px-4 text-sm font-semibold text-white disabled:cursor-wait disabled:opacity-50"
             >
               <Save size={16} aria-hidden />
               {busy ? "Saving..." : "Save draft"}
@@ -1001,7 +1001,7 @@ function Writer({
             type="button"
             onClick={() => void openReaderPreview()}
             disabled={busy}
-            className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border border-line-strong bg-surface-1 px-4 text-sm font-bold text-fg disabled:cursor-wait disabled:opacity-50"
+            className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-md border border-line-strong bg-surface-1 px-4 text-sm font-semibold text-fg disabled:cursor-wait disabled:opacity-50"
           >
             <Eye size={16} aria-hidden />
             Live preview
@@ -1233,7 +1233,7 @@ function RichTextEditor({
         <button type="button" disabled={disabled} onMouseDown={(event) => { event.preventDefault(); rememberSelection(); }} onClick={openLink} aria-label="Add link" title="Add link" className={toolbarButton}><Link2 size={16} aria-hidden /></button>
       </div>
       {showLinkInput && (
-        <div className="mb-3 rounded-xl border border-accent/30 bg-accent/5 p-3">
+        <div className="mb-3 border border-accent/30 bg-accent/5 p-3">
           <div className="flex gap-2">
             <input
               type="url"
@@ -1250,7 +1250,7 @@ function RichTextEditor({
               aria-label="Link web address"
               className={`${inputClass} min-w-0 flex-1 py-2.5`}
             />
-            <button type="button" onClick={applyLink} className="rounded-full bg-accent px-4 text-sm font-bold text-white">Add</button>
+            <button type="button" onClick={applyLink} className="rounded-md bg-accent px-4 text-sm font-semibold text-white">Add</button>
             <button type="button" onClick={() => { setShowLinkInput(false); setLinkError(""); }} aria-label="Cancel link" className="grid size-10 place-items-center rounded-full border border-line-strong text-fg-muted"><X size={16} aria-hidden /></button>
           </div>
           {linkError && <p className="mt-2 text-xs text-amber-200">{linkError}</p>}
@@ -1277,7 +1277,7 @@ function RichTextEditor({
 
 function AddButton({ label, icon, onClick }: { label: string; icon: React.ReactNode; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="inline-flex items-center justify-center gap-2 rounded-xl border border-line-strong px-3 py-3 text-sm font-semibold transition hover:border-accent hover:text-accent">
+    <button type="button" onClick={onClick} className="inline-flex items-center justify-center gap-2 rounded-md border border-line-strong px-3 py-3 text-sm font-semibold transition hover:border-accent hover:text-accent">
       {icon}
       {label}
     </button>

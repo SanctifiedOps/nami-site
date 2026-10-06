@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/page-hero";
 import { ProcessScroll } from "@/components/sections/process-scroll";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 
 export const metadata: Metadata = {
   title: "Process | How NAMI Creative Works",
@@ -35,8 +36,10 @@ export default function ProcessPage() {
         lead="Four phases: understand the job, build the work, launch it cleanly, then keep improving it once real people start using it."
       />
 
-      <section className="container-shell py-24 md:py-32">
-        <ProcessScroll
+      <section className="relative isolate overflow-hidden border-b border-line py-20 md:py-28">
+        <ParallaxBackdrop src="/images/north-east/3.jpg" position="center" overlay={0.72} />
+        <div className="container-shell relative z-10">
+          <ProcessScroll
           index=""
           title={
             <>
@@ -47,7 +50,8 @@ export default function ProcessPage() {
             </>
           }
           lead="The thinking, the build, the launch, and the month-after-month work that shows whether the brand can hold outside the workshop."
-        />
+          />
+        </div>
       </section>
 
     </>

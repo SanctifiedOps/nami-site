@@ -51,7 +51,7 @@ function PrimaryCta({ children = "Book a call (free)" }: { children?: string }) 
   return (
     <Link
       href="#workshop-form"
-      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-shadow duration-500 hover:shadow-[0_8px_40px_rgb(255_0_188/0.55)]"
+      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-accent px-7 py-4 text-sm font-semibold text-white transition-colors duration-300 hover:bg-accent-soft"
     >
       <span className="absolute inset-0 -z-10 translate-y-full bg-accent-soft transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-0" />
       {children}
@@ -194,7 +194,7 @@ export default function CreatorWaveWorkshopPage() {
           {reviewAreas.map((area) => (
             <div
               key={area.title}
-              className="glass-refractive rounded-2xl p-7 md:p-8"
+              className="border border-line bg-surface-1 p-7 md:p-8"
             >
               <Check size={22} className="text-accent" aria-hidden />
               <h3 className="mt-6 text-2xl font-medium tracking-tight">
@@ -207,7 +207,7 @@ export default function CreatorWaveWorkshopPage() {
           ))}
         </div>
 
-        <div className="mx-auto mt-12 flex max-w-3xl flex-col items-center gap-5 rounded-3xl border border-line bg-surface-1/45 p-7 text-center md:p-10">
+        <div className="mx-auto mt-12 flex max-w-3xl flex-col items-center gap-5 border border-line bg-surface-1 p-7 text-center md:p-10">
           <p className="text-2xl font-semibold leading-tight tracking-tight md:text-4xl">
             Want a quick outside view before you decide what to do?
           </p>
@@ -238,7 +238,7 @@ export default function CreatorWaveWorkshopPage() {
             {selectedTestimonials.map((item) => (
               <figure
                 key={item.author}
-                className="rounded-3xl border border-line bg-surface-1/60 p-7 md:p-8"
+                className="border border-line bg-surface-1 p-7 md:p-8"
               >
                 <blockquote className="text-pretty text-base font-medium leading-relaxed text-fg">
                   &ldquo;{item.quote}&rdquo;
@@ -278,9 +278,9 @@ export default function CreatorWaveWorkshopPage() {
               return (
                 <article
                   key={step.title}
-                  className={`rounded-3xl border p-7 md:p-8 ${
+                  className={`border p-7 md:p-8 ${
                     isFeatured
-                      ? "border-accent/45 bg-surface-1 shadow-[0_0_80px_rgb(255_0_188/0.12)]"
+                      ? "border-accent/45 bg-surface-1"
                       : "border-line bg-surface-1/55"
                   }`}
                 >
@@ -310,7 +310,7 @@ export default function CreatorWaveWorkshopPage() {
             })}
           </div>
 
-          <div className="mx-auto mt-12 flex max-w-3xl flex-col items-center gap-5 rounded-3xl border border-line bg-surface-0/70 p-7 text-center md:p-10">
+          <div className="mx-auto mt-12 flex max-w-3xl flex-col items-center gap-5 border border-line bg-surface-0 p-7 text-center md:p-10">
             <p className="text-2xl font-semibold leading-tight tracking-tight md:text-4xl">
               Best starting point for most people: {" "}
               <span className="text-gradient">the free check-in</span>
