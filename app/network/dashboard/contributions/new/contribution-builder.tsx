@@ -677,10 +677,8 @@ function Writer({
               {editable && (
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   <label
-                    className={`inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white ${
-                      assetBusy || coverAlt.trim().length < 4
-                        ? "cursor-not-allowed opacity-40"
-                        : "cursor-pointer"
+                    className={`inline-flex items-center gap-2 rounded-full bg-[#ff00bc] px-5 py-3 text-sm font-bold text-white shadow-[0_4px_18px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_7px_26px_rgb(255_0_188/0.45)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent ${
+                      assetBusy ? "pointer-events-none opacity-50" : "cursor-pointer"
                     }`}
                   >
                     <ImagePlus size={16} aria-hidden />
