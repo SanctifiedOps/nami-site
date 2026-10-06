@@ -45,17 +45,16 @@ export default async function ContributionPublicationPreviewPage({
 
   if (!record) notFound();
 
-  const [cover] = await db
+  const assets = await db
     .select()
     .from(schema.contributionAssets)
     .where(
       and(
         eq(schema.contributionAssets.contributionId, id),
-        eq(schema.contributionAssets.kind, "cover"),
         eq(schema.contributionAssets.status, "ready"),
       ),
-    )
-    .limit(1);
+    );
+  const cover = assets.find((asset) => asset.kind === "cover");
 
   const { contribution, member, profile } = record;
   const article: MemberArticleView = {
@@ -65,6 +64,15 @@ export default async function ContributionPublicationPreviewPage({
     content: contribution.contentJson,
     publishedAt: (contribution.publishedAt || contribution.updatedAt).toISOString(),
     coverImageUrl: mediaUrl(cover?.r2Key),
+    inlineAssets: assets.filter((asset) => asset.kind === "inline").map((asset) => ({
+      id: asset.id,
+      kind: asset.kind,
+      url: mediaUrl(asset.r2Key)!,
+      altText: asset.altText,
+      caption: asset.caption,
+      width: asset.width,
+      height: asset.height,
+    })),
     author: {
       id: member.id,
       name: profile?.displayName || member.firstName || member.email,

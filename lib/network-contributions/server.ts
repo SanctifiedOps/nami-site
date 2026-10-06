@@ -9,8 +9,10 @@ import {
 
 const contributionBlockSchema = z.object({
   id: z.string().trim().min(1).max(100),
-  type: z.enum(["paragraph", "heading", "quote"]),
+  type: z.enum(["paragraph", "heading", "quote", "image"]),
   text: z.string().max(12000),
+  assetId: z.string().uuid().optional(),
+  altText: z.string().max(180).optional(),
 });
 
 export const contributionDocumentSchema = z.object({

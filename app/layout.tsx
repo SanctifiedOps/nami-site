@@ -3,7 +3,6 @@ import { instrumentSans } from "@/lib/fonts";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
-import { CustomCursor } from "@/components/providers/custom-cursor";
 import { MotionProvider } from "@/components/providers/motion-config";
 import { NavigationEffects } from "@/components/providers/navigation-effects";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
@@ -103,7 +102,6 @@ export default function RootLayout({
         />
         <SmoothScroll />
         <NavigationEffects />
-        <CustomCursor />
         <MotionProvider>
           <SiteHeader />
           <main id="main">{children}</main>

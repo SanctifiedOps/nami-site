@@ -21,12 +21,14 @@ export const contributionStatuses = [
 
 export type ContributionStatus = (typeof contributionStatuses)[number];
 
-export type ContributionBlockType = "paragraph" | "heading" | "quote";
+export type ContributionBlockType = "paragraph" | "heading" | "quote" | "image";
 
 export type ContributionBlock = {
   id: string;
   type: ContributionBlockType;
   text: string;
+  assetId?: string;
+  altText?: string;
 };
 
 export type ContributionDocument = {

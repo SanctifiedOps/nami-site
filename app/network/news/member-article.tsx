@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Calendar, Clock3, MapPin } from "lucide-react";
 import {
   contributionFormatDetails,
+  type ContributionAssetView,
   type ContributionDocument,
   type ContributionFormat,
 } from "@/lib/network-contributions/types";
@@ -21,6 +22,7 @@ export type MemberArticleView = {
     profileImageUrl?: string | null;
   };
   coverImageUrl?: string | null;
+  inlineAssets?: ContributionAssetView[];
 };
 
 function formatDate(value: string) {
@@ -51,6 +53,7 @@ export function MemberArticle({
   previewMode?: boolean;
 }) {
   const format = contributionFormatDetails[article.format];
+  const inlineAssets = article.inlineAssets ?? [];
 
   return (
     <main className="min-h-screen bg-surface-0 pb-24 pt-24 text-fg md:pt-28">
@@ -121,7 +124,10 @@ export function MemberArticle({
         <div className="container-shell grid gap-12 py-12 md:py-16 lg:grid-cols-[minmax(0,47rem)_18rem] lg:justify-between lg:gap-20">
           <div className="space-y-7 text-[1.05rem] leading-[1.85] text-fg-muted md:text-lg">
             {article.content.blocks.map((block, index) =>
-              block.type === "heading" ? (
+              block.type === "image" ? (() => {
+                const asset = inlineAssets.find((item) => item.id === block.assetId);
+                return asset ? <figure key={block.id} className="my-10"><img src={asset.url} alt={block.altText || asset.altText} className="max-h-[46rem] w-full object-contain" />{block.text && <figcaption className="mt-3 text-sm text-fg-subtle">{block.text}</figcaption>}</figure> : null;
+              })() : block.type === "heading" ? (
                 <h2
                   key={block.id}
                   className="pt-5 text-3xl font-semibold leading-tight tracking-[-0.04em] text-fg md:text-4xl"

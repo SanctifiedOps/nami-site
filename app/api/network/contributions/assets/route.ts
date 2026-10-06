@@ -15,9 +15,12 @@ export async function POST(request: Request) {
   const file = body.get("image");
   const contributionId = String(body.get("contributionId") ?? "");
   const altText = String(body.get("altText") ?? "").trim();
+  const kind = body.get("kind") === "inline" ? "inline" : "cover";
+  const caption = String(body.get("caption") ?? "").trim().slice(0, 300);
+  const position = Math.max(0, Number(body.get("position") ?? 0) || 0);
 
   if (!(file instanceof File) || !contributionId) {
-    return Response.json({ error: "Choose a valid cover image." }, { status: 400 });
+    return Response.json({ error: "Choose a valid image." }, { status: 400 });
   }
   if (altText.length < 4 || altText.length > 180) {
     return Response.json(
@@ -39,7 +42,7 @@ export async function POST(request: Request) {
   const dimensions = imageDimensions(bytes, file.type);
   if (!dimensions || dimensions.width < 640 || dimensions.height < 360) {
     return Response.json(
-      { error: "Cover images must be at least 640 by 360 pixels." },
+      { error: "Images must be at least 640 by 360 pixels." },
       { status: 400 },
     );
   }
@@ -65,16 +68,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const current = await db
-    .select()
-    .from(schema.contributionAssets)
-    .where(
-      and(
-        eq(schema.contributionAssets.contributionId, contribution.id),
-        eq(schema.contributionAssets.kind, "cover"),
-        eq(schema.contributionAssets.status, "ready"),
-      ),
-    );
   const id = crypto.randomUUID();
   const extension = file.type === "image/jpeg" ? "jpg" : "webp";
   const key = `network-members/${auth.member.id}/contributions/${contribution.id}/${id}.${extension}`;
@@ -93,19 +86,23 @@ export async function POST(request: Request) {
         .update(schema.contributionAssets)
         .set({ status: "removed", updatedAt: now })
         .where(
-          and(
-            eq(schema.contributionAssets.contributionId, contribution.id),
-            eq(schema.contributionAssets.kind, "cover"),
-            eq(schema.contributionAssets.status, "ready"),
-          ),
+          kind === "cover"
+            ? and(
+                eq(schema.contributionAssets.contributionId, contribution.id),
+                eq(schema.contributionAssets.kind, "cover"),
+                eq(schema.contributionAssets.status, "ready"),
+              )
+            : eq(schema.contributionAssets.id, "__no_existing_inline_asset__"),
         ),
       db.insert(schema.contributionAssets).values({
         id,
         contributionId: contribution.id,
         memberId: auth.member.id,
         r2Key: key,
-        kind: "cover",
+        kind,
         altText,
+        caption,
+        position,
         width: dimensions.width,
         height: dimensions.height,
         contentType: file.type,
@@ -125,10 +122,10 @@ export async function POST(request: Request) {
     ok: true,
     asset: {
       id,
-      kind: "cover",
+      kind,
       url: `/api/network/media/${key.split("/").map(encodeURIComponent).join("/")}`,
       altText,
-      caption: "",
+      caption,
       width: dimensions.width,
       height: dimensions.height,
     },
@@ -138,6 +135,7 @@ export async function POST(request: Request) {
 const assetUpdateSchema = z.object({
   assetId: z.string().uuid(),
   altText: z.string().trim().min(4).max(180),
+  caption: z.string().trim().max(300).optional(),
 });
 
 export async function PUT(request: Request) {
@@ -176,7 +174,7 @@ export async function PUT(request: Request) {
 
   await db
     .update(schema.contributionAssets)
-    .set({ altText: parsed.data.altText, updatedAt: new Date() })
+    .set({ altText: parsed.data.altText, ...(parsed.data.caption !== undefined ? { caption: parsed.data.caption } : {}), updatedAt: new Date() })
     .where(eq(schema.contributionAssets.id, asset.asset.id));
   return Response.json({ ok: true });
 }

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import {
   contributionFormatDetails,
+  type ContributionAssetView,
   type ContributionDocument,
   type ContributionFormat,
   type ContributionStatus,
@@ -37,6 +38,7 @@ export type ModerationDetailRecord = {
   updatedAt: string;
   adminFeedback: string | null;
   versionNumber: number | null;
+  assets?: ContributionAssetView[];
   timeline: Array<{
     id: string;
     eventType: string;
@@ -84,6 +86,7 @@ export function ModerationDetail({
   const [message, setMessage] = useState("");
   const detail = contributionFormatDetails[contribution.format];
   const canDecide = ["submitted", "under_review"].includes(contribution.status);
+  const inlineAssets = contribution.assets ?? [];
 
   async function runAction(
     action: "start_review" | "request_changes" | "approve" | "reject",
@@ -196,7 +199,10 @@ export function ModerationDetail({
 
             <div className="space-y-7 text-[1.05rem] leading-[1.8] text-fg-muted md:text-lg">
               {contribution.content.blocks.map((block) =>
-                block.type === "heading" ? (
+                block.type === "image" ? (() => {
+                  const asset = inlineAssets.find((item) => item.id === block.assetId);
+                  return asset ? <figure key={block.id} className="my-8"><img src={asset.url} alt={block.altText || asset.altText} className="max-h-[42rem] w-full object-contain" />{block.text && <figcaption className="mt-3 text-sm text-fg-subtle">{block.text}</figcaption>}</figure> : null;
+                })() : block.type === "heading" ? (
                   <h2
                     key={block.id}
                     className="pt-4 text-3xl leading-tight tracking-[-0.035em] text-fg md:text-4xl"

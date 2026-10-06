@@ -47,6 +47,7 @@ const blockLabels: Record<ContributionBlockType, string> = {
   paragraph: "Text",
   heading: "Heading",
   quote: "Quote",
+  image: "Image",
 };
 
 export function ContributionBuilder({
@@ -186,10 +187,12 @@ function Writer({
   const [busy, setBusy] = useState(false);
   const initialCover = initialAssets.find((asset) => asset.kind === "cover") ?? null;
   const [cover, setCover] = useState<ContributionAssetView | null>(initialCover);
+  const [inlineAssets, setInlineAssets] = useState<ContributionAssetView[]>(initialAssets.filter((asset) => asset.kind === "inline"));
   const [coverAlt, setCoverAlt] = useState(initialCover?.altText ?? "");
   const [savedCoverAlt, setSavedCoverAlt] = useState(initialCover?.altText ?? "");
   const [assetBusy, setAssetBusy] = useState(false);
   const [assetMessage, setAssetMessage] = useState("");
+  const [assetMessageTarget, setAssetMessageTarget] = useState<"cover" | string>("cover");
   const [error, setError] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const dirty = JSON.stringify(state) !== JSON.stringify(savedState);
@@ -356,6 +359,7 @@ function Writer({
     const source = event.target.files?.[0];
     event.target.value = "";
     if (!source) return;
+    setAssetMessageTarget("cover");
     if (coverAlt.trim().length < 4) {
       setAssetMessage("Add a short image description before choosing the cover.");
       return;
@@ -421,8 +425,88 @@ function Writer({
     }
   }
 
+  async function uploadInlineImage(block: ContributionBlock, position: number, event: ChangeEvent<HTMLInputElement>) {
+    const source = event.target.files?.[0];
+    event.target.value = "";
+    if (!source) return;
+    setAssetMessageTarget(block.id);
+    if ((block.altText ?? "").trim().length < 4) {
+      setAssetMessage("Add a short image description before choosing the image.");
+      return;
+    }
+
+    setAssetBusy(true);
+    setAssetMessage("Preparing the article image...");
+    try {
+      const prepared = await prepareFullImageForUpload(source, 2200, 1800, "contribution-image.webp");
+      if (previewMode) {
+        const asset: ContributionAssetView = {
+          id: crypto.randomUUID(),
+          kind: "inline",
+          url: URL.createObjectURL(prepared),
+          altText: (block.altText ?? "").trim(),
+          caption: block.text.trim(),
+          width: 1800,
+          height: 1200,
+        };
+        setInlineAssets((current) => [...current.filter((item) => item.id !== block.assetId), asset]);
+        updateBlock(block.id, { assetId: asset.id });
+        setAssetMessage("Article image ready in this local preview.");
+        return;
+      }
+
+      const contributionId = draftId || (await persistDraft("save", state));
+      if (!contributionId) throw new Error("Save the draft before adding an image.");
+      const data = new FormData();
+      data.set("image", prepared);
+      data.set("contributionId", contributionId);
+      data.set("altText", (block.altText ?? "").trim());
+      data.set("caption", block.text.trim());
+      data.set("kind", "inline");
+      data.set("position", String(position));
+      const response = await fetch("/api/network/contributions/assets", { method: "POST", body: data });
+      const payload = (await response.json().catch(() => null)) as { asset?: ContributionAssetView; error?: string } | null;
+      if (!response.ok || !payload?.asset) throw new Error(payload?.error || "The article image could not be saved.");
+      setInlineAssets((current) => [...current.filter((item) => item.id !== block.assetId), payload.asset!]);
+      updateBlock(block.id, { assetId: payload.asset.id });
+      setAssetMessage("Article image saved.");
+    } catch (uploadError) {
+      setAssetMessage(uploadError instanceof Error ? uploadError.message : "The article image could not be saved.");
+    } finally {
+      setAssetBusy(false);
+    }
+  }
+
+  async function saveInlineImageDetails(block: ContributionBlock) {
+    if (!block.assetId || (block.altText ?? "").trim().length < 4) return;
+    setAssetMessageTarget(block.id);
+    if (previewMode) {
+      setInlineAssets((current) => current.map((asset) => asset.id === block.assetId ? { ...asset, altText: (block.altText ?? "").trim(), caption: block.text.trim() } : asset));
+      setAssetMessage("Image details saved in this preview.");
+      return;
+    }
+    setAssetBusy(true);
+    setAssetMessage("Saving image details...");
+    try {
+      const response = await fetch("/api/network/contributions/assets", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assetId: block.assetId, altText: (block.altText ?? "").trim(), caption: block.text.trim() }),
+      });
+      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      if (!response.ok) throw new Error(payload?.error || "The image details could not be saved.");
+      setInlineAssets((current) => current.map((asset) => asset.id === block.assetId ? { ...asset, altText: (block.altText ?? "").trim(), caption: block.text.trim() } : asset));
+      setAssetMessage("Image details saved.");
+    } catch (saveError) {
+      setAssetMessage(saveError instanceof Error ? saveError.message : "The image details could not be saved.");
+    } finally {
+      setAssetBusy(false);
+    }
+  }
+
   async function saveCoverDescription() {
     if (!cover || coverAlt.trim().length < 4) return;
+    setAssetMessageTarget("cover");
     if (previewMode) {
       setCover((current) =>
         current ? { ...current, altText: coverAlt.trim() } : current,
@@ -504,6 +588,9 @@ function Writer({
             <h1 className="mt-3 text-[clamp(2.5rem,6vw,5.6rem)] leading-[0.92] tracking-[-0.05em]">
               Write it in your words
             </h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-fg-muted">
+              Build your article with the text, heading, image and quote tools below. Add sections in any order, then use the arrow buttons to move them.
+            </p>
           </div>
           <div className="border-l border-accent pl-4 text-sm leading-relaxed text-fg-muted">
             <p>{detail.prompt}</p>
@@ -542,7 +629,7 @@ function Writer({
                   maxLength={320}
                   disabled={!editable}
                   placeholder="Tell readers what this is about in one or two sentences"
-                  className={`${inputClass} mt-2 resize-y`}
+                  className={`${inputClass} contribution-scrollbox mt-2 max-h-64 resize-y overflow-y-scroll`}
                 />
                 <span className="mt-2 block text-right text-xs font-normal text-fg-subtle">
                   {state.summary.length}/320
@@ -601,7 +688,7 @@ function Writer({
                     <input
                       type="file"
                       accept="image/*"
-                      disabled={assetBusy || coverAlt.trim().length < 4}
+                      disabled={assetBusy}
                       onChange={(event) => void uploadCover(event)}
                       className="sr-only"
                     />
@@ -618,7 +705,7 @@ function Writer({
                   )}
                 </div>
               )}
-              {assetMessage && (
+              {assetMessage && assetMessageTarget === "cover" && (
                 <p role="status" className="mt-4 text-sm text-fg-muted">
                   {assetMessage}
                 </p>
@@ -626,8 +713,9 @@ function Writer({
             </section>
 
             <section className="mt-6 space-y-3">
-              {state.content.blocks.map((block, index) => (
-                <article
+              {state.content.blocks.map((block, index) => {
+                const inlineAsset = inlineAssets.find((asset) => asset.id === block.assetId);
+                return <article
                   key={block.id}
                   className="group border border-line bg-surface-1 p-4 transition focus-within:border-accent/50 md:p-5"
                 >
@@ -647,6 +735,7 @@ function Writer({
                         <option value="paragraph">Text</option>
                         <option value="heading">Heading</option>
                         <option value="quote">Quote</option>
+                        <option value="image">Image</option>
                       </select>
                       <span className="text-xs text-fg-subtle">Section {index + 1}</span>
                     </div>
@@ -662,7 +751,18 @@ function Writer({
                       </IconButton>
                     </div>
                   </div>
-                  <textarea
+                  {block.type === "image" ? <div className="grid gap-4">
+                    {inlineAsset && <div className="overflow-hidden rounded-2xl border border-line bg-surface-2"><img src={inlineAsset.url} alt={block.altText || inlineAsset.altText} className="max-h-[30rem] w-full object-contain" /></div>}
+                    <label className="text-sm font-semibold">Image description
+                      <input value={block.altText ?? ""} onChange={(event) => updateBlock(block.id, { altText: event.target.value })} disabled={!editable || assetBusy} maxLength={180} placeholder="Describe what is visible for someone who cannot see the image" className={`${inputClass} mt-2`} />
+                    </label>
+                    <label className="text-sm font-semibold">Caption <span className="font-normal text-fg-subtle">(optional)</span>
+                      <textarea value={block.text} onChange={(event) => updateBlock(block.id, { text: event.target.value })} disabled={!editable || assetBusy} rows={2} maxLength={300} placeholder="Add a short caption or credit" className={`${inputClass} contribution-scrollbox mt-2 max-h-40 resize-y overflow-y-scroll font-normal`} />
+                    </label>
+                    {editable && <div className="flex flex-wrap items-center gap-3"><label className={`inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white ${assetBusy ? "pointer-events-none opacity-40" : ""}`}><ImagePlus size={16} aria-hidden />{assetBusy ? "Working..." : inlineAsset ? "Replace image" : "Choose image"}<input type="file" accept="image/*" disabled={assetBusy} onChange={(event) => void uploadInlineImage(block, index, event)} className="sr-only" /></label>{inlineAsset && <button type="button" disabled={assetBusy || (block.altText ?? "").trim().length < 4} onClick={() => void saveInlineImageDetails(block)} className="rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent disabled:opacity-40">Save image details</button>}</div>}
+                    <p className="text-xs leading-5 text-fg-subtle">Add the image description first, then choose a JPG or WebP. This image will appear here in the finished article.</p>
+                    {assetMessage && assetMessageTarget === block.id && <p role="status" className="text-sm text-fg-muted">{assetMessage}</p>}
+                  </div> : <textarea
                     value={block.text}
                     onChange={(event) => updateBlock(block.id, { text: event.target.value })}
                     rows={block.type === "paragraph" ? 7 : block.type === "heading" ? 2 : 4}
@@ -674,16 +774,16 @@ function Writer({
                           ? "Use your own words or credit the person who said this"
                           : "Write naturally. This stays in your voice."
                     }
-                    className={`w-full resize-y bg-transparent text-fg placeholder:text-fg-subtle focus:outline-none ${
+                    className={`contribution-scrollbox max-h-96 w-full resize-y overflow-y-scroll bg-transparent text-fg placeholder:text-fg-subtle focus:outline-none ${
                       block.type === "heading"
                         ? "text-2xl font-semibold leading-tight md:text-3xl"
                         : block.type === "quote"
                           ? "border-l-2 border-accent pl-4 text-lg italic leading-relaxed"
                           : "min-h-44 leading-[1.75]"
                     }`}
-                  />
+                  />}
                 </article>
-              ))}
+              })}
             </section>
 
             {editable && (
@@ -691,15 +791,7 @@ function Writer({
               <AddButton label="Text" icon={<ListPlus size={16} />} onClick={() => addBlock("paragraph")} />
               <AddButton label="Heading" icon={<Type size={16} />} onClick={() => addBlock("heading")} />
               <AddButton label="Quote" icon={<Quote size={16} />} onClick={() => addBlock("quote")} />
-              <button
-                type="button"
-                disabled
-                title="Image uploads are added in the media stage"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-line px-3 py-3 text-sm text-fg-subtle opacity-60"
-              >
-                <ImagePlus size={16} aria-hidden />
-                Image
-              </button>
+              <AddButton label="Image" icon={<ImagePlus size={16} />} onClick={() => addBlock("image")} />
             </div>
             )}
 
@@ -785,7 +877,7 @@ function Writer({
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-accent">
               Live preview
             </p>
-            <ArticlePreview state={state} format={format} cover={cover} />
+            <ArticlePreview state={state} format={format} cover={cover} inlineAssets={inlineAssets} />
           </aside>
         </div>
       </div>
@@ -797,10 +889,12 @@ function ArticlePreview({
   state,
   format,
   cover,
+  inlineAssets,
 }: {
   state: BuilderState;
   format: ContributionFormat;
   cover: ContributionAssetView | null;
+  inlineAssets: ContributionAssetView[];
 }) {
   return (
     <div className="overflow-hidden rounded-[1.5rem] border border-line bg-surface-1">
@@ -830,8 +924,11 @@ function ArticlePreview({
           {state.summary || "Your short introduction will help people decide whether to read on."}
         </p>
         <div className="mt-6 space-y-4 border-t border-line pt-5 text-sm leading-relaxed text-fg-muted">
-          {state.content.blocks.filter((block) => block.text.trim()).slice(0, 4).map((block) =>
-            block.type === "heading" ? (
+          {state.content.blocks.filter((block) => block.type === "image" ? Boolean(block.assetId) : block.text.trim()).slice(0, 4).map((block) =>
+            block.type === "image" ? (() => {
+              const asset = inlineAssets.find((item) => item.id === block.assetId);
+              return asset ? <figure key={block.id}><img src={asset.url} alt={block.altText || asset.altText} className="w-full rounded-xl" />{block.text && <figcaption className="mt-2 text-xs text-fg-subtle">{block.text}</figcaption>}</figure> : null;
+            })() : block.type === "heading" ? (
               <h3 key={block.id} className="text-lg text-fg">{block.text}</h3>
             ) : block.type === "quote" ? (
               <blockquote key={block.id} className="border-l-2 border-accent pl-3 italic text-fg">{block.text}</blockquote>

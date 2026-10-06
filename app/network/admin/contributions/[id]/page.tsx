@@ -40,7 +40,7 @@ export default async function ReviewContributionPage({
 
   if (!record) notFound();
 
-  const [latestVersion, timeline] = await Promise.all([
+  const [latestVersion, timeline, assets] = await Promise.all([
     db
       .select({ versionNumber: schema.contributionVersions.versionNumber })
       .from(schema.contributionVersions)
@@ -52,6 +52,7 @@ export default async function ReviewContributionPage({
       .from(schema.contributionModerationEvents)
       .where(eq(schema.contributionModerationEvents.contributionId, id))
       .orderBy(desc(schema.contributionModerationEvents.createdAt)),
+    db.select().from(schema.contributionAssets).where(eq(schema.contributionAssets.contributionId, id)),
   ]);
 
   const { contribution, member, profile } = record;
@@ -71,6 +72,15 @@ export default async function ReviewContributionPage({
     updatedAt: contribution.updatedAt.toISOString(),
     adminFeedback: contribution.adminFeedback,
     versionNumber: latestVersion[0]?.versionNumber ?? null,
+    assets: assets.filter((asset) => asset.status === "ready").map((asset) => ({
+      id: asset.id,
+      kind: asset.kind,
+      url: `/api/network/media/${asset.r2Key.split("/").map(encodeURIComponent).join("/")}`,
+      altText: asset.altText,
+      caption: asset.caption,
+      width: asset.width,
+      height: asset.height,
+    })),
     timeline: timeline.map((event) => ({
       id: event.id,
       eventType: event.eventType,
