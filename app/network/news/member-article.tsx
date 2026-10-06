@@ -194,7 +194,7 @@ export function MemberArticle({
             )}
           </div>
 
-          <aside className="lg:sticky lg:top-32 lg:self-start">
+          <aside className="text-center lg:sticky lg:top-32 lg:self-start lg:text-left">
             <p className="border-b border-line pb-3 text-xs font-bold uppercase tracking-[0.17em] text-accent">
               Written by a Network member
             </p>
@@ -202,10 +202,10 @@ export function MemberArticle({
               <img
                 src={article.author.profileImageUrl}
                 alt={`${article.author.name} profile picture`}
-                className="mt-5 aspect-square w-24 rounded-full border border-accent/40 object-cover"
+                className="mx-auto mt-5 aspect-square w-24 rounded-full border border-accent/40 object-cover lg:mx-0"
               />
             ) : (
-              <div className="mt-5 grid size-24 place-items-center rounded-full border border-accent/40 bg-surface-2 text-2xl font-semibold text-accent">
+              <div className="mx-auto mt-5 grid size-24 place-items-center rounded-full border border-accent/40 bg-surface-2 text-2xl font-semibold text-accent lg:mx-0">
                 {article.author.name
                   .split(/\s|\//)
                   .filter(Boolean)
@@ -217,14 +217,14 @@ export function MemberArticle({
             )}
             <h2 className="mt-5 text-2xl font-semibold leading-tight">{article.author.name}</h2>
             <p className="mt-2 text-sm text-fg-muted">{article.author.speciality}</p>
-            <p className="mt-2 inline-flex items-center gap-2 text-xs text-fg-subtle">
+            <p className="mt-2 inline-flex items-center justify-center gap-2 text-xs text-fg-subtle lg:justify-start">
               <MapPin size={13} className="text-accent" aria-hidden />
               {article.author.location}
             </p>
             <p className="mt-5 text-sm leading-relaxed text-fg-muted">{article.author.bio}</p>
             <Link
               href={`/network/directory/member/${article.author.id}`}
-              className="mt-5 inline-flex items-center gap-2 text-sm font-semibold transition hover:text-accent"
+              className="mt-5 inline-flex items-center justify-center gap-2 text-sm font-semibold transition hover:text-accent lg:justify-start"
             >
               View member profile
               <ArrowUpRight size={14} aria-hidden />
@@ -233,8 +233,27 @@ export function MemberArticle({
             <section className="mt-10 border-y border-accent py-6">
               <p className="text-xs font-bold uppercase tracking-[0.17em] text-accent">Member voice</p>
               <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-              This contribution is published in the member&apos;s own words. NAMI checks submissions but doesn&apos;t generate or rewrite them.
+                This contribution is published in the member&apos;s own words. NAMI checks submissions but doesn&apos;t generate or rewrite them.
               </p>
+            </section>
+
+            <section className="mt-6 border border-line-strong bg-surface-1 p-6 lg:p-5">
+              <p className="text-xs font-bold uppercase tracking-[0.17em] text-accent">
+                From your corner of the Network
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold leading-tight tracking-[-0.035em]">
+                Got something to share?
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+                It doesn&apos;t have to be polished or perfect. A milestone, an update, a launch or an event is enough. Tell us what you&apos;re working on and get seen by more people across the North East.
+              </p>
+              <Link
+                href="/network/dashboard/contributions/new"
+                className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white transition hover:bg-accent/85"
+              >
+                Share your story
+                <ArrowUpRight size={14} aria-hidden />
+              </Link>
             </section>
           </aside>
         </div>

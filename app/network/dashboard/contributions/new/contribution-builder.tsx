@@ -1230,7 +1230,7 @@ function RichTextEditor({
         <button type="button" disabled={disabled} onMouseDown={(event) => event.preventDefault()} onClick={() => runCommand("bold")} aria-label="Bold" title="Bold" className={toolbarButton}><Bold size={16} aria-hidden /></button>
         <button type="button" disabled={disabled} onMouseDown={(event) => event.preventDefault()} onClick={() => runCommand("italic")} aria-label="Italic" title="Italic" className={toolbarButton}><Italic size={16} aria-hidden /></button>
         <button type="button" disabled={disabled} onMouseDown={(event) => event.preventDefault()} onClick={() => runCommand("underline")} aria-label="Underline" title="Underline" className={toolbarButton}><Underline size={16} aria-hidden /></button>
-        <button type="button" disabled={disabled} onMouseDown={(event) => { event.preventDefault(); rememberSelection(); }} onClick={openLink} aria-label="Add link" title="Add link" className={`${toolbarButton} w-auto gap-2 px-3`}><Link2 size={16} aria-hidden /><span className="text-xs font-semibold">Link</span></button>
+        <button type="button" disabled={disabled} onMouseDown={(event) => { event.preventDefault(); rememberSelection(); }} onClick={openLink} aria-label="Add link" title="Add link" className={toolbarButton}><Link2 size={16} aria-hidden /></button>
       </div>
       {showLinkInput && (
         <div className="mb-3 rounded-xl border border-accent/30 bg-accent/5 p-3">
