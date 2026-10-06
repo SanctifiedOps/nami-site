@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { instrumentSans } from "@/lib/fonts";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { MotionProvider } from "@/components/providers/motion-config";
 import { NavigationEffects } from "@/components/providers/navigation-effects";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
@@ -97,10 +96,15 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-surface-0 text-fg antialiased">
+        <a
+          href="#main"
+          className="fixed left-4 top-3 z-[100] -translate-y-24 border border-accent bg-surface-0 px-4 py-3 text-sm font-semibold text-fg transition-transform focus:translate-y-0"
+        >
+          Skip to main content
+        </a>
         <JsonLd
           schema={[organizationSchema, localBusinessSchema, websiteSchema]}
         />
-        <SmoothScroll />
         <NavigationEffects />
         <MotionProvider>
           <SiteHeader />

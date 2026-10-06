@@ -117,7 +117,7 @@ export default async function NetworkNewsArticlePage({ params }: Props) {
   const related = allStories.filter((item) => item.slug !== article.slug).slice(0, 3);
 
   return (
-    <main className="bg-surface-0 pt-28 md:pt-32">
+    <div className="bg-surface-0 pt-28 md:pt-32">
       <article>
         <header className="container-shell py-9 md:py-14">
           <Link href="/network/news" className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-fg-muted hover:text-accent"><ArrowLeft size={14} aria-hidden className="transition-transform group-hover:-translate-x-1" />Back to news</Link>
@@ -170,6 +170,6 @@ export default async function NetworkNewsArticlePage({ params }: Props) {
           <div className="mt-7 grid gap-8 md:grid-cols-3">{related.map((item) => <RelatedStory key={item.href} item={item} />)}</div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

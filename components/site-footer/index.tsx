@@ -18,7 +18,7 @@ const socials = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative border-t border-line bg-linear-to-b from-surface-0 to-surface-1">
+    <footer className="relative border-t border-line bg-surface-0">
       <FooterCta />
 
       {/* Sitemap */}

@@ -203,7 +203,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
         ]}
       />
 
-      <main className="overflow-hidden pb-24">
+    <div className="overflow-hidden pb-24">
         <section className="relative isolate overflow-hidden pb-4 pt-24 sm:pt-28 md:pb-24 md:pt-36">
           <ParallaxBackdrop
             src="/images/north-east/4.jpg"
@@ -423,7 +423,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
           </section>
         )}
 
-      </main>
+    </div>
     </>
   );
 }

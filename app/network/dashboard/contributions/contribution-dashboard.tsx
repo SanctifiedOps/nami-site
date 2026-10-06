@@ -131,7 +131,7 @@ export function ContributionDashboard({
   }
 
   return (
-    <main className="min-h-screen bg-surface-0 pt-24 md:pt-28">
+    <div className="min-h-screen bg-surface-0 pt-24 md:pt-28">
       <div className="container-shell pb-24">
         {previewMode && (
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-accent/30 bg-accent/5 px-4 py-3 text-sm">
@@ -319,7 +319,7 @@ export function ContributionDashboard({
           )}
         </section>
       </div>
-    </main>
+    </div>
   );
 }
 

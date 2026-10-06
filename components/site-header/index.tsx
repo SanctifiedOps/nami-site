@@ -5,10 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
-import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Logo } from "./logo";
 import { MobileDrawer } from "./mobile-drawer";
-import { Magnetic } from "@/components/motion/magnetic";
 import { networkCtaNav, primaryNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
@@ -44,13 +43,6 @@ export function SiteHeader() {
   const [mounted, setMounted] = useState(false);
 
   // Page scroll progress → the hairline under the bar grows left to right.
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
-    mass: 0.3,
-  });
-
   useEffect(() => setMounted(true), []);
 
   const loadMember = useCallback(async () => {
@@ -94,16 +86,14 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-500",
+        "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-200",
         scrolled
-          ? "border-b border-line bg-surface-0/70 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent",
+          ? "border-line bg-surface-0/95"
+          : "border-transparent bg-surface-0/80",
       )}
     >
       <div className="container-shell relative z-20 flex h-16 items-center justify-between md:h-20">
-        <Magnetic strength={0.2} field={18}>
-          <Logo />
-        </Magnetic>
+        <Logo />
 
         <nav
           aria-label="Primary"
@@ -157,7 +147,7 @@ export function SiteHeader() {
                       <motion.span
                         layoutId="nav-active"
                         aria-hidden
-                        className="absolute inset-x-3 -bottom-0.5 h-px bg-accent shadow-[0_0_10px_rgb(255_0_188/0.7)]"
+                        className="absolute inset-x-3 -bottom-0.5 h-px bg-accent"
                         transition={{ type: "spring", stiffness: 380, damping: 32 }}
                       />
                     )}
@@ -169,7 +159,7 @@ export function SiteHeader() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 4 }}
                         transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-                        className="absolute left-1/2 top-full z-30 w-72 -translate-x-1/2 border border-line bg-surface-0/95 p-2 shadow-[0_18px_45px_rgb(0_0_0/0.45)] backdrop-blur-xl"
+                        className="absolute left-1/2 top-full z-30 w-72 -translate-x-1/2 border border-line bg-surface-0 p-2 shadow-lg"
                       >
                         {item.children.map((child) =>
                           child.children ? (
@@ -182,7 +172,7 @@ export function SiteHeader() {
                                 {child.label}
                                 <ChevronDown size={14} aria-hidden className="-rotate-90 opacity-50" />
                               </button>
-                              <div className="invisible absolute left-full top-0 w-64 translate-x-1 border border-line bg-surface-0/95 p-2 opacity-0 shadow-[0_18px_45px_rgb(0_0_0/0.45)] backdrop-blur-xl transition-all duration-150 group-hover/submenu:visible group-hover/submenu:translate-x-0 group-hover/submenu:opacity-100 group-focus-within/submenu:visible group-focus-within/submenu:translate-x-0 group-focus-within/submenu:opacity-100">
+                              <div className="invisible absolute left-full top-0 w-64 translate-x-1 border border-line bg-surface-0 p-2 opacity-0 shadow-lg transition-all duration-150 group-hover/submenu:visible group-hover/submenu:translate-x-0 group-hover/submenu:opacity-100 group-focus-within/submenu:visible group-focus-within/submenu:translate-x-0 group-focus-within/submenu:opacity-100">
                                 {child.children.map((service) => (
                                   <Link
                                     key={service.href}
@@ -238,7 +228,7 @@ export function SiteHeader() {
                   <motion.span
                     layoutId="nav-active"
                     aria-hidden
-                    className="absolute inset-x-3 -bottom-0.5 h-px bg-accent shadow-[0_0_10px_rgb(255_0_188/0.7)]"
+                    className="absolute inset-x-3 -bottom-0.5 h-px bg-accent"
                     transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   />
                 )}
@@ -248,24 +238,22 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Magnetic strength={0.2} field={14}>
-            <Link
-              href={networkCtaNav.href}
-              className="group hidden items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white shadow-[0_4px_18px_rgb(255_0_188/0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-soft hover:shadow-[0_8px_28px_rgb(255_0_188/0.4)] lg:inline-flex"
-            >
-              {networkCtaNav.label}
-              <ArrowUpRight
-                size={14}
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </Link>
-          </Magnetic>
+          <Link
+            href={networkCtaNav.href}
+            className="group hidden items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-accent-soft lg:inline-flex"
+          >
+            {networkCtaNav.label}
+            <ArrowUpRight
+              size={14}
+              aria-hidden
+              className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
           {member && (
             <Link
               href="/network/dashboard"
               aria-label={`Open member dashboard for ${member.displayName}`}
-              className="group/member inline-flex items-center gap-2 rounded-full border border-accent/40 bg-surface-1/90 p-1.5 text-sm font-semibold text-fg shadow-[0_4px_18px_rgb(0_0_0/0.25)] transition-all hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_8px_24px_rgb(255_0_188/0.2)] xl:pr-3"
+              className="group/member inline-flex items-center gap-2 rounded-md border border-line-strong bg-surface-1 p-1.5 text-sm font-semibold text-fg transition-colors hover:border-accent xl:pr-3"
             >
               <span className="relative grid size-8 shrink-0 place-items-center overflow-hidden rounded-full bg-accent/15 text-[0.7rem] font-bold text-accent">
                 {member.profileImageUrl ? (
@@ -282,11 +270,6 @@ export function SiteHeader() {
       </div>
 
       {/* Scroll-progress hairline */}
-      <motion.div
-        aria-hidden
-        style={{ scaleX: progress }}
-        className="absolute inset-x-0 bottom-0 z-0 h-px origin-left bg-linear-to-r from-accent via-accent-soft to-accent-2"
-      />
     </header>
   );
 }

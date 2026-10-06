@@ -153,7 +153,7 @@ async function NetworkNewsContent({ previewMode = false }: { previewMode?: boole
   const marketingNotes = items.filter((item) => item.category === "Marketing Notes").slice(0, 3);
 
   return (
-    <main className="bg-surface-0">
+    <div className="bg-surface-0">
       {previewMode && (
         <div className="fixed inset-x-0 top-20 z-40 mx-auto w-fit rounded-full border border-accent/40 bg-surface-0/95 px-4 py-2 text-xs font-semibold text-fg shadow-xl backdrop-blur">
           Local Network hub preview
@@ -316,7 +316,7 @@ async function NetworkNewsContent({ previewMode = false }: { previewMode?: boole
           </div>
         </section>
       )}
-    </main>
+    </div>
   );
 }
 

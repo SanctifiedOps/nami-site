@@ -77,7 +77,7 @@ export function EventManager({initialEvents,upcomingEvents}:{initialEvents:Event
     }catch(error){setMessage(error instanceof Error?error.message:"Could not save the event.");}
   }
 
-  return <main className="relative min-h-screen overflow-hidden pb-24 pt-24">
+  return <div className="relative min-h-screen overflow-hidden pb-24 pt-24">
     <div className="pointer-events-none absolute inset-x-0 top-0 h-[760px] [mask-image:linear-gradient(to_bottom,black_0%,black_48%,transparent_100%)]">
       <div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-30" />
       <div className="absolute inset-0 bg-gradient-to-b from-surface-0/30 via-surface-0/75 to-surface-0" />
@@ -121,5 +121,5 @@ export function EventManager({initialEvents,upcomingEvents}:{initialEvents:Event
       <a href="/network/events" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-accent sm:hidden">View the calendar <ArrowUpRight size={15}/></a>
     </section>
     </div>
-  </main>;
+  </div>;
 }

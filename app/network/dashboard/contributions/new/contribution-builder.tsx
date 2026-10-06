@@ -89,7 +89,7 @@ function FormatChooser({ previewMode }: { previewMode: boolean }) {
     : "/network/dashboard/contributions/new";
 
   return (
-    <main className="min-h-screen bg-surface-0 pt-24 md:pt-28">
+      <div className="min-h-screen bg-surface-0 pt-24 md:pt-28">
       <div className="container-shell pb-24">
         {previewMode && <PreviewNotice />}
         <Link
@@ -157,7 +157,7 @@ function FormatChooser({ previewMode }: { previewMode: boolean }) {
           </p>
         </section>
       </div>
-    </main>
+      </div>
   );
 }
 
@@ -582,7 +582,7 @@ function Writer({
     : "/network/dashboard/contributions";
 
   return (
-    <main className="min-h-screen bg-surface-0 pb-28 pt-24 lg:pb-0 md:pt-28">
+    <div className="min-h-screen bg-surface-0 pb-28 pt-24 lg:pb-0 md:pt-28">
       <div className="container-shell pb-24">
         {previewMode && <PreviewNotice />}
 
@@ -1019,7 +1019,7 @@ function Writer({
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 

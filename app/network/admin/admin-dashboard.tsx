@@ -252,7 +252,7 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
     { id: "more", label: "More", icon: <MoreHorizontal size={20} /> },
   ];
 
-  return <main className="min-h-screen bg-surface-0 pb-24 pt-16 text-fg md:pb-16 md:pt-28">
+  return <div className="min-h-screen bg-surface-0 pb-24 pt-16 text-fg md:pb-16 md:pt-28">
     <div className="container-shell !px-3 sm:!px-4 md:!px-10">
       <div className="hidden flex-col gap-5 border-b border-line pb-6 md:flex lg:flex-row lg:items-end lg:justify-between">
         <div>
@@ -478,7 +478,7 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
     <nav aria-label="Admin dashboard" className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-surface-0/95 px-1.5 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-1.5 shadow-[0_-12px_35px_rgb(0_0_0/0.35)] backdrop-blur-xl md:hidden">
       <div className="mx-auto grid max-w-lg grid-cols-5">{navigation.map((item) => <button key={item.id} onClick={() => { setActiveView(item.id); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-current={activeView === item.id ? "page" : undefined} className={`relative flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-lg text-[9px] font-bold transition ${activeView === item.id ? "bg-accent/12 text-accent" : "text-fg-subtle"}`}><span className="relative scale-90">{item.icon}{item.badge ? <span className="absolute -right-3 -top-2 min-w-4 rounded-full bg-accent px-1 text-center text-[9px] leading-4 text-white">{item.badge}</span> : null}</span>{item.label}</button>)}</div>
     </nav>
-  </main>;
+  </div>;
 }
 
 function Metric({ icon, label, value, note, tone, onClick }: { icon: React.ReactNode; label: string; value: number; note: string; tone: "pink" | "blue" | "amber" | "red"; onClick?: () => void }) {

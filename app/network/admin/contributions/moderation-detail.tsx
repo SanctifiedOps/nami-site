@@ -133,7 +133,7 @@ export function ModerationDetail({
   }
 
   return (
-    <main className="min-h-screen bg-surface-0 pb-24 pt-24 text-fg md:pt-28">
+    <div className="min-h-screen bg-surface-0 pb-24 pt-24 text-fg md:pt-28">
       <div className="container-shell">
         {previewMode && (
           <div className="mb-6 rounded-2xl border border-accent/30 bg-accent/5 px-4 py-3 text-sm">
@@ -366,7 +366,7 @@ export function ModerationDetail({
           </aside>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 

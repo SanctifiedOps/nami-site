@@ -35,7 +35,7 @@ export default async function EventPage({params}:{params:Promise<{slug:string}>}
   const calendarUrl=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${calendarDates}&details=${encodeURIComponent(event.summary)}&location=${encodeURIComponent([event.venue,event.address,event.location].filter(Boolean).join(", "))}`;
   const dateParts={date:event.startsAt.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Europe/London"}),time:event.startsAt.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/London"})};
 
-  return <main className="relative min-h-screen overflow-hidden pb-24 pt-24">
+  return <div className="relative min-h-screen overflow-hidden pb-24 pt-24">
     <EventAnalytics eventId={event.id}/>
     <div className="pointer-events-none absolute inset-x-0 top-0 h-[900px] [mask-image:linear-gradient(to_bottom,black_0%,black_40%,transparent_80%)]"><div className="absolute inset-0 bg-[url('/images/north-east/3.jpg')] bg-cover bg-center opacity-25"/><div className="absolute inset-0 bg-gradient-to-b from-surface-0/20 via-surface-0/75 to-surface-0"/><div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,0,188,.24),transparent_42%)]"/></div>
     <div className="container-shell relative z-10">
@@ -68,5 +68,5 @@ export default async function EventPage({params}:{params:Promise<{slug:string}>}
 
       {upcoming.length>0&&<section className="border-t border-line pt-16"><div className="flex items-end justify-between gap-4"><div><p className="mono-label text-accent">Keep exploring</p><h2 className="mt-3 text-3xl font-semibold md:text-5xl">Upcoming events</h2></div><Link href="/network/events" className="text-sm font-bold hover:text-accent">View all <ArrowUpRight size={14} className="inline"/></Link></div><div className="mt-8 grid gap-5 md:grid-cols-3">{upcoming.map(item=><Link key={item.id} href={`/network/events/${item.slug}`} className="group overflow-hidden rounded-3xl border border-line bg-surface-1 transition hover:-translate-y-1 hover:border-accent/60"><div className="relative aspect-[4/5] overflow-hidden">{item.coverImageKey&&<img src={media(item.coverImageKey)} alt={item.coverImageAlt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105"/>}<div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent"/><div className="absolute inset-x-0 bottom-0 p-5"><p className="text-xs font-bold text-accent">{item.startsAt.toLocaleDateString("en-GB",{dateStyle:"medium",timeZone:"Europe/London"})}</p><h3 className="mt-2 text-2xl font-semibold text-white">{item.title}</h3><p className="mt-2 flex items-center gap-2 text-xs text-white/70"><MapPin size={13}/>{item.location}</p></div></div></Link>)}</div></section>}
     </div>
-  </main>;
+  </div>;
 }

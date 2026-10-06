@@ -22,7 +22,7 @@ export default function MemberEmailCorrectionPage() {
     setSaving(false);
   }
 
-  return <main className="mx-auto min-h-screen max-w-2xl px-5 py-28 text-white">
+  return <div className="mx-auto min-h-screen max-w-2xl px-5 py-28 text-white">
     <a href="/network/admin" className="text-sm text-brand-pink">← Network admin</a>
     <h1 className="mt-8 text-4xl font-semibold">Correct a member email</h1>
     <p className="mt-3 text-sm text-fg-muted">For unclaimed profiles. This updates D1 and Mailchimp, queues the Google Sheet refresh and sends a fresh claim link.</p>
@@ -32,5 +32,5 @@ export default function MemberEmailCorrectionPage() {
       <button disabled={saving} className="rounded-full bg-brand-pink px-6 py-3 font-semibold text-white disabled:opacity-50">{saving ? "Updating…" : "Update and send claim email"}</button>
       {message && <p role="status" className="text-sm text-brand-pink">{message}</p>}
     </form>
-  </main>;
+  </div>;
 }
