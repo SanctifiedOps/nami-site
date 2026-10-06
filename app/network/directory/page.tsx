@@ -87,7 +87,7 @@ export default async function NetworkDirectoryPage() {
               <ArrowDown size={16} aria-hidden className="transition-transform group-hover:translate-y-0.5" />
             </Link>
             <Link
-              href="/network#join-network"
+              href="/network"
               className="group inline-flex items-center gap-2 rounded-full border border-accent bg-black/60 px-7 py-4 text-sm font-semibold text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-accent hover:shadow-[0_8px_32px_rgb(255_0_188/0.3)]"
             >
               Join the Network
@@ -236,23 +236,6 @@ export default async function NetworkDirectoryPage() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden py-20 md:py-24">
-        <ParallaxBackdrop src="/images/north-east/7.jpg" overlay={0.72} />
-        <div className="container-shell relative text-center">
-          <p className="mono-label text-accent">NAMI Creative Network</p>
-          <h2 className="mx-auto mt-5 max-w-4xl text-4xl font-semibold leading-[0.95] tracking-tight md:text-6xl">Making something up here?</h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">Put your name in the Network so more people can find the work you&apos;re building.</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link href="/network#join-network" className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent-soft">
-              Join the Network
-              <ArrowUpRight size={15} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-            <Link href="/network/profile-picture" className="inline-flex items-center rounded-full border border-line px-7 py-4 text-sm font-semibold text-fg transition-colors hover:border-accent/50 hover:text-accent">
-              Add your profile picture
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

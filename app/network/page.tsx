@@ -132,8 +132,8 @@ const networkReviews: Testimonial[] = [
 
 function FormAnchor({ children = "Join the network" }: { children?: string }) {
   return (
-    <Link
-      href="#join-network"
+    <a
+      href="/network"
       className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
     >
       {children}
@@ -142,7 +142,7 @@ function FormAnchor({ children = "Join the network" }: { children?: string }) {
         aria-hidden
         className="transition-transform duration-300 group-hover:translate-y-0.5"
       />
-    </Link>
+    </a>
   );
 }
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, asc, eq, gte, isNotNull } from "drizzle-orm";
-import { ArrowLeft, ArrowUpRight, CalendarDays, MapPin, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CalendarDays, MapPin } from "lucide-react";
 import { JsonLd, buildBreadcrumbSchema, type JsonLdSchema } from "@/components/seo/json-ld";
 import { MemberAvatar } from "@/components/network/member-avatar";
 import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
@@ -423,28 +423,6 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
           </section>
         )}
 
-        <section className="container-shell pt-4">
-          <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-surface-1 p-8 md:p-12">
-            <div aria-hidden className="hairline-grid absolute inset-0 opacity-20" />
-            <div aria-hidden className="absolute right-0 top-0 size-72 rounded-full bg-accent/15 blur-3xl" />
-            <div className="relative flex flex-col justify-between gap-8 md:flex-row md:items-center">
-              <div className="max-w-2xl">
-                <Sparkles size={24} className="text-accent" aria-hidden />
-                <p className="mono-label mt-5 text-accent">NAMI Creative Network</p>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">Making something up here?</h2>
-                <p className="mt-4 text-lg leading-relaxed text-fg-muted">
-                  Join the Network, get your work seen and make it easier for people to find you, hire you, buy from you and connect with you.
-                </p>
-              </div>
-              <Link
-                href="/network#join-network"
-                className="inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
-              >
-                Join the Network <ArrowUpRight size={15} aria-hidden />
-              </Link>
-            </div>
-          </div>
-        </section>
       </main>
     </>
   );

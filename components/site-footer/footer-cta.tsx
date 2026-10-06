@@ -1,9 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { Magnetic } from "@/components/motion/magnetic";
+import {
+  AnimatedMemberTooltip,
+  type TooltipMember,
+} from "@/components/ui/animated-member-tooltip";
 import { ctaNav } from "@/lib/nav";
 import { stage, fadeUp } from "@/lib/motion";
 
@@ -13,6 +19,27 @@ import { stage, fadeUp } from "@/lib/motion";
  * the sitemap.
  */
 export function FooterCta() {
+  const pathname = usePathname();
+  const isNetworkPage = pathname.startsWith("/network");
+  const [networkTooltip, setNetworkTooltip] = useState<{
+    items: TooltipMember[];
+    memberCount: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!isNetworkPage || networkTooltip) return;
+    const controller = new AbortController();
+    fetch("/api/network/tooltip", { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        if (payload?.items?.length && typeof payload.memberCount === "number") {
+          setNetworkTooltip(payload);
+        }
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [isNetworkPage, networkTooltip]);
+
   return (
     <section className="relative overflow-hidden border-b border-line">
       <div aria-hidden className="hairline-grid absolute inset-0 opacity-40" />
@@ -27,31 +54,44 @@ export function FooterCta() {
         viewport={{ once: true, amount: 0.3 }}
         variants={stage}
       >
-        <motion.p className="mono-label" variants={fadeUp}>
-              Build with me
-        </motion.p>
+        <motion.div variants={fadeUp}>
+          {isNetworkPage && networkTooltip ? (
+            <AnimatedMemberTooltip
+              items={networkTooltip.items}
+              memberCount={networkTooltip.memberCount}
+              context="join"
+            />
+          ) : (
+            <p className="mono-label">
+              {isNetworkPage ? "NAMI Creative Network" : "Build with me"}
+            </p>
+          )}
+        </motion.div>
         <motion.h2
           className="type-section-title mx-auto mt-6 max-w-4xl"
           variants={fadeUp}
         >
-          Need the marketing side{" "}
-          <span className="text-gradient sm:block">properly sorted?</span>
+          {isNetworkPage ? "Making something" : "Need the marketing side"}{" "}
+          <span className="text-gradient sm:block">
+            {isNetworkPage ? "up here?" : "properly sorted?"}
+          </span>
         </motion.h2>
         <motion.p
           className="type-lead mx-auto mt-8 max-w-xl"
           variants={fadeUp}
         >
-          I can help with the brand, website, content, and automation, so the
-          business looks right and you can get back to the graft.
+          {isNetworkPage
+            ? "Put your name in the Network so more people can find the work you’re building."
+            : "I can help with the brand, website, content, and automation, so the business looks right and you can get back to the graft."}
         </motion.p>
         <motion.div className="mt-12 flex justify-center" variants={fadeUp}>
           <Magnetic>
             <Link
-              href={ctaNav.href}
+              href={isNetworkPage ? "/network" : ctaNav.href}
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-9 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-shadow duration-500 hover:shadow-[0_8px_40px_rgb(255_0_188/0.55)]"
             >
               <span className="absolute inset-0 -z-10 translate-y-full bg-accent-soft transition-transform duration-500 ease-out-expo group-hover:translate-y-0" />
-              Work with me
+              {isNetworkPage ? "Join the network" : "Work with me"}
               <ArrowUpRight
                 size={16}
                 aria-hidden

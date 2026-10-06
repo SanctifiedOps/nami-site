@@ -258,7 +258,7 @@ async function NetworkNewsContent({ previewMode = false }: { previewMode?: boole
               <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-accent"><Users size={15} aria-hidden />Join the Network</p>
               <h2 className="mt-4 text-4xl font-semibold leading-[0.94] tracking-[-0.045em] md:text-5xl xl:text-6xl">Make your work easier to find</h2>
               <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-fg-muted lg:mx-0">Create a free profile, add your work and contribute to the stories and events shared across the Network.</p>
-              <Link href="/network#join-network" className="group mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-accent-soft hover:shadow-[0_12px_36px_rgb(255_0_188/0.24)]">
+              <Link href="/network" className="group mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-accent-soft hover:shadow-[0_12px_36px_rgb(255_0_188/0.24)]">
                 Join the Network
                 <ArrowUpRight size={15} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
