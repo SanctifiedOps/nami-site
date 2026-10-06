@@ -1,14 +1,8 @@
-"use client";
-
-import { motion } from "motion/react";
-import { ArrowUpRight, Quote } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import {
   testimonials as defaultTestimonials,
   type Testimonial,
 } from "@/lib/content/testimonials";
-import { SectionHeading } from "@/components/sections/section-heading";
-import { SpotlightCard } from "@/components/motion/spotlight-card";
-import { stageFast, cardIn } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -21,99 +15,73 @@ type Props = {
   uniform?: boolean;
 };
 
-/** Diagonal vertical offsets per column so the row reads editorial, not grid. */
-const OFFSETS = ["lg:mt-0", "lg:mt-12", "lg:mt-24"];
-
 export function Testimonials({
   items = defaultTestimonials,
-  eyebrow,
-  title,
-  lead,
+  eyebrow = "Client notes",
+  title = <>What people say about the work</>,
+  lead = "Honest words from founders, operators and people I have worked alongside.",
   className,
   backgroundImage,
-  uniform = false,
 }: Props) {
   return (
     <section
       className={cn(
-        "relative overflow-hidden border-t border-line bg-surface-1/40 py-24 md:py-32",
+        "relative overflow-hidden border-y border-line bg-surface-1 py-24 md:py-32",
         className,
       )}
     >
       {backgroundImage ? (
-        <div aria-hidden className="absolute inset-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-35"
-            style={{ backgroundImage: `url(${backgroundImage})` }}
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,8,10,.82),rgba(8,8,10,.94))]" />
-        </div>
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-cover bg-center opacity-10 grayscale"
+          style={{ backgroundImage: `url(${backgroundImage})` }}
+        />
       ) : null}
 
-      <div className="container-shell relative z-10">
-        <SectionHeading
-          align="center"
-          eyebrow={eyebrow}
-          title={
-            title ?? (
-              <>
-                What people say{" "}
-                <span className="text-gradient sm:block">about the work</span>
-              </>
-            )
-          }
-          lead={
-            lead ??
-            "Honest words from founders, operators, and people I have worked alongside."
-          }
-          className="mb-16 md:mb-20"
-        />
+      <div className="container-shell relative">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-0">
+          <header className="lg:col-span-4 lg:pr-16">
+            {eyebrow ? (
+              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+                {eyebrow}
+              </p>
+            ) : null}
+            <h2 className="type-section-title max-w-md">{title}</h2>
+            {lead ? (
+              <p className="mt-6 max-w-md text-lg leading-[1.5] text-fg-muted">
+                {lead}
+              </p>
+            ) : null}
+          </header>
 
-        <motion.ul
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-          variants={stageFast}
-          className={cn(
-            "grid gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3",
-            uniform ? "lg:items-stretch" : "lg:items-start",
-          )}
-        >
-          {items.map((t, i) => (
-            <motion.li
-              key={t.author}
-              variants={cardIn}
-              className={cn(
-                uniform && "h-full",
-                !uniform && OFFSETS[i % OFFSETS.length],
-              )}
-            >
-              <SpotlightCard
-                tilt={0}
-                glow={0.14}
-                className="glass-refractive glass-refractive--hover h-full rounded-2xl"
+          <ul className="grid border-t border-line md:grid-cols-2 lg:col-span-8">
+            {items.map((testimonial, index) => (
+              <li
+                key={testimonial.author}
+                className={cn(
+                  "border-b border-line py-8 md:px-8",
+                  index % 2 === 0 && "md:border-r",
+                )}
               >
-                <figure className="relative z-10 flex h-full flex-col gap-6 p-8 md:p-10">
-                  <Quote
-                    size={32}
-                    aria-hidden
-                    className="shrink-0 text-accent/70"
-                  />
-                  <blockquote className="flex-1 leading-relaxed text-fg md:text-lg">
-                    {t.quote}
+                <figure className="flex h-full flex-col">
+                  <span className="text-xs font-semibold tabular-nums text-accent">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <blockquote className="mt-6 flex-1 text-lg leading-[1.45] text-fg">
+                    “{testimonial.quote}”
                   </blockquote>
-                  <figcaption className="border-t border-line pt-5">
-                    <p className="font-medium tracking-tight text-fg">
-                      {t.author}
+                  <figcaption className="mt-8 border-t border-line pt-5">
+                    <p className="font-medium text-fg">{testimonial.author}</p>
+                    <p className="mt-1 text-sm text-fg-subtle">
+                      {testimonial.role}
                     </p>
-                    <p className="mt-1 text-sm text-fg-subtle">{t.role}</p>
-                    {t.href ? (
+                    {testimonial.href ? (
                       <a
-                        href={t.href}
+                        href={testimonial.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-accent transition-colors hover:text-accent-soft"
-                        aria-label={`Read ${t.author}'s review on Google`}
+                        className="group mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-accent"
+                        aria-label={`Read ${testimonial.author}'s review on Google`}
                       >
                         Read on Google
                         <ArrowUpRight
@@ -125,10 +93,10 @@ export function Testimonials({
                     ) : null}
                   </figcaption>
                 </figure>
-              </SpotlightCard>
-            </motion.li>
-          ))}
-        </motion.ul>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

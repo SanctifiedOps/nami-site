@@ -1,54 +1,40 @@
-"use client";
-
-import { motion } from "motion/react";
-import { stage, fadeUp } from "@/lib/motion";
-import { LetterReveal } from "@/components/motion/letter-reveal";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  /** Retained for existing callers; no longer rendered as a visual eyebrow. */
   index?: string;
   title: React.ReactNode;
   lead?: string;
   align?: "left" | "center";
   className?: string;
+  eyebrow?: string;
 };
 
-/** Homepage section header without decorative eyebrow labels. */
 export function SectionIntro({
   title,
   lead,
   align = "left",
   className,
+  eyebrow,
 }: Props) {
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.4 }}
-      variants={stage}
+    <div
       className={cn(
         "max-w-3xl",
         align === "center" && "mx-auto text-center",
         className,
       )}
     >
-      <motion.h2
-        className="type-section-title"
-        variants={fadeUp}
-      >
-        <LetterReveal stagger={0.014} duration={0.65}>
-          {title}
-        </LetterReveal>
-      </motion.h2>
-      {lead && (
-        <motion.p
-          className="type-lead mt-6"
-          variants={fadeUp}
-        >
+      {eyebrow ? (
+        <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+          {eyebrow}
+        </p>
+      ) : null}
+      <h2 className="type-section-title">{title}</h2>
+      {lead ? (
+        <p className="mt-6 text-lg leading-[1.5] text-fg-muted md:text-xl">
           {lead}
-        </motion.p>
-      )}
-    </motion.div>
+        </p>
+      ) : null}
+    </div>
   );
 }

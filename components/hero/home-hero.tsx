@@ -1,24 +1,10 @@
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-} from "motion/react";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
-import { Magnetic } from "@/components/motion/magnetic";
-import { VideoBackground } from "@/components/hero/video-background";
-import { LetterReveal } from "@/components/motion/letter-reveal";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import {
   AnimatedMemberTooltip,
   type TooltipMember,
 } from "@/components/ui/animated-member-tooltip";
-import { fadeUp, ctaPop } from "@/lib/motion";
 
 export function HomeHero({
   memberCount,
@@ -27,152 +13,80 @@ export function HomeHero({
   memberCount: number;
   tooltipMembers: TooltipMember[];
 }) {
-  const reduced = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-
-  // Scroll parallax: content lifts + fades, the light mesh sinks slower (depth).
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : -48]);
-  const contentOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.7],
-    [1, reduced ? 1 : 0],
-  );
-  const meshY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 130]);
-
-  // Cursor parallax: the two light fields lean toward / away from the pointer.
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const smx = useSpring(mx, { stiffness: 60, damping: 20, mass: 0.5 });
-  const smy = useSpring(my, { stiffness: 60, damping: 20, mass: 0.5 });
-  const blobAX = useTransform(smx, [-1, 1], [-34, 34]);
-  const blobAY = useTransform(smy, [-1, 1], [-26, 26]);
-  const blobBX = useTransform(smx, [-1, 1], [28, -28]);
-  const blobBY = useTransform(smy, [-1, 1], [22, -22]);
-
-  const handlePointer = (e: React.PointerEvent<HTMLElement>) => {
-    if (reduced) return;
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    mx.set(((e.clientX - r.left) / r.width - 0.5) * 2);
-    my.set(((e.clientY - r.top) / r.height - 0.5) * 2);
-  };
-
-  const stageHero = {
-    hidden: {},
-    show: {
-      transition: {
-        staggerChildren: reduced ? 0 : 0.12,
-        delayChildren: reduced ? 0 : 0.15,
-      },
-    },
-  };
-
   return (
-    <section
-      ref={ref}
-      onPointerMove={handlePointer}
-      className="relative flex min-h-[calc(100svh-5rem)] items-center overflow-hidden"
-    >
-      <VideoBackground src="wave-3.mp4" overlay={0.72} />
+    <section className="border-b border-line bg-surface-0 pt-20 md:pt-24">
+      <div className="container-shell grid lg:min-h-[calc(100svh-5rem)] lg:grid-cols-12">
+        <div className="flex flex-col justify-between border-line py-14 lg:col-span-7 lg:border-r lg:py-20 lg:pr-16 xl:pr-24">
+          <div>
+            <p className="mb-8 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+              Creative consultancy + North East network
+            </p>
+            <h1 className="max-w-[12ch] text-[clamp(3.4rem,7.4vw,7.2rem)] font-semibold leading-[0.86] tracking-[-0.065em] text-fg">
+              Helping people find their people and get their work{" "}
+              <span className="text-accent">seen</span>
+            </h1>
+            <p className="mt-8 max-w-xl text-lg leading-[1.45] text-fg-muted md:text-xl">
+              NAMI brings marketing services and a growing North East creative
+              network together, helping businesses build stronger brands, find
+              the right creative people and turn good work into real opportunities.
+            </p>
+          </div>
 
-      {/* Reactive liquid light: magenta and cyan fields over the wave */}
-      <motion.div
-        aria-hidden
-        style={{ y: meshY }}
-        className="pointer-events-none absolute inset-0 z-0 mix-blend-screen"
-      >
-        {/* brand magenta field */}
-        <motion.div
-          style={{ x: blobAX, y: blobAY }}
-          className="absolute -left-[12%] top-[0%] h-[58vh] w-[58vh] rounded-full blur-[110px]"
-        >
-          <div className="h-full w-full rounded-full bg-[radial-gradient(circle,rgb(255_0_188/0.45),transparent_68%)]" />
-        </motion.div>
-        {/* secondary cyan field */}
-        <motion.div
-          style={{ x: blobBX, y: blobBY }}
-          className="absolute -right-[10%] bottom-[-4%] h-[52vh] w-[52vh] rounded-full blur-[120px]"
-        >
-          <div className="h-full w-full rounded-full bg-[radial-gradient(circle,rgb(100_200_255/0.34),transparent_68%)]" />
-        </motion.div>
-      </motion.div>
+          <div className="mt-12 flex flex-wrap gap-3 lg:mt-16">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
+            >
+              Work with me
+              <ArrowUpRight
+                size={15}
+                aria-hidden
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </Link>
+            <Link
+              href="/network"
+              className="group inline-flex items-center gap-2 rounded-md border border-line-strong px-6 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent"
+            >
+              Explore the network
+              <ArrowRight
+                size={15}
+                aria-hidden
+                className="transition-transform group-hover:translate-x-1"
+              />
+            </Link>
+          </div>
+        </div>
 
-      {/* Blend the hero into the section below */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-40 bg-linear-to-b from-transparent to-surface-0"
-      />
+        <div className="relative min-h-[34rem] overflow-hidden border-x border-line lg:col-span-5 lg:border-l-0 lg:border-r-0">
+          <Image
+            src="/assets/videos/wave-3-poster.jpg"
+            alt="Abstract black sculptural waves"
+            fill
+            priority
+            sizes="(min-width: 1024px) 42vw, 100vw"
+            className="object-cover"
+          />
+          <div aria-hidden className="absolute inset-0 bg-black/20" />
 
-      <motion.div
-        style={{ y: contentY, opacity: contentOpacity }}
-        className="container-shell relative z-10 pt-28 pb-20 text-center md:pt-32 md:pb-24"
-      >
-        <motion.div initial="hidden" animate="show" variants={stageHero}>
-          <motion.div variants={fadeUp} className="mb-7 md:mb-8">
+          <div className="absolute inset-x-0 top-0 flex items-center justify-between border-b border-white/15 bg-black/35 px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75 md:px-7">
+            <span>NAMI Creative</span>
+            <span>Newcastle upon Tyne</span>
+          </div>
+
+          <div className="absolute inset-x-0 bottom-0 border-t border-white/15 bg-black/80 p-6 pb-8 backdrop-blur-sm md:p-8">
+            <p className="mb-5 max-w-sm text-xl font-medium leading-tight text-white md:text-2xl">
+              Good work deserves the right audience
+            </p>
             <AnimatedMemberTooltip
               items={tooltipMembers}
               memberCount={memberCount}
               context="contact"
+              align="left"
             />
-          </motion.div>
-
-          <h1 className="type-page-title mx-auto max-w-4xl text-balance">
-            <LetterReveal stagger={0.018} duration={0.8}>
-              Helping people find their people{" "}
-              <span className="text-gradient sm:block">
-                and get their work seen
-              </span>
-            </LetterReveal>
-          </h1>
-
-          <motion.p
-            className="type-lead mx-auto mt-7 max-w-2xl md:mt-8"
-            variants={fadeUp}
-          >
-            NAMI brings marketing services and a growing North East creative
-            network together, helping businesses build stronger brands, find
-            the right creative people and turn good work into real opportunities.
-          </motion.p>
-
-          <motion.div
-            className="mt-9 flex flex-wrap items-center justify-center gap-2 md:gap-4"
-            variants={ctaPop}
-          >
-            <Magnetic>
-              <Link
-                href="/contact"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-8 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-shadow duration-500 hover:shadow-[0_8px_40px_rgb(255_0_188/0.55)]"
-              >
-                <span className="absolute inset-0 -z-10 translate-y-full bg-accent-soft transition-transform duration-500 ease-out-expo group-hover:translate-y-0" />
-                Work with me
-                <ArrowUpRight
-                  size={16}
-                  aria-hidden
-                  className="transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </Link>
-            </Magnetic>
-
-            <Magnetic strength={0.25}>
-              <Link
-                href="/network"
-                className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-8 py-4 text-sm font-semibold text-fg backdrop-blur-sm transition-colors duration-300 hover:border-accent hover:bg-white/5"
-              >
-                Join the network
-                <ArrowRight
-                  size={16}
-                  aria-hidden
-                  className="transition-transform duration-500 ease-out-expo group-hover:translate-x-1"
-                />
-              </Link>
-            </Magnetic>
-          </motion.div>
-        </motion.div>
-      </motion.div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

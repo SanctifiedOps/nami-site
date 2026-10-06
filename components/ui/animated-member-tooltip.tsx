@@ -27,11 +27,13 @@ export function AnimatedMemberTooltip({
   memberCount,
   context = "join",
   className,
+  align = "center",
 }: {
   items: TooltipMember[];
   memberCount: number;
   context?: "join" | "directory" | "contact";
   className?: string;
+  align?: "left" | "center";
 }) {
   const candidates = useMemo(() => {
     const pictured = items.filter((item) => item.image);
@@ -47,8 +49,17 @@ export function AnimatedMemberTooltip({
   if (visibleMembers.length === 0) return null;
 
   return (
-    <div className={cn("flex flex-col items-center gap-3", className)}>
-      <div className="flex items-center justify-center pl-3" aria-label="A selection of NAMI Creative Network members">
+    <div
+      className={cn(
+        "flex flex-col gap-3",
+        align === "left" ? "items-start" : "items-center",
+        className,
+      )}
+    >
+      <div
+        className={cn("flex items-center pl-3", align === "center" && "justify-center")}
+        aria-label="A selection of NAMI Creative Network members"
+      >
         {visibleMembers.map((member, index) => (
           <Link
             key={member.id}

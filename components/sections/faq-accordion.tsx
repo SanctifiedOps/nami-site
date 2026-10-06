@@ -36,7 +36,7 @@ export function FAQAccordion({ items = defaultFaq }: Props) {
               </span>
               <span
                 aria-hidden
-                className="grid size-9 shrink-0 place-items-center rounded-full border border-line bg-surface-1 text-fg transition-colors group-hover:border-accent"
+                className="grid size-9 shrink-0 place-items-center rounded-sm border border-line bg-surface-1 text-fg transition-colors group-hover:border-accent"
               >
                 <motion.span
                   animate={{ rotate: isOpen ? 45 : 0 }}

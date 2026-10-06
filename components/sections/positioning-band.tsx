@@ -1,36 +1,21 @@
-"use client";
-
-import { motion } from "motion/react";
-import { stage, fadeUp, blurUp } from "@/lib/motion";
-
 export function PositioningBand() {
   return (
-    <section className="relative overflow-hidden border-y border-line bg-surface-1/40 py-20 md:py-28">
-      <div aria-hidden className="hairline-grid absolute inset-0 opacity-50" />
-      <div
-        aria-hidden
-        className="absolute left-1/2 top-0 h-64 w-[60rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgb(255_0_188/0.12),transparent_70%)] blur-2xl"
-      />
-      <motion.div
-        className="container-shell relative"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.4 }}
-        variants={stage}
-      >
-        <motion.p
-          className="mx-auto max-w-3xl text-center text-[clamp(1.4rem,3vw,2.25rem)] font-medium leading-tight tracking-tight text-fg"
-          variants={blurUp}
-        >
-          Get seen by the right people, then give yourself the time and systems to keep creating.
-        </motion.p>
-        <motion.p
-          className="mx-auto mt-6 max-w-xl text-center text-fg-muted md:text-lg"
-          variants={fadeUp}
-        >
-          NAMI helps businesses make their marketing clearer, and helps creatives find more places to be seen, supported, and hired. Less chasing, less explaining, more time for the work.
-        </motion.p>
-      </motion.div>
+    <section className="border-b border-line bg-surface-1">
+      <div className="container-shell grid lg:grid-cols-12">
+        <p className="border-line py-12 text-xs font-semibold uppercase tracking-[0.18em] text-accent lg:col-span-3 lg:border-r lg:py-16 lg:pr-10">
+          One connected practice
+        </p>
+        <div className="py-12 lg:col-span-9 lg:py-16 lg:pl-16">
+          <p className="max-w-4xl text-[clamp(1.65rem,3vw,3rem)] font-medium leading-[1.08] tracking-[-0.035em] text-fg">
+            Clear marketing helps businesses explain what they do. The Network
+            helps North East creatives get found, supported and hired.
+          </p>
+          <p className="mt-6 max-w-2xl text-base leading-[1.5] text-fg-muted md:text-lg">
+            Both sides are built around the same idea: good work should be
+            easier to understand and easier to discover.
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

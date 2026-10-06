@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Handshake, Mail, Users } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { HomeHero } from "@/components/hero/home-hero";
 import { SectionIntro } from "@/components/sections/section-intro";
 import { ProcessScroll } from "@/components/sections/process-scroll";
@@ -10,7 +11,6 @@ import { WorkGrid } from "@/components/sections/work-grid";
 import { Testimonials } from "@/components/sections/testimonials";
 import { faq } from "@/lib/content/faq";
 import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
-import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 import { isShowcaseReadyMember } from "@/lib/content/network-directory";
 
@@ -36,25 +36,19 @@ export default async function Home() {
 
 
       {/* PROCESS */}
-      <section className="border-t border-line bg-surface-1/30 py-28 md:py-40">
+      <section className="border-b border-line bg-surface-1/40 py-24 md:py-32">
         <div className="container-shell">
           <ProcessScroll />
         </div>
       </section>
 
       {/* SELECTED WORK */}
-      <section className="container-shell border-t border-line py-28 md:py-40">
+      <section className="container-shell py-24 md:py-32">
         <SectionIntro
-          align="center"
-          index="01 / Selected work"
-          title={
-            <>
-              What I helped{" "}
-              <span className="text-gradient sm:block">these businesses sort</span>
-            </>
-          }
+          eyebrow="Selected work"
+          title={<>What I helped these businesses sort</>}
           lead="Some needed a clearer brand or a better website. Others were losing time to content and admin. Have a look at what was getting in the way, what I changed and how the work turned out."
-          className="mb-16 md:mb-20"
+          className="mb-14 md:mb-16"
         />
 
         <WorkGrid
@@ -70,7 +64,7 @@ export default async function Home() {
         <div className="mt-16 flex items-center justify-center md:mt-20">
           <Link
             href="/work"
-            className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
+            className="group inline-flex items-center gap-2 rounded-md border border-line-strong px-6 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent"
           >
             See every case study
             <ArrowUpRight
@@ -85,96 +79,76 @@ export default async function Home() {
       {/* TESTIMONIALS */}
       <Testimonials />
 
-      <section className="relative isolate overflow-hidden border-y border-line py-24 md:py-32">
-        <ParallaxBackdrop src="/images/north-east/1.jpg" position="center 52%" overlay={0.8} />
-        <div className="container-shell relative z-10">
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
-            <div>
-              <p className="mono-label mb-5">NAMI Creative Network</p>
-              <h2 className="type-section-title">
-                The marketing work and the creator network have the same aim
-              </h2>
-              <p className="type-lead mt-6 max-w-2xl">
-                Support the North East. I help businesses get their brand,
-                website, content, and automation sorted properly. The network
-                gives creators, artists, freelancers, local businesses, and
-                independent brands more places to be seen, supported, and hired.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                  href="/network"
-                  className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-[0_4px_20px_rgb(255_0_188/0.3)] transition-all duration-300 hover:bg-accent-soft hover:shadow-[0_8px_40px_rgb(255_0_188/0.5)]"
-                >
-                  Join the network
-                  <ArrowUpRight
-                    size={14}
-                    aria-hidden
-                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </Link>
-                <Link
-                  href="/about"
-                  className="group inline-flex items-center gap-2 rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-fg transition-colors duration-300 hover:border-accent hover:bg-white/5"
-                >
-                  Read the story
-                  <ArrowUpRight
-                    size={14}
-                    aria-hidden
-                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </Link>
-              </div>
-            </div>
+      <section className="border-b border-line bg-surface-0">
+        <div className="container-shell grid lg:grid-cols-12">
+          <div className="relative min-h-[32rem] border-x border-line lg:col-span-5 lg:border-l-0">
+            <Image
+              src="/images/north-east/1.jpg"
+              alt="The Tyne Bridge and Newcastle skyline"
+              fill
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              className="object-cover grayscale"
+            />
+            <div aria-hidden className="absolute inset-0 bg-black/25" />
+            <p className="absolute bottom-0 left-0 border-r border-t border-white/15 bg-black/80 px-5 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white">
+              Built in the North East
+            </p>
+          </div>
 
-            <div className="grid gap-5 sm:grid-cols-3 lg:grid-cols-1">
-              <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
-                <Users size={22} className="text-accent" aria-hidden />
-                <h3 className="mt-5 text-2xl font-medium tracking-tight">
-                  Be easier to find
-                </h3>
-                <p className="mt-3 leading-relaxed text-fg-muted">
-                  NAMI keeps track of local talent so features, referrals, and
-                  opportunities can land with the right people.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
-                <Mail size={22} className="text-accent" aria-hidden />
-                <h3 className="mt-5 text-2xl font-medium tracking-tight">
-                  Weekly roundups
-                </h3>
-                <p className="mt-3 leading-relaxed text-fg-muted">
-                  Featured creators, local news, events, and useful opportunities
-                  from across the North East.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-line bg-surface-1/55 p-6 backdrop-blur-md">
-                <Handshake size={22} className="text-accent" aria-hidden />
-                <h3 className="mt-5 text-2xl font-medium tracking-tight">
-                  Work that backs the region
-                </h3>
-                <p className="mt-3 leading-relaxed text-fg-muted">
-                  The service work and the network feed each other. Both are
-                  built to bring more eyes to proper creative work up here.
-                </p>
-              </div>
+          <div className="py-16 lg:col-span-7 lg:py-24 lg:pl-16 xl:pl-24">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+              NAMI Creative Network
+            </p>
+            <h2 className="type-section-title max-w-2xl">
+              The client work and the creative network have the same aim
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg leading-[1.5] text-fg-muted">
+              I help businesses make their marketing clearer. The Network gives
+              artists, makers, freelancers and independent businesses more
+              places to be found, supported and hired.
+            </p>
+
+            <dl className="mt-10 border-t border-line">
+              {[
+                ["01", "Be easier to find", "Profiles, features and referrals help the right people discover local work."],
+                ["02", "Share what is happening", "Members can publish stories, promote events and keep their work up to date."],
+                ["03", "Back the region", "More attention stays with the people making and building things here."],
+              ].map(([number, title, copy]) => (
+                <div key={number} className="grid gap-3 border-b border-line py-5 sm:grid-cols-[3rem_12rem_1fr] sm:gap-5">
+                  <dt className="text-xs font-semibold text-accent">{number}</dt>
+                  <dd className="font-medium text-fg">{title}</dd>
+                  <dd className="text-sm leading-[1.5] text-fg-muted">{copy}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link
+                href="/network"
+                className="group inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
+              >
+                Explore the network
+                <ArrowUpRight size={14} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <Link
+                href="/about"
+                className="group inline-flex items-center gap-2 rounded-md border border-line-strong px-6 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent"
+              >
+                Read the story
+                <ArrowUpRight size={14} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="container-shell border-t border-line py-28 md:py-40">
+      <section className="container-shell py-24 md:py-32">
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionIntro
-              title={
-                <>
-                  Before you get in touch{" "}
-                  <span className="text-gradient sm:block">
-                    with me
-                  </span>
-                </>
-              }
+              eyebrow="Useful to know"
+              title={<>Before you get in touch</>}
               lead="Straight answers to the usual questions. Anything else, send me a note."
             />
           </div>

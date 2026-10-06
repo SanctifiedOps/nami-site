@@ -9,50 +9,49 @@ type Props = {
 };
 
 export function PressurePaths({
-  title = (
-    <>
-            What&apos;s getting{" "}
-      <span className="text-gradient sm:block">in the way?</span>
-    </>
-  ),
-  lead = "You probably already know which part is causing trouble. Pick the one that sounds familiar and I can help you sort it from there.",
+  title = <>What is getting in the way?</>,
+  lead = "Start with the part that is causing trouble. I will help you work out what needs attention and what can wait.",
   className = "",
 }: Props) {
   return (
-    <section className={`border-y border-line bg-surface-1/35 py-24 md:py-32 ${className}`}>
-      <div className="container-shell">
-        <div className="mx-auto max-w-5xl text-center">
-          <h2 className="type-section-title mx-auto max-w-3xl">
-            {title}
-          </h2>
-          <p className="type-lead mx-auto mt-6 max-w-2xl">
+    <section className={`border-b border-line bg-surface-0 py-24 md:py-32 ${className}`}>
+      <div className="container-shell grid gap-14 lg:grid-cols-12 lg:gap-0">
+        <div className="lg:col-span-4 lg:pr-16">
+          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+            Where we can start
+          </p>
+          <h2 className="type-section-title max-w-md">{title}</h2>
+          <p className="mt-6 max-w-md text-lg leading-[1.5] text-fg-muted">
             {lead}
           </p>
+        </div>
 
-          <div className="mx-auto mt-14 grid max-w-4xl gap-10 md:grid-cols-2 md:gap-x-12 md:gap-y-14">
-            {pressurePaths.map((path) => (
-              <Link
-                key={path.problem}
-                href={path.href}
-                className="group block text-center"
-              >
-                <h3 className="text-xl font-medium leading-tight tracking-tight text-fg transition-colors group-hover:text-accent">
-                  {path.problem}
-                </h3>
-                <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-fg-muted">
-                  {path.detail}
-                </p>
-                <span className="mt-6 inline-flex items-center justify-center gap-2 text-sm font-medium text-fg transition-colors group-hover:text-accent">
-                  {path.cta}
-                  <ArrowUpRight
-                    size={14}
-                    aria-hidden
-                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </span>
-              </Link>
-            ))}
-          </div>
+        <div className="border-t border-line lg:col-span-8">
+          {pressurePaths.map((path, index) => (
+            <Link
+              key={path.problem}
+              href={path.href}
+              className="group grid gap-4 border-b border-line py-7 transition-colors hover:border-accent md:grid-cols-[3rem_1fr_1fr_auto] md:items-start md:gap-6"
+            >
+              <span className="text-xs font-semibold tabular-nums text-fg-subtle">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="text-xl font-medium leading-tight tracking-tight text-fg group-hover:text-accent">
+                {path.problem}
+              </h3>
+              <p className="text-sm leading-[1.5] text-fg-muted">
+                {path.detail}
+              </p>
+              <span className="inline-flex items-center gap-2 text-sm font-semibold text-fg md:justify-self-end">
+                {path.cta}
+                <ArrowUpRight
+                  size={14}
+                  aria-hidden
+                  className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

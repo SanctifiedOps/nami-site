@@ -1,17 +1,5 @@
-"use client";
-
-import { useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useMotionValueEvent,
-  useReducedMotion,
-} from "motion/react";
 import { Check } from "lucide-react";
 import { processSteps } from "@/lib/content/process";
-import { LetterReveal } from "@/components/motion/letter-reveal";
-import { cn } from "@/lib/utils";
 
 type Props = {
   index?: string;
@@ -19,144 +7,61 @@ type Props = {
   lead?: string;
 };
 
-const DEFAULT_TITLE = (
-  <>
-    What happens when you{" "}
-    <span className="text-gradient sm:block">work with me</span>
-  </>
-);
+const DEFAULT_TITLE = <>What happens when you work with me</>;
 
-/**
- * Pinned scroll-storytelling. The left column sticks while the phase cards
- * scroll past on the right; a vertical rail fills with scroll progress and the
- * active phase lights up in sync. This is the signature scroll moment, reused
- * on the homepage and the /process page. Falls back to a clean stacked list
- * under reduced motion (the sticky is pure CSS; the rail fill + active-dim are
- * the only motion, and both are informational rather than decorative).
- */
 export function ProcessScroll({
-  index = "02 / How I work",
   title = DEFAULT_TITLE,
   lead = "I work out what's causing the problem, agree what needs doing with you and get it sorted. You'll always know what's happening and what comes next.",
 }: Props = {}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  const [active, setActive] = useState(0);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 55%", "end 75%"],
-  });
-  const fill = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
-    mass: 0.3,
-  });
-
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const idx = Math.min(
-      processSteps.length - 1,
-      Math.max(0, Math.floor(v * processSteps.length)),
-    );
-    setActive(idx);
-  });
-
   return (
-    <div
-      ref={ref}
-      className="relative grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20"
-    >
-      {/* Sticky left: heading + scroll-spy stepper */}
-      <div className="lg:sticky lg:top-28 lg:self-start">
-        {index && <span className="mono-label">{index}</span>}
-        <h2 className="type-section-title mt-5">
-          <LetterReveal stagger={0.014} duration={0.65}>
-            {title}
-          </LetterReveal>
-        </h2>
-        <p className="type-lead mt-6 max-w-md">
+    <div className="grid gap-14 lg:grid-cols-12 lg:gap-0">
+      <div className="lg:col-span-4 lg:pr-16">
+        <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+          How I work
+        </p>
+        <h2 className="type-section-title max-w-md">{title}</h2>
+        <p className="mt-6 max-w-md text-lg leading-[1.5] text-fg-muted">
           {lead}
         </p>
-
-        <ol className="relative mt-10 hidden pl-7 lg:block">
-          <span className="absolute bottom-2 left-[5px] top-2 w-px bg-line" />
-          <motion.span
-            style={{ scaleY: reduced ? 1 : fill }}
-            className="absolute bottom-2 left-[5px] top-2 w-px origin-top bg-accent shadow-[0_0_10px_rgb(255_0_188/0.7)]"
-          />
-          {processSteps.map((step, i) => (
-            <li
-              key={step.number}
-              className="relative py-3 first:pt-0 last:pb-0"
-            >
-              <span
-                aria-hidden
-                className={cn(
-                  "absolute -left-7 top-1/2 size-2.5 -translate-y-1/2 rounded-full border transition-colors duration-500",
-                  i <= active
-                    ? "border-accent bg-accent shadow-[0_0_10px_rgb(255_0_188/0.8)]"
-                    : "border-line-strong bg-surface-0",
-                )}
-              />
-              <span
-                className={cn(
-                  "text-lg font-medium tracking-tight transition-colors duration-500",
-                  i === active ? "text-fg" : "text-fg-subtle",
-                )}
-              >
-                {step.title}
-              </span>
-            </li>
-          ))}
-        </ol>
       </div>
 
-      {/* Scrolling right: phase cards */}
-      <div className="space-y-6">
-        {processSteps.map((step, i) => {
-          const isActive = i === active;
-          return (
-            <motion.article
-              key={step.number}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className={cn(
-                "glass-refractive rounded-3xl p-8 transition-colors duration-500 md:p-10",
-                isActive ? "border-accent/40" : "border-line",
-              )}
-            >
-              <motion.div
-                animate={{ opacity: reduced ? 1 : isActive ? 1 : 0.55 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <div>
-                  <h3 className="text-2xl font-medium tracking-tight md:text-3xl">
-                    {step.title}
-                  </h3>
-                  <p className="mono-label mt-1">{step.duration}</p>
-                </div>
-                <p className="mt-6 leading-relaxed text-fg-muted">
-                  {step.summary}
+      <ol className="border-t border-line lg:col-span-8">
+        {processSteps.map((step) => (
+          <li
+            key={step.number}
+            className="grid gap-5 border-b border-line py-8 md:grid-cols-[4rem_1fr] md:gap-8 md:py-10"
+          >
+            <span className="text-sm font-semibold tabular-nums text-accent">
+              {step.number}
+            </span>
+            <article>
+              <div className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-baseline">
+                <h3 className="text-2xl font-medium tracking-tight md:text-3xl">
+                  {step.title}
+                </h3>
+                <p className="text-xs uppercase tracking-[0.14em] text-fg-subtle">
+                  {step.duration}
                 </p>
-                <ul className="mt-6 grid gap-2.5 text-sm text-fg-muted md:grid-cols-2">
-                  {step.detail.map((line) => (
-                    <li key={line} className="flex items-start gap-2.5">
-                      <Check
-                        size={14}
-                        aria-hidden
-                        className="mt-1 shrink-0 text-accent"
-                      />
-                      <span>{line}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            </motion.article>
-          );
-        })}
-      </div>
+              </div>
+              <p className="mt-5 max-w-2xl leading-[1.5] text-fg-muted">
+                {step.summary}
+              </p>
+              <ul className="mt-6 grid gap-x-8 gap-y-3 text-sm text-fg-muted sm:grid-cols-2">
+                {step.detail.map((line) => (
+                  <li key={line} className="flex items-start gap-2.5">
+                    <Check
+                      size={14}
+                      aria-hidden
+                      className="mt-1 shrink-0 text-accent"
+                    />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
