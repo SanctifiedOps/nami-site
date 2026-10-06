@@ -1,15 +1,13 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, Calendar, Clock3, ExternalLink, MapPin, Play } from "lucide-react";
-import {
-  contributionVideoSource,
-  normaliseContributionUrl,
-} from "@/lib/network-contributions/links";
+import { ArrowLeft, ArrowUpRight, Calendar, Clock3, MapPin, Play } from "lucide-react";
+import { contributionVideoSource } from "@/lib/network-contributions/links";
 import {
   contributionFormatDetails,
   type ContributionAssetView,
   type ContributionDocument,
   type ContributionFormat,
 } from "@/lib/network-contributions/types";
+import { ContributionRichText } from "./contribution-rich-text";
 
 export type MemberArticleView = {
   title: string;
@@ -137,20 +135,6 @@ export function MemberArticle({
               block.type === "image" ? (() => {
                 const asset = inlineAssets.find((item) => item.id === block.assetId);
                 return asset ? <figure key={block.id} className="my-10"><img src={asset.url} alt={block.altText || asset.altText} className="max-h-[46rem] w-full object-contain" />{block.text && <figcaption className="mt-3 text-sm text-fg-subtle">{block.text}</figcaption>}</figure> : null;
-              })() : block.type === "link" ? (() => {
-                const url = normaliseContributionUrl(block.url);
-                return url ? (
-                  <a
-                    key={block.id}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center justify-between gap-5 border border-line bg-surface-1 px-5 py-4 text-base font-semibold text-fg transition hover:border-accent hover:text-accent"
-                  >
-                    <span>{block.text || url}</span>
-                    <ExternalLink size={18} className="shrink-0" aria-hidden />
-                  </a>
-                ) : null;
               })() : block.type === "video" ? (() => {
                 const source = contributionVideoSource(block.url);
                 if (!source) return null;
@@ -201,14 +185,11 @@ export function MemberArticle({
                   {block.text}
                 </blockquote>
               ) : (
-                block.text.split(/\n\s*\n/).filter(Boolean).map((paragraph, paragraphIndex) => (
-                  <p
-                    key={`${block.id}-${paragraphIndex}`}
-                    className={index === 0 && paragraphIndex === 0 ? "whitespace-pre-line text-xl leading-[1.7] text-fg md:text-2xl" : "whitespace-pre-line"}
-                  >
-                    {paragraph.trim()}
-                  </p>
-                ))
+                <ContributionRichText
+                  key={block.id}
+                  block={block}
+                  firstParagraphClassName={index === 0 ? "text-xl leading-[1.7] text-fg md:text-2xl" : undefined}
+                />
               ),
             )}
           </div>

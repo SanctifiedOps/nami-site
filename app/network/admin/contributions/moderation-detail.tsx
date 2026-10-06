@@ -9,7 +9,6 @@ import {
   CircleAlert,
   Clock3,
   Eye,
-  ExternalLink,
   LockKeyhole,
   MessageSquareReply,
   Play,
@@ -23,10 +22,8 @@ import {
   type ContributionFormat,
   type ContributionStatus,
 } from "@/lib/network-contributions/types";
-import {
-  contributionVideoSource,
-  normaliseContributionUrl,
-} from "@/lib/network-contributions/links";
+import { contributionVideoSource } from "@/lib/network-contributions/links";
+import { ContributionRichText } from "@/app/network/news/contribution-rich-text";
 
 export type ModerationDetailRecord = {
   id: string;
@@ -208,14 +205,6 @@ export function ModerationDetail({
                 block.type === "image" ? (() => {
                   const asset = inlineAssets.find((item) => item.id === block.assetId);
                   return asset ? <figure key={block.id} className="my-8"><img src={asset.url} alt={block.altText || asset.altText} className="max-h-[42rem] w-full object-contain" />{block.text && <figcaption className="mt-3 text-sm text-fg-subtle">{block.text}</figcaption>}</figure> : null;
-                })() : block.type === "link" ? (() => {
-                  const url = normaliseContributionUrl(block.url);
-                  return url ? (
-                    <a key={block.id} href={url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-4 border border-line bg-surface-1 px-5 py-4 font-semibold text-fg transition hover:border-accent hover:text-accent">
-                      <span>{block.text || url}</span>
-                      <ExternalLink size={18} className="shrink-0" aria-hidden />
-                    </a>
-                  ) : null;
                 })() : block.type === "video" ? (() => {
                   const source = contributionVideoSource(block.url);
                   if (!source) return null;
@@ -248,11 +237,7 @@ export function ModerationDetail({
                     {block.text}
                   </blockquote>
                 ) : (
-                  block.text.split(/\n\s*\n/).filter(Boolean).map((paragraph, paragraphIndex) => (
-                    <p key={`${block.id}-${paragraphIndex}`} className="whitespace-pre-line">
-                      {paragraph.trim()}
-                    </p>
-                  ))
+                  <ContributionRichText key={block.id} block={block} />
                 ),
               )}
             </div>

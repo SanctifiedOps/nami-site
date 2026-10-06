@@ -10,11 +10,18 @@ import { normaliseContributionUrl } from "@/lib/network-contributions/links";
 
 const contributionBlockSchema = z.object({
   id: z.string().trim().min(1).max(100),
-  type: z.enum(["paragraph", "heading", "quote", "image", "link", "video"]),
+  type: z.enum(["paragraph", "heading", "quote", "image", "video"]),
   text: z.string().max(12000),
   assetId: z.string().uuid().optional(),
   altText: z.string().max(180).optional(),
   url: z.string().max(2048).optional(),
+  richText: z.array(z.object({
+    text: z.string().max(12000),
+    bold: z.boolean().optional(),
+    italic: z.boolean().optional(),
+    underline: z.boolean().optional(),
+    href: z.string().max(2048).optional(),
+  })).max(500).optional(),
 });
 
 export const contributionDocumentSchema = z.object({
@@ -88,8 +95,10 @@ export function validateContributionForSubmission(input: {
   if (
     input.content.blocks.some(
       (block) =>
-        (block.type === "link" || block.type === "video") &&
-        !normaliseContributionUrl(block.url),
+        (block.type === "video" && !normaliseContributionUrl(block.url)) ||
+        block.richText?.some(
+          (span) => span.href && !normaliseContributionUrl(span.href),
+        ),
     )
   ) {
     return "Check the web and video links before submitting.";

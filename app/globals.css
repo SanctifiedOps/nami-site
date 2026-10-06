@@ -221,6 +221,18 @@
     border-radius: 999px;
   }
 
+  .contribution-rich-editor:empty::before {
+    content: attr(data-placeholder);
+    color: var(--color-fg-subtle);
+    pointer-events: none;
+  }
+
+  .contribution-rich-editor a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
   /* respect reduced motion globally */
   @media (prefers-reduced-motion: reduce) {
     *,

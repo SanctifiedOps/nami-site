@@ -69,12 +69,23 @@ export async function POST(request: Request) {
   const db = await getNetworkDb();
   const now = new Date();
   const data = parsed.data.data;
+  const content = {
+    ...data.content,
+    blocks: data.content.blocks.map((block) =>
+      block.type === "paragraph" && block.richText?.length
+        ? {
+            ...block,
+            text: block.richText.map((span) => span.text).join(""),
+          }
+        : block,
+    ),
+  };
   const normalised = {
     format: data.format,
     title: data.title.trim(),
     summary: data.summary.trim(),
-    contentJson: data.content,
-    plainText: contributionPlainText(data.content),
+    contentJson: content,
+    plainText: contributionPlainText(content),
     originalWorkConfirmed: data.originalWorkConfirmed,
     imageRightsConfirmed: data.imageRightsConfirmed,
     noGeneratedTextConfirmed: data.noGeneratedTextConfirmed,

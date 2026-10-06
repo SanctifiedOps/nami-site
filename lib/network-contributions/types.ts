@@ -26,8 +26,15 @@ export type ContributionBlockType =
   | "heading"
   | "quote"
   | "image"
-  | "link"
   | "video";
+
+export type ContributionRichTextSpan = {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  href?: string;
+};
 
 export type ContributionBlock = {
   id: string;
@@ -36,6 +43,7 @@ export type ContributionBlock = {
   assetId?: string;
   altText?: string;
   url?: string;
+  richText?: ContributionRichTextSpan[];
 };
 
 export type ContributionDocument = {

@@ -2,15 +2,17 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { type ChangeEvent, useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, type ClipboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowLeft,
   ArrowUp,
+  Bold,
   Check,
   Eye,
   FileText,
   ImagePlus,
+  Italic,
   Link2,
   ListPlus,
   Plus,
@@ -19,6 +21,7 @@ import {
   Send,
   Trash2,
   Type,
+  Underline,
   Video,
   X,
 } from "lucide-react";
@@ -31,6 +34,7 @@ import {
   type ContributionAssetView,
   type ContributionDraft,
   type ContributionFormat,
+  type ContributionRichTextSpan,
 } from "@/lib/network-contributions/types";
 import {
   contributionVideoSource,
@@ -566,9 +570,8 @@ function Writer({
     state.summary.trim().length >= 20 &&
     state.content.blocks.some((block) => block.text.trim().length >= 20) &&
     state.content.blocks.every((block) =>
-      block.type === "link" || block.type === "video"
-        ? Boolean(normaliseContributionUrl(block.url))
-        : true,
+      (block.type !== "video" || Boolean(normaliseContributionUrl(block.url))) &&
+      !(block.richText?.some((span) => span.href && !normaliseContributionUrl(span.href))),
     ) &&
     state.originalWorkConfirmed &&
     state.imageRightsConfirmed &&
@@ -609,10 +612,10 @@ function Writer({
               Write it in your words
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-fg-muted">
-              Use the blocks below to add text, headings, quotes, images, links
-              and video. You can paste a full draft into a text block and leave
-              a blank line between paragraphs, or build it one section at a
-              time. Use the arrow buttons to rearrange the finished blocks.
+              Use the blocks below to add text, headings, quotes, images and
+              video. Each text block has simple formatting controls for bold,
+              italic, underline and links. Paste a full draft and leave a blank
+              line between paragraphs, or build it one section at a time.
             </p>
           </div>
           <div className="border-l border-accent pl-4 text-sm leading-relaxed text-fg-muted">
@@ -757,7 +760,6 @@ function Writer({
                         <option value="heading">Heading</option>
                         <option value="quote">Quote</option>
                         <option value="image">Image</option>
-                        <option value="link">Link</option>
                         <option value="video">Video</option>
                       </select>
                       <span className="text-xs text-fg-subtle">Section {index + 1}</span>
@@ -785,37 +787,7 @@ function Writer({
                     {editable && <div className="flex flex-wrap items-center gap-3"><label className={`inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white ${assetBusy ? "pointer-events-none opacity-40" : ""}`}><ImagePlus size={16} aria-hidden />{assetBusy ? "Working..." : inlineAsset ? "Replace image" : "Choose image"}<input type="file" accept="image/*,.heic,.heif,.avif,.jfif" disabled={assetBusy} onChange={(event) => void uploadInlineImage(block, index, event)} className="sr-only" /></label>{inlineAsset && <button type="button" disabled={assetBusy || (block.altText ?? "").trim().length < 4} onClick={() => void saveInlineImageDetails(block)} className="rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent disabled:opacity-40">Save image details</button>}</div>}
                     <p className="text-xs leading-5 text-fg-subtle">Add the image description first, then choose a picture from your device. We will resize and compress it for you.</p>
                     {assetMessage && assetMessageTarget === block.id && <p role="status" className="text-sm text-fg-muted">{assetMessage}</p>}
-                  </div> : block.type === "link" ? (
-                    <div className="grid gap-4">
-                      <label className="text-sm font-semibold">
-                        Link text
-                        <input
-                          value={block.text}
-                          onChange={(event) => updateBlock(block.id, { text: event.target.value })}
-                          disabled={!editable}
-                          maxLength={180}
-                          placeholder="What should readers click?"
-                          className={`${inputClass} mt-2 font-normal`}
-                        />
-                      </label>
-                      <label className="text-sm font-semibold">
-                        Web address
-                        <input
-                          type="url"
-                          inputMode="url"
-                          value={block.url ?? ""}
-                          onChange={(event) => updateBlock(block.id, { url: event.target.value })}
-                          disabled={!editable}
-                          maxLength={2048}
-                          placeholder="https://example.com"
-                          className={`${inputClass} mt-2 font-normal`}
-                        />
-                      </label>
-                      {block.url && !normaliseContributionUrl(block.url) && (
-                        <p className="text-sm text-amber-200">Add a complete web address for this link.</p>
-                      )}
-                    </div>
-                  ) : block.type === "video" ? (
+                  </div> : block.type === "video" ? (
                     <div className="grid gap-4">
                       <label className="text-sm font-semibold">
                         Video link
@@ -849,10 +821,16 @@ function Writer({
                         <p className="text-sm text-amber-200">Add a complete video address.</p>
                       )}
                     </div>
+                  ) : block.type === "paragraph" ? (
+                    <RichTextEditor
+                      block={block}
+                      disabled={!editable}
+                      onChange={(text, richText) => updateBlock(block.id, { text, richText })}
+                    />
                   ) : <textarea
                     value={block.text}
                     onChange={(event) => updateBlock(block.id, { text: event.target.value })}
-                    rows={block.type === "paragraph" ? 7 : block.type === "heading" ? 2 : 4}
+                    rows={block.type === "heading" ? 2 : 4}
                     disabled={!editable}
                     placeholder={
                       block.type === "heading"
@@ -916,7 +894,7 @@ function Writer({
               </button>
               {!canSubmit && (
                 <p className="w-full text-xs text-fg-subtle sm:w-auto">
-                  Add a title, introduction and some writing. Check each link and complete all three confirmations.
+                  Add a title, introduction and some writing. Check each video link and complete all three confirmations.
                 </p>
               )}
               {error && (
@@ -1067,6 +1045,236 @@ function Confirmation({
   );
 }
 
+function escapeEditorHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function richTextEditorHtml(block: ContributionBlock) {
+  const spans = block.richText?.length
+    ? block.richText
+    : [{ text: block.text } satisfies ContributionRichTextSpan];
+
+  return spans.map((span) => {
+    let content = escapeEditorHtml(span.text).replaceAll("\n", "<br>");
+    if (span.bold) content = `<strong>${content}</strong>`;
+    if (span.italic) content = `<em>${content}</em>`;
+    if (span.underline) content = `<u>${content}</u>`;
+    const href = normaliseContributionUrl(span.href);
+    if (href) content = `<a href="${escapeEditorHtml(href)}">${content}</a>`;
+    return content;
+  }).join("");
+}
+
+function readRichTextEditor(editor: HTMLDivElement) {
+  const spans: ContributionRichTextSpan[] = [];
+  const append = (span: ContributionRichTextSpan) => {
+    if (!span.text) return;
+    const previous = spans.at(-1);
+    if (
+      previous &&
+      previous.bold === span.bold &&
+      previous.italic === span.italic &&
+      previous.underline === span.underline &&
+      previous.href === span.href
+    ) {
+      previous.text += span.text;
+    } else {
+      spans.push(span);
+    }
+  };
+
+  const visit = (
+    node: Node,
+    marks: Omit<ContributionRichTextSpan, "text"> = {},
+  ) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      append({ ...marks, text: (node.textContent ?? "").replaceAll("\u00a0", " ") });
+      return;
+    }
+    if (!(node instanceof HTMLElement)) return;
+
+    const tag = node.tagName.toLowerCase();
+    if (tag === "br") {
+      append({ ...marks, text: "\n" });
+      return;
+    }
+
+    const nextMarks = { ...marks };
+    if (tag === "strong" || tag === "b" || Number.parseInt(node.style.fontWeight || "0", 10) >= 600) nextMarks.bold = true;
+    if (tag === "em" || tag === "i" || node.style.fontStyle === "italic") nextMarks.italic = true;
+    if (tag === "u" || node.style.textDecoration.includes("underline")) nextMarks.underline = true;
+    if (tag === "a") {
+      const href = normaliseContributionUrl(node.getAttribute("href"));
+      if (href) nextMarks.href = href;
+    }
+
+    const isBlock = tag === "div" || tag === "p";
+    if (isBlock && spans.length && !spans.at(-1)?.text.endsWith("\n")) {
+      append({ ...marks, text: "\n" });
+    }
+    node.childNodes.forEach((child) => visit(child, nextMarks));
+    if (isBlock && !spans.at(-1)?.text.endsWith("\n")) {
+      append({ ...marks, text: "\n" });
+    }
+  };
+
+  editor.childNodes.forEach((child) => visit(child));
+  const text = spans.map((span) => span.text).join("").replace(/\n+$/, "");
+  let remaining = text.length;
+  const trimmedSpans = spans.flatMap((span) => {
+    if (remaining <= 0) return [];
+    const slice = span.text.slice(0, remaining);
+    remaining -= slice.length;
+    return slice ? [{ ...span, text: slice }] : [];
+  });
+
+  return { text, richText: trimmedSpans };
+}
+
+function RichTextEditor({
+  block,
+  disabled,
+  onChange,
+}: {
+  block: ContributionBlock;
+  disabled: boolean;
+  onChange: (text: string, richText: ContributionRichTextSpan[]) => void;
+}) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const savedRangeRef = useRef<Range | null>(null);
+  const [showLinkInput, setShowLinkInput] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [linkError, setLinkError] = useState("");
+
+  useEffect(() => {
+    if (editorRef.current) editorRef.current.innerHTML = richTextEditorHtml(block);
+    // The editor is uncontrolled so typing never resets the cursor position.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [block.id]);
+
+  function emitChange() {
+    if (!editorRef.current) return;
+    const next = readRichTextEditor(editorRef.current);
+    onChange(next.text, next.richText);
+  }
+
+  function rememberSelection() {
+    const editor = editorRef.current;
+    const selection = window.getSelection();
+    if (!editor || !selection?.rangeCount) return;
+    const range = selection.getRangeAt(0);
+    if (editor.contains(range.commonAncestorContainer)) {
+      savedRangeRef.current = range.cloneRange();
+    }
+  }
+
+  function runCommand(command: "bold" | "italic" | "underline") {
+    if (disabled) return;
+    editorRef.current?.focus();
+    document.execCommand(command, false);
+    rememberSelection();
+    emitChange();
+  }
+
+  function openLink() {
+    if (disabled) return;
+    rememberSelection();
+    if (!savedRangeRef.current || savedRangeRef.current.collapsed) {
+      setLinkError("Select the words you want to link first.");
+    } else {
+      setLinkError("");
+    }
+    setShowLinkInput(true);
+  }
+
+  function applyLink() {
+    const href = normaliseContributionUrl(linkUrl);
+    if (!href) {
+      setLinkError("Add a complete web address.");
+      return;
+    }
+    const range = savedRangeRef.current;
+    if (!range || range.collapsed) {
+      setLinkError("Select the words you want to link first.");
+      return;
+    }
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+    document.execCommand("createLink", false, href);
+    setLinkUrl("");
+    setLinkError("");
+    setShowLinkInput(false);
+    editorRef.current?.focus();
+    rememberSelection();
+    emitChange();
+  }
+
+  function pastePlainText(event: ClipboardEvent<HTMLDivElement>) {
+    event.preventDefault();
+    document.execCommand("insertText", false, event.clipboardData.getData("text/plain"));
+    emitChange();
+  }
+
+  const toolbarButton =
+    "grid size-9 place-items-center rounded-lg border border-line-strong bg-surface-0 text-fg-muted transition hover:border-accent hover:text-accent disabled:opacity-40";
+
+  return (
+    <div>
+      <div className="mb-3 flex flex-wrap items-center gap-2 border-b border-line pb-3" aria-label="Text formatting">
+        <button type="button" disabled={disabled} onMouseDown={(event) => event.preventDefault()} onClick={() => runCommand("bold")} aria-label="Bold" title="Bold" className={toolbarButton}><Bold size={16} aria-hidden /></button>
+        <button type="button" disabled={disabled} onMouseDown={(event) => event.preventDefault()} onClick={() => runCommand("italic")} aria-label="Italic" title="Italic" className={toolbarButton}><Italic size={16} aria-hidden /></button>
+        <button type="button" disabled={disabled} onMouseDown={(event) => event.preventDefault()} onClick={() => runCommand("underline")} aria-label="Underline" title="Underline" className={toolbarButton}><Underline size={16} aria-hidden /></button>
+        <button type="button" disabled={disabled} onMouseDown={(event) => { event.preventDefault(); rememberSelection(); }} onClick={openLink} aria-label="Add link" title="Add link" className={`${toolbarButton} w-auto gap-2 px-3`}><Link2 size={16} aria-hidden /><span className="text-xs font-semibold">Link</span></button>
+      </div>
+      {showLinkInput && (
+        <div className="mb-3 rounded-xl border border-accent/30 bg-accent/5 p-3">
+          <div className="flex gap-2">
+            <input
+              type="url"
+              inputMode="url"
+              value={linkUrl}
+              onChange={(event) => setLinkUrl(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  applyLink();
+                }
+              }}
+              placeholder="Paste the web address"
+              aria-label="Link web address"
+              className={`${inputClass} min-w-0 flex-1 py-2.5`}
+            />
+            <button type="button" onClick={applyLink} className="rounded-full bg-accent px-4 text-sm font-bold text-white">Add</button>
+            <button type="button" onClick={() => { setShowLinkInput(false); setLinkError(""); }} aria-label="Cancel link" className="grid size-10 place-items-center rounded-full border border-line-strong text-fg-muted"><X size={16} aria-hidden /></button>
+          </div>
+          {linkError && <p className="mt-2 text-xs text-amber-200">{linkError}</p>}
+        </div>
+      )}
+      <div
+        ref={editorRef}
+        contentEditable={!disabled}
+        suppressContentEditableWarning
+        role="textbox"
+        aria-multiline="true"
+        aria-label="Text section"
+        data-placeholder="Write naturally. This stays in your voice."
+        onInput={emitChange}
+        onBlur={emitChange}
+        onKeyUp={rememberSelection}
+        onMouseUp={rememberSelection}
+        onPaste={pastePlainText}
+        className="contribution-rich-editor contribution-scrollbox min-h-44 max-h-96 overflow-y-scroll whitespace-pre-wrap leading-[1.75] text-fg focus:outline-none"
+      />
+    </div>
+  );
+}
+
 function AddButton({ label, icon, onClick }: { label: string; icon: React.ReactNode; onClick: () => void }) {
   return (
     <button type="button" onClick={onClick} className="inline-flex items-center justify-center gap-2 rounded-xl border border-line-strong px-3 py-3 text-sm font-semibold transition hover:border-accent hover:text-accent">
@@ -1083,7 +1291,6 @@ function WidgetButtons({ onAdd }: { onAdd: (type: ContributionBlockType) => void
       <AddButton label="Heading" icon={<Type size={16} />} onClick={() => onAdd("heading")} />
       <AddButton label="Quote" icon={<Quote size={16} />} onClick={() => onAdd("quote")} />
       <AddButton label="Image" icon={<ImagePlus size={16} />} onClick={() => onAdd("image")} />
-      <AddButton label="Link" icon={<Link2 size={16} />} onClick={() => onAdd("link")} />
       <AddButton label="Video" icon={<Video size={16} />} onClick={() => onAdd("video")} />
     </>
   );
