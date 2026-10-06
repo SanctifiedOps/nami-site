@@ -29,7 +29,10 @@ import {
   type ContributionDraft,
   type ContributionFormat,
 } from "@/lib/network-contributions/types";
-import { prepareFullImageForUpload } from "@/lib/network/prepare-dashboard-image";
+import {
+  friendlyDashboardImageError,
+  prepareFullImageForUpload,
+} from "@/lib/network/prepare-dashboard-image";
 
 type BuilderState = {
   title: string;
@@ -415,11 +418,7 @@ function Writer({
       setSavedCoverAlt(payload.asset.altText);
       setAssetMessage("Cover image saved.");
     } catch (uploadError) {
-      setAssetMessage(
-        uploadError instanceof Error
-          ? uploadError.message
-          : "The cover image could not be saved.",
-      );
+      setAssetMessage(friendlyDashboardImageError(uploadError));
     } finally {
       setAssetBusy(false);
     }
@@ -471,7 +470,7 @@ function Writer({
       updateBlock(block.id, { assetId: payload.asset.id });
       setAssetMessage("Article image saved.");
     } catch (uploadError) {
-      setAssetMessage(uploadError instanceof Error ? uploadError.message : "The article image could not be saved.");
+      setAssetMessage(friendlyDashboardImageError(uploadError));
     } finally {
       setAssetBusy(false);
     }
@@ -589,7 +588,7 @@ function Writer({
               Write it in your words
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-fg-muted">
-              Build your article with the text, heading, image and quote tools below. Add sections in any order, then use the arrow buttons to move them.
+              Use the text, heading, image and quote tools below. You can paste a full draft into a text section and leave a blank line between paragraphs, or add sections one at a time. Use the arrow buttons to rearrange them.
             </p>
           </div>
           <div className="border-l border-accent pl-4 text-sm leading-relaxed text-fg-muted">
@@ -646,7 +645,7 @@ function Writer({
                     appear in the hub and at the top of the article.
                   </p>
                 </div>
-                <span className="text-xs text-fg-subtle">JPG or WebP · 16:9 works best</span>
+                <span className="text-xs text-fg-subtle">Choose any photo · 16:9 works best</span>
               </div>
 
               {cover && (
@@ -685,7 +684,7 @@ function Writer({
                     {assetBusy ? "Working..." : cover ? "Replace cover" : "Choose cover"}
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/*,.heic,.heif,.avif,.jfif"
                       disabled={assetBusy}
                       onChange={(event) => void uploadCover(event)}
                       className="sr-only"
@@ -757,8 +756,8 @@ function Writer({
                     <label className="text-sm font-semibold">Caption <span className="font-normal text-fg-subtle">(optional)</span>
                       <textarea value={block.text} onChange={(event) => updateBlock(block.id, { text: event.target.value })} disabled={!editable || assetBusy} rows={2} maxLength={300} placeholder="Add a short caption or credit" className={`${inputClass} contribution-scrollbox mt-2 max-h-40 resize-y overflow-y-scroll font-normal`} />
                     </label>
-                    {editable && <div className="flex flex-wrap items-center gap-3"><label className={`inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white ${assetBusy ? "pointer-events-none opacity-40" : ""}`}><ImagePlus size={16} aria-hidden />{assetBusy ? "Working..." : inlineAsset ? "Replace image" : "Choose image"}<input type="file" accept="image/*" disabled={assetBusy} onChange={(event) => void uploadInlineImage(block, index, event)} className="sr-only" /></label>{inlineAsset && <button type="button" disabled={assetBusy || (block.altText ?? "").trim().length < 4} onClick={() => void saveInlineImageDetails(block)} className="rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent disabled:opacity-40">Save image details</button>}</div>}
-                    <p className="text-xs leading-5 text-fg-subtle">Add the image description first, then choose a JPG or WebP. This image will appear here in the finished article.</p>
+                    {editable && <div className="flex flex-wrap items-center gap-3"><label className={`inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-white ${assetBusy ? "pointer-events-none opacity-40" : ""}`}><ImagePlus size={16} aria-hidden />{assetBusy ? "Working..." : inlineAsset ? "Replace image" : "Choose image"}<input type="file" accept="image/*,.heic,.heif,.avif,.jfif" disabled={assetBusy} onChange={(event) => void uploadInlineImage(block, index, event)} className="sr-only" /></label>{inlineAsset && <button type="button" disabled={assetBusy || (block.altText ?? "").trim().length < 4} onClick={() => void saveInlineImageDetails(block)} className="rounded-full border border-line-strong px-5 py-3 text-sm font-bold transition hover:border-accent hover:text-accent disabled:opacity-40">Save image details</button>}</div>}
+                    <p className="text-xs leading-5 text-fg-subtle">Add the image description first, then choose a picture from your device. We will resize and compress it for you.</p>
                     {assetMessage && assetMessageTarget === block.id && <p role="status" className="text-sm text-fg-muted">{assetMessage}</p>}
                   </div> : <textarea
                     value={block.text}
@@ -931,7 +930,9 @@ function ArticlePreview({
             ) : block.type === "quote" ? (
               <blockquote key={block.id} className="border-l-2 border-accent pl-3 italic text-fg">{block.text}</blockquote>
             ) : (
-              <p key={block.id}>{block.text}</p>
+              block.text.split(/\n\s*\n/).filter(Boolean).slice(0, 4).map((paragraph, paragraphIndex) => (
+                <p key={`${block.id}-${paragraphIndex}`} className="whitespace-pre-line">{paragraph.trim()}</p>
+              ))
             ),
           )}
           {!state.content.blocks.some((block) => block.text.trim()) && (

@@ -142,12 +142,14 @@ export function MemberArticle({
                   {block.text}
                 </blockquote>
               ) : (
-                <p
-                  key={block.id}
-                  className={index === 0 ? "text-xl leading-[1.7] text-fg md:text-2xl" : "whitespace-pre-wrap"}
-                >
-                  {block.text}
-                </p>
+                block.text.split(/\n\s*\n/).filter(Boolean).map((paragraph, paragraphIndex) => (
+                  <p
+                    key={`${block.id}-${paragraphIndex}`}
+                    className={index === 0 && paragraphIndex === 0 ? "whitespace-pre-line text-xl leading-[1.7] text-fg md:text-2xl" : "whitespace-pre-line"}
+                  >
+                    {paragraph.trim()}
+                  </p>
+                ))
               ),
             )}
           </div>

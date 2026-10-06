@@ -5,6 +5,26 @@ type DecodedImage = {
   dispose: () => void;
 };
 
+const HEIC_TYPES = new Set(["image/heic", "image/heif", "image/heic-sequence", "image/heif-sequence"]);
+
+function looksLikeHeic(file: File) {
+  return HEIC_TYPES.has(file.type.toLowerCase()) || /\.(heic|heif)$/i.test(file.name);
+}
+
+async function convertHeicForBrowser(file: File) {
+  try {
+    const { default: heic2any } = await import("heic2any");
+    const converted = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.94 });
+    const blob = Array.isArray(converted) ? converted[0] : converted;
+    if (!blob) throw new Error("heic-conversion-empty");
+    return new File([blob], file.name.replace(/\.(heic|heif)$/i, ".jpg"), {
+      type: "image/jpeg",
+    });
+  } catch {
+    throw new Error("I couldn't read that iPhone photo in this browser. Try sharing it again from Photos, or choose another picture.");
+  }
+}
+
 async function decodeImage(file: File): Promise<DecodedImage> {
   if (typeof createImageBitmap === "function") {
     try {
@@ -18,12 +38,22 @@ async function decodeImage(file: File): Promise<DecodedImage> {
   const url = URL.createObjectURL(file);
   const image = new Image();
   image.decoding = "async";
+  const loaded = new Promise<void>((resolve, reject) => {
+    image.onload = () => resolve();
+    image.onerror = () => reject(new Error("image-decode-failed"));
+  });
   image.src = url;
   try {
-    await image.decode();
+    if (typeof image.decode === "function") await image.decode();
+    else await loaded;
   } catch {
-    URL.revokeObjectURL(url);
-    throw new Error("I couldn't read that photo. Please choose another image.");
+    try {
+      await loaded;
+    } catch {
+      URL.revokeObjectURL(url);
+      if (looksLikeHeic(file)) return decodeImage(await convertHeicForBrowser(file));
+      throw new Error("I couldn't read that photo in this browser. Please choose another picture.");
+    }
   }
   return { source: image, width: image.naturalWidth, height: image.naturalHeight, dispose: () => URL.revokeObjectURL(url) };
 }
@@ -96,4 +126,17 @@ export async function prepareFullImageForUpload(file: File, maxWidth: number, ma
   } finally {
     decoded.dispose();
   }
+}
+
+export function friendlyDashboardImageError(error: unknown) {
+  if (error instanceof DOMException && error.name === "AbortError") {
+    return "That took too long. Check your connection, then try again.";
+  }
+
+  const message = error instanceof Error ? error.message : "";
+  if (/^(I couldn't|The photo|Image processing)/.test(message)) return message;
+  if (/fetch|network|connection|offline/i.test(message)) {
+    return "I couldn't connect. Check your internet connection, then try again.";
+  }
+  return "I couldn't prepare that picture. Please try it again or choose another image.";
 }

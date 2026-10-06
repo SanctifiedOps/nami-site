@@ -217,9 +217,11 @@ export function ModerationDetail({
                     {block.text}
                   </blockquote>
                 ) : (
-                  <p key={block.id} className="whitespace-pre-wrap">
-                    {block.text}
-                  </p>
+                  block.text.split(/\n\s*\n/).filter(Boolean).map((paragraph, paragraphIndex) => (
+                    <p key={`${block.id}-${paragraphIndex}`} className="whitespace-pre-line">
+                      {paragraph.trim()}
+                    </p>
+                  ))
                 ),
               )}
             </div>

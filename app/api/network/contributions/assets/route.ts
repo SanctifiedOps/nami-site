@@ -33,16 +33,16 @@ export async function POST(request: Request) {
     !["image/webp", "image/jpeg"].includes(file.type)
   ) {
     return Response.json(
-      { error: "That image could not be prepared. Choose a JPG or WebP under 3MB." },
+      { error: "That image could not be prepared. Please choose it again." },
       { status: 400 },
     );
   }
 
   const bytes = new Uint8Array(await file.arrayBuffer());
   const dimensions = imageDimensions(bytes, file.type);
-  if (!dimensions || dimensions.width < 640 || dimensions.height < 360) {
+  if (!dimensions || dimensions.width < 320 || dimensions.height < 320) {
     return Response.json(
-      { error: "Images must be at least 640 by 360 pixels." },
+      { error: "That image is too small. Please choose one at least 320 pixels wide and high." },
       { status: 400 },
     );
   }
