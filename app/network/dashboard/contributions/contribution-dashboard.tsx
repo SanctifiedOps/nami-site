@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -8,6 +10,7 @@ import {
   Eye,
   FileText,
   Plus,
+  Trash2,
 } from "lucide-react";
 import {
   contributionFormatDetails,
@@ -85,13 +88,47 @@ export function ContributionDashboard({
   notice?: string;
   previewMode?: boolean;
 }) {
-  const drafts = contributions.filter((item) => item.status === "draft");
-  const inReview = contributions.filter((item) =>
+  const router = useRouter();
+  const [items, setItems] = useState(contributions);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [actionMessage, setActionMessage] = useState("");
+  const drafts = items.filter((item) => item.status === "draft");
+  const inReview = items.filter((item) =>
     ["submitted", "under_review", "changes_requested"].includes(item.status),
   );
-  const published = contributions.filter((item) =>
+  const published = items.filter((item) =>
     ["approved", "scheduled", "published"].includes(item.status),
   );
+
+  async function deleteDraft(item: ContributionListItem) {
+    const title = item.title || "Untitled contribution";
+    if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
+
+    if (previewMode) {
+      setItems((current) => current.filter((contribution) => contribution.id !== item.id));
+      setActionMessage("Draft deleted from this local preview.");
+      return;
+    }
+
+    setDeletingId(item.id);
+    setActionMessage("");
+    try {
+      const response = await fetch("/api/network/contributions", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contributionId: item.id }),
+      });
+      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      if (!response.ok) throw new Error(payload?.error || "The draft could not be deleted.");
+      setItems((current) => current.filter((contribution) => contribution.id !== item.id));
+      setActionMessage(`"${title}" was deleted.`);
+      router.refresh();
+    } catch (deleteError) {
+      setActionMessage(deleteError instanceof Error ? deleteError.message : "The draft could not be deleted.");
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   return (
     <main className="min-h-screen bg-surface-0 pt-24 md:pt-28">
@@ -163,6 +200,12 @@ export function ContributionDashboard({
           </p>
         )}
 
+        {actionMessage && (
+          <p role="status" className="mt-6 rounded-2xl border border-line bg-surface-1 px-4 py-3 text-sm text-fg-muted">
+            {actionMessage}
+          </p>
+        )}
+
         <section className="py-12 md:py-16">
           <div className="flex flex-col gap-3 border-b border-line pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -174,11 +217,11 @@ export function ContributionDashboard({
               </p>
             </div>
             <p className="text-sm text-fg-subtle">
-              {contributions.length} {contributions.length === 1 ? "contribution" : "contributions"}
+              {items.length} {items.length === 1 ? "contribution" : "contributions"}
             </p>
           </div>
 
-          {contributions.length === 0 ? (
+          {items.length === 0 ? (
             <div className="grid place-items-center border-b border-line py-20 text-center">
               <FileText size={34} className="text-accent" aria-hidden />
               <h3 className="mt-5 text-2xl">You have not started anything yet</h3>
@@ -189,7 +232,7 @@ export function ContributionDashboard({
             </div>
           ) : (
             <div className="divide-y divide-line">
-              {contributions.map((item) => {
+              {items.map((item) => {
                 const status = statusDetails[item.status];
                 const format = contributionFormatDetails[item.format];
                 const href = previewMode
@@ -198,7 +241,7 @@ export function ContributionDashboard({
                 return (
                   <article
                     key={item.id}
-                    className="group grid gap-5 py-7 md:grid-cols-[minmax(0,1fr)_13rem_auto] md:items-center"
+                    className="group grid gap-5 py-7 md:grid-cols-[minmax(0,1fr)_10rem_18rem] md:items-center"
                   >
                     <div>
                       <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -235,18 +278,40 @@ export function ContributionDashboard({
                         {status.explanation}
                       </p>
                     </div>
-                    <Link
-                      href={href}
-                      className="inline-flex items-center gap-2 text-sm font-semibold text-fg transition hover:text-accent"
-                    >
-                      {item.status === "published" ? (
-                        <Eye size={15} aria-hidden />
-                      ) : null}
-                      {item.status === "draft" || item.status === "changes_requested"
-                        ? "Continue"
-                        : "View"}
-                      <ArrowUpRight size={14} aria-hidden />
-                    </Link>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-3 md:flex-col md:items-end">
+                      <Link
+                        href={href}
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-fg transition hover:text-accent"
+                      >
+                        {item.status === "published" ? (
+                          <Eye size={15} aria-hidden />
+                        ) : null}
+                        {item.status === "draft" || item.status === "changes_requested"
+                          ? "Continue"
+                          : "View"}
+                        <ArrowUpRight size={14} aria-hidden />
+                      </Link>
+                      {item.status === "draft" && (
+                        <>
+                          <Link
+                            href={previewMode ? "/network/news/preview/member-article" : `/network/dashboard/contributions/${item.id}/reader-preview`}
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-fg-muted transition hover:text-accent"
+                          >
+                            <Eye size={15} aria-hidden />
+                            View reader preview
+                          </Link>
+                          <button
+                            type="button"
+                            disabled={deletingId === item.id}
+                            onClick={() => void deleteDraft(item)}
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-red-300 transition hover:text-red-200 disabled:cursor-wait disabled:opacity-50"
+                          >
+                            <Trash2 size={15} aria-hidden />
+                            {deletingId === item.id ? "Deleting..." : "Delete"}
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </article>
                 );
               })}

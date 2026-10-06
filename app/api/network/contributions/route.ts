@@ -2,7 +2,7 @@ import { and, asc, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
 import { getMemberSession } from "@/lib/network-auth/session";
-import { getNetworkDb, schema } from "@/lib/network-db";
+import { getMemberMediaBucket, getNetworkDb, schema } from "@/lib/network-db";
 import {
   contributionContentHash,
   contributionDraftFieldsSchema,
@@ -30,6 +30,10 @@ const contributionActionSchema = z.discriminatedUnion("action", [
 ]);
 
 const editableStatuses = new Set(["draft", "changes_requested"]);
+
+const deleteContributionSchema = z.object({
+  contributionId: z.string().uuid(),
+});
 
 export async function GET() {
   const auth = await getMemberSession();
@@ -232,4 +236,54 @@ export async function POST(request: Request) {
     status: "submitted",
     warning,
   });
+}
+
+export async function DELETE(request: Request) {
+  const auth = await getMemberSession();
+  if (!auth) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+  const parsed = deleteContributionSchema.safeParse(
+    await request.json().catch(() => null),
+  );
+  if (!parsed.success) {
+    return Response.json({ error: "Choose a valid draft." }, { status: 400 });
+  }
+
+  const db = await getNetworkDb();
+  const [contribution] = await db
+    .select()
+    .from(schema.contributions)
+    .where(
+      and(
+        eq(schema.contributions.id, parsed.data.contributionId),
+        eq(schema.contributions.memberId, auth.member.id),
+      ),
+    )
+    .limit(1);
+
+  if (!contribution) {
+    return Response.json({ error: "Draft not found." }, { status: 404 });
+  }
+  if (contribution.status !== "draft") {
+    return Response.json(
+      { error: "Only drafts can be deleted." },
+      { status: 409 },
+    );
+  }
+
+  const assets = await db
+    .select({ r2Key: schema.contributionAssets.r2Key })
+    .from(schema.contributionAssets)
+    .where(eq(schema.contributionAssets.contributionId, contribution.id));
+
+  await db
+    .delete(schema.contributions)
+    .where(eq(schema.contributions.id, contribution.id));
+
+  if (assets.length) {
+    const bucket = await getMemberMediaBucket();
+    await Promise.allSettled(assets.map((asset) => bucket.delete(asset.r2Key)));
+  }
+
+  return Response.json({ ok: true });
 }

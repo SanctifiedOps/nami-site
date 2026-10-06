@@ -48,9 +48,13 @@ function readTime(article: MemberArticleView) {
 export function MemberArticle({
   article,
   previewMode = false,
+  previewBackHref = "/network/admin/contributions/preview",
+  previewNotice = "Publication preview. This is how an approved member contribution will read.",
 }: {
   article: MemberArticleView;
   previewMode?: boolean;
+  previewBackHref?: string;
+  previewNotice?: string;
 }) {
   const format = contributionFormatDetails[article.format];
   const inlineAssets = article.inlineAssets ?? [];
@@ -60,7 +64,7 @@ export function MemberArticle({
       {previewMode && (
         <div className="container-shell mb-6">
           <div className="rounded-2xl border border-accent/30 bg-accent/5 px-4 py-3 text-sm">
-            Local publication preview. This is how an approved member contribution will read.
+            {previewNotice}
           </div>
         </div>
       )}
@@ -68,7 +72,7 @@ export function MemberArticle({
       <article>
         <header className="container-shell py-8 md:py-12">
           <Link
-            href={previewMode ? "/network/admin/contributions/preview" : "/network/news"}
+            href={previewMode ? previewBackHref : "/network/news"}
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.13em] text-fg-muted transition hover:text-accent"
           >
             <ArrowLeft size={14} aria-hidden />
