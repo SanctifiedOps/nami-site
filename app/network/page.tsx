@@ -133,7 +133,7 @@ const networkReviews: Testimonial[] = [
 function FormAnchor({ children = "Join the network" }: { children?: string }) {
   return (
     <a
-      href="/network"
+      href="#network-form"
       className="group inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
     >
       {children}
@@ -374,7 +374,9 @@ export default async function NetworkPage() {
             </div>
           </div>
 
-          <NetworkForm />
+          <div id="network-form" className="scroll-mt-24">
+            <NetworkForm />
+          </div>
         </div>
       </section>
 
