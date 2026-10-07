@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Terms",
   description:
     "Terms of use for namicreative.co.uk and our engagement principles.",
+  alternates: { canonical: "/terms" },
   robots: { index: true, follow: true },
 };
 

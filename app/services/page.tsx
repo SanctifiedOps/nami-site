@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     "marketing automation agency UK",
     "creative marketing services",
   ],
+  alternates: { canonical: "/services" },
 };
 
 export default function ServicesPage() {

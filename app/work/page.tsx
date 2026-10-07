@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     "conversion funnel case studies",
     "independent brand work",
   ],
+  alternates: { canonical: "/work" },
 };
 
 export default function WorkPage() {

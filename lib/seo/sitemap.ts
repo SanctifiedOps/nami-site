@@ -6,7 +6,7 @@ import { directoryGroups } from "@/lib/content/network-directory-groups";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 
 export const SITE_URL = "https://namicreative.co.uk";
-export const SITEMAP_LAST_MODIFIED = "2026-10-03T00:00:00.000Z";
+export const SITEMAP_LAST_MODIFIED = "2026-10-07T00:00:00.000Z";
 
 type SitemapEntry = {
   url: string;
@@ -57,6 +57,7 @@ export function coreSitemapXml() {
     { url: `${SITE_URL}/network`, lastModified: "2026-09-19T00:00:00.000Z", changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE_URL}/network/directory`, lastModified: "2026-09-03T00:00:00.000Z", changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/network/directory/all`, lastModified: "2026-09-18T00:00:00.000Z", changeFrequency: "weekly", priority: 0.65 },
+    { url: `${SITE_URL}/network/events`, lastModified: "2026-10-07T00:00:00.000Z", changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/services`, lastModified: "2026-09-19T00:00:00.000Z", changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/work`, lastModified: "2026-09-19T00:00:00.000Z", changeFrequency: "monthly", priority: 0.85 },
     { url: `${SITE_URL}/about`, lastModified: "2026-09-19T00:00:00.000Z", changeFrequency: "monthly", priority: 0.8 },
@@ -83,6 +84,7 @@ export function coreSitemapXml() {
       changeFrequency: "monthly" as const,
       priority: 0.65,
     })),
+    { url: `${SITE_URL}/offers/creator-wave-workshop`, lastModified: "2026-10-07T00:00:00.000Z", changeFrequency: "monthly", priority: 0.65 },
     ...directoryGroups.map((item) => ({
       url: `${SITE_URL}/network/directory/${item.slug}`,
       lastModified: "2026-09-18T00:00:00.000Z",

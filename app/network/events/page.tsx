@@ -7,7 +7,11 @@ import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
 import { getMemberSession } from "@/lib/network-auth/session";
 import { getNetworkDb, schema } from "@/lib/network-db";
 
-export const metadata: Metadata = { title: "Network events", description: "Events shared by members of the NAMI Creative Network." };
+export const metadata: Metadata = {
+  title: "Network events",
+  description: "Events shared by members of the NAMI Creative Network.",
+  alternates: { canonical: "/network/events" },
+};
 export const dynamic = "force-dynamic";
 
 const media = (key: string) => `/api/network/media/${key.split("/").map(encodeURIComponent).join("/")}`;

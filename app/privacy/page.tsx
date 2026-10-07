@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Privacy",
   description:
     "How NAMI Creative collects, uses, and protects your information. Plain English, GDPR-aligned.",
+  alternates: { canonical: "/privacy" },
   robots: { index: true, follow: true },
 };
 

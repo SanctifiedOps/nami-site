@@ -49,9 +49,6 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL("https://namicreative.co.uk"),
-  alternates: {
-    canonical: "/",
-  },
   verification: {
     other: {
       "msvalidate.01": "3A2F2990F57CF69F305081E0AD32C1BF",

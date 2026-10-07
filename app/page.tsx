@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { HomeHero } from "@/components/hero/home-hero";
@@ -14,6 +15,10 @@ import { faq } from "@/lib/content/faq";
 import { JsonLd, buildFaqPageSchema } from "@/components/seo/json-ld";
 import { getNetworkDirectoryMembers } from "@/lib/content/network-directory-live";
 import { isShowcaseReadyMember } from "@/lib/content/network-directory";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const members = await getNetworkDirectoryMembers();
