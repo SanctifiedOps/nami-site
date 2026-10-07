@@ -150,7 +150,7 @@ export default async function NetworkNewsArticlePage({ params }: Props) {
             {featuredMembers.length > 0 && (
               <section>
                 <p className="border-b border-line pb-3 text-[0.68rem] font-bold uppercase tracking-[0.17em] text-accent">In this story</p>
-                <ol className="divide-y divide-line">
+                <ol className="[&>*+*]:border-t [&>*+*]:border-line-strong">
                   {featuredMembers.map((member, index) => <li key={member.id} className="grid grid-cols-[1.6rem_1fr] gap-2 py-3 text-sm"><span className="font-mono text-xs text-fg-subtle">{String(index + 1).padStart(2, "0")}</span><span>{member.name}</span></li>)}
                 </ol>
               </section>

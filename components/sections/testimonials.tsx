@@ -46,7 +46,7 @@ export function Testimonials({
             </header>
           </div>
 
-          <ul className="divide-y divide-line bg-surface-1 lg:col-span-7">
+          <ul className="bg-surface-1 lg:col-span-7 [&>*+*]:border-t [&>*+*]:border-line-strong">
             {visibleItems.map((testimonial) => (
               <li key={testimonial.author} className="p-7 md:p-10">
                 <figure className="grid gap-7 md:grid-cols-[1fr_auto] md:items-end">

@@ -62,13 +62,13 @@ export default async function NetworkDirectoryPage() {
     <>
       <PageHero
         networkBackground
-        eyebrow="NAMI Creative Network"
         title="NAMI Creative Network Directory"
         lead="Meet the artists, photographers, makers and independent businesses in the Network. Find someone to follow, work with or support across the North East."
         aboveTitle={
           <AnimatedMemberTooltip
             memberCount={members.length}
             context="directory"
+            align="left"
             items={showcaseMembers.map((member) => ({
               id: member.id,
               name: member.name,

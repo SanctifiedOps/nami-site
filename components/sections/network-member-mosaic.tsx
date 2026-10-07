@@ -2,6 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { NetworkDirectoryMember } from "@/lib/content/network-directory";
+import {
+  dailyMemberPreview,
+  londonDayNumber,
+} from "@/lib/content/network-directory-groups";
 
 type MosaicMember = Pick<
   NetworkDirectoryMember,
@@ -15,9 +19,24 @@ const localPreviewMembers: MosaicMember[] = [
   { id: "eleanor-osada-6226630b", name: "Eleanor Osada", category: "Designer and photographer", location: "Sunderland", profileImage: "/assets/images/network-home/eleanor-osada.webp", imageAlt: "Eleanor Osada profile picture" },
 ];
 
-export function NetworkMemberMosaic({ members }: { members: MosaicMember[] }) {
-  const availableMembers = members.filter((member) => member.profileImage).slice(0, 4);
-  const visibleMembers = availableMembers.length >= 4 ? availableMembers : localPreviewMembers;
+function hasSupportedProfilePicture(member: MosaicMember) {
+  const src = member.profileImage?.trim();
+  if (!src) return false;
+  return (
+    src.startsWith("/api/network/media/") ||
+    src.startsWith("/images/") ||
+    src.startsWith("/assets/")
+  );
+}
+
+export function NetworkMemberMosaic({ members, memberCount }: { members: MosaicMember[]; memberCount: number }) {
+  const picturedMembers = members.filter(hasSupportedProfilePicture);
+  const rotatedMembers = dailyMemberPreview(picturedMembers, londonDayNumber(), 4);
+  const selectedIds = new Set(rotatedMembers.map((member) => member.id));
+  const visibleMembers = [
+    ...rotatedMembers,
+    ...localPreviewMembers.filter((member) => !selectedIds.has(member.id)),
+  ].slice(0, 4);
 
   return (
     <section className="border-b border-line bg-surface-1 py-20 md:py-28">
@@ -26,7 +45,10 @@ export function NetworkMemberMosaic({ members }: { members: MosaicMember[] }) {
           <div>
             <h2 className="type-section-title max-w-2xl">Find your next creative collaborator</h2>
             <p className="mt-5 max-w-2xl text-base leading-[1.5] text-fg-muted md:text-lg">
-              Meet artists, makers, freelancers and independent businesses working across the North East.
+              The NAMI Creative Network brings artists, makers, freelancers and independent businesses from across the North East into one directory. Browse their work, find someone to collaborate with and see who is making things near you.
+            </p>
+            <p className="mt-4 text-sm font-semibold text-white">
+              <span className="text-accent">{memberCount} North East creatives</span> and growing
             </p>
           </div>
           <Link

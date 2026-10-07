@@ -21,14 +21,20 @@ export function ProcessScroll({
         </p>
       </header>
 
-      <ol className="mt-12 grid gap-px overflow-hidden rounded-sm border border-white/15 bg-white/15 md:grid-cols-2 xl:grid-cols-4">
-        {processSteps.map((step) => (
-          <li key={step.number} className="flex min-h-72 flex-col bg-black/55 p-6 backdrop-blur-sm md:p-8">
-            <p className="text-sm font-medium text-accent">{step.duration}</p>
-            <h3 className="mt-8 text-2xl font-semibold leading-tight tracking-[-0.025em] text-white">
+      <ol className="mt-12 grid overflow-hidden rounded-sm border border-white/30 md:grid-cols-2 xl:grid-cols-4">
+        {processSteps.map((step, index) => (
+          <li
+            key={step.number}
+            className={`flex flex-col bg-black/70 p-5 backdrop-blur-sm md:min-h-64 md:p-8 xl:min-h-72 ${
+              index > 0 ? "border-t border-white/25" : ""
+            } ${index === 1 ? "md:border-l md:border-t-0" : ""} ${
+              index === 2 ? "md:border-t md:border-l-0 xl:border-l xl:border-t-0" : ""
+            } ${index === 3 ? "md:border-l md:border-t xl:border-t-0" : ""}`}
+          >
+            <h3 className="whitespace-nowrap text-xl font-semibold leading-tight tracking-[-0.025em] text-white 2xl:text-2xl">
               {step.title}
             </h3>
-            <p className="mt-4 text-sm leading-[1.55] text-white/70 md:text-base">
+            <p className="mt-3 text-sm leading-[1.55] text-white/70 md:mt-4 md:text-base">
               {step.summary}
             </p>
           </li>

@@ -144,7 +144,7 @@ export default function AboutPage() {
 
       {/* Creative Network */}
       <section className="relative isolate overflow-hidden border-t border-line py-20 md:py-28">
-        <ParallaxBackdrop src="/images/north-east/2.jpg" position="center 48%" overlay={0.84} />
+        <ParallaxBackdrop src="/images/north-east/nami-website-image%20(3).png" position="center 52%" overlay={0.86} />
         <div className="container-shell relative z-10">
           <motion.div
             initial="hidden"
@@ -193,7 +193,7 @@ export default function AboutPage() {
               </div>
             </motion.div>
 
-            <motion.div variants={fadeUp} className="grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-3 lg:grid-cols-1">
+            <motion.div variants={fadeUp} className="grid gap-px overflow-hidden border border-line bg-line-strong sm:grid-cols-3 lg:grid-cols-1">
               <div className="bg-surface-0/90 p-7">
                 <h3 className="type-card-title">Visibility</h3>
                 <p className="mt-3 leading-relaxed text-fg-muted">

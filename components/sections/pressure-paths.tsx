@@ -39,12 +39,12 @@ export function PressurePaths({
             </figcaption>
           </figure>
 
-          <div className="grid gap-px overflow-hidden rounded-sm border border-line bg-line sm:grid-cols-2">
+          <div className="grid gap-px overflow-hidden rounded-sm border border-line bg-line-strong sm:grid-cols-2">
             {pressurePaths.map((path) => (
               <Link
                 key={path.problem}
                 href={path.href}
-                className="group flex min-h-64 flex-col bg-surface-1 p-6 transition-colors hover:bg-surface-2 md:min-h-72 md:p-8"
+                className="group flex flex-col bg-surface-1 p-5 transition-colors hover:bg-surface-2 sm:min-h-56 sm:p-6 md:min-h-64 md:p-8"
               >
                 <h3 className="max-w-xs text-xl font-semibold leading-tight tracking-[-0.02em] text-fg md:text-2xl">
                   {path.problem}
@@ -52,7 +52,7 @@ export function PressurePaths({
                 <p className="mt-4 max-w-sm text-sm leading-[1.55] text-fg-muted md:text-base">
                   {path.detail}
                 </p>
-                <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-accent">
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent sm:mt-auto sm:pt-6">
                   {path.cta}
                   <ArrowUpRight size={15} aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>

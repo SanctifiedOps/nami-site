@@ -12,7 +12,7 @@ export function ProcessList() {
       whileInView="show"
       viewport={{ once: true, amount: 0.15 }}
       variants={stageFast}
-      className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line"
+      className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line-strong"
     >
       {processSteps.map((step) => (
         <motion.li

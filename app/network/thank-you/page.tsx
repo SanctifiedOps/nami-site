@@ -28,7 +28,7 @@ export default function NetworkThankYouPage() {
             <p className="mt-5 max-w-xl leading-relaxed text-fg-muted md:text-lg">I&apos;ll add your profile to the Creative Directory shortly. Have a look around while I get yours ready.</p>
             <Link href="/network/directory" className="mt-7 inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white">Explore the directory <Search size={15} /></Link>
           </div>
-          <div className="grid gap-px bg-line sm:grid-cols-3">
+          <div className="grid gap-px bg-line-strong sm:grid-cols-3">
             {nextSteps.map((step) => <article key={step.title} className="bg-surface-1 p-6 md:p-8"><h3 className="text-xl font-semibold leading-tight">{step.title}</h3><p className="mt-4 text-sm leading-relaxed text-fg-muted">{step.body}</p></article>)}
           </div>
         </div>

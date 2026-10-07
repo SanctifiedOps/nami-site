@@ -113,7 +113,7 @@ export function ModerationDashboard({
           </div>
         </header>
 
-        <section className="grid gap-px border-x border-b border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <section className="grid gap-px border-x border-b border-line bg-line-strong sm:grid-cols-2 lg:grid-cols-4">
           <Summary icon={<Clock3 />} value={waiting.length} label="Waiting" />
           <Summary icon={<FileCheck2 />} value={inReview.length} label="In review" />
           <Summary icon={<MessageSquareWarning />} value={returned.length} label="With members" />
@@ -164,7 +164,7 @@ function QueueSection({
       </div>
 
       {items.length ? (
-        <div className="divide-y divide-line">
+        <div className="[&>*+*]:border-t [&>*+*]:border-line-strong">
           {items.map((item) => {
             const detail = contributionFormatDetails[item.format];
             const href = previewMode

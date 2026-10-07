@@ -74,7 +74,7 @@ export default function ServicesPage() {
       <CommonStartingPoints />
 
       <section className="relative isolate overflow-hidden border-t border-line py-24 md:py-32">
-        <ParallaxBackdrop src="/images/north-east/4.jpg" position="center 46%" overlay={0.82} />
+        <ParallaxBackdrop src="/images/north-east/nami-website-image%20(1).png" position="center 48%" overlay={0.86} />
         <div className="container-shell relative z-10">
           <SectionIntro
             align="center"

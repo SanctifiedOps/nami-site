@@ -46,13 +46,15 @@ export function FooterCta() {
 
   return (
     <section className="border-b border-line border-t-2 border-t-accent bg-surface-1">
-      <div className="container-shell grid gap-9 py-14 md:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.65fr)] md:items-end md:py-20">
-        <div>
+      <div className="container-shell grid gap-9 py-14 text-center md:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.65fr)] md:items-end md:py-20 md:text-left">
+        <div className="flex flex-col items-center md:items-start">
           {isNetworkPage && networkTooltip ? (
             <AnimatedMemberTooltip
               items={networkTooltip.items}
               memberCount={networkTooltip.memberCount}
               context="join"
+              align="left"
+              className="items-center md:items-start"
             />
           ) : (
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">
@@ -66,7 +68,7 @@ export function FooterCta() {
           </h2>
         </div>
 
-        <div className="md:border-l md:border-line md:pl-8">
+        <div className="flex flex-col items-center md:items-start md:border-l md:border-line md:pl-8">
           <p className="type-body max-w-xl">
             {isNetworkPage
               ? "Put your name in the Network so more people can find the work you’re building."

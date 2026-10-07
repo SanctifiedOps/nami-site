@@ -155,7 +155,6 @@ export default async function NetworkPage() {
       <div data-network-section="hero">
         <PageHero
         networkBackground
-        eyebrow="NAMI Creative Network"
         title={
           <>
             Find your people and{" "}
@@ -167,6 +166,7 @@ export default async function NetworkPage() {
           <AnimatedMemberTooltip
             memberCount={members.length}
             context="join"
+            align="left"
             items={showcaseMembers.map((member) => ({
               id: member.id,
               name: member.name,
@@ -224,12 +224,12 @@ export default async function NetworkPage() {
             </p>
           </div>
 
-          <div className="grid gap-px overflow-hidden border border-line bg-line md:grid-cols-3">
+          <div className="grid overflow-hidden border border-line md:grid-cols-3">
             {reasons.map((card) => {
               return (
                 <div
                   key={card.title}
-                  className="bg-surface-1 p-7 text-left md:p-9"
+                  className="border-t border-line bg-surface-1 p-7 text-left first:border-t-0 md:border-l md:border-t-0 md:p-9 md:first:border-l-0"
                 >
                   <h3 className="type-card-title">
                     {card.title}
@@ -253,8 +253,8 @@ export default async function NetworkPage() {
         className="relative isolate overflow-hidden border-y border-line py-20 md:py-28"
       >
         <ParallaxBackdrop
-          src="/images/north-east/7.jpg"
-          position="center 52%"
+          src="/images/north-east/nami-website-image%20(2).png"
+          position="center 48%"
           overlay={0.86}
         />
         <div className="container-shell relative z-10 grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-20">
@@ -270,7 +270,7 @@ export default async function NetworkPage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-2 gap-px overflow-hidden border border-line bg-line">
+          <div className="grid grid-cols-2 gap-px overflow-hidden border border-line bg-line-strong">
             {audience.map((item, index) => (
               <ScrollReveal key={item} delay={(index % 4) * 0.055}>
                 <div
@@ -298,7 +298,7 @@ export default async function NetworkPage() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-px overflow-hidden border border-line bg-line md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-12 grid gap-px overflow-hidden border border-line bg-line-strong md:grid-cols-2 xl:grid-cols-4">
             {futureAccess.map((card) => {
               return (
                 <div

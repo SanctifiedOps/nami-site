@@ -139,7 +139,7 @@ export function PerformancePricing({ offer }: Props) {
             </motion.p>
             <motion.ol
               variants={stageFast}
-              className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-3"
+              className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line-strong md:grid-cols-3"
             >
               {pricing.workedExample.map((row, i) => (
                 <motion.li

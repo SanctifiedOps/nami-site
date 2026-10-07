@@ -19,7 +19,7 @@ export function FAQAccordion({ items = defaultFaq }: Props) {
       whileInView="show"
       viewport={{ once: true, amount: 0.15 }}
       variants={stageFast}
-      className="divide-y divide-line border-y border-line"
+      className="border-y border-line [&>*+*]:border-t [&>*+*]:border-line-strong"
     >
       {items.map((item, i) => {
         const isOpen = open === i;
@@ -41,7 +41,7 @@ export function FAQAccordion({ items = defaultFaq }: Props) {
                 <motion.span
                   animate={{ rotate: isOpen ? 45 : 0 }}
                   transition={{ duration: 0.4, ease: EASE_OUT_EXPO }}
-                  className="inline-flex"
+                  className="inline-flex text-accent"
                 >
                   <Plus size={16} />
                 </motion.span>

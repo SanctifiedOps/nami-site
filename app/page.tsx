@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { HomeHero } from "@/components/hero/home-hero";
+import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 import { SectionIntro } from "@/components/sections/section-intro";
 import { ProcessScroll } from "@/components/sections/process-scroll";
 import { FAQAccordion } from "@/components/sections/faq-accordion";
@@ -37,16 +37,13 @@ export default async function Home() {
 
 
       {/* PROCESS */}
-      <section className="relative overflow-hidden border-b border-line bg-surface-1 py-20 md:py-28">
-        <Image
-          src="/images/north-east/3.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-center grayscale"
+      <section className="relative isolate overflow-hidden border-b border-line bg-surface-1 py-20 md:py-28">
+        <ParallaxBackdrop
+          src="/images/north-east/nami-website-image%20(3).png"
+          position="center 52%"
+          overlay={0.86}
         />
-        <div aria-hidden className="absolute inset-0 bg-black/72" />
-        <div className="container-shell relative">
+        <div className="container-shell relative z-10">
           <ProcessScroll />
         </div>
       </section>
@@ -87,7 +84,7 @@ export default async function Home() {
       {/* TESTIMONIALS */}
       <Testimonials backgroundImage="/images/north-east/4.jpg" />
 
-      <NetworkMemberMosaic members={showcaseMembers} />
+      <NetworkMemberMosaic members={members} memberCount={members.length} />
 
       {/* FAQ */}
       <section className="container-shell py-24 md:py-32">

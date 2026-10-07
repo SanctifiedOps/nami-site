@@ -35,11 +35,10 @@ export function SiteFooter() {
               />
             </Link>
             <p className="max-w-xs text-sm text-fg-muted leading-relaxed">
-              Brand, websites, content, and automation for businesses that want the
-              marketing side handled properly.
+              NAMI Creative helps North East businesses, brands and creatives get seen through marketing, websites, content, automation and the Creative Network.
             </p>
-            <p className="max-w-xs text-xs uppercase tracking-[0.32em] text-fg-subtle pt-1">
-              Done properly, up North.
+            <p className="max-w-xs pt-1 text-sm font-semibold text-accent">
+              Helping people find their people.
             </p>
             <ul className="flex items-center gap-2.5 pt-2 md:gap-3 md:pt-4">
               {socials.map((s) => {

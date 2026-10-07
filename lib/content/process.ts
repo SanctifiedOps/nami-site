@@ -9,7 +9,7 @@ export type ProcessStep = {
 export const processSteps: ProcessStep[] = [
   {
     number: "01",
-    title: "Talk through what isn't working",
+    title: "Talk it through",
     duration: "Weeks 1-2",
     summary:
       "I start with the problem you're trying to solve, look at what you already have and agree with you on what needs attention first.",
@@ -48,7 +48,7 @@ export const processSteps: ProcessStep[] = [
   },
   {
     number: "04",
-    title: "Stay involved if you need me",
+    title: "Stay involved",
     duration: "Ongoing partnership",
     summary:
       "If you want ongoing help, I can keep an eye on the work, make improvements and take care of the next job.",

@@ -235,7 +235,7 @@ export function membersInGroup(members: NetworkDirectoryMember[], slug: Director
   return members.filter((member) => memberGroupSlugs(member).includes(slug));
 }
 
-export function dailyMemberPreview(members: NetworkDirectoryMember[], day: number, count = 4) {
+export function dailyMemberPreview<T extends { id: string }>(members: T[], day: number, count = 4) {
   if (members.length <= count) return members;
   const ordered = [...members].sort((a, b) => a.id.localeCompare(b.id));
   const start = ((day * count) % ordered.length + ordered.length) % ordered.length;

@@ -117,7 +117,7 @@ function FormatChooser({ previewMode }: { previewMode: boolean }) {
           </p>
         </header>
 
-        <div className="mt-12 grid gap-px overflow-hidden border border-line bg-line md:grid-cols-2">
+        <div className="mt-12 grid gap-px overflow-hidden border border-line bg-line-strong md:grid-cols-2">
           {contributionFormats.map((item, index) => {
             const detail = contributionFormatDetails[item];
             return (

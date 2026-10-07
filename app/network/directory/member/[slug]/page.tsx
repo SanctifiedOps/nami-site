@@ -291,7 +291,7 @@ export default async function NetworkMemberProfilePage({ params }: PageProps) {
               className="self-start scroll-mt-28 border border-line bg-surface-1 p-6 md:p-8"
             >
               <p className="mono-label text-accent">At a glance</p>
-              <dl className="mt-6 divide-y divide-line">
+              <dl className="mt-6 [&>*+*]:border-t [&>*+*]:border-line-strong">
                 <div className="flex items-start justify-between gap-6 py-4 first:pt-0">
                   <dt className="text-sm text-fg-subtle">Based in</dt>
                   <dd className="text-right font-semibold text-fg">{member.location}</dd>

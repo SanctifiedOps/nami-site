@@ -14,7 +14,7 @@ export function HomeHero({
   tooltipMembers: TooltipMember[];
 }) {
   return (
-    <section className="relative isolate flex min-h-[calc(100svh-5rem)] items-end overflow-hidden border-b border-line pt-20">
+    <section className="relative isolate flex min-h-[calc(100svh-5rem)] items-center overflow-hidden border-b border-line pt-20 md:items-end">
       <Image
         src="/images/north-east/1.jpg"
         alt=""
@@ -33,7 +33,7 @@ export function HomeHero({
         className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-surface-0/80"
       />
 
-      <div className="container-shell relative z-10 py-16 md:py-20 lg:py-24">
+      <div className="container-shell relative z-10 py-12 md:py-20 lg:py-24">
         <AnimatedMemberTooltip
           items={tooltipMembers}
           memberCount={memberCount}
@@ -42,7 +42,7 @@ export function HomeHero({
           className="mb-8"
         />
 
-        <h1 className="max-w-[16ch] text-[clamp(3rem,6.4vw,6.2rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-white">
+        <h1 className="max-w-none text-[clamp(2.7rem,10vw,3.35rem)] font-semibold leading-[1.04] tracking-[-0.035em] text-white md:max-w-[16ch] md:text-[clamp(3rem,6.4vw,6.2rem)] md:tracking-[-0.04em]">
           Helping people find their people and get their work{" "}
           <span className="text-accent">seen</span>
         </h1>

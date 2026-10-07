@@ -185,7 +185,7 @@ export function ContributionDashboard({
           </div>
         </header>
 
-        <section className="grid gap-px overflow-hidden border-x border-b border-line bg-line md:grid-cols-3">
+        <section className="grid gap-px overflow-hidden border-x border-b border-line bg-line-strong md:grid-cols-3">
           <Summary number={drafts.length} label="Drafts" detail="Still yours to finish" />
           <Summary number={inReview.length} label="In review" detail="Waiting or returned" />
           <Summary number={published.length} label="Approved and live" detail="Part of the Network" />
@@ -231,7 +231,7 @@ export function ContributionDashboard({
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-line">
+            <div className="[&>*+*]:border-t [&>*+*]:border-line-strong">
               {items.map((item) => {
                 const status = statusDetails[item.status];
                 const format = contributionFormatDetails[item.format];

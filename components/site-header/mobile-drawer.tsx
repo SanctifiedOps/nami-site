@@ -6,9 +6,22 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  YoutubeIcon,
+} from "@/components/icons/socials";
 import { primaryNav } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import type { HeaderMember } from "./index";
+
+const socialLinks = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/98101073", icon: LinkedinIcon },
+  { label: "Instagram", href: "https://www.instagram.com/namicreativeuk/", icon: InstagramIcon },
+  { label: "YouTube", href: "https://www.youtube.com/@namiupcreative", icon: YoutubeIcon },
+  { label: "Facebook", href: "https://facebook.com/namicreativeuk", icon: FacebookIcon },
+];
 
 function memberInitials(name: string) {
   const words = name.split("/")[0]?.trim().split(/\s+/).filter(Boolean) ?? [];
@@ -110,7 +123,7 @@ export function MobileDrawer({ member }: { member: HeaderMember | null }) {
 
               <nav
                 aria-label="Mobile primary"
-                className="container-shell pb-10 pt-2"
+                className="container-shell flex min-h-[calc(100dvh-4rem)] flex-col pb-[max(2rem,env(safe-area-inset-bottom))] pt-2 md:min-h-[calc(100dvh-5rem)]"
               >
                 {member && (
                   <Link
@@ -270,7 +283,44 @@ export function MobileDrawer({ member }: { member: HeaderMember | null }) {
                     );
                   })}
                 </ul>
-                <div className="pb-[max(2rem,env(safe-area-inset-bottom))]" />
+
+                <div className="mt-auto border-t border-line pt-6">
+                  <div className="grid gap-3">
+                    <Link
+                      href="/network"
+                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-soft"
+                    >
+                      Join the Network
+                      <ArrowUpRight size={16} aria-hidden />
+                    </Link>
+                    <Link
+                      href="/contact"
+                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-line-strong px-6 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent"
+                    >
+                      Work with me
+                      <ArrowUpRight size={16} aria-hidden />
+                    </Link>
+                  </div>
+
+                  <ul className="mt-6 flex items-center justify-center gap-3" aria-label="NAMI Creative social links">
+                    {socialLinks.map((social) => {
+                      const Icon = social.icon;
+                      return (
+                        <li key={social.href}>
+                          <a
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`NAMI Creative on ${social.label}`}
+                            className="inline-grid size-11 place-items-center rounded-full border border-line text-fg-muted transition-colors hover:border-accent hover:text-accent"
+                          >
+                            <Icon size={17} aria-hidden />
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </nav>
             </motion.div>
           </motion.div>

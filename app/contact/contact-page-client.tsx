@@ -95,6 +95,7 @@ export function ContactPageClient({
             items={tooltipMembers}
             memberCount={memberCount}
             context="contact"
+            align="left"
           />
         }
         title={
@@ -256,8 +257,8 @@ export function ContactPageClient({
             className="space-y-8"
           >
             <motion.div variants={fadeUp} className="relative aspect-[4/3] overflow-hidden border border-line">
-              <div className="absolute inset-0 bg-[url('/assets/images/nami-office.webp')] bg-cover bg-center" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent" />
+              <div className="absolute inset-0 bg-[url('/images/north-east/nami-website-image%20(1).png')] bg-cover bg-center grayscale" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/20" />
               <p className="absolute inset-x-0 bottom-0 p-6 text-2xl font-semibold leading-tight text-white">Based in Newcastle. Working with people across the North East and beyond.</p>
             </motion.div>
             <motion.div

@@ -28,10 +28,10 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 type MemberMap = Map<string, NetworkDirectoryMember>;
 
 export const metadata: Metadata = {
-  title: "News | NAMI Creative Network",
+  title: "North East Creative News | NAMI Creative Network",
   description: "North East creative news, NAMI Creative Network spotlights, interviews, opportunities, and useful notes.",
   openGraph: {
-    title: "News | NAMI Creative Network",
+    title: "North East Creative News | NAMI Creative Network",
     description: "People, projects and useful ideas from the North East creative community.",
     url: "https://namicreative.co.uk/network/news",
     images: [{ url: "/assets/images/nami-og.png", width: 1080, height: 540, alt: "NAMI Creative Network news" }],
@@ -159,9 +159,9 @@ async function NetworkNewsContent({ previewMode = false }: { previewMode?: boole
       )}
       <header className="relative isolate min-h-[68svh] overflow-hidden border-b border-line pt-28 md:pt-32">
         <ParallaxBackdrop src="/images/north-east/7.jpg" overlay={0.72} />
-        <div className="container-shell relative z-10 flex min-h-[52svh] items-end py-12 md:py-20">
+        <div className="container-shell relative z-10 flex min-h-[52svh] items-center py-12 md:items-end md:py-20">
           <div className="grid w-full gap-6 md:grid-cols-[minmax(0,1fr)_minmax(18rem,0.55fr)] md:items-end">
-            <h1 className="max-w-4xl text-[clamp(4.5rem,14vw,10rem)] font-semibold leading-[0.86] tracking-[-0.065em]">News</h1>
+            <h1 className="max-w-4xl text-[clamp(3.4rem,11vw,8rem)] font-semibold leading-[0.9] tracking-[-0.055em]">North East Creative News</h1>
             <p className="max-w-md border-l-2 border-accent pl-5 text-base leading-relaxed text-white/75 md:pb-2 md:text-lg">People, projects and useful ideas from across the North East creative community.</p>
           </div>
         </div>
@@ -235,7 +235,7 @@ async function NetworkNewsContent({ previewMode = false }: { previewMode?: boole
         <aside className="space-y-10 lg:border-l lg:border-line lg:pl-8">
           <section>
             <p className="border-b border-line pb-3 text-xs font-bold uppercase tracking-[0.18em] text-accent">Browse by section</p>
-            <div className="divide-y divide-line">{categories.map((category) => <p key={category} className="py-3 text-sm text-fg-muted">{category}</p>)}</div>
+            <div className="[&>*+*]:border-t [&>*+*]:border-line-strong">{categories.map((category) => <p key={category} className="py-3 text-sm text-fg-muted">{category}</p>)}</div>
           </section>
         </aside>
       </section></ScrollReveal>
@@ -285,7 +285,7 @@ async function NetworkNewsContent({ previewMode = false }: { previewMode?: boole
                 <p className="mt-10 max-w-md text-sm leading-relaxed text-white/80 md:text-base">Plain-speaking ideas about sharing creative work, finding the right people and building something that lasts beyond the feed.</p>
               </div>
 
-              <div className="divide-y divide-line bg-surface-1/55">
+              <div className="bg-surface-1/55 [&>*+*]:border-t [&>*+*]:border-line-strong">
                 {marketingNotes.map((item, index) => (
                   <Link key={item.href} href={item.href} className="group grid h-full gap-6 p-6 sm:grid-cols-[minmax(12rem,0.86fr)_minmax(0,1.14fr)] sm:items-center md:p-8 lg:p-10">
                     <StoryImage item={item} members={members} className="aspect-[4/3] w-full" />

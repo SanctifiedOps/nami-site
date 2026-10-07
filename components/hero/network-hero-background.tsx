@@ -17,6 +17,10 @@ export function NetworkHeroBackground() {
         aria-hidden
         className="absolute inset-0 bg-linear-to-b from-surface-0/24 via-transparent to-surface-0/86"
       />
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-[radial-gradient(circle_at_14%_20%,rgb(255_0_188/0.2),transparent_36%)]"
+      />
       <div aria-hidden className="hairline-grid absolute inset-0 opacity-25" />
     </>
   );

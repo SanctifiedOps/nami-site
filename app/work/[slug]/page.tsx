@@ -11,6 +11,33 @@ import { JsonLd, buildCaseStudySchema, buildBreadcrumbSchema } from "@/component
 
 type Params = { slug: string };
 
+const caseStudyHeroImages: Record<string, { src: string; position: string }> = {
+  "whittaker-property-group": {
+    src: "/images/north-east/nami-website-image%20(3).png",
+    position: "center 52%",
+  },
+  "the-league": {
+    src: "/images/north-east/nami-website-image%20(2).png",
+    position: "center 48%",
+  },
+  vessl: {
+    src: "/images/north-east/nami-website-image%20(1).png",
+    position: "center 50%",
+  },
+  millions: {
+    src: "/images/north-east/7.jpg",
+    position: "center 48%",
+  },
+  "energy-consultants-association": {
+    src: "/images/north-east/5.jpg",
+    position: "center 48%",
+  },
+  "barking-puppy": {
+    src: "/images/north-east/6.jpg",
+    position: "center 50%",
+  },
+};
+
 export function generateStaticParams(): Params[] {
   return work.map((item) => ({ slug: item.slug }));
 }
@@ -46,6 +73,10 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
   if (!study) notFound();
   const index = work.findIndex((item) => item.slug === slug);
   const next = work[(index + 1) % work.length];
+  const heroImage = caseStudyHeroImages[study.slug] ?? {
+    src: "/images/north-east/1.jpg",
+    position: "center",
+  };
 
   return (
     <>
@@ -60,7 +91,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
 
       <PageHero
         className="min-h-[72svh] md:min-h-[82svh]"
-        backgroundImage={study.cover}
+        backgroundImage={heroImage.src}
+        backgroundPosition={heroImage.position}
         title={<>{study.heroTitle.lead}{" "}<span className="text-gradient sm:block">{study.heroTitle.accent}</span></>}
         lead={study.oneLiner}
       />

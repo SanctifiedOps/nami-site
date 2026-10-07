@@ -7,7 +7,6 @@ import { PageHero } from "@/components/sections/page-hero";
 import { engagements } from "@/lib/content/engagement";
 import { stage, stageFast, fadeUp, cardIn } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { ParallaxBackdrop } from "@/components/motion/parallax-backdrop";
 
 export default function PricingPage() {
   return (
@@ -26,9 +25,8 @@ export default function PricingPage() {
       />
 
       {/* How I price the work */}
-      <section className="relative isolate overflow-hidden border-b border-line py-20 md:py-24">
-        <ParallaxBackdrop src="/images/north-east/2.jpg" position="center 56%" overlay={0.84} />
-        <div className="container-shell relative z-10">
+      <section className="border-b border-line bg-surface-1 py-20 md:py-24">
+        <div className="container-shell">
           <motion.div
             initial="hidden"
             whileInView="show"

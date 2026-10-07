@@ -17,7 +17,7 @@ export default function ThankYouPage() {
         <span className="inline-grid size-12 place-items-center rounded-md bg-accent text-white"><Check size={22} aria-hidden /></span>
       </PageHero>
       <section className="container-shell py-16 md:py-24">
-        <div className="grid gap-px overflow-hidden border border-line bg-line lg:grid-cols-2">
+        <div className="grid gap-px overflow-hidden border border-line bg-line-strong lg:grid-cols-2">
           <article className="bg-surface-1 p-7 md:p-10">
             <h2 className="text-3xl font-semibold tracking-tight">See the work behind the words</h2>
             <p className="mt-4 max-w-xl leading-relaxed text-fg-muted">See how I help people make their brand, content, website and buyer journey clearer and easier to act on.</p>

@@ -408,7 +408,7 @@ export default function FlowFunnelPage() {
             whileInView="show"
             viewport={{ once: true, amount: 0.15 }}
             variants={stageFast}
-            className="mx-auto mt-16 grid max-w-4xl gap-px overflow-hidden border border-line bg-line md:mt-20 md:grid-cols-2"
+            className="mx-auto mt-16 grid max-w-4xl gap-px overflow-hidden border border-line bg-line-strong md:mt-20 md:grid-cols-2"
           >
             {offer.deliverables.items.map((item) => {
               const Icon = item.icon;
@@ -455,7 +455,7 @@ export default function FlowFunnelPage() {
             whileInView="show"
             viewport={{ once: true, amount: 0.15 }}
             variants={stageFast}
-            className="mx-auto mt-16 grid max-w-3xl gap-px overflow-hidden border border-line bg-line md:mt-20"
+            className="mx-auto mt-16 grid max-w-3xl gap-px overflow-hidden border border-line bg-line-strong md:mt-20"
           >
             {offer.flowPhases.map((phase) => (
               <motion.li

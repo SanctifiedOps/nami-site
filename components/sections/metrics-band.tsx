@@ -41,7 +41,7 @@ export function MetricsBand({
       viewport={{ once: true, amount: 0.3 }}
       variants={stageFast}
       className={cn(
-        "grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line",
+        "grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line-strong",
         cols,
         className,
       )}
