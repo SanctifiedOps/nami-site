@@ -1,7 +1,7 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { ExternalLink, Pencil, X } from "lucide-react";
+import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { ExternalLink, Pencil, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { networkAuthClient } from "@/lib/network-auth/client";
 import { directoryGroups } from "@/lib/content/network-directory-groups";
@@ -78,6 +78,9 @@ export function DashboardForm({
   const [status, setStatus] = useState("");
   const [portfolioStatus, setPortfolioStatus] = useState("");
   const [editingImage, setEditingImage] = useState<PortfolioImage | null>(null);
+  const [pendingRemoval, setPendingRemoval] = useState<PortfolioImage | null>(null);
+  const [removingImageId, setRemovingImageId] = useState<string | null>(null);
+  const removalLock = useRef(false);
   const [busy, setBusy] = useState(false);
   const dirty = useMemo(
     () => JSON.stringify(profile) !== JSON.stringify(savedProfile),
@@ -254,18 +257,51 @@ export function DashboardForm({
   }
 
   async function removeImage(image: PortfolioImage) {
-    if (!window.confirm("Remove this image from your profile?")) return;
+    if (removalLock.current) return;
+    removalLock.current = true;
+    setRemovingImageId(image.id);
     setBusy(true);
-    const response = await fetch(
-      `/api/network/member-images?id=${encodeURIComponent(image.id)}`,
-      { method: "DELETE" },
-    );
-    if (response.ok) {
+    setStatus("");
+    setPortfolioStatus("Removing image...");
+
+    try {
+      if (previewMode) {
+        setImages((current) => current.filter((item) => item.id !== image.id));
+        setPendingRemoval(null);
+        setStatus("Preview updated locally. Nothing was sent to the server.");
+        setPortfolioStatus("Image removed from the preview.");
+        return;
+      }
+
+      const response = await fetch(
+        `/api/network/member-images?id=${encodeURIComponent(image.id)}`,
+        { method: "DELETE" },
+      );
+      const result = (await response.json().catch(() => ({}))) as {
+        error?: string;
+      };
+      if (!response.ok) {
+        throw new Error(result.error || "The image could not be removed.");
+      }
+
       const next = images.filter((item) => item.id !== image.id);
       setImages(next);
-      setStatus("Image removed.");
-    } else setStatus("The image could not be removed.");
-    setBusy(false);
+      setPendingRemoval(null);
+      setStatus("Image removed from your profile.");
+      setPortfolioStatus("Image removed from your public profile.");
+      router.refresh();
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "The image could not be removed. Please try again.";
+      setStatus(message);
+      setPortfolioStatus(message);
+    } finally {
+      setRemovingImageId(null);
+      setBusy(false);
+      removalLock.current = false;
+    }
   }
 
   async function signOut() {
@@ -608,10 +644,12 @@ export function DashboardForm({
                   </div>
                   <button
                     type="button"
-                    onClick={() => removeImage(image)}
-                    className="text-xs text-red-300"
+                    disabled={busy || removingImageId !== null}
+                    onClick={() => setPendingRemoval(image)}
+                    className="inline-flex min-h-11 items-center gap-2 rounded-md border border-red-300/40 px-3 py-2 text-sm font-semibold text-red-200 transition-colors hover:border-red-300 hover:bg-red-300/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    Remove
+                    <Trash2 size={15} aria-hidden />
+                    {removingImageId === image.id ? "Removing..." : "Remove"}
                   </button>
                 </div>
               </div>
@@ -656,6 +694,60 @@ export function DashboardForm({
                 <button type="button" onClick={() => setEditingImage(null)} className="rounded-full border border-line-strong px-6 py-3 text-sm font-bold">Cancel</button>
                 <button type="button" disabled={busy} onClick={() => void saveImageDetails()} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "Saving..." : "Save image"} <ExternalLink size={14} /></button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {pendingRemoval && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="remove-image-title"
+          aria-describedby="remove-image-description"
+          className="fixed inset-0 z-[110] grid place-items-center bg-black/85 p-4 backdrop-blur-sm"
+          onMouseDown={(event) => {
+            if (
+              event.target === event.currentTarget &&
+              removingImageId === null
+            ) {
+              setPendingRemoval(null);
+            }
+          }}
+        >
+          <div className="w-full max-w-md rounded-2xl border border-red-300/30 bg-surface-1 p-6 shadow-[0_30px_100px_rgba(0,0,0,0.65)] md:p-8">
+            <div className="flex size-11 items-center justify-center rounded-full bg-red-300/10 text-red-200">
+              <Trash2 size={20} aria-hidden />
+            </div>
+            <h2 id="remove-image-title" className="mt-5 text-2xl">
+              Remove this image?
+            </h2>
+            <p
+              id="remove-image-description"
+              className="mt-3 leading-relaxed text-fg-muted"
+            >
+              It will disappear from your public profile. This cannot be undone.
+            </p>
+            <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                autoFocus
+                disabled={removingImageId !== null}
+                onClick={() => setPendingRemoval(null)}
+                className="min-h-11 rounded-md border border-line-strong px-5 py-2.5 text-sm font-semibold disabled:opacity-50"
+              >
+                Keep image
+              </button>
+              <button
+                type="button"
+                disabled={busy || removingImageId !== null}
+                onClick={() => void removeImage(pendingRemoval)}
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-red-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <Trash2 size={16} aria-hidden />
+                {removingImageId === pendingRemoval.id
+                  ? "Removing..."
+                  : "Remove image"}
+              </button>
             </div>
           </div>
         </div>

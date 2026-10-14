@@ -125,10 +125,18 @@ export async function DELETE(request: Request) {
   const db = await getNetworkDb();
   const [image] = await db.select().from(schema.profileImages).where(and(eq(schema.profileImages.id, id), eq(schema.profileImages.memberId, auth.member.id))).limit(1);
   if (!image) return Response.json({ error: "Image not found." }, { status: 404 });
-  await db.delete(schema.profileImages).where(eq(schema.profileImages.id, image.id));
-  const bucket = await getMemberMediaBucket();
-  await bucket.delete(image.r2Key);
-  await db.insert(schema.sheetSyncJobs).values({ id: crypto.randomUUID(), memberId: auth.member.id, status: "pending", attempts: 0, nextAttemptAt: new Date(), createdAt: new Date(), updatedAt: new Date() });
+  const now = new Date();
+  await db.batch([
+    db.delete(schema.profileImages).where(and(eq(schema.profileImages.id, image.id), eq(schema.profileImages.memberId, auth.member.id))),
+    db.insert(schema.profileAuditLog).values({ id: crypto.randomUUID(), memberId: auth.member.id, actorUserId: auth.session.user.id, changedFields: ["portfolioImages"], beforeJson: { removed: image.id }, afterJson: {}, createdAt: now }),
+    db.insert(schema.sheetSyncJobs).values({ id: crypto.randomUUID(), memberId: auth.member.id, status: "pending", attempts: 0, nextAttemptAt: now, createdAt: now, updatedAt: now }),
+  ]);
+  try {
+    const bucket = await getMemberMediaBucket();
+    await bucket.delete(image.r2Key);
+  } catch (error) {
+    console.error("Portfolio image removed from the profile but media cleanup failed:", error);
+  }
   revalidateNetworkProfile(auth.member.id);
   return Response.json({ ok: true });
 }
