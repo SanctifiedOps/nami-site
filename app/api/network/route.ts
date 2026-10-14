@@ -5,6 +5,7 @@ import { normalizeExternalUrl } from "@/lib/external-url";
 import { getRuntimeEnvironment } from "@/lib/cloudflare-env";
 import { externalIntegrationsAllowed } from "@/lib/prelaunch-qa";
 import { queueOwnerAlert } from "@/lib/network-ops/owner-alerts";
+import { normalizeDirectoryGroup } from "@/lib/content/network-directory-groups";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const NETWORK_SOURCE = "namicreative.co.uk/network";
@@ -25,6 +26,7 @@ type NetworkPayload = {
   email?: unknown;
   instagram?: unknown;
   category?: unknown;
+  speciality?: unknown;
   location?: unknown;
   note?: unknown;
   link?: unknown;
@@ -40,6 +42,7 @@ type Cleaned = {
   email: string;
   instagram: string;
   category: string;
+  speciality: string;
   location: string;
   note: string;
   link: string;
@@ -54,6 +57,7 @@ function clean(p: NetworkPayload): Cleaned {
   const legacyName = str(p.name, 120);
   const firstName = str(p.firstName, 80) || firstAndLast(legacyName).firstName;
   const displayName = str(p.displayName, 120) || legacyName;
+  const requestedCategory = str(p.category, 80);
   return {
     memberId: str(p.memberId, 160)
       .toLowerCase()
@@ -64,7 +68,8 @@ function clean(p: NetworkPayload): Cleaned {
     displayName,
     email: str(p.email, 200).toLowerCase(),
     instagram: str(p.instagram, 120),
-    category: str(p.category, 80),
+    category: requestedCategory ? normalizeDirectoryGroup(requestedCategory) : "",
+    speciality: str(p.speciality, 120),
     location: str(p.location, 140),
     note: str(p.note, 2000),
     link: normalizeExternalUrl(str(p.link, 300)),
@@ -111,6 +116,7 @@ function enrichedMessage(d: Cleaned): string {
     d.note,
     `Instagram: ${d.instagram}`,
     `Category: ${d.category}`,
+    `Speciality: ${d.speciality}`,
     `Location: ${d.location}`,
     d.link ? `Link: ${d.link}` : null,
   ]
@@ -312,6 +318,7 @@ async function notifyMake(d: Cleaned, image: File): Promise<void> {
   outgoing.set("instagram", d.instagram);
   outgoing.set("company", d.displayName);
   outgoing.set("category", d.category);
+  outgoing.set("speciality", d.speciality);
   outgoing.set("location", d.location);
   outgoing.set("link", d.link);
   outgoing.set("note", d.note);
@@ -397,6 +404,7 @@ async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
       displayName: d.displayName,
       location: d.location,
       requestedCategory: d.category,
+      requestedSpeciality: d.speciality,
       bio: d.note,
       websiteUrl: d.link || null,
       instagramUrl: d.instagram,
@@ -411,6 +419,7 @@ async function savePendingApplication(d: Cleaned, image: File): Promise<void> {
         displayName: d.displayName,
         location: d.location,
         requestedCategory: d.category,
+        requestedSpeciality: d.speciality,
         bio: d.note,
         websiteUrl: d.link || null,
         instagramUrl: d.instagram,
@@ -472,6 +481,7 @@ export async function POST(req: Request) {
         email: formData.get("email"),
         instagram: formData.get("instagram"),
         category: formData.get("category"),
+        speciality: formData.get("speciality"),
         location: formData.get("location"),
         note: formData.get("note"),
         link: formData.get("link"),
@@ -529,9 +539,9 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
-  if (d.category.toLowerCase() === "other") {
+  if (!d.speciality) {
     return NextResponse.json(
-      { error: "Please type your category." },
+      { error: "Please tell us your speciality." },
       { status: 400 },
     );
   }

@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { Activity, AlertTriangle, ArrowLeft, BarChart3, CalendarDays, Camera, CheckCircle2, CircleGauge, Database, FileText, Home, ImageOff, Info, Link2, Mail, MapPin, MoreHorizontal, MousePointerClick, Search, ShieldCheck, TicketCheck, TrendingUp, Users } from "lucide-react";
-import { directoryGroups } from "@/lib/content/network-directory-groups";
+import { directoryGroups, normalizeDirectoryGroup } from "@/lib/content/network-directory-groups";
 import type { GaSnapshot, InstagramSnapshot, MailchimpSnapshot } from "@/lib/network-admin/external-data";
 import { suggestDirectoryBio } from "@/lib/network-profile/directory-bio";
 
 type Application = {
-  id: string; email: string; firstName: string; displayName: string; location: string; requestedCategory: string;
+  id: string; email: string; firstName: string; displayName: string; location: string; requestedCategory: string; requestedSpeciality: string;
   bio: string; suggestedBio: string | null; bioGenerationStatus: string; bioGenerationError: string | null; websiteUrl: string | null; instagramUrl: string | null; status: string; submittedAt: string; reviewedAt: string | null;
 };
 type Member = {
@@ -458,7 +458,7 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
         <SectionHeading title="Member profile approvals" count={pendingApplications.length} note="Review and publish new Network profiles." />
         <div className="mt-3 grid gap-2.5 md:mt-5 md:gap-4 [&>article]:!p-4 md:[&>article]:!p-6">
           {pendingApplications.map((item) => {
-            const option = applicationOptions[item.id] ?? { primaryGroup: directoryGroups.find((group) => group.slug === item.requestedCategory)?.slug ?? directoryGroups[0].slug, speciality: item.requestedCategory, bio: item.suggestedBio || suggestDirectoryBio({ displayName: item.displayName, category: item.requestedCategory, location: item.location, submittedBio: item.bio }) };
+            const option = applicationOptions[item.id] ?? { primaryGroup: normalizeDirectoryGroup(item.requestedCategory), speciality: item.requestedSpeciality || item.requestedCategory, bio: item.suggestedBio || suggestDirectoryBio({ displayName: item.displayName, category: item.requestedSpeciality || item.requestedCategory, location: item.location, submittedBio: item.bio }) };
             return <article key={item.id} className={`${panel} p-5 md:p-6`}>
               <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
                 <div><div className="flex flex-wrap items-center gap-3"><h3 className="text-2xl">{item.displayName}</h3><Status value="pending" /></div><p className="mt-2 text-sm text-fg-muted">{item.firstName} · {item.email} · {item.location}</p><p className="mt-4 max-w-3xl text-sm leading-6 text-fg-muted">{item.bio}</p><p className="mt-4 text-xs text-fg-subtle">Submitted {formatDate(item.submittedAt)}</p></div>

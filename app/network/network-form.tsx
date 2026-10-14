@@ -13,6 +13,7 @@ import { ArrowUpRight, ImagePlus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { friendlyUploadError, prepareProfileImage } from "@/lib/network/prepare-profile-image";
+import { directoryGroups } from "@/lib/content/network-directory-groups";
 
 type Status = "idle" | "submitting" | "error";
 
@@ -29,17 +30,6 @@ function slugify(value: string) {
     .slice(0, 120);
 }
 
-const categories = [
-  "Creative",
-  "Artist",
-  "Musician",
-  "Photographer",
-  "Designer",
-  "Local business",
-  "Brand",
-  "Other",
-];
-
 export function NetworkForm() {
   const router = useRouter();
   const [status, setStatus] = useState<Status>("idle");
@@ -51,7 +41,6 @@ export function NetworkForm() {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const isSubmittingRef = useRef(false);
   const hasTrackedRequiredFields = useRef(false);
-  const hasTrackedOtherCategory = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -114,17 +103,8 @@ export function NetworkForm() {
     trackEvent("category_selected", {
       form_name: "creative_network_join",
       category,
-      category_is_custom: category === "Other",
       source_context: "nami_creative_network",
     });
-
-    if (category === "Other" && !hasTrackedOtherCategory.current) {
-      hasTrackedOtherCategory.current = true;
-      trackEvent("other_category_used", {
-        form_name: "creative_network_join",
-        source_context: "nami_creative_network",
-      });
-    }
   };
 
   const onFormChange = (event: FormEvent<HTMLFormElement>) => {
@@ -138,7 +118,7 @@ export function NetworkForm() {
         String(fd.get("email") ?? "").trim() &&
         String(fd.get("instagram") ?? "").trim() &&
         category &&
-        (category !== "Other" || String(fd.get("otherCategory") ?? "").trim()) &&
+        String(fd.get("speciality") ?? "").trim() &&
         String(fd.get("location") ?? "").trim() &&
         fd.get("directoryConsent") === "yes" &&
         Boolean(profilePicture),
@@ -149,8 +129,7 @@ export function NetworkForm() {
     hasTrackedRequiredFields.current = true;
     trackEvent("network_form_required_fields_completed", {
       form_name: "creative_network_join",
-      category: category === "Other" ? "custom" : category,
-      category_is_custom: category === "Other",
+      category,
       source_context: "nami_creative_network",
     });
   };
@@ -165,7 +144,6 @@ export function NetworkForm() {
     const form = e.currentTarget;
     const fd = new FormData(form);
     const category = String(fd.get("category") ?? "");
-    const otherCategory = String(fd.get("otherCategory") ?? "").trim();
     const submissionId = getSubmissionId();
     const firstName = String(fd.get("firstName") ?? "").trim();
     const displayName = String(fd.get("displayName") ?? "").trim();
@@ -176,7 +154,8 @@ export function NetworkForm() {
       displayName,
       email: String(fd.get("email") ?? ""),
       instagram: String(fd.get("instagram") ?? ""),
-      category: category === "Other" ? otherCategory : category,
+      category,
+      speciality: String(fd.get("speciality") ?? "").trim(),
       location: String(fd.get("location") ?? ""),
       note: String(fd.get("note") ?? ""),
       link: String(fd.get("link") ?? ""),
@@ -191,14 +170,14 @@ export function NetworkForm() {
       return;
     }
 
-    if (category === "Other" && !otherCategory) {
+    if (!payload.speciality) {
       isSubmittingRef.current = false;
       setStatus("error");
-      setErrorMsg("Please type your category.");
+      setErrorMsg("Please tell us your speciality.");
       trackEvent("network_form_error", {
         form_name: "creative_network_join",
-        category: "other_empty",
-        error_type: "missing_other_category",
+        category: payload.category || "unknown",
+        error_type: "missing_speciality",
         source_context: "nami_creative_network",
         submission_id: submissionId,
       });
@@ -236,6 +215,7 @@ export function NetworkForm() {
       submissionBody.set("email", payload.email);
       submissionBody.set("instagram", payload.instagram);
       submissionBody.set("category", payload.category);
+      submissionBody.set("speciality", payload.speciality);
       submissionBody.set("location", payload.location);
       submissionBody.set("note", payload.note);
       submissionBody.set("link", payload.link);
@@ -366,25 +346,26 @@ export function NetworkForm() {
           onChange={onCategoryChange}
         >
           <option value="">Choose one</option>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
+          {directoryGroups.map((category) => (
+            <option key={category.slug} value={category.slug}>
+              {category.label}
             </option>
           ))}
         </Select>
       </div>
 
-      {selectedCategory === "Other" && (
-        <div className="mt-5">
-          <Field
-            label="Type your category"
-            name="otherCategory"
-            placeholder="Ceramicist, poet, filmmaker, venue..."
-            maxLength={80}
-            required
-          />
-        </div>
-      )}
+      <div className="mt-5">
+        <Field
+          label="What is your speciality?"
+          name="speciality"
+          placeholder="Portrait photographer, ceramicist, singer-songwriter..."
+          maxLength={120}
+          required
+        />
+        <p className="mt-2 text-xs leading-relaxed text-fg-subtle">
+          Be specific. This helps people find the right person when they search the directory.
+        </p>
+      </div>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2 md:gap-5">
         <Field

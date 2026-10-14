@@ -15,6 +15,25 @@ export const directoryGroups = [
 
 export type DirectoryGroupSlug = (typeof directoryGroups)[number]["slug"];
 
+const legacyDirectoryGroups: Record<string, DirectoryGroupSlug> = {
+  creative: "creative-services",
+  artist: "artists",
+  musician: "music",
+  photographer: "photographers",
+  designer: "designers",
+  "local business": "independent-businesses",
+  brand: "independent-businesses",
+  other: "creative-services",
+};
+
+export function normalizeDirectoryGroup(value: string): DirectoryGroupSlug {
+  const normalized = value.trim().toLowerCase();
+  const directMatch = directoryGroups.find(
+    (group) => group.slug === normalized || group.label.toLowerCase() === normalized,
+  );
+  return directMatch?.slug ?? legacyDirectoryGroups[normalized] ?? "creative-services";
+}
+
 // Reviewed against each member's submitted category and public directory bio.
 // Each current member has one main browsing home; the original category remains on their card.
 const reviewedPrimaryGroupById: Record<string, DirectoryGroupSlug> = {

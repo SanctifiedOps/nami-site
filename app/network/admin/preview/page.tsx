@@ -28,7 +28,7 @@ export default function NetworkAdminPreviewPage() {
       currentFeaturedName: "Eleanor Osada",
     }}
     applications={[{
-      id: "preview-application", email: "hello@thirditeration.com", firstName: "Third", displayName: "Third Iteration", location: "Hexham", requestedCategory: "Publisher",
+      id: "preview-application", email: "hello@thirditeration.com", firstName: "Third", displayName: "Third Iteration", location: "Hexham", requestedCategory: "independent-businesses", requestedSpeciality: "Independent publisher",
       bio: "Third Iteration is an independent publisher based in Hexham, making memoirs by people whose lives are more interesting than their public image. First titles include DJ Hurricane's memoir of life with the Beastie Boys and books from Matt Lewis and Jon Shield. I'm always keen to meet writers, designers, and photographers, and to connect on socials.",
       suggestedBio: "Third Iteration is an independent publisher based in Hexham producing memoirs by musicians, creators, athletes and cultural outsiders.", bioGenerationStatus: "complete", bioGenerationError: null,
       websiteUrl: "https://thirditeration.com/", instagramUrl: "@third_iteration", status: "pending", submittedAt: iso(0), reviewedAt: null,

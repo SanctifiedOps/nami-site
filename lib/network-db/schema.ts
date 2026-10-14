@@ -97,6 +97,7 @@ export const networkApplications = sqliteTable(
     displayName: text("display_name").notNull(),
     location: text("location").notNull(),
     requestedCategory: text("requested_category").notNull(),
+    requestedSpeciality: text("requested_speciality").notNull().default(""),
     bio: text("bio").notNull(),
     websiteUrl: text("website_url"),
     instagramUrl: text("instagram_url"),
