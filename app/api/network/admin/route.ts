@@ -23,6 +23,7 @@ const actionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("event-feature"), eventId: z.string().uuid(), featured: z.boolean() }),
   z.object({ action: z.literal("event-revision-status"), revisionId: z.string().uuid(), status: z.enum(["approved", "rejected"]), feedback: z.string().trim().max(1000).optional().default("") }),
   z.object({ action: z.literal("member-status"), memberId: z.string().min(2), status: z.enum(["active", "disabled"]) }),
+  z.object({ action: z.literal("send-member-invite"), memberId: z.string().min(2) }),
   z.object({ action: z.literal("correct-member-email"), memberId: z.string().min(2), email: z.string().trim().email() }),
   z.object({ action: z.literal("approve-featured-member"), memberId: z.string().min(2) }),
   z.object({ action: z.literal("process-sheet-jobs") }),
@@ -53,6 +54,15 @@ export async function POST(request: Request) {
   if (parsed.data.action === "correct-member-email") {
     try { return Response.json({ ok: true, ...(await correctUnclaimedMemberEmail(parsed.data.memberId, parsed.data.email)) }); }
     catch (error) { return Response.json({ error: error instanceof Error ? error.message : "Email correction failed." }, { status: 409 }); }
+  }
+
+  if (parsed.data.action === "send-member-invite") {
+    try {
+      const invitation = await issueMemberInvite(parsed.data.memberId);
+      return Response.json({ ok: true, inviteSent: true, message: `A fresh claim link was sent to ${invitation.email}.` });
+    } catch (error) {
+      return Response.json({ error: error instanceof Error ? error.message : "The claim link could not be sent." }, { status: 409 });
+    }
   }
 
   if (parsed.data.action === "ticket-status") {

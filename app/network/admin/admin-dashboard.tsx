@@ -37,6 +37,7 @@ type Contribution = { id:string; title:string; summary:string; format:string; st
 const panel = "border border-line bg-surface-1";
 const button = "rounded-md border border-line-strong px-4 py-2 text-xs font-semibold transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40";
 const membersPerPage = 10;
+const eventsPerPage = 6;
 type DashboardView = "home" | "growth" | "members" | "tasks" | "more";
 const disconnectedGa: GaSnapshot = { connected: false, users: null, sessions: null, views: null, usersChange: null, directorySearches: null, profileClicks: null, daily: [], error: "GA4 connection needed" };
 const disconnectedInstagram: InstagramSnapshot = { connected: false, username: null, followers: null, mediaCount: null, topPosts: [], error: "Instagram connection needed" };
@@ -87,7 +88,15 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
   const [message, setMessage] = useState("");
   const [applicationOptions, setApplicationOptions] = useState<Record<string, { primaryGroup: string; speciality: string; bio: string }>>({});
   const [memberCategory, setMemberCategory] = useState("all");
+  const [memberStatus, setMemberStatus] = useState("all");
+  const [memberQuery, setMemberQuery] = useState("");
   const [memberPage, setMemberPage] = useState(1);
+  const [confirmMemberInvite, setConfirmMemberInvite] = useState<string | null>(null);
+  const [selectedMemberIds, setSelectedMemberIds] = useState<string[]>([]);
+  const [confirmBulkMemberInvites, setConfirmBulkMemberInvites] = useState(false);
+  const [bulkInviteBusy, setBulkInviteBusy] = useState(false);
+  const [bulkInviteProgress, setBulkInviteProgress] = useState("");
+  const [bulkInviteError, setBulkInviteError] = useState("");
   const requestedView = searchParams.get("view");
   const [activeView, setActiveView] = useState<DashboardView>(requestedView === "members" || requestedView === "tasks" || requestedView === "growth" || requestedView === "more" ? requestedView : "home");
   const [moreDetail, setMoreDetail] = useState<"integrations" | "health" | null>(null);
@@ -98,6 +107,8 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
   const [showMetricDefinitions, setShowMetricDefinitions] = useState(false);
   const growthRequest = useRef(0);
   const [ticketView, setTicketView] = useState<"active" | "archive">("active");
+  const [eventView, setEventView] = useState<"current" | "archive">("current");
+  const [eventPage, setEventPage] = useState(1);
   const [invitationPreview, setInvitationPreview] = useState<InvitationPreview | null>(null);
   const [invitationBusy, setInvitationBusy] = useState(false);
   const [invitationProgress, setInvitationProgress] = useState("");
@@ -127,10 +138,29 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
     }),
     [members],
   );
-  const filteredMembers = memberCategory === "all" ? sortedMembers : sortedMembers.filter((member) => member.primaryGroup === memberCategory);
+  const normalizedMemberQuery = memberQuery.trim().toLocaleLowerCase("en-GB");
+  const filteredMembers = sortedMembers.filter((member) => {
+    if (memberCategory !== "all" && member.primaryGroup !== memberCategory) return false;
+    if (memberStatus === "active" && member.accountStatus !== "active") return false;
+    if (memberStatus === "inactive" && member.accountStatus !== "unclaimed" && member.accountStatus !== "invited") return false;
+    if (memberStatus === "disabled" && member.accountStatus !== "disabled") return false;
+    if (!normalizedMemberQuery) return true;
+    return [member.displayName, member.firstName, member.email, member.location, member.speciality]
+      .some((value) => value.toLocaleLowerCase("en-GB").includes(normalizedMemberQuery));
+  });
   const memberPageCount = Math.max(1, Math.ceil(filteredMembers.length / membersPerPage));
   const safeMemberPage = Math.min(memberPage, memberPageCount);
   const visibleMembers = filteredMembers.slice((safeMemberPage - 1) * membersPerPage, safeMemberPage * membersPerPage);
+  const selectableVisibleMembers = visibleMembers.filter((member) => member.role !== "admin" && (member.accountStatus === "unclaimed" || member.accountStatus === "invited"));
+  const selectedMembers = members.filter((member) => selectedMemberIds.includes(member.id) && member.role !== "admin" && (member.accountStatus === "unclaimed" || member.accountStatus === "invited"));
+  const allVisibleMembersSelected = selectableVisibleMembers.length > 0 && selectableVisibleMembers.every((member) => selectedMemberIds.includes(member.id));
+  const now = Date.now();
+  const archivedEvents = events.filter((event) => event.status === "cancelled" || event.status === "rejected" || new Date(event.endsAt || event.startsAt).getTime() < now);
+  const currentEvents = events.filter((event) => !archivedEvents.some((archivedEvent) => archivedEvent.id === event.id));
+  const filteredEvents = eventView === "current" ? currentEvents : archivedEvents;
+  const eventPageCount = Math.max(1, Math.ceil(filteredEvents.length / eventsPerPage));
+  const safeEventPage = Math.min(eventPage, eventPageCount);
+  const visibleEvents = filteredEvents.slice((safeEventPage - 1) * eventsPerPage, safeEventPage * eventsPerPage);
   const growthCutoff = Date.now() - growthDays * 86400000;
   const periodEventAnalytics = eventAnalytics.filter((item) => new Date(item.createdAt).getTime() >= growthCutoff);
   const eventViews = periodEventAnalytics.filter((item) => item.eventType === "page_view").length;
@@ -237,6 +267,104 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The admin action could not be completed.");
     } finally { setBusy(null); }
+  }
+
+  async function sendMemberInvite(member: Member) {
+    await runAction(`member-invite-${member.id}`, { action: "send-member-invite", memberId: member.id });
+    setConfirmMemberInvite(null);
+  }
+
+  function toggleMemberSelection(memberId: string) {
+    setSelectedMemberIds((selected) => selected.includes(memberId) ? selected.filter((id) => id !== memberId) : [...selected, memberId]);
+    setConfirmBulkMemberInvites(false);
+  }
+
+  function toggleVisibleMemberSelection() {
+    const visibleIds = selectableVisibleMembers.map((member) => member.id);
+    setSelectedMemberIds((selected) => allVisibleMembersSelected ? selected.filter((id) => !visibleIds.includes(id)) : [...new Set([...selected, ...visibleIds])]);
+    setConfirmBulkMemberInvites(false);
+  }
+
+  async function sendSelectedMemberInvites() {
+    if (!selectedMembers.length) return;
+    const total = selectedMembers.length;
+    let sent = 0;
+    const failures: string[] = [];
+    setConfirmBulkMemberInvites(false);
+    setBulkInviteBusy(true);
+    setBulkInviteError("");
+    setMessage("");
+
+    for (const member of selectedMembers) {
+      setBulkInviteProgress(`Sending ${sent + failures.length + 1} of ${total}...`);
+      try {
+        const response = await fetch("/api/network/admin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "send-member-invite", memberId: member.id }),
+        });
+        const result = await response.json().catch(() => ({})) as { error?: string };
+        if (!response.ok) throw new Error(result.error || "The invitation could not be sent.");
+        sent += 1;
+      } catch (error) {
+        failures.push(`${member.displayName}: ${error instanceof Error ? error.message : "The invitation could not be sent."}`);
+      }
+    }
+
+    setBulkInviteProgress(`${sent} of ${total} invitations sent.`);
+    setBulkInviteError(failures.join(" "));
+    setBulkInviteBusy(false);
+    setSelectedMemberIds([]);
+    router.refresh();
+  }
+
+  function renderMemberActions(member: Member, compact = false) {
+    if (member.role === "admin") return null;
+    const canInvite = member.accountStatus === "unclaimed" || member.accountStatus === "invited";
+    const confirmingInvite = confirmMemberInvite === member.id;
+    const inviteBusy = busy === `member-invite-${member.id}`;
+    const compactButton = "rounded-full border border-line-strong px-2.5 py-1.5 text-[9px] font-bold disabled:opacity-40";
+    const standardButton = compact ? compactButton : button;
+
+    return <div className="flex flex-wrap justify-end gap-2">
+      {canInvite && (confirmingInvite ? <>
+        <button type="button" disabled={busy !== null || bulkInviteBusy} onClick={() => setConfirmMemberInvite(null)} className={standardButton}>Cancel</button>
+        <button type="button" disabled={busy !== null || bulkInviteBusy} onClick={() => void sendMemberInvite(member)} className={compact ? "rounded-full bg-accent px-2.5 py-1.5 text-[9px] font-bold text-white disabled:opacity-40" : "rounded-md bg-accent px-4 py-2 text-xs font-semibold text-white disabled:opacity-40"}>{inviteBusy ? "Sending..." : "Confirm send"}</button>
+      </> : <button type="button" disabled={busy !== null || bulkInviteBusy} onClick={() => setConfirmMemberInvite(member.id)} className={`${standardButton} border-accent text-accent`}>{inviteBusy ? "Sending..." : member.accountStatus === "invited" ? "Resend invite" : "Send invite"}</button>)}
+      <button type="button" disabled={busy !== null || bulkInviteBusy} onClick={() => void runAction(`member-${member.id}`, { action: "member-status", memberId: member.id, status: member.accountStatus === "disabled" ? "active" : "disabled" })} className={standardButton}>{busy === `member-${member.id}` ? "Saving..." : member.accountStatus === "disabled" ? "Enable" : "Disable"}</button>
+    </div>;
+  }
+
+  function renderEventCard(event: NetworkEvent) {
+    return <article key={event.id} className={`${panel} min-w-0 overflow-hidden p-4 md:p-6`}>
+      <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <p className="break-words text-[10px] font-bold uppercase tracking-wider text-accent md:text-xs">{event.eventType} · {event.format.replaceAll("_", " ")}</p>
+          <h3 className="mt-2 break-words text-lg md:text-xl">{event.title}</h3>
+          <p className="mt-2 flex min-w-0 items-start gap-2 break-words text-xs text-fg-muted md:text-sm"><MapPin aria-hidden="true" size={15} className="mt-0.5 shrink-0" /><span className="min-w-0 [overflow-wrap:anywhere]">{event.venue}, {event.location}</span></p>
+        </div>
+        <span className="shrink-0 self-start"><Status value={event.status} /></span>
+      </div>
+      <p className="mt-4 break-words text-sm leading-6 text-fg-muted [overflow-wrap:anywhere]">{event.summary}</p>
+      <div className="mt-4 grid min-w-0 gap-2 text-xs text-fg-subtle">
+        <p>Starts {formatDate(event.startsAt)}</p>
+        <p className="break-words capitalize [overflow-wrap:anywhere]">{event.priceType}{event.priceDetails ? ` · ${event.priceDetails}` : ""}</p>
+        {event.bookingUrl && <a href={event.bookingUrl} target="_blank" rel="noreferrer" className="max-w-full break-all font-bold text-accent">Open event information ↗</a>}
+      </div>
+      {event.adminFeedback && <p className="mt-4 break-words rounded-xl border border-amber-400/20 bg-amber-400/5 p-3 text-xs text-amber-200 [overflow-wrap:anywhere]">Admin feedback: {event.adminFeedback}</p>}
+      <div className="mt-5 flex min-w-0 flex-wrap gap-2">
+        {event.status === "pending" && <>
+          <button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-approved`, { action: "event-status", eventId: event.id, status: "approved", feedback: "" })} className="max-w-full rounded-md bg-accent px-3 py-2 text-xs font-bold text-white disabled:opacity-40 md:px-4">Approve</button>
+          <button disabled={busy !== null} onClick={() => { const feedback = window.prompt("Feedback for the member (optional)", event.adminFeedback || ""); if (feedback !== null) void runAction(`event-${event.id}-rejected`, { action: "event-status", eventId: event.id, status: "rejected", feedback }); }} className={`${button} max-w-full whitespace-normal`}>Reject with feedback</button>
+        </>}
+        {event.status === "approved" && <>
+          <a href={`/network/events/${event.slug}`} target="_blank" className={`${button} max-w-full whitespace-normal`}>View live page</a>
+          <button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-cancel`, { action: "event-cancel", eventId: event.id })} className={`${button} max-w-full whitespace-normal`}>Cancel</button>
+          <button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-feature`, { action: "event-feature", eventId: event.id, featured: !event.featured })} className={`${button} max-w-full whitespace-normal`}>{event.featured ? "Remove feature" : "Feature"}</button>
+        </>}
+        {event.status === "cancelled" && <button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-restore`, { action: "event-restore", eventId: event.id })} className={`${button} max-w-full whitespace-normal`}>Restore</button>}
+      </div>
+    </article>;
   }
 
   function openSection(view: DashboardView, sectionId: string) {
@@ -380,19 +508,41 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
           {invitationProgress && <p role="status" className="mt-3 text-xs text-fg-muted">{invitationProgress}</p>}
           {invitationError && <p role="alert" className="mt-3 text-xs leading-5 text-red-300">{invitationError}</p>}
         </div>
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between md:mt-5 md:gap-3">
-          <label className="text-xs font-bold text-fg-muted">Filter by category
-            <select value={memberCategory} onChange={(event) => { setMemberCategory(event.target.value); setMemberPage(1); }} className="mt-2 block min-w-64 rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5 text-sm text-fg">
-              <option value="all">All categories</option>
-              {directoryGroups.map((group) => <option key={group.slug} value={group.slug}>{group.label}</option>)}
-            </select>
-          </label>
+        <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between md:mt-5">
+          <div className="grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <label className="text-xs font-bold text-fg-muted">Search members
+              <span className="relative mt-2 block"><Search aria-hidden="true" size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-subtle" /><input type="search" value={memberQuery} onChange={(event) => { setMemberQuery(event.target.value); setMemberPage(1); setSelectedMemberIds([]); setConfirmBulkMemberInvites(false); }} placeholder="Name or email address" className="block w-full rounded-xl border border-line-strong bg-surface-1 py-2.5 pl-10 pr-3 text-sm text-fg placeholder:text-fg-subtle" /></span>
+            </label>
+            <label className="text-xs font-bold text-fg-muted">Filter by category
+              <select value={memberCategory} onChange={(event) => { setMemberCategory(event.target.value); setMemberPage(1); setSelectedMemberIds([]); setConfirmBulkMemberInvites(false); }} className="mt-2 block w-full rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5 text-sm text-fg">
+                <option value="all">All categories</option>
+                {directoryGroups.map((group) => <option key={group.slug} value={group.slug}>{group.label}</option>)}
+              </select>
+            </label>
+            <label className="text-xs font-bold text-fg-muted">Filter by account status
+              <select value={memberStatus} onChange={(event) => { setMemberStatus(event.target.value); setMemberPage(1); setSelectedMemberIds([]); setConfirmBulkMemberInvites(false); }} className="mt-2 block w-full rounded-xl border border-line-strong bg-surface-1 px-3 py-2.5 text-sm text-fg">
+                <option value="all">All accounts</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive (unclaimed or invited)</option>
+                <option value="disabled">Disabled</option>
+              </select>
+            </label>
+          </div>
           <p className="text-sm text-fg-subtle">Showing {filteredMembers.length ? (safeMemberPage - 1) * membersPerPage + 1 : 0}–{Math.min(safeMemberPage * membersPerPage, filteredMembers.length)} of {filteredMembers.length}</p>
         </div>
+        {selectableVisibleMembers.length > 0 && <div className={`${panel} mt-3 flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:justify-between`}>
+          <label className="flex cursor-pointer items-center gap-2 text-xs font-bold text-fg-muted"><input type="checkbox" checked={allVisibleMembersSelected} onChange={toggleVisibleMemberSelection} className="h-4 w-4 accent-accent" />Select eligible members on this page</label>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-fg-subtle">{selectedMembers.length} selected</span>
+            {selectedMembers.length > 0 && <>{confirmBulkMemberInvites ? <><button type="button" disabled={bulkInviteBusy} onClick={() => setConfirmBulkMemberInvites(false)} className={button}>Cancel</button><button type="button" disabled={bulkInviteBusy} onClick={() => void sendSelectedMemberInvites()} className="rounded-md bg-accent px-4 py-2 text-xs font-semibold text-white disabled:opacity-40">Confirm send {selectedMembers.length}</button></> : <button type="button" disabled={bulkInviteBusy} onClick={() => setConfirmBulkMemberInvites(true)} className="rounded-md bg-accent px-4 py-2 text-xs font-semibold text-white disabled:opacity-40">Send selected invites</button>}<button type="button" disabled={bulkInviteBusy} onClick={() => { setSelectedMemberIds([]); setConfirmBulkMemberInvites(false); }} className={button}>Clear</button></>}
+          </div>
+        </div>}
+        {bulkInviteProgress && <p role="status" className="mt-3 text-xs text-fg-muted">{bulkInviteProgress}</p>}
+        {bulkInviteError && <p role="alert" className="mt-2 text-xs leading-5 text-red-300">{bulkInviteError}</p>}
         <div className={`${panel} mt-3 overflow-hidden [&>.overflow-x-auto]:hidden md:mt-5 md:[&>.overflow-x-auto]:block`}>
-          <div className="grid divide-y divide-line md:hidden">{visibleMembers.map((member) => <div key={member.id} className="grid grid-cols-[1fr_auto] items-center gap-2 p-3"><div className="min-w-0"><Link href={`/network/directory/member/${member.id}`} className="block truncate text-sm font-bold hover:text-accent">{member.displayName}</Link><p className="mt-0.5 truncate text-[10px] text-fg-subtle">{(groupLabels.get(member.primaryGroup) ?? member.primaryGroup) || "No profile"} · {member.location || "No location"}</p></div><div className="flex items-center gap-1.5"><Status value={member.accountStatus} />{member.role !== "admin" && <button disabled={busy !== null} onClick={() => runAction(`member-${member.id}`, { action: "member-status", memberId: member.id, status: member.accountStatus === "disabled" ? "active" : "disabled" })} className="rounded-full border border-line-strong px-2 py-1 text-[9px] font-bold">{member.accountStatus === "disabled" ? "Enable" : "Disable"}</button>}</div></div>)}</div>
-          <div className="overflow-x-auto"><table className="w-full min-w-[780px] text-left text-sm"><thead className="border-b border-line bg-surface-0/70 text-xs uppercase tracking-[0.1em] text-fg-subtle"><tr><th className="p-4">Member</th><th className="p-4">Directory</th><th className="p-4">Account</th><th className="p-4">Last login</th><th className="p-4 text-right">Action</th></tr></thead><tbody>{visibleMembers.map((member) => <tr key={member.id} className="border-b border-line/70 last:border-0"><td className="p-4"><Link href={`/network/directory/member/${member.id}`} className="font-bold hover:text-accent">{member.displayName}</Link><span className="mt-1 block text-xs text-fg-subtle">{member.email}{member.role === "admin" ? " · Admin" : ""}</span></td><td className="p-4"><span>{(groupLabels.get(member.primaryGroup) ?? member.primaryGroup) || "No profile"}</span><span className="mt-1 block text-xs text-fg-subtle">{member.location}</span></td><td className="p-4"><Status value={member.accountStatus} /></td><td className="p-4 text-fg-muted">{formatDate(member.lastLoginAt)}</td><td className="p-4 text-right">{member.role !== "admin" && <button disabled={busy !== null} onClick={() => runAction(`member-${member.id}`, { action: "member-status", memberId: member.id, status: member.accountStatus === "disabled" ? "active" : "disabled" })} className={button}>{busy === `member-${member.id}` ? "Saving..." : member.accountStatus === "disabled" ? "Enable" : "Disable"}</button>}</td></tr>)}</tbody></table></div>
-          {!visibleMembers.length && <div className="p-8 text-center text-sm text-fg-subtle">No members match this category.</div>}
+          <div className="grid divide-y divide-line md:hidden">{visibleMembers.map((member) => { const canSelect = member.role !== "admin" && (member.accountStatus === "unclaimed" || member.accountStatus === "invited"); return <div key={member.id} className="p-3"><div className="flex items-start gap-3">{canSelect && <input type="checkbox" aria-label={`Select ${member.displayName}`} checked={selectedMemberIds.includes(member.id)} onChange={() => toggleMemberSelection(member.id)} className="mt-1 h-4 w-4 shrink-0 accent-accent" />}<div className="min-w-0 flex-1"><div className="flex items-center justify-between gap-2"><div className="min-w-0"><Link href={`/network/directory/member/${member.id}`} className="block truncate text-sm font-bold hover:text-accent">{member.displayName}</Link><p className="mt-0.5 truncate text-[10px] text-fg-subtle">{member.email}</p><p className="mt-0.5 truncate text-[10px] text-fg-subtle">{(groupLabels.get(member.primaryGroup) ?? member.primaryGroup) || "No profile"} · {member.location || "No location"}</p></div><Status value={member.accountStatus} /></div><div className="mt-3">{renderMemberActions(member, true)}</div></div></div></div>; })}</div>
+          <div className="overflow-x-auto"><table className="w-full min-w-[920px] text-left text-sm"><thead className="border-b border-line bg-surface-0/70 text-xs uppercase tracking-[0.1em] text-fg-subtle"><tr><th className="w-12 p-4"><span className="sr-only">Select</span></th><th className="p-4">Member</th><th className="p-4">Directory</th><th className="p-4">Account</th><th className="p-4">Last login</th><th className="p-4 text-right">Action</th></tr></thead><tbody>{visibleMembers.map((member) => { const canSelect = member.role !== "admin" && (member.accountStatus === "unclaimed" || member.accountStatus === "invited"); return <tr key={member.id} className="border-b border-line/70 last:border-0"><td className="p-4">{canSelect && <input type="checkbox" aria-label={`Select ${member.displayName}`} checked={selectedMemberIds.includes(member.id)} onChange={() => toggleMemberSelection(member.id)} className="h-4 w-4 accent-accent" />}</td><td className="p-4"><Link href={`/network/directory/member/${member.id}`} className="font-bold hover:text-accent">{member.displayName}</Link><span className="mt-1 block text-xs text-fg-subtle">{member.email}{member.role === "admin" ? " · Admin" : ""}</span></td><td className="p-4"><span>{(groupLabels.get(member.primaryGroup) ?? member.primaryGroup) || "No profile"}</span><span className="mt-1 block text-xs text-fg-subtle">{member.location}</span></td><td className="p-4"><Status value={member.accountStatus} /></td><td className="p-4 text-fg-muted">{formatDate(member.lastLoginAt)}</td><td className="p-4">{renderMemberActions(member)}</td></tr>; })}</tbody></table></div>
+          {!visibleMembers.length && <div className="p-8 text-center text-sm text-fg-subtle">No members match these filters.</div>}
           {memberPageCount > 1 && <div className="flex items-center justify-between border-t border-line px-4 py-4"><button className={button} disabled={safeMemberPage === 1} onClick={() => setMemberPage((page) => Math.max(1, page - 1))}>Previous</button><span className="text-sm text-fg-muted">Page {safeMemberPage} of {memberPageCount}</span><button className={button} disabled={safeMemberPage === memberPageCount} onClick={() => setMemberPage((page) => Math.min(memberPageCount, page + 1))}>Next</button></div>}
         </div>
       </section>}
@@ -432,10 +582,18 @@ export function AdminDashboard({ adminName, featuredApproval, applications, memb
       <section id="events" className="pt-7 md:pt-12">
         <SectionHeading title="Event submissions" count={pendingEvents.length + pendingEventRevisions.length} note="Review new events and proposed changes." />
         {pendingEventRevisions.length>0&&<div className="mt-3 grid gap-3 md:mt-5">{pendingEventRevisions.map((revision)=>{const live=events.find((event)=>event.id===revision.eventId), proposed=revision.payload;return <article key={revision.id} className={`${panel} p-5 md:p-6`}><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-wider text-accent">Changes awaiting approval</p><h3 className="mt-2 text-xl">{String(proposed.title||live?.title||"Event changes")}</h3><p className="mt-2 text-xs text-fg-subtle">Submitted {formatDate(revision.submittedAt)}</p></div><Status value="pending"/></div><div className="mt-5 grid gap-3 md:grid-cols-2"><div className="rounded-xl border border-line bg-surface-0 p-4"><p className="text-xs font-bold text-fg-subtle">Currently live</p><p className="mt-2 text-sm">{live?.summary}</p><p className="mt-3 text-xs text-fg-muted">{live?formatDate(live.startsAt):"Event unavailable"}</p></div><div className="rounded-xl border border-accent/30 bg-accent/5 p-4"><p className="text-xs font-bold text-accent">Proposed version</p><p className="mt-2 text-sm">{String(proposed.summary||"")}</p><p className="mt-3 text-xs text-fg-muted">{proposed.startsAt?formatDate(String(proposed.startsAt)):"No date supplied"}</p></div></div><div className="mt-5 flex flex-wrap gap-2"><button disabled={busy!==null} onClick={()=>runAction(`revision-${revision.id}-approve`,{action:"event-revision-status",revisionId:revision.id,status:"approved",feedback:""})} className="rounded-full bg-accent px-4 py-2 text-xs font-bold text-white disabled:opacity-40">Approve changes</button><button disabled={busy!==null} onClick={()=>{const feedback=window.prompt("Feedback for the member","");if(feedback!==null)void runAction(`revision-${revision.id}-reject`,{action:"event-revision-status",revisionId:revision.id,status:"rejected",feedback});}} className={button}>Reject with feedback</button></div></article>})}</div>}
-        <div className="mt-3 grid grid-cols-2 gap-2.5 md:mt-5 md:gap-4 [&>article]:!p-4 md:[&>article]:!p-6">
-          {events.map((event) => <article key={event.id} className={`${panel} p-5 md:p-6`}><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-wider text-accent">{event.eventType} · {event.format.replaceAll("_", " ")}</p><h3 className="mt-2 text-xl">{event.title}</h3><p className="mt-2 flex items-center gap-2 text-sm text-fg-muted"><MapPin size={15} /> {event.venue}, {event.location}</p></div><Status value={event.status} /></div><p className="mt-4 text-sm leading-6 text-fg-muted">{event.summary}</p><div className="mt-4 grid gap-2 text-xs text-fg-subtle"><p>Starts {formatDate(event.startsAt)}</p><p className="capitalize">{event.priceType}{event.priceDetails ? ` · ${event.priceDetails}` : ""}</p>{event.bookingUrl && <a href={event.bookingUrl} target="_blank" rel="noreferrer" className="break-all font-bold text-accent">Open event information ↗</a>}</div>{event.adminFeedback&&<p className="mt-4 rounded-xl border border-amber-400/20 bg-amber-400/5 p-3 text-xs text-amber-200">Admin feedback: {event.adminFeedback}</p>}<div className="mt-5 flex flex-wrap gap-2">{event.status === "pending" && <><button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-approved`, { action: "event-status", eventId: event.id, status: "approved", feedback: "" })} className="rounded-full bg-accent px-4 py-2 text-xs font-bold text-white disabled:opacity-40">Approve</button><button disabled={busy !== null} onClick={() => { const feedback=window.prompt("Feedback for the member (optional)", event.adminFeedback || ""); if(feedback!==null) void runAction(`event-${event.id}-rejected`, { action: "event-status", eventId: event.id, status: "rejected", feedback }); }} className={button}>Reject with feedback</button></>}{event.status === "approved" && <><a href={`/network/events/${event.slug}`} target="_blank" className={button}>View live page</a><button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-cancel`, { action: "event-cancel", eventId: event.id })} className={button}>Cancel</button><button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-feature`, { action: "event-feature", eventId: event.id, featured: !event.featured })} className={button}>{event.featured ? "Remove feature" : "Feature"}</button></>}{event.status === "cancelled" && <button disabled={busy !== null} onClick={() => runAction(`event-${event.id}-restore`, { action: "event-restore", eventId: event.id })} className={button}>Restore</button>}</div></article>)}
-          {!events.length && <Empty text="No events have been submitted." />}
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between md:mt-5">
+          <div className="inline-flex self-start rounded-full border border-line bg-surface-1 p-1 text-xs font-bold">
+            <button type="button" onClick={() => { setEventView("current"); setEventPage(1); }} className={`rounded-full px-4 py-2 transition ${eventView === "current" ? "bg-accent text-white" : "text-fg-muted hover:text-fg"}`}>Current ({currentEvents.length})</button>
+            <button type="button" onClick={() => { setEventView("archive"); setEventPage(1); }} className={`rounded-full px-4 py-2 transition ${eventView === "archive" ? "bg-accent text-white" : "text-fg-muted hover:text-fg"}`}>Archive ({archivedEvents.length})</button>
+          </div>
+          <p className="text-xs text-fg-subtle">Showing {filteredEvents.length ? (safeEventPage - 1) * eventsPerPage + 1 : 0}–{Math.min(safeEventPage * eventsPerPage, filteredEvents.length)} of {filteredEvents.length}</p>
         </div>
+        <div className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2 md:gap-4">
+          {visibleEvents.map(renderEventCard)}
+          {!visibleEvents.length && <Empty text={eventView === "current" ? "No current events." : "No archived events."} />}
+        </div>
+        {eventPageCount > 1 && <div className={`${panel} mt-3 flex items-center justify-between gap-3 px-3 py-3 md:px-4`}><button type="button" className={button} disabled={safeEventPage === 1} onClick={() => setEventPage((page) => Math.max(1, page - 1))}>Previous</button><span className="text-xs text-fg-muted md:text-sm">Page {safeEventPage} of {eventPageCount}</span><button type="button" className={button} disabled={safeEventPage === eventPageCount} onClick={() => setEventPage((page) => Math.min(eventPageCount, page + 1))}>Next</button></div>}
       </section>
 
       <section id="operations" className="pt-7 md:pt-12">
@@ -505,7 +663,7 @@ function Status({ value }: { value: string }) {
   const positive = ["active", "approved", "resolved", "sent", "complete"].includes(value);
   const warning = ["pending", "open", "unclaimed", "invited", "in_progress"].includes(value);
   const color = positive ? "bg-emerald-400/12 text-emerald-300" : warning ? "bg-amber-400/12 text-amber-300" : "bg-red-400/12 text-red-300";
-  return <span className={`inline-flex rounded-full px-2 py-0.5 text-[9px] font-bold md:px-3 md:py-1 md:text-xs ${color}`}>{value.replaceAll("_", " ")}</span>;
+  return <span className={`inline-flex max-w-full whitespace-nowrap rounded-full px-2 py-0.5 text-[9px] font-bold md:px-3 md:py-1 md:text-xs ${color}`}>{value.replaceAll("_", " ")}</span>;
 }
 
 function OperationCard({ icon, title, pending, failed }: { icon: React.ReactNode; title: string; pending: number; failed: number }) {
